@@ -1,23 +1,3 @@
-## 简介
-本部分代码用于构建sdk
-
-## 打包上传
-首先在`https://pypi.org/`上创建账号，接下来在本地本目录下创建~/.pypirc，这样以后就不用输入用户名和密码了
-```shell
-[distutils]
-index-servers=pypi
-
-[pypi]
-repository = https://pypi.python.org/pypi
-username = <username>
-password = <password>
-```
-执行如下命令打包和上传
-```shell
-python setup sdist
-dwine upload dist/*
-```
-
 ## 使用方法
 可以在本地执行`pip install baidu-acu-asr`安装sdk，创建新的python文件，示例代码如下(也可见client_demo.py)
 ```python
