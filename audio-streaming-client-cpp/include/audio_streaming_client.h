@@ -6,15 +6,6 @@
 #include <gflags/gflags.h>
 #include <grpc/grpc.h>
 
-DECLARE_string(app_name);
-DECLARE_bool(enable_flush_data);
-DECLARE_bool(enable_long_speech);
-DECLARE_bool(enable_chunk);
-DECLARE_uint32(log_level);
-DECLARE_double(send_per_second);
-DECLARE_double(sleep_ratio);
-DECLARE_string(product_id);
-
 namespace com {
 namespace baidu {
 namespace acu {
@@ -24,14 +15,25 @@ typedef void (*AsrClientCallBack) (const AudioFragmentResponse& resp, void* data
 
 class AsrClient {
 public:
+	AsrClient();
+	void set_app_name(const std::string& app_name);
+	void set_enable_flush_data(bool enable_flush_data);
+	void set_enable_long_speech(bool enable_long_speech);
+	void set_enable_chunk(bool enable_chunk);
+	void set_log_level(int log_level);
+	void set_send_per_seconds(double send_per_seconds);
+	void set_sleep_ratio(double sleep_raio);
+	void set_product_id(const std::string& product_id);
     int init(const std::string& address);
-    int send_audio(const std::string& audio_file);
-    void set_response_callback(AsrClientCallBack callback_fun);
+    int send_audio(const std::string& audio_file, AsrClientCallBack callback);
 
 private:
-    std::unique_ptr<AsrService::Stub> _stub;
     grpc::ClientContext _context;
-    AsrClientCallBack _callback_fun;
+	std::shared_ptr<grpc::Channel> _channel;
+	InitRequest _init_request;
+	bool _set_enable_flush_data;
+	bool _set_product_id;
+	bool _inited;
 };
 
 } // namespace pie
