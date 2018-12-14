@@ -19,10 +19,9 @@ def generate_file_stream():
 
 def run():
     response = client.get_result("/Users/xiashuai01/Downloads/20181126_213030250_0003450587_19.in.wav")
-    # response = client.get_result("/Users/xiashuai01/Downloads/20181126_213030250_0003450587_19.in.wav")
     for res in response:
         print("start_time\tend_time\tresult")
-        print(res.start_time + "\t" + res.end_time + "\t" + res.result + "\t" + str(res.completed))
+        print(res.start_time + "\t" + res.end_time + "\t" + res.result)
 
 
 def run_stream():
@@ -30,7 +29,7 @@ def run_stream():
     for response in responses:
         # for res in responses:
         print("start_time\tend_time\tresult")
-        print(response.start_time + "\t" + response.end_time + "\t" + response.result + "\t" + str(response.completed))
+        print(response.start_time + "\t" + response.end_time + "\t" + response.result)
 
 
 if __name__ == '__main__':

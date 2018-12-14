@@ -48,7 +48,7 @@ def run_stream():
     for response in responses:
         # for res in responses:
         print("start_time\tend_time\tresult")
-        print(response.start_time + "\t" + response.end_time + "\t" + response.result + "\t" + str(response.completed))
+        print(response.start_time + "\t" + response.end_time + "\t" + response.result)
 
         
 if __name__ == '__main__':
