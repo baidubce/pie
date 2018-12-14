@@ -50,6 +50,9 @@ class AsrClient(object):
             content = file.read(2560)
         file.close()
 
+    def generate_stream_request(self, file_stream):
+        return audio_streaming_pb2.AudioFragmentRequest(audio_data=file_stream)
+
     def get_result(self, file_path):
         header_adder_interceptor = header_manipulator_client_interceptor.header_adder_interceptor(
             'audio_meta', base64.b64encode(self.request.SerializeToString()))
@@ -58,5 +61,16 @@ class AsrClient(object):
                                                        header_adder_interceptor)
             stub = audio_streaming_pb2_grpc.AsrServiceStub(intercept_channel)
             responses = stub.send(self.generate_file_stream(file_path))
+            for response in responses:
+                yield response
+
+    def get_result_by_stream(self, file_steam):
+        header_adder_interceptor = header_manipulator_client_interceptor.header_adder_interceptor(
+            'audio_meta', base64.b64encode(self.request.SerializeToString()))
+        with grpc.insecure_channel(self.host) as channel:
+            intercept_channel = grpc.intercept_channel(channel,
+                                                       header_adder_interceptor)
+            stub = audio_streaming_pb2_grpc.AsrServiceStub(intercept_channel)
+            responses = stub.send(file_steam)
             for response in responses:
                 yield response

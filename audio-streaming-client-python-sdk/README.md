@@ -1,5 +1,26 @@
+## 简介
+本部分代码用于构建sdk
+
+## 打包上传
+首先在`https://pypi.org/`上创建账号，接下来在本地本目录下创建~/.pypirc，这样以后就不用输入用户名和密码了
+```shell
+[distutils]
+index-servers=pypi
+
+[pypi]
+repository = https://pypi.python.org/pypi
+username = <username>
+password = <password>
+```
+执行如下命令打包和上传
+```shell
+python setup sdist
+dwine upload dist/*
+```
+
 ## 使用方法
 可以在本地执行`pip install baidu-acu-asr`安装sdk，创建新的python文件，示例代码如下(也可见client_demo.py)
+### 本地文件
 ```python
 # -*-coding:utf-8-*-
 from baidu_acu_asr.AsrClient import AsrClient
@@ -23,3 +44,34 @@ if __name__ == '__main__':
     #     t = threading.Thread(target=run, args=[])
     #     t.start()
 ```
+
+### 流文件
+```python
+from baidu_acu_asr.AsrClient import AsrClient
+import os
+
+
+def generate_file_stream():
+    file_path = "/Users/xiashuai01/Downloads/10s.wav"
+    if not os.path.exists(file_path):
+        logging.info("%s file is not exist, please check it!", file_path)
+        os._exit(-1)
+    file = open(file_path, "r")
+    content = file.read(2560)
+    while len(content) > 0:
+        yield client.generate_stream_request(content)
+        content = file.read(2560)
+        
+        
+def run_stream():
+    responses = client.get_result_by_stream(generate_file_stream())
+    for response in responses:
+        # for res in responses:
+        print("start_time\tend_time\tresult")
+        print(response.start_time + "\t" + response.end_time + "\t" + response.result + "\t" + str(response.completed))
+
+        
+if __name__ == '__main__':
+    client = AsrClient("180.76.107.131", "8053", enable_flush_data=True)
+    run_stream()
+``` 
