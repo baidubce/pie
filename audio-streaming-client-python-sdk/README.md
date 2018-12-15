@@ -12,8 +12,9 @@ client = AsrClient("172.18.53.17", "31051", enable_flush_data=False)
 def run():
     response = client.get_result("/Users/xiashuai01/Downloads/300s.wav")
     for res in response:
-        print("start_time\tend_time\tresult")
-        print(res.start_time + "\t" + res.end_time + "\t" + res.result)
+        print("error_code\terror_message\tstart_time\tend_time\tresult\tcompleted")
+        print(str(res.error_code) + "\t" + res.error_message + "\t"
+            + res.start_time + "\t" + res.end_time + "\t" + res.result + "\t" + str(res.completed))
 
 
 if __name__ == '__main__':
@@ -41,17 +42,19 @@ def generate_file_stream():
     while len(content) > 0:
         yield client.generate_stream_request(content)
         content = file.read(2560)
-        
-        
+
+
 def run_stream():
     responses = client.get_result_by_stream(generate_file_stream())
     for response in responses:
         # for res in responses:
-        print("start_time\tend_time\tresult")
-        print(response.start_time + "\t" + response.end_time + "\t" + response.result)
+        print("error_code\terror_message\tstart_time\tend_time\tresult\tcompleted")
+        print(str(response.error_code) + "\t" + response.error_message + "\t" + response.start_time + "\t"
+              + response.end_time + "\t" + response.result + "\t" + str(response.completed))
 
-        
+
 if __name__ == '__main__':
     client = AsrClient("180.76.107.131", "8053", enable_flush_data=True)
     run_stream()
-``` 
+```
+
