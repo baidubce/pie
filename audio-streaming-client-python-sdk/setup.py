@@ -1,11 +1,14 @@
 from setuptools import setup, find_packages
+import os
 
+here = os.path.abspath(os.path.dirname(__file__))
+demo = open(os.path.join(here, 'client_demo.py')).read()
 
 setup(
     name="baidu-acu-asr",
-    version="1.0.3",
+    version="1.0.4",
     description="asr grpc client",
-    long_description="this is an asr grpc client",
+    long_description=demo,
     author="Baidu",
     url="https://github.com/baidubce/pie/tree/master/audio-streaming-client-python-sdk",
     author_email="1908131339@qq.com",
@@ -15,3 +18,4 @@ setup(
     install_requires=["protobuf", "grpcio"],
     keywords = ['baidu', 'asr', 'speech'],
 )
+
