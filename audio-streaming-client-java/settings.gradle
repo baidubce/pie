@@ -1,12 +1,1 @@
-// Copyright (C) 2018 Baidu Inc. All rights reserved.
-
 rootProject.name = 'audio-streaming-client-java'
-
-fileTree('.') {
-    include '**/build.gradle'
-    exclude 'build.gradle' // Exclude the root build file.
-}.collect {
-    relativePath(it.parent).replace(File.separator, ':')
-}.each {
-    include(it)
-}
