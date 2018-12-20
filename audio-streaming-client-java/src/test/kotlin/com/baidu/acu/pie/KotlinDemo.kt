@@ -7,6 +7,7 @@ package com.baidu.acu.pie
 import com.baidu.acu.pie.client.AsrClientFactory
 import com.baidu.acu.pie.model.AsrConfig
 import com.baidu.acu.pie.model.AsrProduct
+import org.junit.Ignore
 import org.junit.Test
 import java.nio.file.Paths
 
@@ -15,6 +16,7 @@ import java.nio.file.Paths
  *
  * @author Shu Lingjie(shulingjie@baidu.com)
  */
+@Ignore
 class KotlinDemo {
     @Test
     fun testSendFile() {

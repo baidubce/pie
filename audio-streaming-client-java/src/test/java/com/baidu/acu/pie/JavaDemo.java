@@ -7,6 +7,7 @@ import java.time.Instant;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.baidu.acu.pie.client.AsrClient;
@@ -22,6 +23,7 @@ import lombok.extern.slf4j.Slf4j;
  *
  * @author Shu Lingjie(shulingjie@baidu.com)
  */
+@Ignore
 public class JavaDemo {
     private AsrClient createAsrClient() {
         // asrConfig构造后就不可修改
