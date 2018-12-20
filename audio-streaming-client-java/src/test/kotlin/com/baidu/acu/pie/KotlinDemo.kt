@@ -1,8 +1,6 @@
 // Copyright (C) 2018 Baidu Inc. All rights reserved.
-package com.baidu.acu.pie
 
-// Copyright (C) 2018 Baidu Inc. All rights reserved.
-// Copyright (C) 2018 Baidu Inc. All rights reserved.
+package com.baidu.acu.pie
 
 import com.baidu.acu.pie.client.AsrClientFactory
 import com.baidu.acu.pie.model.AsrConfig

@@ -2,21 +2,18 @@
 
 package com.baidu.acu.pie;
 
-import java.nio.file.Paths;
-import java.time.Instant;
-import java.util.List;
-import java.util.concurrent.CountDownLatch;
-
-import org.junit.Ignore;
-import org.junit.Test;
-
 import com.baidu.acu.pie.client.AsrClient;
 import com.baidu.acu.pie.client.AsrClientFactory;
 import com.baidu.acu.pie.model.AsrConfig;
 import com.baidu.acu.pie.model.AsrProduct;
 import com.baidu.acu.pie.model.RecognitionResult;
+import org.junit.Ignore;
+import org.junit.Test;
 
-import lombok.extern.slf4j.Slf4j;
+import java.nio.file.Paths;
+import java.time.Instant;
+import java.util.List;
+import java.util.concurrent.CountDownLatch;
 
 /**
  * JavaDemo
