@@ -22,7 +22,6 @@ import lombok.extern.slf4j.Slf4j;
  *
  * @author Shu Lingjie(shulingjie@baidu.com)
  */
-@Slf4j
 public class JavaDemo {
     private AsrClient createAsrClient() {
         // asrConfig构造后就不可修改
@@ -74,7 +73,11 @@ public class JavaDemo {
         for (int i = 0; i < concurrentNum; i++) {
             new Thread(() -> {
                 List<RecognitionResult> results = asrClient.syncRecognize(Paths.get(audioFilePath));
-                log.info("finished at {}, {}", results.get(0).getResult(), Instant.now());
+                System.out.printf("thread %d finished at time: %s, result: %s\n",
+                        Thread.currentThread().getId(),
+                        Instant.now().toString(),
+                        results.get(0).getResult()
+                );
                 finishLatch.countDown();
             }).start();
         }
@@ -84,7 +87,7 @@ public class JavaDemo {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        log.info("finish");
         asrClient.shutdown();
+        System.out.println("all task finished");
     }
 }
