@@ -22,8 +22,6 @@ version = '1.0.0-SNAPSHOT'
 
 repositories {
     mavenLocal()
-    maven { url 'http://maven.scm.baidu.com:8081/nexus/content/groups/public/' }
-    maven { url 'http://maven.scm.baidu.com:8081/nexus/content/groups/public-snapshots/' }
     jcenter()
     mavenCentral()
 }

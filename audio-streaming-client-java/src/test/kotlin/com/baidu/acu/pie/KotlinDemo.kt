@@ -21,8 +21,8 @@ class KotlinDemo {
         val audioFilePath = "testaudio/bj8k.wav"
 
         val asrConfig = AsrConfig()
-            .serverIp("180.76.107.131")
-            .serverPort(8050)
+            .serverIp("127.0.0.1")
+            .serverPort(80)
             .appName("simple demo")
             .product(AsrProduct.CUSTOMER_SERVICE)
 
