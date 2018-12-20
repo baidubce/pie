@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='com.baidu.acu.pie',
   syntax='proto3',
   serialized_options=None,
-  serialized_pb=_b('\n\x15\x61udio_streaming.proto\x12\x11\x63om.baidu.acu.pie\"\xde\x01\n\x0bInitRequest\x12\x1a\n\x12\x65nable_long_speech\x18\x01 \x01(\x08\x12\x14\n\x0c\x65nable_chunk\x18\x02 \x01(\x08\x12\x19\n\x11\x65nable_flush_data\x18\x03 \x01(\x08\x12\x12\n\nproduct_id\x18\x04 \x01(\t\x12\x1a\n\x12sample_point_bytes\x18\x05 \x01(\r\x12\x18\n\x10send_per_seconds\x18\x06 \x01(\x01\x12\x13\n\x0bsleep_ratio\x18\x07 \x01(\x01\x12\x10\n\x08\x61pp_name\x18\x08 \x01(\t\x12\x11\n\tlog_level\x18\t \x01(\r\"*\n\x14\x41udioFragmentRequest\x12\x12\n\naudio_data\x18\x01 \x01(\x0c\"\x8b\x01\n\x15\x41udioFragmentResponse\x12\x12\n\nerror_code\x18\x01 \x01(\x05\x12\x15\n\rerror_message\x18\x02 \x01(\t\x12\x12\n\nstart_time\x18\x03 \x01(\t\x12\x10\n\x08\x65nd_time\x18\x04 \x01(\t\x12\x0e\n\x06result\x18\x05 \x01(\t\x12\x11\n\tcompleted\x18\x06 \x01(\x08\x32k\n\nAsrService\x12]\n\x04send\x12\'.com.baidu.acu.pie.AudioFragmentRequest\x1a(.com.baidu.acu.pie.AudioFragmentResponse(\x01\x30\x01\x62\x06proto3')
+  serialized_pb=_b('\n\x15\x61udio_streaming.proto\x12\x11\x63om.baidu.acu.pie\"\xde\x01\n\x0bInitRequest\x12\x1a\n\x12\x65nable_long_speech\x18\x01 \x01(\x08\x12\x14\n\x0c\x65nable_chunk\x18\x02 \x01(\x08\x12\x19\n\x11\x65nable_flush_data\x18\x03 \x01(\x08\x12\x12\n\nproduct_id\x18\x04 \x01(\t\x12\x1a\n\x12sample_point_bytes\x18\x05 \x01(\r\x12\x18\n\x10send_per_seconds\x18\x06 \x01(\x01\x12\x13\n\x0bsleep_ratio\x18\x07 \x01(\x01\x12\x10\n\x08\x61pp_name\x18\x08 \x01(\t\x12\x11\n\tlog_level\x18\t \x01(\r\"*\n\x14\x41udioFragmentRequest\x12\x12\n\naudio_data\x18\x01 \x01(\x0c\"\x9f\x01\n\x15\x41udioFragmentResponse\x12\x12\n\nerror_code\x18\x01 \x01(\x05\x12\x15\n\rerror_message\x18\x02 \x01(\t\x12\x12\n\nstart_time\x18\x03 \x01(\t\x12\x10\n\x08\x65nd_time\x18\x04 \x01(\t\x12\x0e\n\x06result\x18\x05 \x01(\t\x12\x11\n\tcompleted\x18\x06 \x01(\x08\x12\x12\n\nserial_num\x18\x07 \x01(\t2k\n\nAsrService\x12]\n\x04send\x12\'.com.baidu.acu.pie.AudioFragmentRequest\x1a(.com.baidu.acu.pie.AudioFragmentResponse(\x01\x30\x01\x62\x06proto3')
 )
 
 
@@ -192,6 +192,13 @@ _AUDIOFRAGMENTRESPONSE = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='serial_num', full_name='com.baidu.acu.pie.AudioFragmentResponse.serial_num', index=6,
+      number=7, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -205,7 +212,7 @@ _AUDIOFRAGMENTRESPONSE = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=314,
-  serialized_end=453,
+  serialized_end=473,
 )
 
 DESCRIPTOR.message_types_by_name['InitRequest'] = _INITREQUEST
@@ -242,8 +249,8 @@ _ASRSERVICE = _descriptor.ServiceDescriptor(
   file=DESCRIPTOR,
   index=0,
   serialized_options=None,
-  serialized_start=455,
-  serialized_end=562,
+  serialized_start=475,
+  serialized_end=582,
   methods=[
   _descriptor.MethodDescriptor(
     name='send',
