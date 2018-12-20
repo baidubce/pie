@@ -1,7 +1,8 @@
 // Copyright (C) 2018 Baidu Inc. All rights reserved.
 
-package com.baidu.acu.pie;
+package com.baidu.acu.pie.client;
 
+import com.baidu.acu.pie.grpc.AsrClientGrpcImpl;
 import com.baidu.acu.pie.model.AsrConfig;
 
 /**
@@ -11,6 +12,6 @@ import com.baidu.acu.pie.model.AsrConfig;
  */
 public class AsrClientFactory {
     public static AsrClient buildClient(AsrConfig asrConfig) {
-        return new AsrClientImpl(asrConfig);
+        return new AsrClientGrpcImpl(asrConfig);
     }
 }

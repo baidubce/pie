@@ -1,6 +1,6 @@
 // Copyright (C) 2018 Baidu Inc. All rights reserved.
 
-package com.baidu.acu.pie;
+package com.baidu.acu.pie.client;
 
 import java.nio.file.Path;
 import java.util.List;

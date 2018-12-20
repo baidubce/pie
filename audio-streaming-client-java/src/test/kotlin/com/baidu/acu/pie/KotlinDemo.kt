@@ -4,7 +4,9 @@ package com.baidu.acu.pie
 // Copyright (C) 2018 Baidu Inc. All rights reserved.
 // Copyright (C) 2018 Baidu Inc. All rights reserved.
 
+import com.baidu.acu.pie.client.AsrClientFactory
 import com.baidu.acu.pie.model.AsrConfig
+import com.baidu.acu.pie.model.AsrProduct
 import org.junit.Test
 
 /**
@@ -16,11 +18,14 @@ class KotlinDemo {
     @Test
     fun testSendFile() {
         val audioFilePath = "testaudio/bj8k.wav"
-        val asrClient = AsrClientImpl(
-            AsrConfig()
-                .serverIp("180.76.107.131")
-                .serverPort(8051)
-        )
+
+        val asrConfig = AsrConfig()
+            .serverIp("180.76.107.131")
+            .serverPort(8050)
+            .appName("simple demo")
+            .product(AsrProduct.CUSTOMER_SERVICE)
+
+        val asrClient = AsrClientFactory.buildClient(asrConfig)
 
 //        val inputStream = File(audioFilePath).inputStream()
 //

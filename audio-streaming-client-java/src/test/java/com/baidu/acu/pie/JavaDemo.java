@@ -7,6 +7,8 @@ import java.util.List;
 
 import org.junit.Test;
 
+import com.baidu.acu.pie.client.AsrClient;
+import com.baidu.acu.pie.client.AsrClientFactory;
 import com.baidu.acu.pie.model.AsrConfig;
 import com.baidu.acu.pie.model.AsrProduct;
 import com.baidu.acu.pie.model.RecognitionResult;

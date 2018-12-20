@@ -2,8 +2,6 @@
 
 package com.baidu.acu.pie.model;
 
-import com.baidu.acu.pie.grpc.AudioStreaming;
-
 import lombok.Getter;
 import lombok.NonNull;
 
@@ -48,19 +46,5 @@ public class AsrConfig {
     public AsrConfig product(AsrProduct product) {
         this.product = product;
         return this;
-    }
-
-    public AudioStreaming.InitRequest buildInitRequest() {
-        return AudioStreaming.InitRequest.newBuilder()
-                .setEnableLongSpeech(true)
-                .setEnableChunk(true)
-                .setEnableFlushData(enableFlushData)
-                .setProductId(product.getCode())
-                .setSamplePointBytes(bitDepth)
-                .setSendPerSeconds(sendPerSeconds)
-                .setSleepRatio(sleepRatio)
-                .setAppName(appName)
-                .setLogLevel(logLevel.getCode())
-                .build();
     }
 }
