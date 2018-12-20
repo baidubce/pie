@@ -3,7 +3,9 @@
 package com.baidu.acu.pie;
 
 import java.nio.file.Paths;
+import java.time.Instant;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 
 import org.junit.Test;
 
@@ -13,17 +15,16 @@ import com.baidu.acu.pie.model.AsrConfig;
 import com.baidu.acu.pie.model.AsrProduct;
 import com.baidu.acu.pie.model.RecognitionResult;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * JavaDemo
  *
  * @author Shu Lingjie(shulingjie@baidu.com)
  */
+@Slf4j
 public class JavaDemo {
-
-    @Test
-    public void testSendFile() {
-        String audioFilePath = "testaudio/bj8k.wav";
-
+    private AsrClient createAsrClient() {
         // asrConfig构造后就不可修改
         AsrConfig asrConfig = new AsrConfig()
                 .serverIp("180.76.107.131")
@@ -31,7 +32,13 @@ public class JavaDemo {
                 .appName("simple demo")
                 .product(AsrProduct.CUSTOMER_SERVICE);
 
-        AsrClient asrClient = AsrClientFactory.buildClient(asrConfig);
+        return AsrClientFactory.buildClient(asrConfig);
+    }
+
+    @Test
+    public void testSendFile() {
+        String audioFilePath = "testaudio/bj8k.wav";
+        AsrClient asrClient = createAsrClient();
         List<RecognitionResult> results = asrClient.syncRecognize(Paths.get(audioFilePath));
 
         // don't forget to shutdown !!!
@@ -54,5 +61,30 @@ public class JavaDemo {
                     result.getResult()
             ));
         }
+    }
+
+    @Test
+    public void testSendFileMultiThread() {
+        String audioFilePath = "testaudio/bj8k.wav";
+        AsrClient asrClient = createAsrClient();
+
+        int concurrentNum = 5;
+        final CountDownLatch finishLatch = new CountDownLatch(concurrentNum);
+
+        for (int i = 0; i < concurrentNum; i++) {
+            new Thread(() -> {
+                List<RecognitionResult> results = asrClient.syncRecognize(Paths.get(audioFilePath));
+                log.info("finished at {}, {}", results.get(0).getResult(), Instant.now());
+                finishLatch.countDown();
+            }).start();
+        }
+
+        try {
+            finishLatch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        log.info("finish");
+        asrClient.shutdown();
     }
 }

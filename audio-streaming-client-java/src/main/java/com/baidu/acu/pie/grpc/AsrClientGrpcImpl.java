@@ -59,7 +59,7 @@ public class AsrClientGrpcImpl implements AsrClient {
         try {
             managedChannel.shutdown().awaitTermination(5, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
-            log.error("shutdown failed: ", e);
+            log.error("shutdown failed: {}", e);
         }
     }
 
@@ -79,7 +79,7 @@ public class AsrClientGrpcImpl implements AsrClient {
 
     @Override
     public List<RecognitionResult> syncRecognize(Path audioFilePath) {
-        log.info("start recognition request, file: ", audioFilePath.toString());
+        log.info("start to recognition, file: {}", audioFilePath.toString());
 
         final List<RecognitionResult> results = new ArrayList<>();
         CountDownLatch finishLatch = this.sendRequests(prepareRequests(audioFilePath), results);
@@ -90,7 +90,7 @@ public class AsrClientGrpcImpl implements AsrClient {
                         asrConfig.getTimeoutMinutes());
             }
         } catch (InterruptedException e) {
-            log.error("error when wait for CountDownLatch: ", e);
+            log.error("error when wait for CountDownLatch: {}", e);
         }
 
         log.info("finish recognition request");
@@ -116,7 +116,7 @@ public class AsrClientGrpcImpl implements AsrClient {
                 );
             }
         } catch (IOException e) {
-            log.error("Read audio file failed: ", e);
+            log.error("Read audio file failed: {}", e);
         }
 
         return requests;
@@ -151,7 +151,7 @@ public class AsrClientGrpcImpl implements AsrClient {
 
                     @Override
                     public void onError(Throwable t) {
-                        log.error("receive response error: ", t);
+                        log.error("receive response error: {}", t);
                         finishLatch.countDown();
                     }
 
@@ -167,7 +167,7 @@ public class AsrClientGrpcImpl implements AsrClient {
             }
         } catch (RuntimeException e) {
             requestStreamObserver.onError(e);
-            log.error("send request failed: ", e);
+            log.error("send request failed: {}", e);
         } finally {
             requestStreamObserver.onCompleted();
         }
