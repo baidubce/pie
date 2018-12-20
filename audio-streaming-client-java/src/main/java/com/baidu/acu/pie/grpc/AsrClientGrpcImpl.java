@@ -11,6 +11,7 @@ import java.util.Base64;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 
 import com.baidu.acu.pie.AsrServiceGrpc;
 import com.baidu.acu.pie.AsrServiceGrpc.AsrServiceStub;
@@ -77,15 +78,16 @@ public class AsrClientGrpcImpl implements AsrClient {
     }
 
     @Override
-    public List<RecognitionResult> recognizeAudioFile(Path audioFilePath) {
+    public List<RecognitionResult> syncRecognize(Path audioFilePath) {
         log.info("start recognition request, file: ", audioFilePath.toString());
 
         final List<RecognitionResult> results = new ArrayList<>();
         CountDownLatch finishLatch = this.sendRequests(prepareRequests(audioFilePath), results);
 
         try {
-            if (!finishLatch.await(60, TimeUnit.MINUTES)) {
-                log.error("Recognition request can not finish within 60 minutes, maybe the audio is too large");
+            if (!finishLatch.await(asrConfig.getTimeoutMinutes(), TimeUnit.MINUTES)) {
+                log.error("Recognition request not finish within {} minutes, maybe the audio is too large",
+                        asrConfig.getTimeoutMinutes());
             }
         } catch (InterruptedException e) {
             log.error("error when wait for CountDownLatch: ", e);
@@ -93,6 +95,11 @@ public class AsrClientGrpcImpl implements AsrClient {
 
         log.info("finish recognition request");
         return results;
+    }
+
+    @Override
+    public void asyncRecognize(InputStream audioStream, Consumer<RecognitionResult> resultConsumer) {
+        // TODO @cynricshu
     }
 
     private List<AudioFragmentRequest> prepareRequests(Path audioFilePath) {
@@ -122,7 +129,7 @@ public class AsrClientGrpcImpl implements AsrClient {
                 new StreamObserver<AudioFragmentResponse>() {
                     @Override
                     public void onNext(AudioFragmentResponse value) {
-                        //                        System.out.println(String.format(AsrConfig.TITLE_FORMAT,
+                        //                        System.out.println(String.format(AsrConfig.TITLE_FORMAT_WITH_TIME,
                         //                                Instant.now().toString(),
                         //                                value.getCompleted(),
                         //                                value.getErrorCode(),

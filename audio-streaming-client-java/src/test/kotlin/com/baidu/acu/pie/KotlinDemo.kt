@@ -8,6 +8,7 @@ import com.baidu.acu.pie.client.AsrClientFactory
 import com.baidu.acu.pie.model.AsrConfig
 import com.baidu.acu.pie.model.AsrProduct
 import org.junit.Test
+import java.nio.file.Paths
 
 /**
  * KotlinDemo
@@ -26,31 +27,32 @@ class KotlinDemo {
             .product(AsrProduct.CUSTOMER_SERVICE)
 
         val asrClient = AsrClientFactory.buildClient(asrConfig)
+        val results = asrClient.syncRecognize(Paths.get(audioFilePath))
 
-//        val inputStream = File(audioFilePath).inputStream()
-//
-//        val fragmentSize = 2560
-//        var data = ByteArray(fragmentSize)
-//
-//        val requests = mutableListOf<AudioStreaming.AudioFragmentRequest>()
-//
-//        while (true) {
-//            val readCount = inputStream.read(data)
-//            if (readCount < 0) break
-//
-//            val req = AudioStreaming.AudioFragmentRequest.newBuilder()
-//                .setAudioData(ByteString.copyFrom(data, 0, readCount))
-//                .build()
-//
-//            requests.add(req)
-//        }
-//
-//        var finishLatch = asrClient.sendMessages(requests)
-//
-//        if (!finishLatch.await(2, TimeUnit.MINUTES)) {
-//            println("routeChat can not finish within 1 minutes")
-//        }
-//
-//        asrClient.shutdown()
+        // don't forget to shutdown !!!
+        asrClient.shutdown()
+
+        for (result in results) {
+            println(
+                String.format(
+                    AsrConfig.TITLE_FORMAT,
+                    "err_no",
+                    "err_message",
+                    "start_time",
+                    "end_time",
+                    "result"
+                )
+            )
+            println(
+                String.format(
+                    AsrConfig.TITLE_FORMAT,
+                    result.errorCode,
+                    result.errorMessage,
+                    result.startTime,
+                    result.endTime,
+                    result.result
+                )
+            )
+        }
     }
 }

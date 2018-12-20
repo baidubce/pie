@@ -32,21 +32,19 @@ public class JavaDemo {
                 .product(AsrProduct.CUSTOMER_SERVICE);
 
         AsrClient asrClient = AsrClientFactory.buildClient(asrConfig);
-        List<RecognitionResult> results = asrClient.recognizeAudioFile(Paths.get(audioFilePath));
+        List<RecognitionResult> results = asrClient.syncRecognize(Paths.get(audioFilePath));
+
+        // don't forget to shutdown !!!
         asrClient.shutdown();
 
         for (RecognitionResult result : results) {
             System.out.println(String.format(AsrConfig.TITLE_FORMAT,
-                    "time",
-                    "completed",
                     "err_no",
                     "err_message",
                     "start_time",
                     "end_time",
                     "result"));
             System.out.println(String.format(AsrConfig.TITLE_FORMAT,
-                    "",
-                    result.isCompleted(),
                     result.getErrorCode(),
                     result.getErrorMessage(),
                     result.getStartTime(),
