@@ -31,5 +31,8 @@ public class RecognitionResult {
      * 识别出来的整句结果
      */
     private String result;
-    private boolean completed;
+    /**
+     * 请求唯一标识，用于查错
+     */
+    private String serialNum;
 }

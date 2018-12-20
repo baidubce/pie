@@ -139,7 +139,7 @@ public class AsrClientGrpcImpl implements AsrClient {
                         //                                value.getResult()));
                         if (value.getCompleted()) {
                             results.add(RecognitionResult.builder()
-                                    .completed(value.getCompleted())
+                                    .serialNum(value.getSerialNum())
                                     .errorCode(value.getErrorCode())
                                     .errorMessage(value.getErrorMessage())
                                     .startTime(value.getStartTime())

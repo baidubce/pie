@@ -39,12 +39,14 @@ public class JavaDemo {
 
         for (RecognitionResult result : results) {
             System.out.println(String.format(AsrConfig.TITLE_FORMAT,
+                    "serial_num",
                     "err_no",
                     "err_message",
                     "start_time",
                     "end_time",
                     "result"));
             System.out.println(String.format(AsrConfig.TITLE_FORMAT,
+                    result.getSerialNum(),
                     result.getErrorCode(),
                     result.getErrorMessage(),
                     result.getStartTime(),

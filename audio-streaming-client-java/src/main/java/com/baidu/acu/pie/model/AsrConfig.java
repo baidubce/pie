@@ -14,7 +14,7 @@ import lombok.NonNull;
 @Getter
 public class AsrConfig {
     public static final String TITLE_FORMAT_WITH_TIME = "%-25s\t%-9s\t%-6s\t%-10s\t%-10s\t%-9s\t%s";
-    public static final String TITLE_FORMAT = "%-6s\t%-10s\t%-10s\t%-9s\t%s";
+    public static final String TITLE_FORMAT = "%-36s\t%-6s\t%-10s\t%-10s\t%-9s\t%s";
 
     /**
      * asr流式服务器的地址，私有化版本请咨询供应商

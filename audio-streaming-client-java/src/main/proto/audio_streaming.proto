@@ -27,6 +27,7 @@ message AudioFragmentResponse {
     string end_time = 4;
     string result = 5;
     bool completed = 6;
+    string serial_num = 7;
 }
 
 service AsrService {

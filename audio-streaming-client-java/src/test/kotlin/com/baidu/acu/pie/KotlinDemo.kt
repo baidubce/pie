@@ -36,6 +36,7 @@ class KotlinDemo {
             println(
                 String.format(
                     AsrConfig.TITLE_FORMAT,
+                    "serial_num",
                     "err_no",
                     "err_message",
                     "start_time",
@@ -46,6 +47,7 @@ class KotlinDemo {
             println(
                 String.format(
                     AsrConfig.TITLE_FORMAT,
+                    result.serialNum,
                     result.errorCode,
                     result.errorMessage,
                     result.startTime,
