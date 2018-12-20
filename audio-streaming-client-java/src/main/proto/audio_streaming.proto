@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package com.baidu.acu.pie;
+package com.baidu.acu.pie.grpc;
 
 message InitRequest {
     bool enable_long_speech = 1;

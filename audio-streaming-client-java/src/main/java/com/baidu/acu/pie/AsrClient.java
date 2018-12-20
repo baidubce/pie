@@ -8,38 +8,41 @@ import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-import com.baidu.acu.pie.AsrServiceGrpc.AsrServiceStub;
-import com.baidu.acu.pie.AudioStreaming.AudioFragmentRequest;
-import com.baidu.acu.pie.AudioStreaming.AudioFragmentResponse;
+import com.baidu.acu.pie.grpc.AsrServiceGrpc;
+import com.baidu.acu.pie.grpc.AsrServiceGrpc.AsrServiceStub;
+import com.baidu.acu.pie.grpc.AudioStreaming.AudioFragmentRequest;
+import com.baidu.acu.pie.grpc.AudioStreaming.AudioFragmentResponse;
 
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.Metadata;
 import io.grpc.stub.MetadataUtils;
 import io.grpc.stub.StreamObserver;
+import lombok.extern.slf4j.Slf4j;
 
 /**
- * Client
+ * AsrClient
  *
  * @author Shu Lingjie(shulingjie@baidu.com)
  */
+@Slf4j
 public class AsrClient {
     private final ManagedChannel managedChannel;
     private final AsrServiceStub asyncStub;
+    private AsrConfig asrConfig;
 
-    public AsrClient(String host, int port) {
-        this(ManagedChannelBuilder.forAddress(host, port).usePlaintext());
-    }
-
-    public AsrClient(ManagedChannelBuilder<?> channelBuilder) {
-        managedChannel = channelBuilder.build();
-        //        ClientInterceptor clientInterceptor = new AsrClientInterceptor();
-        //        Channel channel = ClientInterceptors.intercept(managedChannel, clientInterceptor);
+    public AsrClient(AsrConfig asrConfig) {
+        this.asrConfig = asrConfig;
+        managedChannel = ManagedChannelBuilder
+                .forAddress(asrConfig.getServerIp(), asrConfig.getServerPort())
+                .usePlaintext()
+                .build();
         Metadata headers = new Metadata();
         headers.put(Metadata.Key.of("audio_meta", Metadata.ASCII_STRING_MARSHALLER),
-                Base64.getEncoder().encodeToString(Constants.INIT_REQUEST.toByteArray()));
+                Base64.getEncoder().encodeToString(asrConfig.buildInitRequest().toByteArray()));
 
         asyncStub = MetadataUtils.attachHeaders(AsrServiceGrpc.newStub(managedChannel), headers);
+
     }
 
     public void shutdown() throws InterruptedException {

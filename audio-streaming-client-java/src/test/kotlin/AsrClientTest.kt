@@ -1,8 +1,9 @@
 // Copyright (C) 2018 Baidu Inc. All rights reserved.
+// Copyright (C) 2018 Baidu Inc. All rights reserved.
 
 import com.baidu.acu.pie.AsrClient
-import com.baidu.acu.pie.AudioStreaming.AudioFragmentRequest
-import com.baidu.acu.pie.Constants
+import com.baidu.acu.pie.AsrConfig
+import com.baidu.acu.pie.grpc.AudioStreaming
 import com.google.protobuf.ByteString
 import org.junit.Test
 import java.io.File
@@ -17,22 +18,28 @@ class AsrClientTest {
 
     @Test
     fun testSend() {
-        val asrClient = AsrClient(Constants.SERVER_IP_ADDR, Constants.SERVER_IP_PORT)
+        val audioFilePath = "testaudio/bj8k.wav"
+        val asrClient = AsrClient(
+            AsrConfig.builder()
+                .serverIp("180.76.107.131")
+                .serverPort(8051)
+                .build()
+        )
 
-        val inputStream = File(Constants.AUDIO_FILE_PATH).inputStream()
+        val inputStream = File(audioFilePath).inputStream()
 
         val fragmentSize = 2560
         var data = ByteArray(fragmentSize)
 
-        val requests = mutableListOf<AudioFragmentRequest>()
+        val requests = mutableListOf<AudioStreaming.AudioFragmentRequest>()
 
         while (true) {
             val readCount = inputStream.read(data)
             if (readCount < 0) break
 
-            val req = AudioFragmentRequest.newBuilder()
-                    .setAudioData(ByteString.copyFrom(data, 0, readCount))
-                    .build()
+            val req = AudioStreaming.AudioFragmentRequest.newBuilder()
+                .setAudioData(ByteString.copyFrom(data, 0, readCount))
+                .build()
 
             requests.add(req)
         }
