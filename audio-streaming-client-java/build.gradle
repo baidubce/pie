@@ -29,7 +29,8 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.projectlombok:lombok:1.18.2'
+    annotationProcessor 'org.projectlombok:lombok:1.18.4'
+    implementation 'org.projectlombok:lombok:1.18.4'
     implementation "io.grpc:grpc-netty:$grpcVersion"
     implementation "io.grpc:grpc-protobuf:$grpcVersion"
     implementation "io.grpc:grpc-stub:$grpcVersion"
