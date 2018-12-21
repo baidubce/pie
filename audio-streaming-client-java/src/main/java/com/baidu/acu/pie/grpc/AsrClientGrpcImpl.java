@@ -2,22 +2,6 @@
 
 package com.baidu.acu.pie.grpc;
 
-import com.baidu.acu.pie.AsrServiceGrpc;
-import com.baidu.acu.pie.AsrServiceGrpc.AsrServiceStub;
-import com.baidu.acu.pie.AudioStreaming;
-import com.baidu.acu.pie.AudioStreaming.AudioFragmentRequest;
-import com.baidu.acu.pie.AudioStreaming.AudioFragmentResponse;
-import com.baidu.acu.pie.client.AsrClient;
-import com.baidu.acu.pie.model.AsrConfig;
-import com.baidu.acu.pie.model.RecognitionResult;
-import com.google.protobuf.ByteString;
-import io.grpc.ManagedChannel;
-import io.grpc.ManagedChannelBuilder;
-import io.grpc.Metadata;
-import io.grpc.stub.MetadataUtils;
-import io.grpc.stub.StreamObserver;
-import lombok.extern.slf4j.Slf4j;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -28,6 +12,23 @@ import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
+
+import com.baidu.acu.pie.AsrServiceGrpc;
+import com.baidu.acu.pie.AsrServiceGrpc.AsrServiceStub;
+import com.baidu.acu.pie.AudioStreaming;
+import com.baidu.acu.pie.AudioStreaming.AudioFragmentRequest;
+import com.baidu.acu.pie.AudioStreaming.AudioFragmentResponse;
+import com.baidu.acu.pie.client.AsrClient;
+import com.baidu.acu.pie.model.AsrConfig;
+import com.baidu.acu.pie.model.RecognitionResult;
+import com.google.protobuf.ByteString;
+
+import io.grpc.ManagedChannel;
+import io.grpc.ManagedChannelBuilder;
+import io.grpc.Metadata;
+import io.grpc.stub.MetadataUtils;
+import io.grpc.stub.StreamObserver;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * AsrClientGrpcImpl

@@ -2,6 +2,8 @@
 
 package com.baidu.acu.pie.model;
 
+import com.baidu.acu.pie.exception.AsrClientException;
+
 import lombok.Getter;
 import lombok.NonNull;
 
@@ -21,33 +23,44 @@ public class AsrConfig {
      */
     @NonNull
     private String serverIp;
+
     /**
      * asr流式服务的端口，私有化版本请咨询供应商
      */
     private int serverPort;
+
     /**
      * asr识别服务的产品类型，私有化版本请咨询供应商
      */
     @NonNull
     private AsrProduct product;
+
     /**
      * asr客户端的名称，为便于后端查错，请设置一个易于辨识的appName
      */
     @NonNull
     private String appName;
-    private AsrServerLogLevel logLevel = AsrServerLogLevel.INFO;
+
     /**
-     *
+     * 服务端的日志输出级别
+     */
+    private AsrServerLogLevel logLevel = AsrServerLogLevel.INFO;
+
+    /**
+     * 是否返回中间翻译结果
      */
     private boolean enableFlushData = true;
+
     /**
      * do not change this
      */
     private int bitDepth = 2;
+
     /**
      * 指定每次发送的音频数据包大小，通常不需要修改
      */
     private double sendPerSeconds = 0.16;
+
     /**
      * 指定asr服务的识别间隔，通常不需要修改
      */
@@ -80,7 +93,7 @@ public class AsrConfig {
 
     public AsrConfig timeoutMinutes(int timeoutMinutes) {
         if (timeoutMinutes > 120) {
-            timeoutMinutes = 60;
+            throw new AsrClientException("timeoutMinutes should not exceed 120");
         }
         this.timeoutMinutes = timeoutMinutes;
         return this;
