@@ -67,7 +67,7 @@ public class JavaDemo {
     @Test
     public void testAsyncRecognition() {
         // 使用长音频来模拟不断输入的情况
-        String longAudioFilePath = "testaudio/onehour.wav";
+        String longAudioFilePath = "testaudio/1.wav";
         AsrClient asrClient = createAsrClient();
 
         try (InputStream inputStream = Files.newInputStream(Paths.get(longAudioFilePath))) {

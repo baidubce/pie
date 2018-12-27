@@ -99,6 +99,44 @@ public class AsrClientGrpcImpl implements AsrClient {
     @Override
     public void asyncRecognize(InputStream audioStream, Consumer<RecognitionResult> resultConsumer) {
         // TODO @cynricshu
+        log.info("start to async recognition");
+
+        StreamObserver<AudioFragmentRequest> requestStreamObserver = asyncStub.send(
+                new StreamObserver<AudioFragmentResponse>() {
+                    @Override
+                    public void onNext(AudioFragmentResponse response) {
+                        resultConsumer.accept(fromAudioFragmentResponse(response));
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        log.error("receive response error: {}", t);
+                    }
+
+                    @Override
+                    public void onCompleted() {
+                        log.info("StreamObserver completed");
+                    }
+                });
+
+        byte[] data = new byte[this.asrConfig.getProduct().getFragmentSize()];
+        int readSize;
+
+        while (true) {
+            try {
+                if ((readSize = audioStream.read(data)) != -1) {
+                    requestStreamObserver.onNext(AudioFragmentRequest.newBuilder()
+                            .setAudioData(ByteString.copyFrom(data, 0, readSize))
+                            .build());
+                } else {
+                    break;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        log.info("no more data from input stream for 3 times, finsh recognition");
     }
 
     private List<AudioFragmentRequest> prepareRequests(Path audioFilePath) {
@@ -141,6 +179,7 @@ public class AsrClientGrpcImpl implements AsrClient {
 
                     @Override
                     public void onCompleted() {
+                        log.info("StreamObserver completed");
                         finishLatch.countDown();
                     }
                 });
@@ -167,6 +206,7 @@ public class AsrClientGrpcImpl implements AsrClient {
                 .startTime(response.getStartTime())
                 .endTime(response.getEndTime())
                 .result(response.getResult())
+                .completed(response.getCompleted())
                 .build();
     }
 }
