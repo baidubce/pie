@@ -2,6 +2,22 @@
 
 package com.baidu.acu.pie.grpc;
 
+import com.baidu.acu.pie.AsrServiceGrpc;
+import com.baidu.acu.pie.AsrServiceGrpc.AsrServiceStub;
+import com.baidu.acu.pie.AudioStreaming;
+import com.baidu.acu.pie.AudioStreaming.AudioFragmentRequest;
+import com.baidu.acu.pie.AudioStreaming.AudioFragmentResponse;
+import com.baidu.acu.pie.client.AsrClient;
+import com.baidu.acu.pie.model.AsrConfig;
+import com.baidu.acu.pie.model.RecognitionResult;
+import com.google.protobuf.ByteString;
+import io.grpc.ManagedChannel;
+import io.grpc.ManagedChannelBuilder;
+import io.grpc.Metadata;
+import io.grpc.stub.MetadataUtils;
+import io.grpc.stub.StreamObserver;
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -12,23 +28,6 @@ import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
-
-import com.baidu.acu.pie.AsrServiceGrpc;
-import com.baidu.acu.pie.AsrServiceGrpc.AsrServiceStub;
-import com.baidu.acu.pie.AudioStreaming;
-import com.baidu.acu.pie.AudioStreaming.AudioFragmentRequest;
-import com.baidu.acu.pie.AudioStreaming.AudioFragmentResponse;
-import com.baidu.acu.pie.client.AsrClient;
-import com.baidu.acu.pie.model.AsrConfig;
-import com.baidu.acu.pie.model.RecognitionResult;
-import com.google.protobuf.ByteString;
-
-import io.grpc.ManagedChannel;
-import io.grpc.ManagedChannelBuilder;
-import io.grpc.Metadata;
-import io.grpc.stub.MetadataUtils;
-import io.grpc.stub.StreamObserver;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * AsrClientGrpcImpl
@@ -128,24 +127,9 @@ public class AsrClientGrpcImpl implements AsrClient {
         StreamObserver<AudioFragmentRequest> requestStreamObserver = asyncStub.send(
                 new StreamObserver<AudioFragmentResponse>() {
                     @Override
-                    public void onNext(AudioFragmentResponse value) {
-                        //                        System.out.println(String.format(AsrConfig.TITLE_FORMAT_WITH_TIME,
-                        //                                Instant.now().toString(),
-                        //                                value.getCompleted(),
-                        //                                value.getErrorCode(),
-                        //                                value.getErrorMessage(),
-                        //                                value.getStartTime(),
-                        //                                value.getEndTime(),
-                        //                                value.getResult()));
-                        if (value.getCompleted()) {
-                            results.add(RecognitionResult.builder()
-                                    .serialNum(value.getSerialNum())
-                                    .errorCode(value.getErrorCode())
-                                    .errorMessage(value.getErrorMessage())
-                                    .startTime(value.getStartTime())
-                                    .endTime(value.getEndTime())
-                                    .result(value.getResult())
-                                    .build());
+                    public void onNext(AudioFragmentResponse response) {
+                        if (response.getCompleted()) {
+                            results.add(fromAudioFragmentResponse(response));
                         }
                     }
 
@@ -173,5 +157,16 @@ public class AsrClientGrpcImpl implements AsrClient {
         }
 
         return finishLatch;
+    }
+
+    private RecognitionResult fromAudioFragmentResponse(AudioFragmentResponse response) {
+        return RecognitionResult.builder()
+                .serialNum(response.getSerialNum())
+                .errorCode(response.getErrorCode())
+                .errorMessage(response.getErrorMessage())
+                .startTime(response.getStartTime())
+                .endTime(response.getEndTime())
+                .result(response.getResult())
+                .build();
     }
 }
