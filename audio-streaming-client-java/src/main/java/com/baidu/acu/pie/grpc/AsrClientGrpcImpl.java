@@ -2,22 +2,6 @@
 
 package com.baidu.acu.pie.grpc;
 
-import com.baidu.acu.pie.AsrServiceGrpc;
-import com.baidu.acu.pie.AsrServiceGrpc.AsrServiceStub;
-import com.baidu.acu.pie.AudioStreaming;
-import com.baidu.acu.pie.AudioStreaming.AudioFragmentRequest;
-import com.baidu.acu.pie.AudioStreaming.AudioFragmentResponse;
-import com.baidu.acu.pie.client.AsrClient;
-import com.baidu.acu.pie.model.AsrConfig;
-import com.baidu.acu.pie.model.RecognitionResult;
-import com.google.protobuf.ByteString;
-import io.grpc.ManagedChannel;
-import io.grpc.ManagedChannelBuilder;
-import io.grpc.Metadata;
-import io.grpc.stub.MetadataUtils;
-import io.grpc.stub.StreamObserver;
-import lombok.extern.slf4j.Slf4j;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -28,6 +12,23 @@ import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
+
+import com.baidu.acu.pie.AsrServiceGrpc;
+import com.baidu.acu.pie.AsrServiceGrpc.AsrServiceStub;
+import com.baidu.acu.pie.AudioStreaming;
+import com.baidu.acu.pie.AudioStreaming.AudioFragmentRequest;
+import com.baidu.acu.pie.AudioStreaming.AudioFragmentResponse;
+import com.baidu.acu.pie.client.AsrClient;
+import com.baidu.acu.pie.model.AsrConfig;
+import com.baidu.acu.pie.model.RecognitionResult;
+import com.google.protobuf.ByteString;
+
+import io.grpc.ManagedChannel;
+import io.grpc.ManagedChannelBuilder;
+import io.grpc.Metadata;
+import io.grpc.stub.MetadataUtils;
+import io.grpc.stub.StreamObserver;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * AsrClientGrpcImpl
@@ -97,9 +98,11 @@ public class AsrClientGrpcImpl implements AsrClient {
     }
 
     @Override
-    public void asyncRecognize(InputStream audioStream, Consumer<RecognitionResult> resultConsumer) {
+    public CountDownLatch asyncRecognize(InputStream audioStream, Consumer<RecognitionResult> resultConsumer) {
         // TODO @cynricshu
         log.info("start to async recognition");
+
+        final CountDownLatch finishLatch = new CountDownLatch(1);
 
         StreamObserver<AudioFragmentRequest> requestStreamObserver = asyncStub.send(
                 new StreamObserver<AudioFragmentResponse>() {
@@ -111,11 +114,13 @@ public class AsrClientGrpcImpl implements AsrClient {
                     @Override
                     public void onError(Throwable t) {
                         log.error("receive response error: {}", t);
+                        finishLatch.countDown();
                     }
 
                     @Override
                     public void onCompleted() {
                         log.info("StreamObserver completed");
+                        finishLatch.countDown();
                     }
                 });
 
@@ -137,6 +142,7 @@ public class AsrClientGrpcImpl implements AsrClient {
         }
 
         log.info("no more data from input stream for 3 times, finsh recognition");
+        return finishLatch;
     }
 
     private List<AudioFragmentRequest> prepareRequests(Path audioFilePath) {
