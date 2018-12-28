@@ -8,85 +8,102 @@
 #include <grpcpp/impl/codegen/sync_stream.h>
 #include "base64.h"
 
-DEFINE_string(app_name, "my_sdk", "SKD's name");
-DEFINE_bool(enable_flush_data, true, "enable flush data");
-DEFINE_bool(enable_long_speech, true, "enable long speech");
-DEFINE_bool(enable_chunk, true, "enable chunk");
-DEFINE_uint32(log_level, 5, "log level");
-DEFINE_double(send_per_second, 0.16, "send per second");
-DEFINE_double(sleep_ratio, 1, "sleep ratio");
-DEFINE_string(product_id, "1903", "product id");
-DEFINE_int32(timeout, 100, "timeout");
+DEFINE_string(default_app_name, "my_sdk", "SKD's name");
+DEFINE_bool(default_enable_long_speech, true, "enable long speech");
+DEFINE_bool(default_enable_chunk, true, "enable chunk");
+DEFINE_uint32(default_log_level, 5, "log level");
+DEFINE_double(default_send_per_second, 0.16, "send per second");
+DEFINE_double(default_sleep_ratio, 1, "sleep ratio");
+DEFINE_int32(default_timeout, 100, "timeout");
 
 namespace com {
 namespace baidu {
 namespace acu {
 namespace pie {
 
-using grpc::Server;
-using grpc::ServerBuilder;
-using grpc::ServerContext;
-using grpc::ServerReader;
-using grpc::ServerReaderWriter;
-using grpc::ServerWriter;
-using grpc::Status;
-using std::chrono::system_clock;
-
-namespace {
-
-void default_callback(const AudioFragmentResponse& resp, void*) {
-	std::stringstream ss;
-	ss << "Receive completed" << resp.completed()
-	   << ", start=" << resp.start_time()
-	   << ", end=" << resp.end_time()
-	   << ", content=" << resp.result();
-	std::cout << ss.str() << std::endl;
+AsrClient::AsrClient()
+	: _set_enable_flush_data(false)
+	, _set_product_id(false)
+	, _inited(false) {
+    _init_request.set_app_name(FLAGS_default_app_name);
+    _init_request.set_enable_long_speech(FLAGS_default_enable_long_speech);
+    _init_request.set_enable_chunk(FLAGS_default_enable_chunk);
+    _init_request.set_log_level(FLAGS_default_log_level);
+    _init_request.set_send_per_seconds(FLAGS_default_send_per_second);
+    _init_request.set_sleep_ratio(FLAGS_default_sleep_ratio);
 }
 
-} // anynmous namespace
+void AsrClient::set_app_name(const std::string& app_name) {
+	_init_request.set_app_name(app_name);
+}
+
+void AsrClient::set_enable_flush_data(bool enable_flush_data) {
+	_init_request.set_enable_flush_data(enable_flush_data);
+	_set_enable_flush_data = true;
+}
+
+void AsrClient::set_enable_long_speech(bool enable_long_speech){
+	_init_request.set_enable_long_speech(enable_long_speech);
+}
+
+void AsrClient::set_enable_chunk(bool enable_chunk) {
+	_init_request.set_enable_chunk(enable_chunk);
+}
+
+void AsrClient::set_log_level(int log_level) {
+	_init_request.set_log_level(log_level);
+}
+
+void AsrClient::set_send_per_seconds(double send_per_seconds) {
+	_init_request.set_send_per_seconds(send_per_seconds);
+}
+
+void AsrClient::set_sleep_ratio(double sleep_ratio) {
+	_init_request.set_sleep_ratio(sleep_ratio);
+}
+
+void AsrClient::set_product_id(const std::string& product_id) {
+	_init_request.set_product_id(product_id);
+	_set_product_id = true;
+}
 
 int AsrClient::init(const std::string& address) {
-    InitRequest init_request;
-    init_request.set_app_name(FLAGS_app_name);
-    init_request.set_enable_flush_data(FLAGS_enable_flush_data);
-    init_request.set_enable_long_speech(FLAGS_enable_long_speech);
-    init_request.set_enable_chunk(FLAGS_enable_chunk);
-    init_request.set_log_level(FLAGS_log_level);
-    init_request.set_send_per_seconds(FLAGS_send_per_second);
-    init_request.set_sleep_ratio(FLAGS_sleep_ratio);
-    init_request.set_product_id(FLAGS_product_id);
+	if (!_set_product_id || !_set_enable_flush_data) {
+		std::cerr << "Missing required field `product_id` or `enable_fush_data`" << std::endl;
+		return -1;
+	}
+    _context.set_deadline(std::chrono::system_clock::now() + std::chrono::seconds(FLAGS_default_timeout));
+    _context.AddMetadata("audio_meta", base64_encode(_init_request.SerializeAsString()));
 
-    _stub = AsrService::NewStub(grpc::CreateChannel(address, grpc::InsecureChannelCredentials()));
-    if (!_stub) {
-        std::cerr << "Fail to init stub for AsrService, server_address=" << address << std::endl;
-        return -1;
-    }
-
-    _context.set_deadline(std::chrono::system_clock::now() + std::chrono::seconds(FLAGS_timeout));
-    _context.AddMetadata("audio_meta", base64_encode(init_request.SerializeAsString()));
-
-    _callback_fun = default_callback;
+	_channel = grpc::CreateChannel(address, grpc::InsecureChannelCredentials());
+	_inited = true;
     return 0;
 }
 
-void AsrClient::set_response_callback(AsrClientCallBack callback_fun) {
-    _callback_fun = callback_fun;
-}
-
-int AsrClient::send_audio(const std::string &audio_file) {
+int AsrClient::send_audio(const std::string &audio_file, AsrClientCallBack callback_fun) {
+	if (!_inited) {
+		std::cerr << "Client hasn't been inited yet" << std::endl;
+		return -1;
+	}
+    std::unique_ptr<AsrService::Stub> stub = AsrService::NewStub(_channel);
+    if (!stub) {
+        std::cerr << "Fail to init stub for AsrService" << std::endl;
+        return -1;
+    }
     std::shared_ptr<grpc::ClientReaderWriter<AudioFragmentRequest, AudioFragmentResponse> > stream
-            = _stub->send(&_context);
+            = stub->send(&_context);
     if (!stream) {
         std::cerr << "Fail to init stub for AsrService" << std::endl;
         return -1;
     }
-    std::thread writer([stream, audio_file]() {
-        FILE* fp = fopen(audio_file.c_str(), "rb");
-        if (!fp) {
-            std::cerr << "Failed to open file=" << audio_file << std::endl;
-        } else {
-            std::cout << "Open file=" << audio_file << std::endl;
-        }
+	FILE* fp = fopen(audio_file.c_str(), "rb");
+	if (!fp) {
+		std::cerr << "Failed to open file=" << audio_file << std::endl;
+		return -1;
+	}
+	std::cout << "Open file=" << audio_file << std::endl;
+
+    std::thread writer([stream, fp]() {
         int size = 2560;
         char buffer[size];
         while (!std::feof(fp)) {
@@ -105,15 +122,15 @@ int AsrClient::send_audio(const std::string &audio_file) {
     AudioFragmentResponse resp;
     while (stream->Read(&resp)) {
         // You can send custom data container to callback fun.
-        _callback_fun(resp, nullptr);
+        callback_fun(resp, nullptr);
     }
     writer.join();
-    Status status = stream->Finish();
+	grpc::Status status = stream->Finish();
     if (!status.ok()) {
         std::cerr << "Fail to streaming with asr streaming server" << std::endl;
-    } else {
-        std::cout << "Finished streaming with asr streaming server" << std::endl;
+		return -1;
     }
+    std::cout << "Finished streaming with asr streaming server" << std::endl;
     return 0;
 }
 
