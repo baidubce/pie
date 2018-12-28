@@ -2,14 +2,6 @@
 
 package com.baidu.acu.pie;
 
-import com.baidu.acu.pie.client.AsrClient;
-import com.baidu.acu.pie.client.AsrClientFactory;
-import com.baidu.acu.pie.model.AsrConfig;
-import com.baidu.acu.pie.model.AsrProduct;
-import com.baidu.acu.pie.model.RecognitionResult;
-import org.junit.Ignore;
-import org.junit.Test;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -17,6 +9,15 @@ import java.nio.file.Paths;
 import java.time.Instant;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
+
+import org.junit.Ignore;
+import org.junit.Test;
+
+import com.baidu.acu.pie.client.AsrClient;
+import com.baidu.acu.pie.client.AsrClientFactory;
+import com.baidu.acu.pie.model.AsrConfig;
+import com.baidu.acu.pie.model.AsrProduct;
+import com.baidu.acu.pie.model.RecognitionResult;
 
 /**
  * JavaDemo
@@ -67,17 +68,22 @@ public class JavaDemo {
     @Test
     public void testAsyncRecognition() {
         // 使用长音频来模拟不断输入的情况
-        String longAudioFilePath = "testaudio/onehour.wav";
+        String longAudioFilePath = "testaudio/1.wav";
         AsrClient asrClient = createAsrClient();
 
         try (InputStream inputStream = Files.newInputStream(Paths.get(longAudioFilePath))) {
-            asrClient.asyncRecognize(inputStream, recognitionResult -> {
+            CountDownLatch finishLatch = asrClient.asyncRecognize(inputStream, recognitionResult -> {
                 System.out.println(recognitionResult);
             });
-        } catch (IOException e) {
+
+            finishLatch.await();
+        } catch (IOException | InterruptedException e) {
             e.printStackTrace();
+        } finally {
+            asrClient.shutdown();
         }
 
+        System.out.println("all task finished");
     }
 
     @Test

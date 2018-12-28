@@ -5,6 +5,7 @@ package com.baidu.acu.pie.client;
 import java.io.InputStream;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 import java.util.function.Consumer;
 
 import com.baidu.acu.pie.model.RecognitionResult;
@@ -29,8 +30,9 @@ public interface AsrClient {
      *
      * @param audioStream
      * @param resultConsumer
+     * @return CountDownLatch，来自jdk1.5标准库，具体用法请参见 java doc
      */
-    void asyncRecognize(InputStream audioStream, Consumer<RecognitionResult> resultConsumer);
+    CountDownLatch asyncRecognize(InputStream audioStream, Consumer<RecognitionResult> resultConsumer);
 
     void shutdown();
 }
