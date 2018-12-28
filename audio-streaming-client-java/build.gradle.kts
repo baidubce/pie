@@ -15,7 +15,7 @@ val kotlinVersion by extra("1.3.10")
 val grpcVersion by extra("1.16.1")
 
 group = "com.baidu.acu.pie"
-version = "0.8.2"
+version = "0.8.3"
 
 repositories {
     mavenLocal()
