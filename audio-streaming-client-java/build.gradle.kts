@@ -26,10 +26,10 @@ repositories {
 dependencies {
     annotationProcessor("org.projectlombok:lombok:1.18.4")
     implementation("org.projectlombok:lombok:1.18.4")
-    compile("io.grpc:grpc-netty:$grpcVersion")
-    compile("io.grpc:grpc-protobuf:$grpcVersion")
-    compile("io.grpc:grpc-stub:$grpcVersion")
-    compile("com.google.protobuf:protobuf-java:3.6.1")
+    implementation("io.grpc:grpc-netty:$grpcVersion")
+    implementation("io.grpc:grpc-protobuf:$grpcVersion")
+    implementation("io.grpc:grpc-stub:$grpcVersion")
+    implementation("com.google.protobuf:protobuf-java:3.6.1")
     implementation("org.slf4j:slf4j-api:1.7.25")
 
     testImplementation("org.slf4j:slf4j-simple:1.7.25")
