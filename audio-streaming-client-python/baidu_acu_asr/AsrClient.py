@@ -13,13 +13,15 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(filename)s[line:
 
 
 class AsrClient(object):
+    """ version modify log,
+    from version 1.0.7: change init method, move product_id and enable_flush_data to be must params;
+    """
+
     request = audio_streaming_pb2.InitRequest()
 
-    def __init__(self, server_ip, port,
+    def __init__(self, server_ip, port, product_id, enable_flush_data,
                  enable_chunk=True,
                  enable_long_speech=True,
-                 enable_flush_data=True,
-                 product_id='1903',
                  sample_point_bytes=2,
                  send_per_seconds=0.16,
                  sleep_ratio=1,
