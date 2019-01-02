@@ -52,7 +52,9 @@ def run_stream():
 
         
 if __name__ == '__main__':
-    client = AsrClient("180.76.107.131", "8053", enable_flush_data=True)
+    product_id = "1903"
+    enable_flush_data = False
+    client = AsrClient("180.76.107.131", "8050", product_id, enable_flush_data)
     run_stream()
 ``` 
 读取mac上麦克风的音频流数据
@@ -85,6 +87,8 @@ def run_stream():
 
 
 if __name__ == '__main__':
-    client = AsrClient("180.76.107.131", "8052", enable_flush_data=True)
+    product_id = "1903"
+    enable_flush_data = False
+    client = AsrClient("180.76.107.131", "8050", product_id, enable_flush_data)
     run_stream()
 ```
