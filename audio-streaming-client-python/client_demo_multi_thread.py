@@ -12,7 +12,9 @@ class demo:
         i = 0
         # ip和端口可根据需要修改，sdk接口文档见http://agroup.baidu.com/abc_voice/md/article/1425870
         # client = AsrClient("10.136.172.23", "8051", enable_flush_data=False, log_level=6)
-        client = AsrClient("172.18.53.16", "8050",enable_flush_data = False, log_level=4)
+        product_id = "1903"
+        enable_flush_data = False
+        client = AsrClient("172.18.53.16", "8050", product_id, enable_flush_data)
         name = threading.currentThread().getName()
         while i < repeat_num:
             i += 1
