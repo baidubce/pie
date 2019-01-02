@@ -1,4 +1,4 @@
-// Copyright (C) 2018 Baidu Inc. All rights reserved.
+// Copyright (C) 2019 Baidu Inc. All rights reserved.
 
 package com.baidu.acu.pie;
 
@@ -13,19 +13,22 @@ import java.util.concurrent.CountDownLatch;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.baidu.acu.pie.AudioStreaming.AudioFragmentRequest;
 import com.baidu.acu.pie.client.AsrClient;
 import com.baidu.acu.pie.client.AsrClientFactory;
 import com.baidu.acu.pie.model.AsrConfig;
 import com.baidu.acu.pie.model.AsrProduct;
 import com.baidu.acu.pie.model.RecognitionResult;
+import com.google.protobuf.ByteString;
+
+import io.grpc.stub.StreamObserver;
 
 /**
- * JavaDemo
+ * JavaTest
  *
  * @author Shu Lingjie(shulingjie@baidu.com)
  */
-@Ignore
-public class JavaDemo {
+public class JavaTest {
     private AsrClient createAsrClient() {
         // asrConfig构造后就不可修改
         AsrConfig asrConfig = new AsrConfig()
@@ -37,57 +40,37 @@ public class JavaDemo {
         return AsrClientFactory.buildClient(asrConfig);
     }
 
-    @Test
-    public void testSendFile() {
-        String audioFilePath = "testaudio/bj8k.wav";
-        AsrClient asrClient = createAsrClient();
-        List<RecognitionResult> results = asrClient.syncRecognize(Paths.get(audioFilePath));
-
-        // don't forget to shutdown !!!
-        asrClient.shutdown();
-
-        for (RecognitionResult result : results) {
-            System.out.println(String.format(AsrConfig.TITLE_FORMAT,
-                    "serial_num",
-                    "err_no",
-                    "err_message",
-                    "start_time",
-                    "end_time",
-                    "result"));
-            System.out.println(String.format(AsrConfig.TITLE_FORMAT,
-                    result.getSerialNum(),
-                    result.getErrorCode(),
-                    result.getErrorMessage(),
-                    result.getStartTime(),
-                    result.getEndTime(),
-                    result.getResult()
-            ));
-        }
-    }
-
+    @Ignore
     @Test
     public void testAsyncRecognition() {
         // 使用长音频来模拟不断输入的情况
         String longAudioFilePath = "testaudio/1.wav";
         AsrClient asrClient = createAsrClient();
 
-        try (InputStream inputStream = Files.newInputStream(Paths.get(longAudioFilePath))) {
-            CountDownLatch finishLatch = asrClient.asyncRecognize(inputStream, recognitionResult -> {
-                System.out.println(recognitionResult);
-            });
+        try (InputStream audioStream = Files.newInputStream(Paths.get(longAudioFilePath))) {
+            byte[] data = new byte[asrClient.getFragmentSize()];
+            int readSize;
 
-            finishLatch.await();
-        } catch (IOException | InterruptedException e) {
+            StreamObserver<AudioFragmentRequest> sender = asrClient.asyncRecognize(it -> {
+                System.out.println(it);
+            }, new CountDownLatch(1));
+
+            while ((readSize = audioStream.read(data)) != -1) {
+                sender.onNext(AudioFragmentRequest.newBuilder()
+                        .setAudioData(ByteString.copyFrom(data, 0, readSize))
+                        .build());
+            }
+        } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            asrClient.shutdown();
         }
+
+        asrClient.shutdown();
 
         System.out.println("all task finished");
     }
 
-    @Test
     @Ignore
+    @Test
     public void testSendFileMultiThread() {
         String audioFilePath = "testaudio/bj8k.wav";
         AsrClient asrClient = createAsrClient();
