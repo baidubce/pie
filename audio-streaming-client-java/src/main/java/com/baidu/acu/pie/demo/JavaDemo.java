@@ -34,8 +34,8 @@ public class JavaDemo {
     private AsrClient createAsrClient() {
         // asrConfig构造后就不可修改
         AsrConfig asrConfig = new AsrConfig()
-                .serverIp("180.76.107.131")
-                .serverPort(8050)
+                .serverIp("127.0.0.1")
+                .serverPort(80)
                 .appName("simple demo")
                 .product(AsrProduct.CUSTOMER_SERVICE);
 
