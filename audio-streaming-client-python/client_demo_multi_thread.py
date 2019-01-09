@@ -10,10 +10,10 @@ class demo:
 
     def run(self, repeat_num=1):
         i = 0
-        # ip和端口可根据需要修改，sdk接口文档见http://agroup.baidu.com/abc_voice/md/article/1425870
+        # ip和端口可根据需要修改
         # client = AsrClient("10.136.172.23", "8051", enable_flush_data=False, log_level=6)
-        url = "180.76.107.131"
-        port = "805"
+        url = "172.18.53.16"
+        port = "8053"
         product_id = "1906"
         enable_flush_data = True
         log_level = 0
