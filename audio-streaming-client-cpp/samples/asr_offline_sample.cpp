@@ -21,7 +21,7 @@ void default_callback(const com::baidu::acu::pie::AudioFragmentResponse& resp, v
 int main(int argc, char* argv[]) {
 	// Parse gflags
 	google::ParseCommandLineFlags(&argc, &argv, true);
-        std::string audio_file = "../data/10s.wav";
+        std::string audio_file = "../../data/10s.wav";
         if (argc > 1) {
             audio_file = argv[1];
         }
@@ -55,6 +55,7 @@ int main(int argc, char* argv[]) {
                     std::cout << "[debug] count < 0 !!!!!!!!" << std::endl;
 	    	break;
 	        }
+		usleep(150*1000);
             }
 	    std::cout << "[debug] write stream " << std::endl;
             client.write_stream(nullptr, 0, true);

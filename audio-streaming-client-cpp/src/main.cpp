@@ -19,7 +19,7 @@ void default_callback(const com::baidu::acu::pie::AudioFragmentResponse& resp, v
 int main(int argc, char* argv[]) {
 	// Parse gflags
 	google::ParseCommandLineFlags(&argc, &argv, true);
-        std::string filepath = "data/10s.wav";
+        std::string filepath = "../../data/10s.wav";
         if (argc > 1) {
             filepath = argv[1];
         }
