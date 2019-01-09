@@ -78,6 +78,11 @@ public class AsrClientGrpcImpl implements AsrClient {
     }
 
     @Override
+    public int getFragmentSize() {
+        return this.asrConfig.getProduct().getFragmentSize();
+    }
+
+    @Override
     public List<RecognitionResult> syncRecognize(Path audioFilePath) {
         log.info("start to recognition, file: {}", audioFilePath.toString());
 
@@ -98,12 +103,8 @@ public class AsrClientGrpcImpl implements AsrClient {
     }
 
     @Override
-    public CountDownLatch asyncRecognize(InputStream audioStream, Consumer<RecognitionResult> resultConsumer) {
-        // TODO @cynricshu
-        log.info("start to async recognition");
-
-        final CountDownLatch finishLatch = new CountDownLatch(1);
-
+    public StreamObserver<AudioFragmentRequest> asyncRecognize(Consumer<RecognitionResult> resultConsumer,
+            CountDownLatch finishLatch) {
         StreamObserver<AudioFragmentRequest> requestStreamObserver = asyncStub.send(
                 new StreamObserver<AudioFragmentResponse>() {
                     @Override
@@ -124,25 +125,7 @@ public class AsrClientGrpcImpl implements AsrClient {
                     }
                 });
 
-        byte[] data = new byte[this.asrConfig.getProduct().getFragmentSize()];
-        int readSize;
-
-        while (true) {
-            try {
-                if ((readSize = audioStream.read(data)) != -1) {
-                    requestStreamObserver.onNext(AudioFragmentRequest.newBuilder()
-                            .setAudioData(ByteString.copyFrom(data, 0, readSize))
-                            .build());
-                } else {
-                    break;
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        log.info("no more data from input stream for 3 times, finsh recognition");
-        return finishLatch;
+        return requestStreamObserver;
     }
 
     private List<AudioFragmentRequest> prepareRequests(Path audioFilePath) {
