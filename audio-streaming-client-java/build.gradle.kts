@@ -17,6 +17,11 @@ val grpcVersion by extra("1.16.1")
 group = "com.baidu.acu.pie"
 version = "0.8.6-SNAPSHOT"
 
+tasks.withType<JavaCompile> {
+    sourceCompatibility = "1.8"
+    targetCompatibility = "1.8"
+}
+
 repositories {
     mavenLocal()
     jcenter()
