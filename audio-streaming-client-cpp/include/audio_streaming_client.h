@@ -24,16 +24,22 @@ public:
 	void set_send_per_seconds(double send_per_seconds);
 	void set_sleep_ratio(double sleep_raio);
 	void set_product_id(const std::string& product_id);
-    int init(const std::string& address);
-    int send_audio(const std::string& audio_file, AsrClientCallBack callback);
-
+        int init(const std::string& address);
+        int send_audio(const std::string& audio_file, AsrClientCallBack callback, void* data);
+        int write_stream(const void* buffer, size_t size, bool last_stream);
+	int read_stream(AsrClientCallBack callback, void* data);
+	int create_stream();
+	int finish_stream();
 private:
-    grpc::ClientContext _context;
+        grpc::ClientContext _context;
 	std::shared_ptr<grpc::Channel> _channel;
+	std::unique_ptr<AsrService::Stub> _stub;
+	std::shared_ptr<grpc::ClientReaderWriter<AudioFragmentRequest, AudioFragmentResponse> > _stream;
 	InitRequest _init_request;
 	bool _set_enable_flush_data;
 	bool _set_product_id;
 	bool _inited;
+	bool _created_stream;
 };
 
 } // namespace pie

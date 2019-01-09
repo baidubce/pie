@@ -3,40 +3,27 @@ SYSTEM ?= $(HOST_SYSTEM)
 CXX = g++
 CPPFLAGS += `pkg-config --cflags protobuf grpc`
 CXXFLAGS += -std=c++11
-INC = -I. -I./include
+INC = -I.. -I../include
 ifeq ($(SYSTEM),Darwin)
-LDFLAGS += -L/usr/local/lib -pthread -lprotobuf -lgrpc++ \
+LDFLAGS += -L.. -pthread -lprotobuf -lgrpc++ \
            -lgrpc++_reflection\
-           -ldl -lgflags
+           -ldl -lgflags -laudio_streaming_client
 else
-LDFLAGS += -L/usr/local/lib -pthread -lprotobuf -lgrpc++ \
+LDFLAGS += -L../lib -pthread -lprotobuf -lgrpc++ \
            -Wl,--no-as-needed -lgrpc++_reflection -Wl,--as-needed\
-           -ldl -lgflags
+           -ldl  -laudio_streaming_client -Wl,-rpath=../lib
 endif
 PROTOC = protoc
 GRPC_CPP_PLUGIN = grpc_cpp_plugin
 GRPC_CPP_PLUGIN_PATH ?= `which $(GRPC_CPP_PLUGIN)`
 
-PROTOS_PATH = ./proto
+all: system-check sample_client
 
-vpath %.proto $(PROTOS_PATH)
-
-all: system-check libaudio_streaming_client.so audio_streaming_client
-
-audio_streaming_client: audio_streaming.pb.cc audio_streaming.grpc.pb.cc src/*
-	$(CXX) $^ $(CXXFLAGS) $(LDFLAGS) $(INC) -o ./bin/$@
-
-libaudio_streaming_client.so: audio_streaming.pb.cc audio_streaming.grpc.pb.cc src/audio_streaming_client.cpp
-	$(CXX) $^ $(CXXFLAGS) $(LDFLAGS) $(INC) -shared -fPIC -o ./lib/$@
-
-%.grpc.pb.cc: %.proto
-	$(PROTOC) -I $(PROTOS_PATH) --grpc_out=. --plugin=protoc-gen-grpc=$(GRPC_CPP_PLUGIN_PATH) $<
-
-%.pb.cc: %.proto
-	$(PROTOC) -I $(PROTOS_PATH) --cpp_out=. $<
+sample_client: asr_offline_sample.cpp
+	$(CXX) $^ $(CXXFLAGS) $(LDFLAGS) $(INC) -o $@
 
 clean:
-	rm -f *.o *.pb.cc *.pb.h bin/* lib/*
+	rm -f *.o sample_client
 
 
 # The following is to test your system and ensure a smoother experience.
@@ -91,3 +78,4 @@ endif
 ifneq ($(SYSTEM_OK),true)
 	@false
 endif
+
