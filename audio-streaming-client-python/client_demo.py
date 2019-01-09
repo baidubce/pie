@@ -2,6 +2,8 @@
 import threading
 from baidu_acu_asr.AsrClient import AsrClient
 import os
+import time
+import logging
 from pyaudio import PyAudio, paInt16
 
 
@@ -30,30 +32,40 @@ def generate_file_stream():
 
 
 def run():
-    response = client.get_result("/Users/xiashuai01/Downloads/20181126_213030250_0003450587_19.in.wav")
-    # response = client.get_result("/Users/xiashuai01/Downloads/20181126_213030250_0003450587_19.in.wav")
-    for res in response:
-        print("start_time\tend_time\tresult")
-        print(res.start_time + "\t" + res.end_time + "\t" + res.result)
+    while True:
+        client = AsrClient(url, port, product_id, enable_flush_data, log_level=log_level)
+        responses = client.get_result("/Users/xiashuai01/Downloads/left.wav")
+
+        try:
+            for response in responses:
+                logging.info("%s\t%s\t%s\t%s", response.start_time, response.end_time, response.result, response.serial_num)
+            break
+        except:
+            # 如果出现异常，此处需要重试当前音频
+            logging.error("connect to server error, will create a new channel and retry audio!")
+            time.sleep(0.5)
 
 
 def run_stream():
-    # responses = client.get_result_by_stream(generate_file_stream())
+    client = AsrClient(url, port, product_id, enable_flush_data, log_level=log_level)
     responses = client.get_result_by_stream(record_micro())
     for response in responses:
         # for res in responses:
-        print("start_time\tend_time\tresult")
-        print(response.start_time + "\t" + response.end_time + "\t" + response.result + "\t" + response.serial_num)
+        logging.info("%s\t%s\t%s\t%s", response.start_time, response.end_time, response.result, response.serial_num)
 
 
 if __name__ == '__main__':
+    logging.basicConfig(filename="asr_result.log")
+    url = "172.18.53.16"
+    port = "8050"
+    log_level = 0
     product_id = "1903"
     enable_flush_data = False
-    client = AsrClient("180.76.107.131", "8050", product_id, enable_flush_data)
+
     # 传送文件
-    # run()
+    run()
     # 传送流
-    run_stream()
+    # run_stream()
     # 多线程运行
     # for i in range(100):
     #     print(i)
