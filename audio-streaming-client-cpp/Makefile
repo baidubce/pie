@@ -21,10 +21,7 @@ PROTOS_PATH = ./proto
 
 vpath %.proto $(PROTOS_PATH)
 
-all: system-check libaudio_streaming_client.so audio_streaming_client
-
-audio_streaming_client: audio_streaming.pb.cc audio_streaming.grpc.pb.cc src/*
-	$(CXX) $^ $(CXXFLAGS) $(LDFLAGS) $(INC) -o ./bin/$@
+all: system-check libaudio_streaming_client.so
 
 libaudio_streaming_client.so: audio_streaming.pb.cc audio_streaming.grpc.pb.cc src/audio_streaming_client.cpp
 	$(CXX) $^ $(CXXFLAGS) $(LDFLAGS) $(INC) -shared -fPIC -o ./lib/$@
@@ -36,7 +33,7 @@ libaudio_streaming_client.so: audio_streaming.pb.cc audio_streaming.grpc.pb.cc s
 	$(PROTOC) -I $(PROTOS_PATH) --cpp_out=. $<
 
 clean:
-	rm -f *.o *.pb.cc *.pb.h bin/* lib/*
+	rm -f *.o *.pb.cc *.pb.h lib/*
 
 
 # The following is to test your system and ensure a smoother experience.
