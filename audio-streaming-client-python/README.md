@@ -5,7 +5,6 @@
 # -*-coding:utf-8-*-
 from baidu_acu_asr.AsrClient import AsrClient
 import threading
-# ip和端口可根据需要修改，sdk接口文档见http://agroup.baidu.com/abc_voice/md/article/1425870
 
 
 def run():
@@ -16,6 +15,7 @@ def run():
 
 
 if __name__ == '__main__':
+    # ip和端口可根据需要修改
     client = AsrClient("172.18.53.17", "31051", enable_flush_data=False)
     run()
     # 多线程运行
@@ -54,6 +54,7 @@ def run_stream():
 if __name__ == '__main__':
     product_id = "1903"
     enable_flush_data = False
+    # ip和端口可根据需要修改
     client = AsrClient("180.76.107.131", "8050", product_id, enable_flush_data)
     run_stream()
 ``` 
@@ -89,6 +90,36 @@ def run_stream():
 if __name__ == '__main__':
     product_id = "1903"
     enable_flush_data = False
+    # ip和端口可根据需要修改
     client = AsrClient("180.76.107.131", "8050", product_id, enable_flush_data)
     run_stream()
 ```
+
+### 参数说明
+
+`client = AsrClient("172.18.53.17", "31051", enable_flush_data=False)`初始化时可选传入的参数列表如下：
+
+|参数| 类型 | 默认值 | 描述 |
+|---|---|---|---|
+| enable_chunk | bool | True | 是否允许chunk | 
+| enable_long_speech | bool | True | 是否允许长语音 | 
+| enable_flush_data | bool | True | 是否连续输出，False表示一次只输出一段识别的结果 | 
+| product_id | string | 1903 | 对应解码器的模型 |
+| sample_point_bytes | int | 2 | 采样点字节数，可根据音频的具体参数调整 |
+| send_per_seconds | double | 0.16 | 默认值即可 |
+| sleep_ratio | double  | 1 | 识别睡眠时长间隔 |
+| app_name | String  | python | 可自己设定，log查看用 |
+| log_level | int  | 4 | log级别，0：Trace，1：Debug， 2：Info，3：Warning，4：Error，5：Fatal，6：关闭log |
+
+
+返回数据参数详情：
+
+|参数| 类型  | 描述 |
+|---|---|---|
+| error_code | int | 错误码，0表示请求成功，否则请求失败，具体错误码详情见下 | 
+| error_message | string | 错误详情，请求成功该值为空 |
+| start_time | string | 识别出来的文字对应音频开始时间 |
+| end_time | string | 识别出来的文字对应音频结束时间 |
+| result | string | 识别出来的文字 |
+| completed | bool | 是否一段话结束 |
+| serial_num | string| 请求唯一标识 |
