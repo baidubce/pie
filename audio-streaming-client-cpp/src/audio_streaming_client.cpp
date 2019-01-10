@@ -81,26 +81,31 @@ int AsrClient::init(const std::string& address) {
     return 0;
 }
 
-grpc::ClientContext* AsrClient::get_context_p() {
-    return &_context;
+AsrStream* AsrClient::get_stream() {
+    std::unique_ptr<AsrService::Stub> stub = AsrService::NewStub(_channel);
+    if (!stub) {
+        std::cerr << "Fail to create stub when initialize AsrStream" << std::endl;
+        return NULL;
+    }
+    std::shared_ptr<grpc::ClientReaderWriter<AudioFragmentRequest, AudioFragmentResponse> > stream  = stub->send(&_context);
+    if (!stream) {
+        std::cerr << "Fail to create stream when initialize AsrStream" << std::endl;
+        return NULL;
+    }
+    return new AsrStream(stream);
 }
 
-std::shared_ptr<grpc::Channel> AsrClient::get_channel() {
-    return _channel;
+int AsrClient::destroy_stream(AsrStream* stream) {
+    stream->finish();
+    delete stream;
+    return 0;
 }
 
-AsrStream::AsrStream()
-        : _client(nullptr)
-	, _stub(nullptr)
-        , _stream(nullptr)
-        , _inited(false) {}
+AsrStream::AsrStream(std::shared_ptr<grpc::ClientReaderWriter<AudioFragmentRequest, AudioFragmentResponse> > stream) {
+    _stream = stream;
+}
 
 int AsrStream::write(const void* buffer, size_t size, bool last_stream) {
-    if (!_inited) {
-        std::cerr << "Stream hasn't been initialized yet before write stream" << std::endl;
-        return -1;
-    }
-
     if (size < 0) {
         std::cerr << "size < 0 in  write stream" << std::endl;
         return -1;
@@ -117,10 +122,6 @@ int AsrStream::write(const void* buffer, size_t size, bool last_stream) {
 }
 
 int AsrStream::read(AsrStreamCallBack callback_fun, void* data) {
-    if (!_inited) {
-        std::cerr << "Stream hasn't been initialized yet before read stream" << std::endl;
-        return -1;
-    }
     AudioFragmentResponse response;
     std::cout << "[debug] will run _stream->Read(&response) ... ..." << std::endl;
     if (_stream->Read(&response)) {
@@ -131,30 +132,13 @@ int AsrStream::read(AsrStreamCallBack callback_fun, void* data) {
     return 0;
 }
 
-int AsrStream::init(AsrClient* client_p) {
-    _client = client_p;
-    _stub = AsrService::NewStub(_client->get_channel());
-    if (!_stub) {
-        std::cerr << "Fail to create stub when initialize AsrStream" << std::endl;
-        return -1;
-    }
-    _stream  = _stub->send(_client->get_context_p());
-    if (!_stream) {
-        std::cerr << "Fail to create stream when initialize AsrStream" << std::endl;
-        return -1;
-    }
-    _inited = true;
-    return 0;
-}
-
-int AsrStream::destroy() {
+int AsrStream::finish() {
     grpc::Status status = _stream->Finish();
     if (!status.ok()) {
         std::cerr << "Fail to finish stream when destroy AsrStream" << std::endl;
 		return -1;
     }
     std::cout << "Stream finished." << std::endl;
-    _stream = nullptr;
     return 0;
 }
 

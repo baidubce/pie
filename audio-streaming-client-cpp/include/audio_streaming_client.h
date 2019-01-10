@@ -13,6 +13,8 @@ namespace pie {
 
 typedef void (*AsrStreamCallBack) (const AudioFragmentResponse& resp, void* data);
 
+class AsrStream;
+
 class AsrClient {
 public:
 	AsrClient();
@@ -25,8 +27,8 @@ public:
 	void set_sleep_ratio(double sleep_raio);
 	void set_product_id(const std::string& product_id);
         int init(const std::string& address);
-	grpc::ClientContext* get_context_p();
-	std::shared_ptr<grpc::Channel> get_channel();
+	AsrStream* get_stream();
+	int destroy_stream(AsrStream* stream);
 private:
         grpc::ClientContext _context;
 	std::shared_ptr<grpc::Channel> _channel;
@@ -38,16 +40,13 @@ private:
 
 class AsrStream {
 public:
-        AsrStream();
-	int init(AsrClient* client_p);
-	int destroy();
+	friend class AsrClient;
 	int read(AsrStreamCallBack callback_fun, void* data);
         int write(const void* buffer, size_t size, bool last_stream);
 private:
-        AsrClient* _client;
-        std::unique_ptr<AsrService::Stub> _stub;
-	std::shared_ptr<grpc::ClientReaderWriter<AudioFragmentRequest, AudioFragmentResponse> >_stream;
-	bool _inited;
+        int finish();
+	AsrStream(std::shared_ptr<grpc::ClientReaderWriter<AudioFragmentRequest, AudioFragmentResponse> > stream);
+	std::shared_ptr<grpc::ClientReaderWriter<AudioFragmentRequest, AudioFragmentResponse> >  _stream;
 };
 
 } // namespace pie

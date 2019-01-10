@@ -39,16 +39,15 @@ int main(int argc, char* argv[]) {
 	}
 	std::cout << "Stream : Open file=" << audio_file << std::endl;
        
-        com::baidu::acu::pie::AsrStream stream;
-	stream.init(&client);
-	std::thread writer([&stream, fp](){
+        com::baidu::acu::pie::AsrStream* stream = client.get_stream();
+	std::thread writer([stream, fp](){
 	    int size = 2560;
             char buffer[size];
 	    size_t count=0;
 	    while (!std::feof(fp)) {
                 count = fread(buffer, 1, size, fp);
 	        //std::cout << "[debug] write stream " << std::endl;
-                stream.write(buffer, count, false);
+                stream->write(buffer, count, false);
 	        if (count < 0) {    
                     std::cout << "[warning] count < 0 !!!!!!!!" << std::endl;
 	    	break;
@@ -56,15 +55,15 @@ int main(int argc, char* argv[]) {
 		usleep(150*1000);
             }
 	    //std::cout << "[debug] write stream " << std::endl;
-            stream.write(nullptr, 0, true);
+            stream->write(nullptr, 0, true);
 	    std::cout << "[debug] count of last buffer=" << count << std::endl;
 	});
-	while (stream.read(default_callback, nullptr)) {
+	while (stream->read(default_callback, nullptr)) {
 	    //std::cout << "[debug] read stream" << std::endl;
 	    usleep(150*1000);
 	}
 	writer.join();
-        stream.destroy();
+        client.destroy_stream(stream);
         return 0;
 }
 
