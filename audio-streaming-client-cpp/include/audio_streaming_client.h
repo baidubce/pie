@@ -41,12 +41,16 @@ private:
 class AsrStream {
 public:
 	friend class AsrClient;
+	// Read function is blocking operation. 
 	int read(AsrStreamCallBack callback_fun, void* data);
-        int write(const void* buffer, size_t size, bool last_stream);
+	// You should assign whether the buffer is the last one. It is said to be the last one by default.
+        int write(const void* buffer, size_t size, bool is_last = true);
 private:
         int finish();
 	AsrStream(std::shared_ptr<grpc::ClientReaderWriter<AudioFragmentRequest, AudioFragmentResponse> > stream);
 	std::shared_ptr<grpc::ClientReaderWriter<AudioFragmentRequest, AudioFragmentResponse> >  _stream;
+
+        bool _writesdone;
 };
 
 } // namespace pie

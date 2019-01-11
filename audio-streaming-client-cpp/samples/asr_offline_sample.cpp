@@ -29,7 +29,6 @@ int main(int argc, char* argv[]) {
 	client.set_enable_flush_data(true);
         client.set_product_id("1906");
         client.init("180.76.107.131:8200");
-	//char tmp[10] = "t\0";
 	
 	// Stream test
 	FILE* fp = fopen(audio_file.c_str(), "rb");
@@ -38,30 +37,45 @@ int main(int argc, char* argv[]) {
 		return -1;
 	}
 	std::cout << "Stream : Open file=" << audio_file << std::endl;
-       
+      
+	// do not call stream->write after sending the last buffer 
+	size_t case_num = 1;
         com::baidu::acu::pie::AsrStream* stream = client.get_stream();
-	std::thread writer([stream, fp](){
+	std::thread writer([stream, fp, case_num](){
 	    int size = 2560;
             char buffer[size];
-	    size_t count=0;
-	    while (!std::feof(fp)) {
-                count = fread(buffer, 1, size, fp);
+	    size_t count = 0;
+	    for (size_t i = 0; i < case_num; i++) {
+	        while (!std::feof(fp)) {
+                    count = fread(buffer, 1, size, fp);
+	            //std::cout << "[debug] write stream " << std::endl;
+                    if (!stream->write(buffer, count, false)) {
+		        std::cerr << "[error] stream write buffer error" << std::endl;
+		        break;
+		    }
+	            if (count < 0) {    
+                        std::cerr << "[warning] count < 0 !!!!!!!!" << std::endl;
+	        	break;
+	            }
+	            usleep(150*1000);
+                }
 	        //std::cout << "[debug] write stream " << std::endl;
-                stream->write(buffer, count, false);
-	        if (count < 0) {    
-                    std::cout << "[warning] count < 0 !!!!!!!!" << std::endl;
-	    	break;
-	        }
-		usleep(150*1000);
-            }
-	    //std::cout << "[debug] write stream " << std::endl;
-            stream->write(nullptr, 0, true);
-	    std::cout << "[debug] count of last buffer=" << count << std::endl;
+		stream->write(nullptr, 0, true);
+	        std::cout << "[debug] count of last buffer=" << count << std::endl;
+	        rewind(fp);
+	    }
 	});
-	while (stream->read(default_callback, nullptr)) {
-	    //std::cout << "[debug] read stream" << std::endl;
-	    usleep(150*1000);
-	}
+
+	for (size_t i = 0; i < case_num; i++) {
+	    char tmp[100] = "\0";
+	    sprintf(tmp,"case %d.\0",i+1);
+	    std::cout << "Start to read " << tmp << std::endl;
+    	    while (stream->read(default_callback, tmp)) {
+    	        //std::cout << "[debug] read stream" << std::endl;
+    	        //usleep(150*1000);
+    	    }
+	    std::cout << "Complete to read " << tmp << std::endl;
+        }
 	writer.join();
         client.destroy_stream(stream);
         return 0;

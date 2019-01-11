@@ -101,31 +101,45 @@ int AsrClient::destroy_stream(AsrStream* stream) {
     return 0;
 }
 
-AsrStream::AsrStream(std::shared_ptr<grpc::ClientReaderWriter<AudioFragmentRequest, AudioFragmentResponse> > stream) {
-    _stream = stream;
-}
+AsrStream::AsrStream(std::shared_ptr<grpc::ClientReaderWriter<AudioFragmentRequest, AudioFragmentResponse> > stream)
+        : _stream(stream)
+        , _writesdone(false) {}
 
-int AsrStream::write(const void* buffer, size_t size, bool last_stream) {
+int AsrStream::write(const void* buffer, size_t size, bool is_last) {
+    if (_writesdone) {
+        std::cerr << "write stream has been done" << std::endl;
+	return 0;
+    }
+    int status = 1;
     if (size < 0) {
         std::cerr << "size < 0 in  write stream" << std::endl;
-        return -1;
+        status = 0;
+    } else {
+    	com::baidu::acu::pie::AudioFragmentRequest request;
+    	request.set_audio_data(buffer, size);
+    	//std::cout << "[debug] will run _stream->Write(request) ... ..." << std::endl;
+    	if (!_stream->Write(request)) {
+	    std::cerr << "Write to stream error" << std::endl;
+    	    status = 0;
+	}
     }
-    com::baidu::acu::pie::AudioFragmentRequest request;
-    request.set_audio_data(buffer, size);
-    std::cout << "[debug] will run _stream->Write(request) ... ..." << std::endl;
-    _stream->Write(request);
-    if (last_stream) {
-        _stream->WritesDone();
-        std::cout << "Write done" << std::endl;
+    if (is_last) {
+        if (_stream->WritesDone()) {
+	    std::cout << "Write done" << std::endl;
+	    _writesdone = true;
+	} else {
+	    std::cerr << "Write done in stream error" << std::endl;
+	    status = 0;
+	}
     }
-    return 0;
+    return status;
 }
 
 int AsrStream::read(AsrStreamCallBack callback_fun, void* data) {
     AudioFragmentResponse response;
-    std::cout << "[debug] will run _stream->Read(&response) ... ..." << std::endl;
+    //std::cout << "[debug] will run _stream->Read(&response) ... ..." << std::endl;
     if (_stream->Read(&response)) {
-        std::cout << "[debug] run callback_fun ... ..." << std::endl;
+        //std::cout << "[debug] run callback_fun ... ..." << std::endl;
 	callback_fun(response, data);
         return 1;
     }
@@ -136,7 +150,7 @@ int AsrStream::finish() {
     grpc::Status status = _stream->Finish();
     if (!status.ok()) {
         std::cerr << "Fail to finish stream when destroy AsrStream" << std::endl;
-		return -1;
+	return -1;
     }
     std::cout << "Stream finished." << std::endl;
     return 0;
