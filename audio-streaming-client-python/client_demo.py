@@ -34,7 +34,7 @@ def generate_file_stream():
 def run():
     while True:
         client = AsrClient(url, port, product_id, enable_flush_data, log_level=log_level)
-        responses = client.get_result("/Users/xiashuai01/Downloads/left.wav")
+        responses = client.get_result("/Users/xiashuai01/Documents/null/20180612-144050_N00000013052_20318805_918186533085_cc-ali-0-1528785650.1122161.wav")
 
         try:
             for response in responses:
@@ -56,11 +56,11 @@ def run_stream():
 
 if __name__ == '__main__':
     logging.basicConfig(filename="asr_result.log")
-    url = "172.18.53.16"
-    port = "8050"
+    url = "180.76.107.131"
+    port = "8111"
     log_level = 0
-    product_id = "1903"
-    enable_flush_data = False
+    product_id = "-103"
+    enable_flush_data = True
 
     # 传送文件
     run()

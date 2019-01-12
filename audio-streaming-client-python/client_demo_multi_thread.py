@@ -15,15 +15,15 @@ class demo:
         url = "180.76.107.131"
         # port = "8300"
         # product_id = "-103"
-        port = "8200"
-        product_id = "1906"
+        port = "8300"
+        product_id = "-103"
         enable_flush_data = True
         log_level = 0
         client = AsrClient(url, port, product_id, enable_flush_data, log_level=log_level)
         # client = AsrClient("172.18.53.16", "8050", product_id, enable_flush_data, log_level=3)
         name = threading.currentThread().getName()
-        # audio_path = "/Users/xiashuai01/Downloads/1035_voice001_L8VV.wav"
-        audio_path = "/Users/xiashuai01/Downloads/10s.wav"
+        audio_path = "/Users/xiashuai01/Documents/audio_path/20180612-150101_N00000013052_20318805_918926006497_cc-ali-0-1528786861.1122490.wav"
+        # audio_path = "/Users/xiashuai01/Downloads/10s.wav"
         while i < repeat_num:
             try:
                 response = client.get_result(audio_path)

@@ -15,7 +15,7 @@ setup(
     packages=find_packages(),
     license="Apache License",
     python_requires=">=2.7",
-    install_requires=["protobuf", "grpcio"],
+    install_requires=["protobuf", "grpcio", 'threadpool'],
     keywords = ['baidu', 'asr', 'speech'],
 )
 
