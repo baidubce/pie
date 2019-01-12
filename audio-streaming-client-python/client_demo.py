@@ -1,6 +1,6 @@
 # -*-coding:utf-8-*-
 import threading
-from baidu_acu_asr.AsrClient import AsrClient
+from baidu_acu_asr.asr_client import AsrClient
 import os
 import time
 import logging

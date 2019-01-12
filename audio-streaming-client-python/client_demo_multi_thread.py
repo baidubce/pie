@@ -1,5 +1,5 @@
 # -*-coding:utf-8-*-
-from baidu_acu_asr.AsrClient import AsrClient
+from baidu_acu_asr.asr_client import AsrClient
 import threading
 import sys
 import logging
