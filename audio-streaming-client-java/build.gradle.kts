@@ -63,10 +63,16 @@ protobuf {
     }
 }
 
+tasks.register<Jar>("sourceJar") {
+    from(sourceSets["main"].allSource)
+    classifier = "sources"
+}
+
 publishing {
     publications {
         register<MavenPublication>("mavenJava") {
             from(components["java"])
+            artifact(tasks["sourceJar"])
         }
     }
 }
