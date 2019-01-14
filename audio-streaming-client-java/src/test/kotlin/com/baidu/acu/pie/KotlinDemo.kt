@@ -8,6 +8,7 @@ import com.baidu.acu.pie.model.AsrConfig
 import com.baidu.acu.pie.model.AsrProduct
 import org.junit.Ignore
 import org.junit.Test
+import java.io.File
 import java.nio.file.Paths
 
 /**
@@ -70,7 +71,7 @@ class KotlinDemo {
         val audioFilePath = "testaudio/bj8k.wav"
 
         val asrClient = createAsrClient()
-        val results = asrClient.syncRecognize(Paths.get(audioFilePath).toFile())
+        val results = asrClient.syncRecognize(File(audioFilePath))
 
         // don't forget to shutdown !!!
         asrClient.shutdown()
@@ -100,3 +101,4 @@ class KotlinDemo {
             )
         }
     }
+}
