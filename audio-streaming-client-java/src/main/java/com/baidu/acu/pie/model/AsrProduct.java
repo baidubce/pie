@@ -10,10 +10,10 @@ import lombok.Getter;
  * @author Shu Lingjie(shulingjie@baidu.com)
  */
 public enum AsrProduct {
-    CUSTOMER_SERVICE("客服模型", "1903", 2560),
-    CUSTOMER_SERVICE_FINANCE("客服模型：金融领域", "1906", 2560),
-    INPUT_METHOD("输入法模型", "888", 5120),
-    FAR_FIELD("远场模型", "1888", 5120);
+    CUSTOMER_SERVICE("客服模型", "1903", 8000),
+    CUSTOMER_SERVICE_FINANCE("客服模型：金融领域", "1906", 8000),
+    INPUT_METHOD("输入法模型", "888", 16000),
+    FAR_FIELD("远场模型", "1888", 16000);
 
     @Getter
     private String name;
@@ -22,11 +22,11 @@ public enum AsrProduct {
     private String code;
 
     @Getter
-    private int fragmentSize;
+    private int sampleRate;
 
-    AsrProduct(String name, String code, int fragmentSize) {
+    AsrProduct(String name, String code, int sampleRate) {
         this.name = name;
         this.code = code;
-        this.fragmentSize = fragmentSize;
+        this.sampleRate = sampleRate;
     }
 }

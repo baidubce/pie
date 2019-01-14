@@ -59,7 +59,7 @@ public class AsrConfig {
     /**
      * 指定每次发送的音频数据包大小，通常不需要修改
      */
-    private double sendPerSeconds = 0.16;
+    private double sendPerSeconds = 0.02;
 
     /**
      * 指定asr服务的识别间隔，通常不需要修改
