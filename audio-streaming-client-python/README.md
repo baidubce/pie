@@ -3,7 +3,7 @@
 ### 本地文件
 ```python
 # -*-coding:utf-8-*-
-from baidu_acu_asr.AsrClient import AsrClient
+from baidu_acu_asr.asr_cient import AsrClient
 import threading
 
 

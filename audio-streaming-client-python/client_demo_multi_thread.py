@@ -12,18 +12,18 @@ class demo:
         i = 0
         # ip和端口可根据需要修改
         # client = AsrClient("10.136.172.23", "8051", enable_flush_data=False, log_level=6)
-        url = "180.76.107.131"
+        url = "172.18.53.16"
         # port = "8300"
         # product_id = "-103"
-        port = "8300"
-        product_id = "-103"
+        port = "30050"
+        product_id = "1903"
         enable_flush_data = True
         log_level = 0
         client = AsrClient(url, port, product_id, enable_flush_data, log_level=log_level)
         # client = AsrClient("172.18.53.16", "8050", product_id, enable_flush_data, log_level=3)
         name = threading.currentThread().getName()
-        audio_path = "/Users/xiashuai01/Documents/audio_path/20180612-150101_N00000013052_20318805_918926006497_cc-ali-0-1528786861.1122490.wav"
-        # audio_path = "/Users/xiashuai01/Downloads/10s.wav"
+        # audio_path = "/Users/xiashuai01/Documents/audio_path/20180612-150101_N00000013052_20318805_918926006497_cc-ali-0-1528786861.1122490.wav"
+        audio_path = "/Users/xiashuai01/Downloads/10s.wav"
         while i < repeat_num:
             try:
                 response = client.get_result(audio_path)

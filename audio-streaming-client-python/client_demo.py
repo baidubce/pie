@@ -9,6 +9,7 @@ from pyaudio import PyAudio, paInt16
 
 # 产生流（mac上麦克风读取音频流，需要先brew install portaudio）
 def record_micro():
+    client = AsrClient(url, port, product_id, enable_flush_data, log_level=log_level)
     NUM_SAMPLES = 2560  # pyaudio内置缓冲大小
     SAMPLING_RATE = 8000  # 取样频率
     pa = PyAudio()
@@ -20,6 +21,7 @@ def record_micro():
 
 # 产生流（本地音频流）
 def generate_file_stream():
+    client = AsrClient(url, port, product_id, enable_flush_data, log_level=log_level)
     file_path = "/Users/xiashuai01/Downloads/10s.wav"
     if not os.path.exists(file_path):
         logging.info("%s file is not exist, please check it!", file_path)
@@ -56,10 +58,10 @@ def run_stream():
 
 if __name__ == '__main__':
     logging.basicConfig(filename="asr_result.log")
-    url = "180.76.107.131"
-    port = "8111"
+    url = "172.18.53.16"
+    port = "30050"
     log_level = 0
-    product_id = "-103"
+    product_id = "1903"
     enable_flush_data = True
 
     # 传送文件
