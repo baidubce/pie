@@ -79,7 +79,8 @@ public class AsrClientGrpcImpl implements AsrClient {
 
     @Override
     public int getFragmentSize() {
-        return this.asrConfig.getProduct().getFragmentSize();
+        return (int) (asrConfig.getSendPerSeconds() * asrConfig.getProduct().getSampleRate()
+                              * asrConfig.getSleepRatio() * asrConfig.getBitDepth());
     }
 
     @Override
@@ -105,7 +106,8 @@ public class AsrClientGrpcImpl implements AsrClient {
     @Override
     public StreamObserver<AudioFragmentRequest> asyncRecognize(Consumer<RecognitionResult> resultConsumer,
             CountDownLatch finishLatch) {
-        StreamObserver<AudioFragmentRequest> requestStreamObserver = asyncStub.send(
+
+        return asyncStub.send(
                 new StreamObserver<AudioFragmentResponse>() {
                     @Override
                     public void onNext(AudioFragmentResponse response) {
@@ -124,15 +126,13 @@ public class AsrClientGrpcImpl implements AsrClient {
                         finishLatch.countDown();
                     }
                 });
-
-        return requestStreamObserver;
     }
 
     private List<AudioFragmentRequest> prepareRequests(Path audioFilePath) {
         List<AudioFragmentRequest> requests = new ArrayList<>();
 
         try (InputStream inputStream = Files.newInputStream(audioFilePath)) {
-            byte[] data = new byte[this.asrConfig.getProduct().getFragmentSize()];
+            byte[] data = new byte[this.getFragmentSize()];
             int readSize;
 
             while ((readSize = inputStream.read(data)) != -1) {

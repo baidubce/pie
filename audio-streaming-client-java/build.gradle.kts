@@ -15,7 +15,7 @@ val kotlinVersion by extra("1.3.10")
 val grpcVersion by extra("1.16.1")
 
 group = "com.baidu.acu.pie"
-version = "0.8.6-SNAPSHOT"
+version = "0.8.7-SNAPSHOT"
 
 tasks.withType<JavaCompile> {
     sourceCompatibility = "1.8"
@@ -63,10 +63,16 @@ protobuf {
     }
 }
 
+tasks.register<Jar>("sourceJar") {
+    from(sourceSets["main"].allSource)
+    classifier = "sources"
+}
+
 publishing {
     publications {
         register<MavenPublication>("mavenJava") {
             from(components["java"])
+            artifact(tasks["sourceJar"])
         }
     }
 }
