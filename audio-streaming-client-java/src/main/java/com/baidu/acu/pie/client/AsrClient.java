@@ -2,6 +2,7 @@
 
 package com.baidu.acu.pie.client;
 
+import java.io.File;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
@@ -27,6 +28,14 @@ public interface AsrClient {
      * @param audioFilePath 音频文件的路径
      */
     List<RecognitionResult> syncRecognize(Path audioFilePath);
+
+    /**
+     * 同步识别，输入一个音频文件，线程会进入等待，直到识别完毕，返回结果
+     * 通常用于对实时性要求不高的场景，如离线语音分析
+     *
+     * @param file 音频文件本身
+     */
+    List<RecognitionResult> syncRecognize(File file);
 
     /**
      * 异步识别，输入一个语音流，会准实时返回每个句子的结果
