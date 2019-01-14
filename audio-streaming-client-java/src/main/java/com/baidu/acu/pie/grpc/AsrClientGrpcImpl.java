@@ -2,9 +2,27 @@
 
 package com.baidu.acu.pie.grpc;
 
+import com.baidu.acu.pie.AsrServiceGrpc;
+import com.baidu.acu.pie.AsrServiceGrpc.AsrServiceStub;
+import com.baidu.acu.pie.AudioStreaming;
+import com.baidu.acu.pie.AudioStreaming.AudioFragmentRequest;
+import com.baidu.acu.pie.AudioStreaming.AudioFragmentResponse;
+import com.baidu.acu.pie.client.AsrClient;
+import com.baidu.acu.pie.exception.AsrClientException;
+import com.baidu.acu.pie.model.AsrConfig;
+import com.baidu.acu.pie.model.RecognitionResult;
+import com.google.protobuf.ByteString;
+import io.grpc.ManagedChannel;
+import io.grpc.ManagedChannelBuilder;
+import io.grpc.Metadata;
+import io.grpc.stub.MetadataUtils;
+import io.grpc.stub.StreamObserver;
+import lombok.extern.slf4j.Slf4j;
+
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Base64;
@@ -12,23 +30,6 @@ import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
-
-import com.baidu.acu.pie.AsrServiceGrpc;
-import com.baidu.acu.pie.AsrServiceGrpc.AsrServiceStub;
-import com.baidu.acu.pie.AudioStreaming;
-import com.baidu.acu.pie.AudioStreaming.AudioFragmentRequest;
-import com.baidu.acu.pie.AudioStreaming.AudioFragmentResponse;
-import com.baidu.acu.pie.client.AsrClient;
-import com.baidu.acu.pie.model.AsrConfig;
-import com.baidu.acu.pie.model.RecognitionResult;
-import com.google.protobuf.ByteString;
-
-import io.grpc.ManagedChannel;
-import io.grpc.ManagedChannelBuilder;
-import io.grpc.Metadata;
-import io.grpc.stub.MetadataUtils;
-import io.grpc.stub.StreamObserver;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * AsrClientGrpcImpl
@@ -80,15 +81,20 @@ public class AsrClientGrpcImpl implements AsrClient {
     @Override
     public int getFragmentSize() {
         return (int) (asrConfig.getSendPerSeconds() * asrConfig.getProduct().getSampleRate()
-                              * asrConfig.getSleepRatio() * asrConfig.getBitDepth());
+                * asrConfig.getSleepRatio() * asrConfig.getBitDepth());
     }
 
     @Override
     public List<RecognitionResult> syncRecognize(Path audioFilePath) {
-        log.info("start to recognition, file: {}", audioFilePath.toString());
+        return this.syncRecognize(audioFilePath.toFile());
+    }
+
+    @Override
+    public List<RecognitionResult> syncRecognize(File audioFile) {
+        log.info("start to recognition, file: {}", audioFile);
 
         final List<RecognitionResult> results = new ArrayList<>();
-        CountDownLatch finishLatch = this.sendRequests(prepareRequests(audioFilePath), results);
+        CountDownLatch finishLatch = this.sendRequests(prepareRequests(audioFile), results);
 
         try {
             if (!finishLatch.await(asrConfig.getTimeoutMinutes(), TimeUnit.MINUTES)) {
@@ -104,7 +110,8 @@ public class AsrClientGrpcImpl implements AsrClient {
     }
 
     @Override
-    public StreamObserver<AudioFragmentRequest> asyncRecognize(Consumer<RecognitionResult> resultConsumer,
+    public StreamObserver<AudioFragmentRequest> asyncRecognize(
+            Consumer<RecognitionResult> resultConsumer,
             CountDownLatch finishLatch) {
 
         return asyncStub.send(
@@ -128,21 +135,25 @@ public class AsrClientGrpcImpl implements AsrClient {
                 });
     }
 
-    private List<AudioFragmentRequest> prepareRequests(Path audioFilePath) {
-        List<AudioFragmentRequest> requests = new ArrayList<>();
-
-        try (InputStream inputStream = Files.newInputStream(audioFilePath)) {
-            byte[] data = new byte[this.getFragmentSize()];
-            int readSize;
-
-            while ((readSize = inputStream.read(data)) != -1) {
-                requests.add(AudioFragmentRequest.newBuilder()
-                        .setAudioData(ByteString.copyFrom(data, 0, readSize))
-                        .build()
-                );
-            }
+    private List<AudioFragmentRequest> prepareRequests(File audioFile) {
+        try (InputStream inputStream = new FileInputStream(audioFile)) {
+            return prepareRequests(inputStream);
         } catch (IOException e) {
             log.error("Read audio file failed: {}", e);
+            throw new AsrClientException("Read audio file failed");
+        }
+    }
+
+    private List<AudioFragmentRequest> prepareRequests(InputStream inputStream) throws IOException {
+        List<AudioFragmentRequest> requests = new ArrayList<>();
+        byte[] data = new byte[this.getFragmentSize()];
+        int readSize;
+
+        while ((readSize = inputStream.read(data)) != -1) {
+            requests.add(AudioFragmentRequest.newBuilder()
+                    .setAudioData(ByteString.copyFrom(data, 0, readSize))
+                    .build()
+            );
         }
 
         return requests;
