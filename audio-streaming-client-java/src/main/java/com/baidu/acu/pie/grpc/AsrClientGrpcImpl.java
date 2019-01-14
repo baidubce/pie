@@ -2,6 +2,8 @@
 
 package com.baidu.acu.pie.grpc;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -19,6 +21,7 @@ import com.baidu.acu.pie.AudioStreaming;
 import com.baidu.acu.pie.AudioStreaming.AudioFragmentRequest;
 import com.baidu.acu.pie.AudioStreaming.AudioFragmentResponse;
 import com.baidu.acu.pie.client.AsrClient;
+import com.baidu.acu.pie.exception.AsrClientException;
 import com.baidu.acu.pie.model.AsrConfig;
 import com.baidu.acu.pie.model.RecognitionResult;
 import com.google.protobuf.ByteString;
@@ -85,10 +88,30 @@ public class AsrClientGrpcImpl implements AsrClient {
 
     @Override
     public List<RecognitionResult> syncRecognize(Path audioFilePath) {
-        log.info("start to recognition, file: {}", audioFilePath.toString());
+        log.info("start to recognition, path: {}", audioFilePath.toString());
 
         final List<RecognitionResult> results = new ArrayList<>();
         CountDownLatch finishLatch = this.sendRequests(prepareRequests(audioFilePath), results);
+
+        try {
+            if (!finishLatch.await(asrConfig.getTimeoutMinutes(), TimeUnit.MINUTES)) {
+                log.error("Recognition request not finish within {} minutes, maybe the audio is too large",
+                        asrConfig.getTimeoutMinutes());
+            }
+        } catch (InterruptedException e) {
+            log.error("error when wait for CountDownLatch: {}", e);
+        }
+
+        log.info("finish recognition request");
+        return results;
+    }
+
+    @Override
+    public List<RecognitionResult> syncRecognize(File audioFile) {
+        log.info("start to recognition, file: {}", audioFile);
+
+        final List<RecognitionResult> results = new ArrayList<>();
+        CountDownLatch finishLatch = this.sendRequests(prepareRequests(audioFile), results);
 
         try {
             if (!finishLatch.await(asrConfig.getTimeoutMinutes(), TimeUnit.MINUTES)) {
@@ -129,20 +152,33 @@ public class AsrClientGrpcImpl implements AsrClient {
     }
 
     private List<AudioFragmentRequest> prepareRequests(Path audioFilePath) {
-        List<AudioFragmentRequest> requests = new ArrayList<>();
-
         try (InputStream inputStream = Files.newInputStream(audioFilePath)) {
-            byte[] data = new byte[this.getFragmentSize()];
-            int readSize;
-
-            while ((readSize = inputStream.read(data)) != -1) {
-                requests.add(AudioFragmentRequest.newBuilder()
-                        .setAudioData(ByteString.copyFrom(data, 0, readSize))
-                        .build()
-                );
-            }
+            return prepareRequests(inputStream);
         } catch (IOException e) {
             log.error("Read audio file failed: {}", e);
+            throw new AsrClientException("Read audio file failed");
+        }
+    }
+
+    private List<AudioFragmentRequest> prepareRequests(File audioFile) {
+        try (InputStream inputStream = new FileInputStream(audioFile)) {
+            return prepareRequests(inputStream);
+        } catch (IOException e) {
+            log.error("Read audio file failed: {}", e);
+            throw new AsrClientException("Read audio file failed");
+        }
+    }
+
+    private List<AudioFragmentRequest> prepareRequests(InputStream inputStream) throws IOException {
+        List<AudioFragmentRequest> requests = new ArrayList<>();
+        byte[] data = new byte[this.getFragmentSize()];
+        int readSize;
+
+        while ((readSize = inputStream.read(data)) != -1) {
+            requests.add(AudioFragmentRequest.newBuilder()
+                    .setAudioData(ByteString.copyFrom(data, 0, readSize))
+                    .build()
+            );
         }
 
         return requests;
