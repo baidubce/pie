@@ -11,7 +11,9 @@ namespace baidu {
 namespace acu {
 namespace pie {
 
-typedef void (*AsrClientCallBack) (const AudioFragmentResponse& resp, void* data);
+typedef void (*AsrStreamCallBack) (const AudioFragmentResponse& resp, void* data);
+
+class AsrStream;
 
 class AsrClient {
 public:
@@ -25,21 +27,31 @@ public:
 	void set_sleep_ratio(double sleep_raio);
 	void set_product_id(const std::string& product_id);
         int init(const std::string& address);
-        int send_audio(const std::string& audio_file, AsrClientCallBack callback, void* data);
-        int write_stream(const void* buffer, size_t size, bool last_stream);
-	int read_stream(AsrClientCallBack callback, void* data);
-	int create_stream();
-	int finish_stream();
+	AsrStream* get_stream();
+	int destroy_stream(AsrStream* stream);
 private:
         grpc::ClientContext _context;
 	std::shared_ptr<grpc::Channel> _channel;
-	std::unique_ptr<AsrService::Stub> _stub;
-	std::shared_ptr<grpc::ClientReaderWriter<AudioFragmentRequest, AudioFragmentResponse> > _stream;
+	//std::unique_ptr<AsrService::Stub> _stub;
 	InitRequest _init_request;
 	bool _set_enable_flush_data;
 	bool _set_product_id;
 	bool _inited;
-	bool _created_stream;
+};
+
+class AsrStream {
+public:
+	friend class AsrClient;
+	// Read function is blocking operation. 
+	int read(AsrStreamCallBack callback_fun, void* data);
+	// You should assign whether the buffer is the last one. It is said to be the last one by default.
+        int write(const void* buffer, size_t size, bool is_last = true);
+private:
+        int finish();
+	AsrStream(std::shared_ptr<grpc::ClientReaderWriter<AudioFragmentRequest, AudioFragmentResponse> > stream);
+	std::shared_ptr<grpc::ClientReaderWriter<AudioFragmentRequest, AudioFragmentResponse> >  _stream;
+
+        bool _writesdone;
 };
 
 } // namespace pie
