@@ -70,13 +70,14 @@ void AsrClient::set_product_id(const std::string& product_id) {
 
 int AsrClient::init(const std::string& address) {
     if (!_set_product_id || !_set_enable_flush_data) {
-	std::cerr << "Missing required field `product_id` or `enable_fush_data`" << std::endl;
+	std::cerr << "Missing required field `product_id` or `enable_flush_data`" << std::endl;
 	return -1;
     }
     _context.set_deadline(std::chrono::system_clock::now() + std::chrono::seconds(FLAGS_default_timeout));
     _context.AddMetadata("audio_meta", base64_encode(_init_request.SerializeAsString()));
 
     _channel = grpc::CreateChannel(address, grpc::InsecureChannelCredentials());
+    // _stub = AsrService::NewStub(_channel);
     _inited = true;
     return 0;
 }
@@ -119,15 +120,18 @@ int AsrStream::write(const void* buffer, size_t size, bool is_last) {
     	request.set_audio_data(buffer, size);
     	//std::cout << "[debug] will run _stream->Write(request) ... ..." << std::endl;
     	if (!_stream->Write(request)) {
+	    //std::cout << "[debug] Write to stream error" << std::endl;
 	    std::cerr << "Write to stream error" << std::endl;
     	    status = 0;
 	}
     }
     if (is_last) {
-        if (_stream->WritesDone()) {
+        std::cout << "[debug] will run _stream->WritesDone" << std::endl;
+	if (_stream->WritesDone()) {
 	    std::cout << "Write done" << std::endl;
 	    _writesdone = true;
 	} else {
+	    //std::cout << "[debug] Write done in stream error" << std::endl;
 	    std::cerr << "Write done in stream error" << std::endl;
 	    status = 0;
 	}
@@ -137,13 +141,15 @@ int AsrStream::write(const void* buffer, size_t size, bool is_last) {
 
 int AsrStream::read(AsrStreamCallBack callback_fun, void* data) {
     AudioFragmentResponse response;
-    //std::cout << "[debug] will run _stream->Read(&response) ... ..." << std::endl;
+    std::cout << "[debug] will run _stream->Read(&response) ... ..." << std::endl;
     if (_stream->Read(&response)) {
-        //std::cout << "[debug] run callback_fun ... ..." << std::endl;
+        std::cout << "[debug] run callback_fun ... ..." << std::endl;
 	callback_fun(response, data);
         return 1;
+    } else {
+        std::cout << "[debug] _stream->Read return false" << std::endl;
+        return 0;
     }
-    return 0;
 }
 
 int AsrStream::finish() {

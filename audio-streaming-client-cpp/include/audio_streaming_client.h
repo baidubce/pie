@@ -32,6 +32,7 @@ public:
 private:
         grpc::ClientContext _context;
 	std::shared_ptr<grpc::Channel> _channel;
+	//std::unique_ptr<AsrService::Stub> _stub;
 	InitRequest _init_request;
 	bool _set_enable_flush_data;
 	bool _set_product_id;
