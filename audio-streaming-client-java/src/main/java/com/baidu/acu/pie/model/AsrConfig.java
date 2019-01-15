@@ -62,9 +62,9 @@ public class AsrConfig {
     private double sendPerSeconds = 0.02;
 
     /**
-     * 指定asr服务的识别间隔，通常不需要修改
+     * 指定asr服务的识别间隔，通常不需要修改，不能小于1
      */
-    private int sleepRatio = 1;
+    private double sleepRatio = 1;
 
     /**
      * 识别单个文件的最大等待时间，默认10分，最长不能超过120分
@@ -88,6 +88,14 @@ public class AsrConfig {
 
     public AsrConfig product(AsrProduct product) {
         this.product = product;
+        return this;
+    }
+
+    public AsrConfig sleepRatio(double sleepRatio) {
+        if (sleepRatio < 1) {
+            throw new AsrClientException("sleep ratio must greater than 1.0");
+        }
+        this.sleepRatio = sleepRatio;
         return this;
     }
 

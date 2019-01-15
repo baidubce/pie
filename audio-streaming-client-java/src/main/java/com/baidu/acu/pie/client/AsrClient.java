@@ -19,8 +19,6 @@ import io.grpc.stub.StreamObserver;
  * @author Shu Lingjie(shulingjie@baidu.com)
  */
 public interface AsrClient {
-    int getFragmentSize();
-
     /**
      * 同步识别，输入一个音频文件，线程会进入等待，直到识别完毕，返回结果
      * 通常用于对实时性要求不高的场景，如离线语音分析
@@ -48,6 +46,12 @@ public interface AsrClient {
     StreamObserver<AudioFragmentRequest> asyncRecognize(
             Consumer<RecognitionResult> resultConsumer,
             CountDownLatch finishLatch);
+
+    /**
+     * 异步识别的时候，需要用户手动调用发送逻辑。
+     * 在发送的时候，需要设置发包大小，该方法返回最佳发包大小。
+     */
+    int getFragmentSize();
 
     void shutdown();
 }
