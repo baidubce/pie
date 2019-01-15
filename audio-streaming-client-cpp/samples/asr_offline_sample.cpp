@@ -37,7 +37,7 @@ int main(int argc, char* argv[]) {
 	    std::cout << "client get stream success" << std::endl;
 
 	    std::thread readbeforewrite ([stream](){
-                if (stream->read(default_callback, nullptr)) {
+                if (stream->read(default_callback, nullptr) == 0) {
                     std::cout << "test read before write success" << std::endl;
                 } else {
                     std::cout << "test read before write failed" << std::endl;
@@ -60,10 +60,10 @@ int main(int argc, char* argv[]) {
     	        int size = 2560;
                 char buffer[size];
     	        size_t count = 0;
-    	        while (!std::feof(fp)) {
-                        count = fread(buffer, 1, size, fp);
-    	                //std::cout << "[debug] write stream " << std::endl;
-                        if (!stream->write(buffer, count, false)) {
+		while (!std::feof(fp)) {
+                    count = fread(buffer, 1, size, fp);
+    	            //std::cout << "[debug] write stream " << std::endl;
+                    if (stream->write(buffer, count, false) != 0) {
     	                std::cerr << "[error] stream write buffer error" << std::endl;
     	                break;
     	            }
@@ -71,7 +71,7 @@ int main(int argc, char* argv[]) {
                             std::cerr << "[warning] count < 0 !!!!!!!!" << std::endl;
     	        	break;
     	            }
-    	            usleep(150*1000);
+    	            //usleep(150*1000);
                 }
     	        //std::cout << "[debug] write stream " << std::endl;
     		stream->write(nullptr, 0, true);
@@ -86,17 +86,17 @@ int main(int argc, char* argv[]) {
 	    char tmp[100] = "\0";
 	    sprintf(tmp,"case %d.\0",i);
 	    std::cout << "Start to read " << tmp << std::endl;
-    	    while (stream->read(default_callback, tmp)) {
+    	    while (stream->read(default_callback, tmp) == 0) {
     	        //std::cout << "[debug] read stream" << std::endl;
-    	        //usleep(150*1000);
+    	        usleep(150*1000);
     	    }
 	    std::cout << "Complete to read " << tmp << std::endl;
             
 	    if (writer.joinable()) {
 	        writer.join();
 	    }
-	    client.destroy_stream(stream);
-	    std::cout << "client destroy stream success" << std::endl;
+	    //client.destroy_stream(stream);
+	    //std::cout << "client destroy stream success" << std::endl;
 	    std::cout << "case " << i << " complete" << std::endl;
 	}
        

@@ -30,9 +30,7 @@ public:
 	AsrStream* get_stream();
 	int destroy_stream(AsrStream* stream);
 private:
-        grpc::ClientContext _context;
 	std::shared_ptr<grpc::Channel> _channel;
-	//std::unique_ptr<AsrService::Stub> _stub;
 	InitRequest _init_request;
 	bool _set_enable_flush_data;
 	bool _set_product_id;
@@ -48,10 +46,11 @@ public:
         int write(const void* buffer, size_t size, bool is_last = true);
 private:
         int finish();
-	AsrStream(std::shared_ptr<grpc::ClientReaderWriter<AudioFragmentRequest, AudioFragmentResponse> > stream);
+	AsrStream();
 	std::shared_ptr<grpc::ClientReaderWriter<AudioFragmentRequest, AudioFragmentResponse> >  _stream;
-
-        bool _writesdone;
+        std::unique_ptr<AsrService::Stub> _stub;
+        grpc::ClientContext _context;
+	bool _writesdone;
 };
 
 } // namespace pie
