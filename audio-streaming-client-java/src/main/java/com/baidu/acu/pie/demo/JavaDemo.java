@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.Instant;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -37,13 +38,14 @@ public class JavaDemo {
                 .serverIp("127.0.0.1")
                 .serverPort(80)
                 .appName("simple demo")
-                .product(AsrProduct.CUSTOMER_SERVICE);
+                .sleepRatio(1)
+                .product(AsrProduct.CUSTOMER_SERVICE_FINANCE);
 
         return AsrClientFactory.buildClient(asrConfig);
     }
 
     public void recognizeFile() {
-        String audioFilePath = "testaudio/bj8k.wav";
+        String audioFilePath = "testaudio/1.wav";
         AsrClient asrClient = createAsrClient();
         List<RecognitionResult> results = asrClient.syncRecognize(Paths.get(audioFilePath));
 
@@ -69,8 +71,10 @@ public class JavaDemo {
         }
     }
 
+    /**
+     * 使用长音频来模拟人对着麦克风不断说话的情况
+     */
     public void asyncRecognition() {
-        // 使用长音频来模拟不断输入的情况
         String longAudioFilePath = "testaudio/1.wav";
         AsrClient asrClient = createAsrClient();
 
@@ -80,20 +84,26 @@ public class JavaDemo {
 
             CountDownLatch finishLatch = new CountDownLatch(1);
             StreamObserver<AudioFragmentRequest> sender = asrClient.asyncRecognize(it -> {
-                System.out.println(it);
+                System.out.println(
+                        Instant.now().toString() + "\t" + Thread.currentThread().getId() + " receive fragment: " + it);
             }, finishLatch);
 
+            System.out.println(Instant.now().toString() + "\t" + Thread.currentThread().getId() + " start to send");
             while ((readSize = audioStream.read(data)) != -1) {
+                System.out.println(Instant.now().toString() + "\t"
+                        + Thread.currentThread().getId() + " send fragment");
                 sender.onNext(AudioFragmentRequest.newBuilder()
                         .setAudioData(ByteString.copyFrom(data, 0, readSize))
                         .build());
+                // 主动休眠一段时间，来模拟人说话场景下的音频产生速率
+                Thread.sleep(20);
             }
+            sender.onCompleted();
+            System.out.println(Instant.now().toString() + "\t" + Thread.currentThread().getId() + " send finish");
 
             // wait to ensure to receive the last response
             finishLatch.await(1000, TimeUnit.SECONDS);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
+        } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
 
