@@ -6,7 +6,7 @@ plugins {
     id("java")
     id("org.jetbrains.kotlin.jvm") version "1.3.10"
     id("idea")
-    id("com.google.protobuf") version "0.8.7"
+    id("com.google.protobuf") version "0.8.8"
     id("maven-publish")
     id("com.jfrog.bintray") version "1.8.4"
 }
@@ -15,7 +15,7 @@ val kotlinVersion by extra("1.3.10")
 val grpcVersion by extra("1.16.1")
 
 group = "com.baidu.acu.pie"
-version = "0.8.7-SNAPSHOT"
+version = "0.9.0-SNAPSHOT"
 
 tasks.withType<JavaCompile> {
     sourceCompatibility = "1.8"
@@ -39,7 +39,8 @@ dependencies {
 
     testImplementation("org.slf4j:slf4j-simple:1.7.25")
     testImplementation("junit:junit")
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion")
+    testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
+    testImplementation("org.springframework.boot:spring-boot-starter-test:2.1.1.RELEASE")
 }
 
 protobuf {
