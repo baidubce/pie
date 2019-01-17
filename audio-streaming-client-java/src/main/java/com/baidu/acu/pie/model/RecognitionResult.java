@@ -2,6 +2,8 @@
 
 package com.baidu.acu.pie.model;
 
+import java.time.LocalTime;
+
 import lombok.Builder;
 import lombok.Data;
 
@@ -24,13 +26,13 @@ public class RecognitionResult {
      */
     private String errorMessage;
     /**
-     * 句子的开始时间，格式是 mm:ss.zzz
+     * 句子的开始时间
      */
-    private String startTime;
+    private LocalTime startTime;
     /**
-     * 句子的结束时间，格式是 mm:ss.zzz
+     * 句子的结束时间
      */
-    private String endTime;
+    private LocalTime endTime;
     /**
      * 识别结果
      */

@@ -2,11 +2,15 @@
 
 package com.baidu.acu.pie.grpc;
 
+import static com.baidu.acu.pie.model.Constants.ASR_RECOGNITION_RESULT_TIME_FORMAT;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
@@ -203,10 +207,23 @@ public class AsrClientGrpcImpl implements AsrClient {
                 .serialNum(response.getSerialNum())
                 .errorCode(response.getErrorCode())
                 .errorMessage(response.getErrorMessage())
-                .startTime(response.getStartTime())
-                .endTime(response.getEndTime())
+                .startTime(parseLocalTime(response.getStartTime()))
+                .endTime(parseLocalTime(response.getEndTime()))
                 .result(response.getResult())
                 .completed(response.getCompleted())
                 .build();
+    }
+
+    private LocalTime parseLocalTime(String time) {
+        String toBeParsed;
+        if (time.length() == 9) { // mm:ss.SSS without HH:
+            toBeParsed = "00:" + time;
+        } else {
+            toBeParsed = time;
+        }
+
+        DateTimeFormatter asrRecognitionResultTimeFormatter =
+                DateTimeFormatter.ofPattern(ASR_RECOGNITION_RESULT_TIME_FORMAT);
+        return LocalTime.parse(toBeParsed, asrRecognitionResultTimeFormatter);
     }
 }
