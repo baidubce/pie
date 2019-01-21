@@ -77,16 +77,15 @@ public class JavaDemo {
     public void asyncRecognition() {
         String longAudioFilePath = "testaudio/1.wav";
         AsrClient asrClient = createAsrClient();
+        CountDownLatch finishLatch = new CountDownLatch(1);
+        StreamObserver<AudioFragmentRequest> sender = asrClient.asyncRecognize(it -> {
+            System.out.println(
+                    Instant.now().toString() + "\t" + Thread.currentThread().getId() + " receive fragment: " + it);
+        }, finishLatch);
 
         try (InputStream audioStream = Files.newInputStream(Paths.get(longAudioFilePath))) {
             byte[] data = new byte[asrClient.getFragmentSize()];
             int readSize;
-
-            CountDownLatch finishLatch = new CountDownLatch(1);
-            StreamObserver<AudioFragmentRequest> sender = asrClient.asyncRecognize(it -> {
-                System.out.println(
-                        Instant.now().toString() + "\t" + Thread.currentThread().getId() + " receive fragment: " + it);
-            }, finishLatch);
 
             System.out.println(Instant.now().toString() + "\t" + Thread.currentThread().getId() + " start to send");
             while ((readSize = audioStream.read(data)) != -1) {
@@ -98,16 +97,17 @@ public class JavaDemo {
                 // 主动休眠一段时间，来模拟人说话场景下的音频产生速率
                 Thread.sleep(20);
             }
-            sender.onCompleted();
             System.out.println(Instant.now().toString() + "\t" + Thread.currentThread().getId() + " send finish");
 
             // wait to ensure to receive the last response
             finishLatch.await(1000, TimeUnit.SECONDS);
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
+        } finally {
+            sender.onCompleted();
+            asrClient.shutdown();
         }
 
-        asrClient.shutdown();
         System.out.println("all task finished");
     }
 }

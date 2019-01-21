@@ -36,5 +36,10 @@ class AsrClientTest {
         assertEquals(localTime?.second, 45)
         assertEquals(localTime?.nano, 678000000)
 
+        val `special time` = "01:00.40"
+        localTime = ReflectionTestUtils.invokeMethod<LocalTime>(asrClient, "parseLocalTime", `special time`)
+        assertEquals(localTime?.minute, 1)
+        assertEquals(localTime?.second, 0)
+        assertEquals(localTime?.nano, 400000000)
     }
 }
