@@ -216,7 +216,10 @@ public class AsrClientGrpcImpl implements AsrClient {
 
     private LocalTime parseLocalTime(String time) {
         String toBeParsed;
-        if (time.length() == 9) { // mm:ss.SSS without HH:
+
+        if (time.matches("\\d{2}:\\d{2}\\.\\d{2}")) { // mm:ss.SS like 01:00.40
+            toBeParsed = "00:" + time + "0";
+        } else if (time.matches("\\d{2}:\\d{2}\\.\\d{3}")) { // mm:ss.SSS without HH:
             toBeParsed = "00:" + time;
         } else {
             toBeParsed = time;
