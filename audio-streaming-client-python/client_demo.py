@@ -27,16 +27,18 @@ def generate_file_stream():
         logging.info("%s file is not exist, please check it!", file_path)
         os._exit(-1)
     file = open(file_path, "r")
-    content = file.read(2560)
+    content = file.read(320)
     while len(content) > 0:
         yield client.generate_stream_request(content)
-        content = file.read(2560)
+        content = file.read(320)
 
 
 def run():
     while True:
-        client = AsrClient(url, port, product_id, enable_flush_data, log_level=log_level)
-        responses = client.get_result("/Users/xiashuai01/Documents/null/20180612-144050_N00000013052_20318805_918186533085_cc-ali-0-1528785650.1122161.wav")
+        client = AsrClient(url, port, product_id, enable_flush_data, log_level=log_level, send_package_size=320)
+        # responses = client.get_result("/Users/xiashuai01/Documents/null/20180612-144050_N00000013052_20318805_918186533085_cc-ali-0-1528785650.1122161.wav")
+        # responses = client.get_result("/Users/xiashuai01/Downloads/20180612-150101_N00000013052_20318805_918926006497_cc-ali-0-1528786861.1122490.wav")
+        responses = client.get_result("/Users/xiashuai01/Downloads/10s.wav")
 
         try:
             for response in responses:
@@ -58,10 +60,10 @@ def run_stream():
 
 if __name__ == '__main__':
     logging.basicConfig(filename="asr_result.log")
-    url = "172.18.53.16"
-    port = "30050"
+    url = "172.18.53.12"
+    port = "8050"
     log_level = 0
-    product_id = "1903"
+    product_id = "1905"
     enable_flush_data = True
 
     # 传送文件

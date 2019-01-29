@@ -12,11 +12,11 @@ class demo:
         i = 0
         # ip和端口可根据需要修改
         # client = AsrClient("10.136.172.23", "8051", enable_flush_data=False, log_level=6)
-        url = "172.18.53.16"
+        url = "172.18.53.12"
         # port = "8300"
         # product_id = "-103"
         port = "30050"
-        product_id = "1903"
+        product_id = "1905"
         enable_flush_data = True
         log_level = 0
         client = AsrClient(url, port, product_id, enable_flush_data, log_level=log_level)
