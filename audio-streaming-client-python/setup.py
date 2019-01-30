@@ -6,9 +6,9 @@ from setuptools import setup, find_packages
 
 setup(
     name="baidu-acu-asr",
-    version="1.0.8",
+    version="1.1.0",
     description="asr grpc client",
-    long_description="move send stream size to be a param",
+    long_description="modify init method AsrClient to asr_client, add init method params",
     author="Baidu",
     url="https://github.com/baidubce/pie/tree/master/audio-streaming-client-python-sdk",
     author_email="1908131339@qq.com",
