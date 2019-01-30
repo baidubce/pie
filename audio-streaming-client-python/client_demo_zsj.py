@@ -35,7 +35,7 @@ class AudioHandler:
     def run(self, file_path):
         while True:
             client = AsrClient(self.url, self.port, self.product_id, self.enable_flush_data,
-                               log_level=self.log_level, send_per_seconds= 0.01)
+                               log_level=self.log_level, send_per_seconds=0.02)
             responses = client.get_result(file_path)
             file_content = ""
             try:

@@ -35,9 +35,7 @@ def generate_file_stream():
 
 def run():
     while True:
-        client = AsrClient(url, port, product_id, enable_flush_data, log_level=log_level, send_package_size=320)
-        # responses = client.get_result("/Users/xiashuai01/Documents/null/20180612-144050_N00000013052_20318805_918186533085_cc-ali-0-1528785650.1122161.wav")
-        # responses = client.get_result("/Users/xiashuai01/Downloads/20180612-150101_N00000013052_20318805_918926006497_cc-ali-0-1528786861.1122490.wav")
+        client = AsrClient(url, port, product_id, enable_flush_data, log_level=log_level)
         responses = client.get_result("/Users/xiashuai01/Downloads/10s.wav")
 
         try:
