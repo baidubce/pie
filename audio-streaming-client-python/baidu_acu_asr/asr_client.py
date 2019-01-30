@@ -49,7 +49,7 @@ class AsrClient(object):
         # 服务端的日志输出级别
         self.request.log_level = log_level
         # 每次发送的音频字节数
-        self.send_package_size = send_per_seconds * ProductMap.get(product_id) * 2
+        self.send_package_size = int(send_per_seconds * ProductMap.get(product_id) * 2)
 
     def generate_file_stream(self, file_path):
         """
