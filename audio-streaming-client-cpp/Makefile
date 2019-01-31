@@ -21,7 +21,7 @@ PROTOS_PATH = ./proto
 
 vpath %.proto $(PROTOS_PATH)
 
-all: system-check libaudio_streaming_client.so
+all: system-check dir-check libaudio_streaming_client.so
 
 libaudio_streaming_client.so: audio_streaming.pb.cc audio_streaming.grpc.pb.cc src/audio_streaming_client.cpp
 	$(CXX) $^ $(CXXFLAGS) $(LDFLAGS) $(INC) -shared -fPIC -o ./lib/$@
@@ -35,6 +35,8 @@ libaudio_streaming_client.so: audio_streaming.pb.cc audio_streaming.grpc.pb.cc s
 clean:
 	rm -f *.o *.pb.cc *.pb.h lib/*
 
+dir-check:
+	mkdir -p lib
 
 # The following is to test your system and ensure a smoother experience.
 # They are by no means necessary to actually compile a grpc-enabled software.

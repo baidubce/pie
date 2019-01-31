@@ -56,8 +56,8 @@ int main(int argc, char* argv[]) {
             }
             std::cout << "Stream : Open file=" << audio_file[i] << std::endl;
     
-    	    std::thread writer([stream, fp, case_count](){
-    	        int size = 2560;
+    	    std::thread writer([client, stream, fp, case_count](){
+    	        int size = client.get_send_package_size();
                 char buffer[size];
     	        size_t count = 0;
 		while (!std::feof(fp)) {
