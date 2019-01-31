@@ -1,4 +1,5 @@
 #include "audio_streaming_client.h"
+
 #include <fstream>
 #include <thread>
 #include <sstream>
@@ -11,27 +12,59 @@
 DEFINE_string(default_app_name, "my_sdk", "SKD's name");
 DEFINE_bool(default_enable_long_speech, true, "enable long speech");
 DEFINE_bool(default_enable_chunk, true, "enable chunk");
-DEFINE_uint32(default_log_level, 5, "log level");
-DEFINE_double(default_send_per_second, 0.16, "send per second");
+DEFINE_uint32(default_log_level, 4, "log level");
+DEFINE_double(default_send_per_second, 0.02, "send per second");
 DEFINE_double(default_sleep_ratio, 1, "sleep ratio");
 DEFINE_int32(default_timeout, 100, "timeout");
-
+DEFINE_uint32(default_send_package_size, 320, "default bytes send to server");
 
 namespace com {
 namespace baidu {
 namespace acu {
 namespace pie {
 
+int ProductMap::init() {
+    set("1903", 8000, "客服模型");
+    set("1904", 8000, "客服模型：旅游领域");
+    set("1905", 8000, "客服模型：股票领域");
+    set("1906", 8000, "客服模型：金融领域");
+    set("1907", 8000, "客服模型：能源领域");
+    set("888", 16000, "输入法模型");
+    set("1888", 16000, "远场模型");
+    return 0;
+}
+
+int ProductMap::set(const std::string& product_id, unsigned long sample_rate, const std::string& product_name) {
+    ProductRecord record;
+    record.sample_rate = sample_rate;
+    record.name = product_name;
+    _product_records[product_id] = record;
+    return 0;
+}
+
+ProductRecord ProductMap::get(const std::string& product_id) const {
+    ProductRecord record;
+    auto it = _product_records.find(product_id);
+    if (it != _product_records.end()) {
+        return it->second;
+    } else {
+	std::cout << "[error] product id not found" << std::endl; 
+	return record;      
+    }
+}
+
 AsrClient::AsrClient()
 	: _set_enable_flush_data(false)
 	, _set_product_id(false)
-	, _inited(false)  {
+	, _inited(false)
+        , _send_package_size(FLAGS_default_send_package_size) {
     _init_request.set_app_name(FLAGS_default_app_name);
     _init_request.set_enable_long_speech(FLAGS_default_enable_long_speech);
     _init_request.set_enable_chunk(FLAGS_default_enable_chunk);
     _init_request.set_log_level(FLAGS_default_log_level);
     _init_request.set_send_per_seconds(FLAGS_default_send_per_second);
     _init_request.set_sleep_ratio(FLAGS_default_sleep_ratio);
+    _product_map.init();
 }
 
 void AsrClient::set_app_name(const std::string& app_name) {
@@ -65,6 +98,7 @@ void AsrClient::set_sleep_ratio(double sleep_ratio) {
 
 void AsrClient::set_product_id(const std::string& product_id) {
     _init_request.set_product_id(product_id);
+    _send_package_size = _init_request.send_per_seconds() * _product_map.get(product_id).sample_rate * 2;
     _set_product_id = true;
 }
 
@@ -78,6 +112,10 @@ int AsrClient::init(const std::string& address) {
     _inited = true;
     
     return 0;
+}
+
+unsigned int AsrClient::get_send_package_size() const {
+    return _send_package_size;
 }
 
 AsrStream* AsrClient::get_stream() {
@@ -125,7 +163,7 @@ int AsrStream::write(const void* buffer, size_t size, bool is_last) {
     } else {
     	com::baidu::acu::pie::AudioFragmentRequest request;
     	request.set_audio_data(buffer, size);
-    	std::cout << "[debug] will run _stream->Write(request) ... ..." << std::endl;
+    	//std::cout << "[debug] will run _stream->Write(request) ... ..." << std::endl;
     	if (!_stream->Write(request)) {
 	    std::cerr << "[error] Write to stream error" << std::endl;
     	    status = -1;
@@ -146,9 +184,9 @@ int AsrStream::write(const void* buffer, size_t size, bool is_last) {
 
 int AsrStream::read(AsrStreamCallBack callback_fun, void* data) {
     AudioFragmentResponse response;
-    std::cout << "[debug] will run _stream->Read(&response) ... ..." << std::endl;
+    //std::cout << "[debug] will run _stream->Read(&response) ... ..." << std::endl;
     if (_stream->Read(&response)) {
-        std::cout << "[debug] run callback_fun ... ..." << std::endl;
+        //std::cout << "[debug] run callback_fun ... ..." << std::endl;
 	callback_fun(response, data);
         return 0;
     } else {
