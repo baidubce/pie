@@ -58,7 +58,7 @@ def run_stream():
 
 if __name__ == '__main__':
     logging.basicConfig(filename="asr_result.log")
-    url = "180.76.107.131"
+    url = "172.18.53.12"
     port = "8200"
     log_level = 0
     product_id = "1889"
