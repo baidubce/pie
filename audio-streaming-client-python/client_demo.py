@@ -22,7 +22,7 @@ def record_micro():
 # 产生流（本地音频流）
 def generate_file_stream():
     client = AsrClient(url, port, product_id, enable_flush_data, log_level=log_level)
-    file_path = "/Users/xiashuai01/Downloads/10s.wav"
+    file_path = "/Users/xiashuai01/Downloads/300s.wav"
     if not os.path.exists(file_path):
         logging.info("%s file is not exist, please check it!", file_path)
         os._exit(-1)
@@ -34,9 +34,9 @@ def generate_file_stream():
 
 
 def run():
-    while True:
+    for i in range(30):
         client = AsrClient(url, port, product_id, enable_flush_data, log_level=log_level)
-        responses = client.get_result("/Users/xiashuai01/Downloads/10s.wav")
+        responses = client.get_result("/Users/xiashuai01/Downloads/300s.wav")
 
         try:
             for response in responses:
@@ -44,7 +44,7 @@ def run():
             break
         except:
             # 如果出现异常，此处需要重试当前音频
-            logging.error("connect to server error, will create a new channel and retry audio!")
+            logging.error("connect to server error, will create a new channel and retry audio! times : %d", i + 1)
             time.sleep(0.5)
 
 
@@ -58,10 +58,10 @@ def run_stream():
 
 if __name__ == '__main__':
     logging.basicConfig(filename="asr_result.log")
-    url = "172.18.53.12"
-    port = "8050"
+    url = "180.76.107.131"
+    port = "8200"
     log_level = 0
-    product_id = "1905"
+    product_id = "1889"
     enable_flush_data = True
 
     # 传送文件
