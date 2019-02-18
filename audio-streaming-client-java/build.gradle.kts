@@ -15,7 +15,7 @@ val kotlinVersion by extra("1.3.10")
 val grpcVersion by extra("1.16.1")
 
 group = "com.baidu.acu.pie"
-version = "0.9.0-SNAPSHOT"
+version = "0.9.1-SNAPSHOT"
 
 tasks.withType<JavaCompile> {
     sourceCompatibility = "1.8"
@@ -36,6 +36,7 @@ dependencies {
     implementation("io.grpc:grpc-stub:$grpcVersion")
     implementation("com.google.protobuf:protobuf-java:3.6.1")
     implementation("org.slf4j:slf4j-api:1.7.25")
+    implementation("org.slf4j:slf4j-simple:1.7.25")
 
     testImplementation("org.slf4j:slf4j-simple:1.7.25")
     testImplementation("junit:junit")

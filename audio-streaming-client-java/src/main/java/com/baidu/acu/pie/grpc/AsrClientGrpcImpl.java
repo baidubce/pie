@@ -127,7 +127,7 @@ public class AsrClientGrpcImpl implements AsrClient {
 
                     @Override
                     public void onError(Throwable t) {
-                        log.error("receive response error: {}", t);
+                        log.error("receive response error: ", t);
                         finishLatch.countDown();
                     }
 
@@ -177,7 +177,7 @@ public class AsrClientGrpcImpl implements AsrClient {
 
                     @Override
                     public void onError(Throwable t) {
-                        log.error("receive response error: {}", t);
+                        log.error("receive response error: ", t);
                         finishLatch.countDown();
                     }
 
