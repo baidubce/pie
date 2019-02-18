@@ -16,7 +16,8 @@ public enum AsrProduct {
     CUSTOMER_SERVICE_FINANCE("客服模型：金融领域", "1906", 8000),
     CUSTOMER_SERVICE_ENERGY("客服模型：能源领域", "1907", 8000),
     INPUT_METHOD("输入法模型", "888", 16000),
-    FAR_FIELD("远场模型", "1888", 16000);
+    FAR_FIELD("远场模型", "1888", 16000),
+    FAR_FIELD_ROBOT("远场模型：机器人领域", "1889", 16000);
 
     @Getter
     private String name;
