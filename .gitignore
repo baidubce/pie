@@ -144,3 +144,12 @@ rat-results.txt
 *.generated
 scripts/ci/kubernetes/kube/.generated/airflow.yaml
 
+# data
+data/
+
+# protobuf
+*.pb.cc
+*.pb.h
+
+#local_build
+*local_build.sh
