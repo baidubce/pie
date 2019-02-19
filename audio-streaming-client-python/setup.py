@@ -6,7 +6,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="baidu-acu-asr",
-    version="1.1.1",
+    version="1.1.2",
     description="asr grpc client",
     long_description="modify init method AsrClient to asr_client, add init method params",
     author="Baidu",
