@@ -22,4 +22,4 @@
 相关问题可以直接提交issue，也可以提交给百度同学
 
 ### Contact Us
-使用之前请联系百度同学要到streaming server的地址、对应的product id，并且添加白名单信息。
+使用之前请联系百度同学要到streaming server的ip和port、对应的product id，并且添加白名单信息（需要提供client出口ip，可以通过`curl cip.cc`获得）

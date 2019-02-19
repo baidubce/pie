@@ -27,7 +27,7 @@ if __name__ == '__main__':
 
 ### 流文件
 ```python
-from baidu_acu_asr.AsrClient import AsrClient
+from baidu_acu_asr.asr_cient import AsrClient
 import os
 
 
@@ -62,7 +62,7 @@ if __name__ == '__main__':
 ```python
 # -*-coding:utf-8-*-
 import threading
-from baidu_acu_asr.AsrClient import AsrClient
+from baidu_acu_asr.asr_cient import AsrClient
 import os
 from pyaudio import PyAudio, paInt16
 
