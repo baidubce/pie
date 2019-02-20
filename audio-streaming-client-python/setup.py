@@ -1,14 +1,14 @@
 from setuptools import setup, find_packages
 # import os
 
-# here = os.path.abspath(os.path.dirname(__file__))
-# demo = open(os.path.join(here, 'client_demo.py')).read()
+here = os.path.abspath(os.path.dirname(__file__))
+changes = open(os.path.join(here, 'CHANGES.md')).read()
 
 setup(
     name="baidu-acu-asr",
     version="1.1.2",
     description="asr grpc client",
-    long_description="modify init method AsrClient to asr_client, add init method params",
+    long_description=changes,
     author="Baidu",
     url="https://github.com/baidubce/pie/tree/master/audio-streaming-client-python-sdk",
     author_email="1908131339@qq.com",
