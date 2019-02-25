@@ -1,74 +1,64 @@
-## 使用方法
-可以在本地执行`pip install baidu-acu-asr`安装sdk，创建新的python文件，示例代码如下(也可见client_demo.py)
-### 本地文件
+## 支持的语音格式
+原始 PCM 的录音参数必须符合 8k/16k 采样率、16bit 位深、单声道，支持的格式有：pcm（不压缩）、wav（不压缩，pcm编码）、amr（压缩格式）。
+## 快速入门
+### SDK安装
+在本地执行`pip install baidu-acu-asr`安装sdk，创建新的python文件，示例代码如下(也可见client_demo.py)
+### 读取本地文件
 ```python
 # -*-coding:utf-8-*-
-from baidu_acu_asr.asr_cient import AsrClient
-import threading
-
-
 def run():
-    response = client.get_result("/Users/xiashuai01/Downloads/300s.wav")
-    for res in response:
-        print("start_time\tend_time\tresult")
-        print(res.start_time + "\t" + res.end_time + "\t" + res.result)
+    """
+    添加失败重传
+    :return:
+    """
+    for i in range(30):
+        client = AsrClient(url, port, product_id, enable_flush_data, log_level=log_level)
+        responses = client.get_result("/Users/xiashuai01/Downloads/300s.wav")
 
-
-if __name__ == '__main__':
-    # ip和端口可根据需要修改
-    client = AsrClient("172.18.53.17", "31051", enable_flush_data=False)
-    run()
-    # 多线程运行
-    # for i in range(100):
-    #     print(i)
-    #     t = threading.Thread(target=run, args=[])
-    #     t.start()
+        try:
+            for response in responses:
+                logging.info("%s\t%s\t%s\t%s", response.start_time, response.end_time, response.result, response.serial_num)
+            break
+        except:
+            # 如果出现异常，此处需要重试当前音频
+            logging.error("connect to server error, will create a new channel and retry audio! times : %d", i + 1)
+            time.sleep(0.5)
 ```
 
-### 流文件
+### 读取流文件
 ```python
-from baidu_acu_asr.asr_cient import AsrClient
-import os
-
-
 def generate_file_stream():
-    file_path = "/Users/xiashuai01/Downloads/10s.wav"
+    """
+    产生流（本地音频流）
+    :return:
+    """
+    client = AsrClient(url, port, product_id, enable_flush_data, log_level=log_level, send_per_seconds=0.16)
+    file_path = "/Users/xiashuai01/Downloads/300s.wav"
     if not os.path.exists(file_path):
         logging.info("%s file is not exist, please check it!", file_path)
         os._exit(-1)
     file = open(file_path, "r")
-    content = file.read(2560)
+    content = file.read(320)
     while len(content) > 0:
         yield client.generate_stream_request(content)
-        content = file.read(2560)
+        content = file.read(320)
         
-        
+
 def run_stream():
+    client = AsrClient(url, port, product_id, enable_flush_data, log_level=log_level)
     responses = client.get_result_by_stream(generate_file_stream())
     for response in responses:
         # for res in responses:
-        print("start_time\tend_time\tresult")
-        print(response.start_time + "\t" + response.end_time + "\t" + response.result)
-
-        
-if __name__ == '__main__':
-    product_id = "1903"
-    enable_flush_data = False
-    # ip和端口可根据需要修改
-    client = AsrClient("180.76.107.131", "8050", product_id, enable_flush_data)
-    run_stream()
+        logging.info("%s\t%s\t%s\t%s", response.start_time, response.end_time, response.result, response.serial_num)
 ``` 
 读取mac上麦克风的音频流数据
 ```python
-# -*-coding:utf-8-*-
-import threading
-from baidu_acu_asr.asr_cient import AsrClient
-import os
-from pyaudio import PyAudio, paInt16
-
-
-# 产生流（mac上麦克风读取音频流，需要先brew install portaudio）
 def record_micro():
+    """
+    产生流（mac上麦克风读取音频流，需要先brew install portaudio）
+    :return:
+    """
+    client = AsrClient(url, port, product_id, enable_flush_data, log_level=log_level)
     NUM_SAMPLES = 2560  # pyaudio内置缓冲大小
     SAMPLING_RATE = 8000  # 取样频率
     pa = PyAudio()
@@ -79,20 +69,29 @@ def record_micro():
 
 
 def run_stream():
-    # responses = client.get_result_by_stream(generate_file_stream())
+    client = AsrClient(url, port, product_id, enable_flush_data, log_level=log_level)
     responses = client.get_result_by_stream(record_micro())
     for response in responses:
         # for res in responses:
-        print("start_time\tend_time\tresult")
-        print(response.start_time + "\t" + response.end_time + "\t" + response.result)
+        logging.info("%s\t%s\t%s\t%s", response.start_time, response.end_time, response.result, response.serial_num)
+```
+
+### 读取URL上的流
+```python
+def read_streaming_from_url():
+    print("streaming reading")
+    client = AsrClient(url, port, product_id, enable_flush_data, log_level=log_level)
+    data = urllib2.urlopen(audio_url)
+    while True:
+        yield client.generate_stream_request(data.read(size=2560))
 
 
-if __name__ == '__main__':
-    product_id = "1903"
-    enable_flush_data = False
-    # ip和端口可根据需要修改
-    client = AsrClient("180.76.107.131", "8050", product_id, enable_flush_data)
-    run_stream()
+def run_url_streaming():
+    client = AsrClient(url, port, product_id, enable_flush_data, log_level=log_level)
+    responses = client.get_result_by_stream(read_streaming_from_url())
+    for response in responses:
+        # for res in responses:
+        logging.info("%s\t%s\t%s\t%s", response.start_time, response.end_time, response.result, response.serial_num)
 ```
 
 ### 参数说明
