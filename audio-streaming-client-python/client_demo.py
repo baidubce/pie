@@ -5,10 +5,14 @@ import os
 import time
 import logging
 from pyaudio import PyAudio, paInt16
+import urllib2
 
 
-# 产生流（mac上麦克风读取音频流，需要先brew install portaudio）
 def record_micro():
+    """
+    产生流（mac上麦克风读取音频流，需要先brew install portaudio）
+    :return:
+    """
     client = AsrClient(url, port, product_id, enable_flush_data, log_level=log_level)
     NUM_SAMPLES = 2560  # pyaudio内置缓冲大小
     SAMPLING_RATE = 8000  # 取样频率
@@ -19,9 +23,12 @@ def record_micro():
         yield client.generate_stream_request(stream.read(NUM_SAMPLES))
 
 
-# 产生流（本地音频流）
 def generate_file_stream():
-    client = AsrClient(url, port, product_id, enable_flush_data, log_level=log_level)
+    """
+    产生流（本地音频流）
+    :return:
+    """
+    client = AsrClient(url, port, product_id, enable_flush_data, log_level=log_level, send_per_seconds=0.16)
     file_path = "/Users/xiashuai01/Downloads/300s.wav"
     if not os.path.exists(file_path):
         logging.info("%s file is not exist, please check it!", file_path)
@@ -34,6 +41,10 @@ def generate_file_stream():
 
 
 def run():
+    """
+    添加失败重传
+    :return:
+    """
     for i in range(30):
         client = AsrClient(url, port, product_id, enable_flush_data, log_level=log_level)
         responses = client.get_result("/Users/xiashuai01/Downloads/300s.wav")
@@ -56,16 +67,38 @@ def run_stream():
         logging.info("%s\t%s\t%s\t%s", response.start_time, response.end_time, response.result, response.serial_num)
 
 
+def read_streaming_from_url():
+    """
+    读取url上的流
+    :return:
+    """
+    client = AsrClient(url, port, product_id, enable_flush_data, log_level=log_level)
+    data = urllib2.urlopen(audio_url)
+    while True:
+        yield client.generate_stream_request(data.read(size=2560))
+
+
+def run_url_streaming():
+    client = AsrClient(url, port, product_id, enable_flush_data, log_level=log_level)
+    responses = client.get_result_by_stream(read_streaming_from_url())
+    for response in responses:
+        # for res in responses:
+        logging.info("%s\t%s\t%s\t%s", response.start_time, response.end_time, response.result, response.serial_num)
+
+
 if __name__ == '__main__':
     logging.basicConfig(filename="asr_result.log")
-    url = "172.18.53.12"
+    url = "10.190.115.11"
     port = "8200"
     log_level = 0
-    product_id = "1889"
+    product_id = "1903"
     enable_flush_data = True
 
+    audio_url = "http://onlinebjplay.baidudomainbcd.com/aitest/ai_stream.flv"
+    run_url_streaming()
+
     # 传送文件
-    run()
+    # run()
     # 传送流
     # run_stream()
     # 多线程运行
