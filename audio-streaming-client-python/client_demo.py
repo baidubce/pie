@@ -29,15 +29,45 @@ def generate_file_stream():
     :return:
     """
     client = AsrClient(url, port, product_id, enable_flush_data, log_level=log_level, send_per_seconds=0.16)
-    file_path = "/Users/xiashuai01/Downloads/300s.wav"
+    file_path = "/Users/xiashuai01/TranFile/tem/3.wav"
     if not os.path.exists(file_path):
         logging.info("%s file is not exist, please check it!", file_path)
         os._exit(-1)
     file = open(file_path, "r")
     content = file.read(320)
-    while len(content) > 0:
+    while True:
         yield client.generate_stream_request(content)
         content = file.read(320)
+
+
+def run_file_stream():
+    client = AsrClient(url, port, product_id, enable_flush_data, log_level=log_level)
+    responses = client.get_result_by_stream(generate_file_stream())
+    for response in responses:
+        # for res in responses:
+        logging.info("%s\t%s\t%s\t%s", response.start_time, response.end_time, response.result, response.serial_num)
+
+
+def general_fifo_stream():
+    """
+    读取管道数据
+    1.新建管道：mkfifo pipe.wav
+    2.获取流存入管道：ffmpeg -i "http://path/of/video/stream" -vn -acodec pcm_s16le -ac 1 -ar 8000 -f wav pipe:1 > pipe.wav
+    :return:
+    """
+    client = AsrClient(url, port, product_id, enable_flush_data, log_level=log_level, send_per_seconds=0.16)
+    rf = os.open("/Users/xiashuai01/TranFile/tem/pipe.wav", os.O_RDONLY)
+    while True:
+        stream = os.read(rf, 320)
+        yield client.generate_stream_request(stream)
+
+
+def run_fifo_stream():
+    client = AsrClient(url, port, product_id, enable_flush_data, log_level=log_level)
+    responses = client.get_result_by_stream(general_fifo_stream())
+    for response in responses:
+        # for res in responses:
+        logging.info("%s\t%s\t%s\t%s", response.start_time, response.end_time, response.result, response.serial_num)
 
 
 def run():
@@ -47,7 +77,8 @@ def run():
     """
     for i in range(30):
         client = AsrClient(url, port, product_id, enable_flush_data, log_level=log_level)
-        responses = client.get_result("/Users/xiashuai01/Downloads/300s.wav")
+        responses = client.get_result("/Users/xiashuai01/TranFile/tem/3.wav")
+        # responses = client.get_result("/Users/xiashuai01/Downloads/300s.wav")
 
         try:
             for response in responses:
@@ -94,9 +125,11 @@ if __name__ == '__main__':
     product_id = "1903"
     enable_flush_data = True
 
-    audio_url = "http://onlinebjplay.baidudomainbcd.com/aitest/ai_stream.flv"
-    run_url_streaming()
+    # audio_url = "http://onlinebjplay.baidudomainbcd.com/aitest/ai_stream.flv"
+    # run_url_streaming()
 
+    # 读取管道数据
+    run_fifo_stream()
     # 传送文件
     # run()
     # 传送流
