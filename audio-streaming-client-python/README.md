@@ -105,8 +105,8 @@ def run_url_streaming():
 | enable_flush_data | bool | True | 是否连续输出，False表示一次只输出一段识别的结果 | 
 | product_id | string | 1903 | 对应解码器的模型 |
 | sample_point_bytes | int | 2 | 采样点字节数，可根据音频的具体参数调整 |
-| send_per_seconds | double | 0.16 | 默认值即可 |
-| sleep_ratio | double  | 1 | 识别睡眠时长间隔 |
+| send_per_seconds | double | 0.16 | 设置发包间隔时间 |
+| sleep_ratio | double  | 1 | 识别睡眠时长间隔，发包大小会根据此值计算 |
 | app_name | String  | python | 可自己设定，log查看用 |
 | log_level | int  | 4 | log级别，0：Trace，1：Debug， 2：Info，3：Warning，4：Error，5：Fatal，6：关闭log |
 
