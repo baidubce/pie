@@ -141,9 +141,9 @@ AsrStream* AsrClient::get_stream() {
 }
 
 int AsrClient::destroy_stream(AsrStream* stream) {
-    stream->finish();
+    int status = stream->finish();
     delete stream;
-    return 0;
+    return status;
 }
 
 AsrStream::AsrStream()
@@ -157,6 +157,7 @@ int AsrStream::write(const void* buffer, size_t size, bool is_last) {
 	return -1;
     }
     int status = 0;
+    int write_return_status = 0;
     if (size < 0) {
         std::cerr << "[error] size < 0 in  write stream" << std::endl;
         status = -1;
@@ -164,18 +165,20 @@ int AsrStream::write(const void* buffer, size_t size, bool is_last) {
     	com::baidu::acu::pie::AudioFragmentRequest request;
     	request.set_audio_data(buffer, size);
     	//std::cout << "[debug] will run _stream->Write(request) ... ..." << std::endl;
-    	if (!_stream->Write(request)) {
-	    std::cerr << "[error] Write to stream error" << std::endl;
+    	write_return_status = _stream->Write(request);
+	if (!write_return_status) {
+	    std::cerr << "[error] Write to stream error, status = " << write_return_status << std::endl;
     	    status = -1;
 	}
     }
     if (is_last) {
         std::cout << "[debug] will run _stream->WritesDone" << std::endl;
-	if (_stream->WritesDone()) {
+	write_return_status = _stream->WritesDone();
+	if (write_return_status) {
 	    std::cout << "[info] Write done" << std::endl;
 	    _writesdone = true;
 	} else {
-	    std::cerr << "[error] Write done in stream error" << std::endl;
+	    std::cerr << "[error] Write done in stream error, status = " << write_return_status << std::endl;
 	    status = -1;
 	}
     }
@@ -185,12 +188,14 @@ int AsrStream::write(const void* buffer, size_t size, bool is_last) {
 int AsrStream::read(AsrStreamCallBack callback_fun, void* data) {
     AudioFragmentResponse response;
     //std::cout << "[debug] will run _stream->Read(&response) ... ..." << std::endl;
-    if (_stream->Read(&response)) {
+    int read_return_status = 0;
+    read_return_status = _stream->Read(&response);
+    if (read_return_status) {
         //std::cout << "[debug] run callback_fun ... ..." << std::endl;
 	callback_fun(response, data);
         return 0;
     } else {
-        std::cout << "[debug] _stream->Read return false" << std::endl;
+        std::cout << "[debug] _stream->Read return false, status = " << read_return_status << std::endl;
         return -1;
     }
 }
