@@ -1,9 +1,5 @@
-//
-// Created by Sun,Weicheng on 2018/12/13.
-//
-
-#ifndef AUDIO_STREAMING_CLIENT_CPP_BASE64_H
-#define AUDIO_STREAMING_CLIENT_CPP_BASE64_H
+#ifndef ACU_PIAT_UNIMRCP_BASE64_H
+#define ACU_PIAT_UNIMRCP_BASE64_H
 
 #include <vector>
 #include <string>
@@ -56,4 +52,4 @@ static std::string base64_decode(const std::string &in) {
     return out;
 }
 
-#endif //AUDIO_STREAMING_CLIENT_CPP_BASE64_H
+#endif //ACU_PIAT_UNIMRCP_BASE64_H

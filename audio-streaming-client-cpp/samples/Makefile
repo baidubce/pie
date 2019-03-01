@@ -6,12 +6,12 @@ CXXFLAGS += -std=c++11
 INC = -I.. -I../include
 ifeq ($(SYSTEM),Darwin)
 LDFLAGS += -L.. -pthread -lprotobuf -lgrpc++ \
-           -lgrpc++_reflection\
-           -ldl -lgflags -laudio_streaming_client
+	   -lgrpc++_reflection\
+	   -ldl -lgflags -laudio_streaming_client
 else
 LDFLAGS += -L../lib -pthread -lprotobuf -lgrpc++ \
-           -Wl,--no-as-needed -lgrpc++_reflection -Wl,--as-needed\
-           -ldl  -laudio_streaming_client -Wl,-rpath=../lib
+	   -Wl,--no-as-needed -lgrpc++_reflection -Wl,--as-needed\
+	   -ldl  -laudio_streaming_client -Wl,-rpath=../lib
 endif
 PROTOC = protoc
 GRPC_CPP_PLUGIN = grpc_cpp_plugin
