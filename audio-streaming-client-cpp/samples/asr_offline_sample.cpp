@@ -4,7 +4,12 @@
 #include <sstream>
 #include <thread>
 
-void default_callback(const com::baidu::acu::pie::AudioFragmentResponse& resp, 
+
+typedef com::baidu::acu::pie::AsrClient AsrClient;
+typedef com::baidu::acu::pie::AsrStream AsrStream;
+typedef com::baidu::acu::pie::AudioFragmentResponse AudioFragmentResponse;
+
+void default_callback(const AudioFragmentResponse& resp, 
                       void* data) {
     //std::cout << "[debug] do recoging ... ..." << std::endl;
     std::stringstream ss;
@@ -12,16 +17,17 @@ void default_callback(const com::baidu::acu::pie::AudioFragmentResponse& resp,
         char* tmp = (char*) data;
         std::cout << "data = " << tmp << std::endl;
     }
-    ss << "Receive completed" << resp.completed()
+    ss << "Receive " << (resp.completed() ? "completed" : "uncompleted")
        << ", start=" << resp.start_time()
        << ", end=" << resp.end_time()
+       << ", error_code=" << resp.error_code()
+       << ", error_message=" << resp.error_message()
        << ", content=" << resp.result();
     std::cout << ss.str() << std::endl;
 }
 
-void write_to_stream(com::baidu::acu::pie::AsrClient client, 
-                     com::baidu::acu::pie::AsrStream* stream, 
-                     FILE* fp, int case_count) {
+void write_to_stream(AsrClient client, AsrStream* stream, 
+                     FILE* fp, int i) {
     int size = client.get_send_package_size();
     char buffer[size];
     size_t count = 0;
@@ -36,14 +42,16 @@ void write_to_stream(com::baidu::acu::pie::AsrClient client,
             std::cerr << "[warning] count < 0 !!!!!!!!" << std::endl;
             break;
         }
+        // you can add usleep to simulate audio pause
         //usleep(150*1000);
     }
     //std::cout << "[debug] write stream " << std::endl;
     stream->write(nullptr, 0, true);
-    std::cout << "[debug] count of last buffer=" << count << std::endl;
+    std::cout << "[debug] write last buffer to stream" << std::endl;
+    std::cout << "Complete to write audio " << i << std::endl;
 }
 
-void read_from_stream_once(com::baidu::acu::pie::AsrStream* stream) {
+void read_from_stream_once(AsrStream* stream) {
     if (stream->read(default_callback, nullptr) == 0) {
         std::cout << "[debug] read from stream once success" << std::endl;
     } else {
@@ -52,13 +60,15 @@ void read_from_stream_once(com::baidu::acu::pie::AsrStream* stream) {
 }
 
 int main(int argc, char* argv[]) {
-    // Parse gflags
-    google::ParseCommandLineFlags(&argc, &argv, true);
     size_t case_count = 2;
+
+    // specify audio path
     std::string audio_file[2];
     audio_file[0] = "../../data/10s.wav";
     audio_file[1] = "../../data/8k-0.pcm";
-    com::baidu::acu::pie::AsrClient client;
+
+    // create AsrClient
+    AsrClient client;
     client.set_enable_flush_data(true);
     if (argc == 3) {
         client.set_product_id(argv[1]);
@@ -68,18 +78,12 @@ int main(int argc, char* argv[]) {
         client.init("10.190.115.11:8200");
     }
     
+    // start to write and read one by one
     for (size_t i = 0; i < case_count; i++) {
         std::cout << "case " << i << " start..." << std::endl;
         // do not call stream->write after sending the last buffer
-        com::baidu::acu::pie::AsrStream* stream = client.get_stream();
+        AsrStream* stream = client.get_stream();
         std::cout << "client get stream success" << std::endl;
-
-        std::thread readbeforewrite(read_from_stream_once, stream);
-
-        // test : start read before write
-        //if (readbeforewrite.joinable()) {
-        //    readbeforewrite.join();
-        //}
 
         FILE* fp = fopen(audio_file[i].c_str(), "rb");
         if (!fp) {
@@ -87,22 +91,21 @@ int main(int argc, char* argv[]) {
             return -1;
         }
         std::cout << "Stream : Open file=" << audio_file[i] << std::endl;
-   
-        std::thread writer(write_to_stream, client, stream, fp, case_count);
 
-        // test : start read before write
-        if (readbeforewrite.joinable()) {
-            readbeforewrite.join();
-        }
-        
+        // write to stream continuously
+        std::thread writer(write_to_stream, client, stream, fp, i);
+
+        // read from stream continuously
         char tmp[100] = "\0";
-        sprintf(tmp,"case %d.\0",i);
+        sprintf(tmp,"audio %d\0",i);
         std::cout << "Start to read " << tmp << std::endl;
         int read_num = 1;
-        while (stream->read(default_callback, tmp) == 0) {
-            //std::cout << "[debug] read stream return " 
-            //          << read_num++ << "times" << std::endl;
-            usleep(150*1000);
+        while (1) {
+            if (stream->read(default_callback, tmp) != 0) {
+                break;
+            }
+            std::cout << "[debug] read stream return " 
+                      << read_num++ << "times" << std::endl;
         }
         std::cout << "Complete to read " << tmp << std::endl;
         

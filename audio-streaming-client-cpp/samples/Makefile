@@ -17,13 +17,16 @@ PROTOC = protoc
 GRPC_CPP_PLUGIN = grpc_cpp_plugin
 GRPC_CPP_PLUGIN_PATH ?= `which $(GRPC_CPP_PLUGIN)`
 
-all: system-check sample_client
+all: system-check sample_client sample_client_multi_thread
 
 sample_client: asr_offline_sample.cpp
 	$(CXX) $^ $(CXXFLAGS) $(LDFLAGS) $(INC) -o $@
 
+sample_client_multi_thread: asr_offline_sample_multi_thread.cpp
+	$(CXX) $^ $(CXXFLAGS) $(LDFLAGS) $(INC) -o $@
+
 clean:
-	rm -f *.o sample_client
+	rm -f *.o sample_client sample_client_multi_thread
 
 
 # The following is to test your system and ensure a smoother experience.
