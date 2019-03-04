@@ -18,6 +18,7 @@ void default_callback(const AudioFragmentResponse& resp,
         std::cout << "data = " << tmp << std::endl;
     }
     ss << "Receive " << (resp.completed() ? "completed" : "uncompleted")
+       << ", serial_num=" << resp.serial_num()
        << ", start=" << resp.start_time()
        << ", end=" << resp.end_time()
        << ", error_code=" << resp.error_code()
