@@ -34,7 +34,8 @@ int ProductMap::init() {
     return 0;
 }
 
-int ProductMap::set(const std::string& product_id, unsigned long sample_rate, const std::string& product_name) {
+int ProductMap::set(const std::string& product_id, unsigned long sample_rate, 
+                    const std::string& product_name) {
     ProductRecord record;
     record.sample_rate = sample_rate;
     record.name = product_name;
@@ -48,15 +49,15 @@ ProductRecord ProductMap::get(const std::string& product_id) const {
     if (it != _product_records.end()) {
         return it->second;
     } else {
-	std::cout << "[error] product id not found" << std::endl; 
-	return record;      
+        std::cout << "[error] product id not found" << std::endl; 
+        return record;      
     }
 }
 
 AsrClient::AsrClient()
-	: _set_enable_flush_data(false)
-	, _set_product_id(false)
-	, _inited(false)
+        : _set_enable_flush_data(false)
+        , _set_product_id(false)
+        , _inited(false)
         , _send_package_size(FLAGS_default_send_package_size) {
     _init_request.set_app_name(FLAGS_default_app_name);
     _init_request.set_enable_long_speech(FLAGS_default_enable_long_speech);
@@ -98,14 +99,16 @@ void AsrClient::set_sleep_ratio(double sleep_ratio) {
 
 void AsrClient::set_product_id(const std::string& product_id) {
     _init_request.set_product_id(product_id);
-    _send_package_size = _init_request.send_per_seconds() * _product_map.get(product_id).sample_rate * 2;
+    _send_package_size = _init_request.send_per_seconds() * 
+                         _product_map.get(product_id).sample_rate * 2;
     _set_product_id = true;
 }
 
 int AsrClient::init(const std::string& address) {
     if (!_set_product_id || !_set_enable_flush_data) {
-	std::cerr << "Missing required field `product_id` or `enable_flush_data`" << std::endl;
-	return -1;
+        std::cerr << "Missing required field `product_id` or `enable_flush_data`" 
+                  << std::endl;
+        return -1;
     }
 
     _channel = grpc::CreateChannel(address, grpc::InsecureChannelCredentials());
@@ -127,14 +130,15 @@ AsrStream* AsrClient::get_stream() {
     } else {
         std::cout << "[debug] Create stub success in get_stream" << std::endl;
     }
-    asr_stream->_context.set_deadline(std::chrono::system_clock::now() + std::chrono::seconds(FLAGS_default_timeout));
+    asr_stream->_context.set_deadline(std::chrono::system_clock::now() + 
+                                      std::chrono::seconds(FLAGS_default_timeout));
     asr_stream->_context.AddMetadata("audio_meta", base64_encode(_init_request.SerializeAsString()));
     asr_stream->_stream = asr_stream->_stub->send(&(asr_stream->_context));
     if (!asr_stream->_stream) {
         std::cerr << "[error] Fail to create stream in get_stream" << std::endl;
         return NULL;
     } else {
-        std::cout << "[debug] Create stream success in get_stream" << std::endl;	    
+        std::cout << "[debug] Create stream success in get_stream" << std::endl;
     }
 
     return asr_stream;
@@ -148,13 +152,13 @@ int AsrClient::destroy_stream(AsrStream* stream) {
 
 AsrStream::AsrStream()
           : _stream(nullptr)
-	  , _stub(nullptr)
+          , _stub(nullptr)
           , _writesdone(false) {}
 
 int AsrStream::write(const void* buffer, size_t size, bool is_last) {
     if (_writesdone) {
         std::cerr << "[error] write stream has been done" << std::endl;
-	return -1;
+        return -1;
     }
     int status = 0;
     int write_return_status = 0;
@@ -162,25 +166,27 @@ int AsrStream::write(const void* buffer, size_t size, bool is_last) {
         std::cerr << "[error] size < 0 in  write stream" << std::endl;
         status = -1;
     } else {
-    	com::baidu::acu::pie::AudioFragmentRequest request;
-    	request.set_audio_data(buffer, size);
-    	//std::cout << "[debug] will run _stream->Write(request) ... ..." << std::endl;
-    	write_return_status = _stream->Write(request);
-	if (!write_return_status) {
-	    std::cerr << "[error] Write to stream error, status = " << write_return_status << std::endl;
-    	    status = -1;
-	}
+        com::baidu::acu::pie::AudioFragmentRequest request;
+        request.set_audio_data(buffer, size);
+        //std::cout << "[debug] will run _stream->Write(request) ... ..." << std::endl;
+        write_return_status = _stream->Write(request);
+        if (!write_return_status) {
+            std::cerr << "[error] Write to stream error, status = " 
+                      << write_return_status << std::endl;
+            status = -1;
+        }
     }
     if (is_last) {
         std::cout << "[debug] will run _stream->WritesDone" << std::endl;
-	write_return_status = _stream->WritesDone();
-	if (write_return_status) {
-	    std::cout << "[info] Write done" << std::endl;
-	    _writesdone = true;
-	} else {
-	    std::cerr << "[error] Write done in stream error, status = " << write_return_status << std::endl;
-	    status = -1;
-	}
+        write_return_status = _stream->WritesDone();
+        if (write_return_status) {
+            std::cout << "[info] Write done" << std::endl;
+            _writesdone = true;
+        } else {
+            std::cerr << "[error] Write done in stream error, status = " 
+                      << write_return_status << std::endl;
+            status = -1;
+        }
     }
     return status;
 }
@@ -192,10 +198,11 @@ int AsrStream::read(AsrStreamCallBack callback_fun, void* data) {
     read_return_status = _stream->Read(&response);
     if (read_return_status) {
         //std::cout << "[debug] run callback_fun ... ..." << std::endl;
-	callback_fun(response, data);
+        callback_fun(response, data);
         return 0;
     } else {
-        std::cout << "[debug] _stream->Read return false, status = " << read_return_status << std::endl;
+        std::cout << "[debug] _stream->Read return false, status = " 
+                  << read_return_status << std::endl;
         return -1;
     }
 }
@@ -204,7 +211,7 @@ int AsrStream::finish() {
     grpc::Status status = _stream->Finish();
     if (!status.ok()) {
         std::cerr << "Fail to finish stream when destroy AsrStream" << std::endl;
-	return -1;
+        return -1;
     }
     std::cout << "Stream finished." << std::endl;
     return 0;

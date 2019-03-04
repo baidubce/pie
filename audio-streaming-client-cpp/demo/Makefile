@@ -6,24 +6,27 @@ CXXFLAGS += -std=c++11
 INC = -I.. -I../include
 ifeq ($(SYSTEM),Darwin)
 LDFLAGS += -L.. -pthread -lprotobuf -lgrpc++ \
-           -lgrpc++_reflection\
-           -ldl -lgflags -laudio_streaming_client
+	   -lgrpc++_reflection\
+	   -ldl -lgflags -laudio_streaming_client
 else
 LDFLAGS += -L../lib -pthread -lprotobuf -lgrpc++ \
-           -Wl,--no-as-needed -lgrpc++_reflection -Wl,--as-needed\
-           -ldl  -laudio_streaming_client -Wl,-rpath=../lib
+	   -Wl,--no-as-needed -lgrpc++_reflection -Wl,--as-needed\
+	   -ldl  -laudio_streaming_client -Wl,-rpath=../lib
 endif
 PROTOC = protoc
 GRPC_CPP_PLUGIN = grpc_cpp_plugin
 GRPC_CPP_PLUGIN_PATH ?= `which $(GRPC_CPP_PLUGIN)`
 
-all: system-check sample_client
+all: system-check client_demo client_demo_multi_thread
 
-sample_client: asr_offline_sample.cpp
+client_demo: client_demo.cpp
+	$(CXX) $^ $(CXXFLAGS) $(LDFLAGS) $(INC) -o $@
+
+client_demo_multi_thread: client_demo_multi_thread.cpp
 	$(CXX) $^ $(CXXFLAGS) $(LDFLAGS) $(INC) -o $@
 
 clean:
-	rm -f *.o sample_client
+	rm -f *.o client_demo client_demo_multi_thread
 
 
 # The following is to test your system and ensure a smoother experience.
