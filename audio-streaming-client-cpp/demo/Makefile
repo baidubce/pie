@@ -1,11 +1,12 @@
 HOST_SYSTEM = $(shell uname | cut -f 1 -d_)
 SYSTEM ?= $(HOST_SYSTEM)
 CXX = g++
+CC = gcc
 CPPFLAGS += `pkg-config --cflags protobuf grpc`
 CXXFLAGS += -std=c++11
 INC = -I.. -I../include
 ifeq ($(SYSTEM),Darwin)
-LDFLAGS += -L.. -pthread -lprotobuf -lgrpc++ \
+LDFLAGS += -L../lib -pthread -lprotobuf -lgrpc++ \
 	   -lgrpc++_reflection\
 	   -ldl -lgflags -laudio_streaming_client
 else
@@ -17,7 +18,10 @@ PROTOC = protoc
 GRPC_CPP_PLUGIN = grpc_cpp_plugin
 GRPC_CPP_PLUGIN_PATH ?= `which $(GRPC_CPP_PLUGIN)`
 
-all: system-check client_demo client_demo_multi_thread
+all: system-check client_demo client_demo_multi_thread client_demo_c
+
+client_demo_c : client_demo_c.cc
+	$(CC) $^ $(LDFLAGS) $(INC) -o $@
 
 client_demo: client_demo.cpp
 	$(CXX) $^ $(CXXFLAGS) $(LDFLAGS) $(INC) -o $@

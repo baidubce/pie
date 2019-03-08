@@ -23,7 +23,7 @@ vpath %.proto $(PROTOS_PATH)
 
 all: system-check dir-check libaudio_streaming_client.so
 
-libaudio_streaming_client.so: audio_streaming.pb.cc audio_streaming.grpc.pb.cc src/audio_streaming_client.cpp
+libaudio_streaming_client.so: audio_streaming.pb.cc audio_streaming.grpc.pb.cc src/audio_streaming_client.cpp src/audio_streaming_client_wrapper.cc
 	$(CXX) $^ $(CXXFLAGS) $(LDFLAGS) $(INC) -shared -fPIC -o ./lib/$@
 
 %.grpc.pb.cc: %.proto
