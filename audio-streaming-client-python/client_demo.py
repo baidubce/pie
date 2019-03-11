@@ -1,6 +1,7 @@
 # -*-coding:utf-8-*-
 import threading
 from baidu_acu_asr.asr_client import AsrClient
+from baidu_acu_asr.asr_product import AsrProduct
 import os
 import time
 import logging
@@ -76,8 +77,8 @@ def run():
     :return:
     """
     for i in range(30):
-        client = AsrClient(url, port, product_id, enable_flush_data, log_level=log_level)
-        responses = client.get_result("/Users/xiashuai01/TranFile/tem/3.wav")
+        client = AsrClient(url, port, product_id, enable_flush_data, log_level=log_level, send_per_seconds=0.01)
+        responses = client.get_result("/Users/xiashuai01/Downloads/10s.wav")
         # responses = client.get_result("/Users/xiashuai01/Downloads/300s.wav")
 
         try:
@@ -122,16 +123,16 @@ if __name__ == '__main__':
     url = "10.190.115.11"
     port = "8200"
     log_level = 0
-    product_id = "1903"
+    product_id = AsrProduct.CUSTOMER_SERVICE_FINANCE
     enable_flush_data = True
 
     # audio_url = "http://onlinebjplay.baidudomainbcd.com/aitest/ai_stream.flv"
     # run_url_streaming()
 
     # 读取管道数据
-    run_fifo_stream()
+    # run_fifo_stream()
     # 传送文件
-    # run()
+    run()
     # 传送流
     # run_stream()
     # 多线程运行

@@ -2,7 +2,20 @@
 原始 PCM 的录音参数必须符合 8k/16k 采样率、16bit 位深、单声道，支持的格式有：pcm（不压缩）、wav（不压缩，pcm编码）、amr（压缩格式）。
 ## 快速入门
 ### SDK安装
-在本地执行`pip install baidu-acu-asr`安装sdk，创建新的python文件，示例代码如下(也可见client_demo.py)
+#### online
+执行`pip install baidu-acu-asr`安装sdk，创建新的python文件，示例代码如下(也可见client_demo.py)
+#### offline
+```
+## 如果本地机器不存在pip
+tar zxvf pip-19.0.3.tar.gz
+cd pip-19.0.3
+python setup.py install
+
+## 安装，根据机器类型进相应的目录，目前支持mac和centos
+cd [os]-install
+for file in `ls`;do pip install --no-deps $file;done
+```
+
 ### 读取本地文件
 ```python
 # -*-coding:utf-8-*-

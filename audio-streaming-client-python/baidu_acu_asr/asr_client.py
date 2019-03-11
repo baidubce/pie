@@ -21,7 +21,7 @@ class AsrClient(object):
 
     request = audio_streaming_pb2.InitRequest()
 
-    def __init__(self, server_ip, port, product_id, enable_flush_data,
+    def __init__(self, server_ip, port, product, enable_flush_data,
                  enable_chunk=True,
                  enable_long_speech=True,
                  sample_point_bytes=2,
@@ -39,7 +39,7 @@ class AsrClient(object):
         self.request.enable_long_speech = enable_long_speech
         # 是否返回中间翻译结果
         self.request.enable_flush_data = enable_flush_data
-        self.request.product_id = product_id
+        self.request.product_id = product.value[1]
         self.request.sample_point_bytes = sample_point_bytes
         # 指定每次发送的音频数据包大小，通常不需要修改
         self.request.send_per_seconds = send_per_seconds
@@ -49,7 +49,7 @@ class AsrClient(object):
         # 服务端的日志输出级别
         self.request.log_level = log_level
         # 每次发送的音频字节数
-        self.send_package_size = int(send_per_seconds * ProductMap.get(product_id) * sample_point_bytes)
+        self.send_package_size = int(send_per_seconds * product.value[2] * sample_point_bytes)
 
     def generate_file_stream(self, file_path):
         """
