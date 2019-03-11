@@ -62,7 +62,7 @@ int main(int argc, char* argv[]) {
         if (asr_client_init(client, argv[2]) != 0) {
             printf("Init asr client failed\n");
             return -1;
-
+        }
     } else {
         asr_client_set_product_id(client, "1906");
         if (asr_client_init(client, "10.190.115.11:8200")) {
