@@ -65,7 +65,7 @@ int main(int argc, char* argv[]) {
         }
     } else {
         asr_client_set_product_id(client, "1906");
-        if (asr_client_init(client, "10.190.115.11:8200")) {
+        if (asr_client_init(client, "127.0.0.1:8200")) {
             printf("Init asr client failed\n");
             return -1;
         }
