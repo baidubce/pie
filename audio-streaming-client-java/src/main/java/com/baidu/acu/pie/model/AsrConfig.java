@@ -11,7 +11,7 @@ import lombok.NonNull;
  * AsrConfig
  * 不提供Setter，构造时就必须将所有参数设置好。
  *
- * @author Shu Lingjie(shulingjie@baidu.com)
+ * @author Cynric Shu (cynricshu@gmail.com)
  */
 @Getter
 public class AsrConfig {

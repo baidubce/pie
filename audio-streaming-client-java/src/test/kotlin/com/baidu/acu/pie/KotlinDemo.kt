@@ -14,7 +14,7 @@ import java.nio.file.Paths
 /**
  * KotlinDemo
  *
- * @author Shu Lingjie(shulingjie@baidu.com)
+ * @author Cynric Shu (cynricshu@gmail.com)
  */
 @Ignore
 class KotlinDemo {

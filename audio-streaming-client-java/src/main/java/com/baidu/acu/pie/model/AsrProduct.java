@@ -7,7 +7,7 @@ import lombok.Getter;
 /**
  * AsrProduct
  *
- * @author Shu Lingjie(shulingjie@baidu.com)
+ * @author Cynric Shu (cynricshu@gmail.com)
  */
 public enum AsrProduct {
     CUSTOMER_SERVICE("客服模型", "1903", 8000),

@@ -12,7 +12,7 @@ import kotlin.test.assertEquals
 /**
  * AsrClientTest
  *
- * @author Shu Lingjie(shulingjie@baidu.com)
+ * @author Cynric Shu (cynricshu@gmail.com)
  */
 class AsrClientTest {
     val asrConfig = AsrConfig().serverIp("127.0.0.1").serverPort(8080).product(AsrProduct.CUSTOMER_SERVICE_FINANCE)

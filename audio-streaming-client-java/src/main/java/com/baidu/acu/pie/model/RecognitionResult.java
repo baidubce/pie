@@ -12,7 +12,7 @@ import lombok.Data;
  *  如果将 AsrConfig 中的 enableFlushData 设为 true，那么系统会将所有中间的转写结果都返回。
  *  如果设为 false，那么系统只会返回完整的单句识别结果。
  *
- * @author Shu Lingjie(shulingjie@baidu.com)
+ * @author Cynric Shu (cynricshu@gmail.com)
  */
 @Data
 @Builder

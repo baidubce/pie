@@ -24,7 +24,7 @@ import io.grpc.stub.StreamObserver;
 /**
  * JavaDemo
  *
- * @author Shu Lingjie(shulingjie@baidu.com)
+ * @author Cynric Shu (cynricshu@gmail.com)
  */
 public class JavaDemo {
     public static void main(String[] args) {

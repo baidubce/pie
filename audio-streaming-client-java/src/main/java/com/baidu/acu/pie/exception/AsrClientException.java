@@ -5,7 +5,7 @@ package com.baidu.acu.pie.exception;
 /**
  * AsrClientException
  *
- * @author Shu Lingjie(shulingjie@baidu.com)
+ * @author Cynric Shu (cynricshu@gmail.com)
  */
 public class AsrClientException extends RuntimeException {
     public AsrClientException(String message) {

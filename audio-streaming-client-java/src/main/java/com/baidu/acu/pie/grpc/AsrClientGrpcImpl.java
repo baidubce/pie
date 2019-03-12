@@ -39,7 +39,7 @@ import lombok.extern.slf4j.Slf4j;
 /**
  * AsrClientGrpcImpl
  *
- * @author Shu Lingjie(shulingjie@baidu.com)
+ * @author Cynric Shu (cynricshu@gmail.com)
  */
 @Slf4j
 public class AsrClientGrpcImpl implements AsrClient {
