@@ -10,7 +10,8 @@ setup(
     name="baidu-acu-asr",
     version="1.1.6",
     description="asr grpc client",
-    long_description= "test",
+    long_description="[https://github.com/baidubce/pie/tree/master/audio-streaming-client-python]" +
+                     "(https://github.com/baidubce/pie/tree/master/audio-streaming-client-python)",
     long_description_content_type='text/markdown',
     author="Baidu",
     url="https://github.com/baidubce/pie/tree/master/audio-streaming-client-python-sdk",
@@ -19,6 +20,5 @@ setup(
     license="Apache License",
     python_requires=">=2.7",
     install_requires=["protobuf", "grpcio", 'threadpool'],
-    keywords = ['baidu', 'asr', 'speech'],
+    keywords=['baidu', 'asr', 'speech'],
 )
-
