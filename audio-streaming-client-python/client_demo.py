@@ -78,7 +78,8 @@ def run():
     """
     for i in range(30):
         client = AsrClient(url, port, product_id, enable_flush_data, log_level=log_level, send_per_seconds=0.01)
-        responses = client.get_result("/Users/xiashuai01/Downloads/10s.wav")
+        # responses = client.get_result("/Users/xiashuai01/Downloads/10s.wav")
+        responses = client.get_result("/Users/xiashuai01/Downloads/xeq16k.wav")
         # responses = client.get_result("/Users/xiashuai01/Downloads/300s.wav")
 
         try:
@@ -120,10 +121,11 @@ def run_url_streaming():
 
 if __name__ == '__main__':
     logging.basicConfig(filename="asr_result.log")
-    url = "10.190.115.11"
+    # url = "10.190.115.11"
+    url = "172.18.5.15"
     port = "8200"
     log_level = 0
-    product_id = AsrProduct.CUSTOMER_SERVICE_FINANCE
+    product_id = AsrProduct.CHONGQING_FAYUAN
     enable_flush_data = True
 
     # audio_url = "http://onlinebjplay.baidudomainbcd.com/aitest/ai_stream.flv"
