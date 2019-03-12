@@ -122,7 +122,7 @@ def run_url_streaming():
 if __name__ == '__main__':
     logging.basicConfig(filename="asr_result.log")
     # url = "10.190.115.11"
-    url = "172.18.5.15"
+    url = "172.18.53.15"
     port = "8200"
     log_level = 0
     product_id = AsrProduct.CHONGQING_FAYUAN
