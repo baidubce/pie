@@ -50,6 +50,16 @@ public class TtsFragment extends BaseFragment {
     public void onStart() {
         super.onStart();
 
+        int spd = SpUtils.getInstance().getInt(Constants.SPD);
+        int pit = SpUtils.getInstance().getInt(Constants.PIT);
+        int vol = SpUtils.getInstance().getInt(Constants.VOl);
+
+        if (spd == -1 || pit == -1 || vol == -1) {
+            SpUtils.getInstance().putInt(Constants.SPD, 5);
+            SpUtils.getInstance().putInt(Constants.PIT, 5);
+            SpUtils.getInstance().putInt(Constants.VOl, 5);
+        }
+
         String str1 = SpUtils.getInstance().getString(Constants.SERVER_IP_ADDR_PORT_TTS);
         if (TextUtils.isEmpty(str1)) {
             str1 = Constants.SERVER_IP_ADDR_PORT_TTS_DEF;
@@ -94,9 +104,20 @@ public class TtsFragment extends BaseFragment {
         }
 
         String str1 = SpUtils.getInstance().getString(Constants.SERVER_IP_ADDR_PORT_TTS);
+        int spd = SpUtils.getInstance().getInt(Constants.SPD);
+        int pit = SpUtils.getInstance().getInt(Constants.PIT);
+        int vol = SpUtils.getInstance().getInt(Constants.VOl);
 
         RetrofitClient client = new RetrofitClient(str1);
-        Call<ResponseBody> call = client.getRetrofitService().text2audio(result, "zh", 993, 1, "fa:16:3c:40:38:4a");
+        Call<ResponseBody> call = client.getRetrofitService().text2audio(
+                result,
+                "zh",
+                993,
+                1,
+                "fa:16:3c:40:38:4a",
+                spd,
+                pit,
+                vol);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {

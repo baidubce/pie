@@ -12,5 +12,8 @@ public interface RetrofitService {
                                   @Query("lan") String lan,
                                   @Query("pdt") int pdt,
                                   @Query("ctp") int ctp,
-                                  @Query("cuid") String cuid);
+                                  @Query("cuid") String cuid,
+                                  @Query("spd") int spd,
+                                  @Query("pit") int pit,
+                                  @Query("vol") int vol);
 }

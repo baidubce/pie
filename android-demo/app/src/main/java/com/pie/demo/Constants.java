@@ -27,4 +27,7 @@ public class Constants {
 
     public static final String SERVER_IP_ADDR_PORT_TTS = "server_ip_addr_port_tts";
     public static final String SERVER_IP_ADDR_PORT_TTS_DEF = "http://10.61.217.37:8088";
+    public static final String SPD = "spd";
+    public static final String PIT = "pit";
+    public static final String VOl = "vol";
 }

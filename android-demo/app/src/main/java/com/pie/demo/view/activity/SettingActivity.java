@@ -28,7 +28,7 @@ public class SettingActivity extends AppCompatActivity {
     private int checkedRadioButtonId = -1;
 
     private Button mBTTTS;
-    private EditText mEtPortIpTTS;
+    private EditText mEtPortIpTTS, mEtSpd, mEtPit, mEtVol;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +60,10 @@ public class SettingActivity extends AppCompatActivity {
 
         this.mEtPortIpTTS = ((EditText) findViewById(R.id.mEtPortIpTTS));
         this.mBTTTS = ((Button) findViewById(R.id.mBTTTS));
+        mEtSpd = findViewById(R.id.mEtSpd);
+        mEtPit = findViewById(R.id.mEtPit);
+        mEtVol = findViewById(R.id.mEtVol);
+
         LinearLayout localLinearLayout1 = (LinearLayout) findViewById(R.id.mLOne);
         LinearLayout localLinearLayout2 = (LinearLayout) findViewById(R.id.mLTwo);
         if ("tts".equals(this.flag)) {
@@ -112,6 +116,13 @@ public class SettingActivity extends AppCompatActivity {
         String str1 = SpUtils.getInstance().getString(Constants.SERVER_IP_ADDR_PORT_TTS);
         this.mEtPortIpTTS.setText(str1);
 
+        int spd = SpUtils.getInstance().getInt(Constants.SPD);
+        int pit = SpUtils.getInstance().getInt(Constants.PIT);
+        int vol = SpUtils.getInstance().getInt(Constants.VOl);
+
+        mEtSpd.setText(String.valueOf(spd));
+        mEtPit.setText(String.valueOf(pit));
+        mEtVol.setText(String.valueOf(vol));
 
     }
 
@@ -163,7 +174,21 @@ public class SettingActivity extends AppCompatActivity {
                     SpUtils.getInstance().putString(Constants.SERVER_IP_ADDR_PORT_TTS, ipAndport);
                 }
 
+                String spd = mEtSpd.getText().toString().trim();
+                String pit = mEtPit.getText().toString().trim();
+                String vol = mEtVol.getText().toString().trim();
 
+                if (!TextUtils.isEmpty(spd)) {
+                    SpUtils.getInstance().putInt(Constants.SPD, Integer.parseInt(spd));
+                }
+                if (!TextUtils.isEmpty(pit)) {
+                    SpUtils.getInstance().putInt(Constants.PIT, Integer.parseInt(pit));
+
+                }
+                if (!TextUtils.isEmpty(vol)) {
+                    SpUtils.getInstance().putInt(Constants.VOl, Integer.parseInt(vol));
+
+                }
 
                 finish();
             }

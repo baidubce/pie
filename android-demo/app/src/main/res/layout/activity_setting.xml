@@ -59,8 +59,48 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="设置ip,port"
+            android:textColor="#000" />
+
         <EditText
             android:id="@+id/mEtPortIpTTS"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="设置语速，取值0-15，默认为5中语速"
+            android:textColor="#000" />
+
+        <EditText
+            android:id="@+id/mEtSpd"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="设置音调，取值0-15，默认为5中语调"
+            android:textColor="#000" />
+
+        <EditText
+            android:id="@+id/mEtPit"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="设置音量，取值0-15，默认为5中音量"
+            android:textColor="#000" />
+
+        <EditText
+            android:id="@+id/mEtVol"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content" />
 
@@ -69,5 +109,6 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="保存" />
+
     </LinearLayout>
 </LinearLayout>
