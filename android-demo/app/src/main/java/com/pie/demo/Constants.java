@@ -25,4 +25,6 @@ public class Constants {
     public static final String SAMPLERATEINHZ = "sampleRateInHz";
 
 
+    public static final String SERVER_IP_ADDR_PORT_TTS = "server_ip_addr_port_tts";
+    public static final String SERVER_IP_ADDR_PORT_TTS_DEF = "http://10.61.217.37:8088";
 }

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/mTvTts"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10.0dip"
+        android:layout_marginTop="10.0dip"
+        android:layout_marginRight="10.0dip"
+        android:background="@drawable/bg_scrollview"
+        android:padding="10.0dip"
+        android:textColor="#ff000000"
+        android:textSize="16.0sp" />
+
+    <EditText
+        android:id="@+id/mEditText"
+        android:layout_width="fill_parent"
+        android:layout_height="0.0dip"
+        android:layout_marginLeft="10.0dip"
+        android:layout_marginRight="10.0dip"
+        android:layout_weight="1.0"
+        android:background="@drawable/bg_scrollview"
+        android:gravity="top" />
+
+    <com.pie.demo.view.weiget.VoiceImgView
+        android:id="@+id/mButton"
+        android:layout_width="200.0dip"
+        android:layout_height="50.0dip"
+        android:layout_marginTop="10.0dip"
+        android:layout_marginBottom="20.0dip"
+        android:text="开始播放" />
+</LinearLayout>

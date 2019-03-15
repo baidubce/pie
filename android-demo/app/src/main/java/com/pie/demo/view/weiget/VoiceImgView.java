@@ -26,6 +26,7 @@ public class VoiceImgView extends android.support.v7.widget.AppCompatButton {
     private Paint paint;
     private Paint paint1;
     private ValueAnimator arcValueAnimator;
+    private String title;
 
     public VoiceImgView(Context context) {
         super(context);
@@ -51,7 +52,8 @@ public class VoiceImgView extends android.support.v7.widget.AppCompatButton {
         backDrawable.setCornerRadius(120);
         setBackground(backDrawable);
 
-        setText("开始录音");
+//        setText("开始录音");
+        title = getText().toString().trim();
         setTextColor(Color.WHITE);
 
         paint = new Paint();
@@ -94,10 +96,10 @@ public class VoiceImgView extends android.support.v7.widget.AppCompatButton {
     }
 
     public void startAnim() {
+        setText("");
 
         isMorphing = true;
 
-        setText("");
         ValueAnimator valueAnimator = ValueAnimator.ofInt(width, heigh);
 
         valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
@@ -139,9 +141,12 @@ public class VoiceImgView extends android.support.v7.widget.AppCompatButton {
 
     public void stopAnim() {
 
-        setText("开始录音");
+        setText(title);
+
         isMorphing = false;
-        arcValueAnimator.cancel();
+        if (arcValueAnimator != null) {
+            arcValueAnimator.cancel();
+        }
         invalidate();
 
         ValueAnimator valueAnimator = ValueAnimator.ofInt(heigh, width);

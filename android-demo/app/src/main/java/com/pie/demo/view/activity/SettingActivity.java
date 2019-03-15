@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
@@ -25,6 +26,9 @@ public class SettingActivity extends AppCompatActivity {
     private RadioGroup mRadioGroup;
     private String flag;
     private int checkedRadioButtonId = -1;
+
+    private Button mBTTTS;
+    private EditText mEtPortIpTTS;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +56,19 @@ public class SettingActivity extends AppCompatActivity {
         mEtPort = findViewById(R.id.mEtPort);
         mBT = findViewById(R.id.mBT);
         mRadioGroup = findViewById(R.id.mRadioGroup);
+
+
+        this.mEtPortIpTTS = ((EditText) findViewById(R.id.mEtPortIpTTS));
+        this.mBTTTS = ((Button) findViewById(R.id.mBTTTS));
+        LinearLayout localLinearLayout1 = (LinearLayout) findViewById(R.id.mLOne);
+        LinearLayout localLinearLayout2 = (LinearLayout) findViewById(R.id.mLTwo);
+        if ("tts".equals(this.flag)) {
+            localLinearLayout1.setVisibility(View.GONE);
+            localLinearLayout2.setVisibility(View.VISIBLE);
+        } else {
+            localLinearLayout1.setVisibility(View.VISIBLE);
+            localLinearLayout2.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -90,6 +107,12 @@ public class SettingActivity extends AppCompatActivity {
                 }
                 break;
         }
+
+
+        String str1 = SpUtils.getInstance().getString(Constants.SERVER_IP_ADDR_PORT_TTS);
+        this.mEtPortIpTTS.setText(str1);
+
+
     }
 
     private void initLisener() {
@@ -103,21 +126,21 @@ public class SettingActivity extends AppCompatActivity {
 
                 switch (flag) {
                     case "one":
-                        if (!TextUtils.isEmpty(ip) && !TextUtils.isEmpty(port) && checkedRadioButtonId != -1) {
+                        if (!TextUtils.isEmpty(ip) && !TextUtils.isEmpty(port)) {
                             SpUtils.getInstance().putString(Constants.ONEADDRESS, ip);
                             SpUtils.getInstance().putString(Constants.ONEPORT, port);
                             SpUtils.getInstance().putInt(Constants.ONEASRPRODUCT, checkedRadioButtonId);
                         }
                         break;
                     case "two":
-                        if (!TextUtils.isEmpty(ip) && !TextUtils.isEmpty(port) && checkedRadioButtonId != -1) {
+                        if (!TextUtils.isEmpty(ip) && !TextUtils.isEmpty(port)) {
                             SpUtils.getInstance().putString(Constants.TWOADDRESS, ip);
                             SpUtils.getInstance().putString(Constants.TWOPORT, port);
                             SpUtils.getInstance().putInt(Constants.TWOASRPRODUCT, checkedRadioButtonId);
                         }
                         break;
                     case "three":
-                        if (!TextUtils.isEmpty(ip) && !TextUtils.isEmpty(port) && checkedRadioButtonId != -1) {
+                        if (!TextUtils.isEmpty(ip) && !TextUtils.isEmpty(port)) {
                             SpUtils.getInstance().putString(Constants.THREEADDRESS, ip);
                             SpUtils.getInstance().putString(Constants.THREEPORT, port);
                             SpUtils.getInstance().putInt(Constants.THREEASRPRODUCT, checkedRadioButtonId);
@@ -127,6 +150,22 @@ public class SettingActivity extends AppCompatActivity {
 
                 finish();
 
+            }
+        });
+
+        mBTTTS.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String ipAndport = mEtPortIpTTS.getText().toString().trim();
+
+                if (!TextUtils.isEmpty(ipAndport)) {
+                    SpUtils.getInstance().putString(Constants.SERVER_IP_ADDR_PORT_TTS, ipAndport);
+                }
+
+
+
+                finish();
             }
         });
     }
@@ -140,14 +179,17 @@ public class SettingActivity extends AppCompatActivity {
             case "one":
                 int oneAsr = SpUtils.getInstance().getInt(Constants.ONEASRPRODUCT);
                 isCheckId = oneAsr;
+                checkedRadioButtonId = oneAsr;
                 break;
             case "two":
                 int twoAsr = SpUtils.getInstance().getInt(Constants.TWOASRPRODUCT);
                 isCheckId = twoAsr;
+                checkedRadioButtonId = twoAsr;
                 break;
             case "three":
                 int threeAsr = SpUtils.getInstance().getInt(Constants.THREEASRPRODUCT);
                 isCheckId = threeAsr;
+                checkedRadioButtonId = threeAsr;
                 break;
         }
         mRadioGroup.removeAllViews();
