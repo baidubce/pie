@@ -9,7 +9,7 @@ public class MediaPlayerManeger {
     public MediaPlayerManegerinterface mediaPlayerManegerinterface;
 
     public static MediaPlayerManeger getInstance() {
-        if (instance == null) {
+        if (null == instance) {
             synchronized (MediaPlayerManeger.class) {
                 if (null == instance) {
                     instance = new MediaPlayerManeger();
