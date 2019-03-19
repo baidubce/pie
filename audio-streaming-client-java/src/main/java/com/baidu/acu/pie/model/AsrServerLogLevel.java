@@ -7,7 +7,7 @@ import lombok.Getter;
 /**
  * AsrServerLogLevel
  *
- * @author Shu Lingjie(shulingjie@baidu.com)
+ * @author Cynric Shu (cynricshu@gmail.com)
  */
 public enum AsrServerLogLevel {
     OFF(0),

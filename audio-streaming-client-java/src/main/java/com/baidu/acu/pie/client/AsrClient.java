@@ -16,7 +16,7 @@ import io.grpc.stub.StreamObserver;
 /**
  * AsrClient
  *
- * @author Shu Lingjie(shulingjie@baidu.com)
+ * @author Cynric Shu (cynricshu@gmail.com)
  */
 public interface AsrClient {
     /**

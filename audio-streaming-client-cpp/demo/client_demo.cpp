@@ -76,7 +76,7 @@ int main(int argc, char* argv[]) {
         client.init(argv[2]);
     } else {
         client.set_product_id("1906");
-        client.init("10.190.115.11:8200");
+        client.init("127.0.0.1:8200");
     }
     
     // start to write and read one by one

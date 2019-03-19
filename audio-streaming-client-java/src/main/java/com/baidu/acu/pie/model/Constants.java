@@ -5,7 +5,7 @@ package com.baidu.acu.pie.model;
 /**
  * Constant
  *
- * @author Shu Lingjie(shulingjie@baidu.com)
+ * @author Cynric Shu (cynricshu@gmail.com)
  */
 public class Constants {
     public static final String ASR_RECOGNITION_RESULT_TIME_FORMAT = "HH:mm:ss.SSS";

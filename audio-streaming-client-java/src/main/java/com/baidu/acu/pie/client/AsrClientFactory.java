@@ -8,7 +8,7 @@ import com.baidu.acu.pie.model.AsrConfig;
 /**
  * AsrClientFactory
  *
- * @author Shu Lingjie(shulingjie@baidu.com)
+ * @author Cynric Shu (cynricshu@gmail.com)
  */
 public class AsrClientFactory {
     public static AsrClient buildClient(AsrConfig asrConfig) {

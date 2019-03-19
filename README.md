@@ -1,18 +1,21 @@
 ## 百度云流式语音识别客户端
 
 ### 项目结构
-- [audio-streaming-server-cpp](https://github.com/baidubce/pie/tree/master/audio-streaming-client-cpp)：c++版本client sdk
+- [audio-streaming-server-cpp](https://github.com/baidubce/pie/tree/master/audio-streaming-client-cpp)：c++/c版本client sdk
 
 - [audio-streaming-server-java](https://github.com/baidubce/pie/tree/master/audio-streaming-client-java)：java版本client sdk
 
 - [audio-streaming-server-python](https://github.com/baidubce/pie/tree/master/audio-streaming-client-python)：python版本client sdk
 
+- [android-demo](https://github.com/baidubce/pie/tree/master/android-demo)：基于java sdk实现的android实时音频流识别的demo app
+
 ### 功能
-本部分代码为asr streaming client端，实现的功能如下：
+本部分代码为asr streaming client端，支持的场景如下：
 
 - 大音频文件的识别
 - 音频流url的识别
 - 管道音频流的识别
+- 实时音频流的识别
 
 ### 常用参数
 以下列举了常用的参数，具体参数可以参考对应目录的client
@@ -26,7 +29,7 @@
 ### Examples
 在对应的目录下找到demo client运行：
 
-- [c++](https://github.com/baidubce/pie/blob/master/audio-streaming-client-cpp/samples)
+- [c++/c](https://github.com/baidubce/pie/blob/master/audio-streaming-client-cpp/samples)
 
 - [java](https://github.com/baidubce/pie/blob/master/audio-streaming-client-java/src/main/java/com/baidu/acu/pie/demo)
 
