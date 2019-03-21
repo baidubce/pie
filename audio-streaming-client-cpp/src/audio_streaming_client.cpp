@@ -15,7 +15,8 @@ DEFINE_bool(default_enable_chunk, true, "enable chunk");
 DEFINE_uint32(default_log_level, 4, "log level");
 DEFINE_double(default_send_per_second, 0.02, "send per second");
 DEFINE_double(default_sleep_ratio, 1, "sleep ratio");
-DEFINE_int32(default_timeout, 100, "timeout");
+// you can set timeout by your own
+//DEFINE_int32(default_timeout, 100, "timeout");
 DEFINE_uint32(default_send_package_size, 320, "default bytes send to server");
 
 namespace com {
