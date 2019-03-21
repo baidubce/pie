@@ -7,7 +7,7 @@
 
 - [audio-streaming-server-python](https://github.com/baidubce/pie/tree/master/audio-streaming-client-python)：python版本client sdk
 
-- [audio-streaming-server-c#](https://github.com/baidubce/pie/tree/master/audio-streaming-client-c#)：c#版本client sdk, beta version 
+- [audio-streaming-server-c#](https://github.com/baidubce/pie/tree/master/audio-streaming-client-c%23)：c#版本client sdk, beta version 
 
 - [android-demo](https://github.com/baidubce/pie/tree/master/android-demo)：基于java sdk实现的android实时音频流识别的demo app
 
@@ -38,7 +38,7 @@
 
 - [python](https://github.com/baidubce/pie/blob/master/audio-streaming-client-python)
 
-- [c#](https://github.com/baidubce/pie/tree/master/audio-streaming-client-c#)
+- [c#](https://github.com/baidubce/pie/tree/master/audio-streaming-client-c%23)
 
 - [android]()
 
