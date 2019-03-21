@@ -14,7 +14,7 @@ void default_callback(AudioFragmentResponseWrapper* resp, void* data) {
 typedef struct {
     AsrStreamWrapper* stream;
     FILE* fp;
-    int send_package_size;
+    unsigned int send_package_size;
 } WriteArguments;
 
 void* write_to_stream(void* args) {
@@ -86,7 +86,7 @@ int main(int argc, char* argv[]) {
     WriteArguments arguments;
     arguments.stream = stream_wrapper;
     arguments.fp = fp;
-    arguments.send_package_size = 320;
+    arguments.send_package_size = asr_client_get_send_package_size(client);
 
     pthread_create(
             &writer,
