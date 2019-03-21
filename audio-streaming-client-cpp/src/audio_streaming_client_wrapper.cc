@@ -35,16 +35,12 @@ void asr_client_set_send_per_seconds(AsrClientWrapper* asr_client, double send_p
     return ((AsrClient*) asr_client)->set_send_per_seconds(send_per_seconds);
 }
 
-void asr_client_set_sleep_retio(AsrClientWrapper* asr_client, double sleep_ratio) {
+void asr_client_set_sleep_ratio(AsrClientWrapper* asr_client, double sleep_ratio) {
     return ((AsrClient*) asr_client)->set_sleep_ratio(sleep_ratio);
 }
 
 void asr_client_set_product_id(AsrClientWrapper* asr_client, char* product_id) {
     return ((AsrClient*) asr_client)->set_product_id(std::string(product_id));
-}
-
-void asr_client_set_flush_data(AsrClientWrapper* asr_client, bool enable_flush) {
-    return ((AsrClient*) asr_client)->set_enable_flush_data(enable_flush);
 }
 
 unsigned int asr_client_get_send_package_size(AsrClientWrapper* asr_client) {

@@ -56,7 +56,7 @@ int main(int argc, char* argv[]) {
     // create AsrClient
     AsrClientWrapper* client = asr_client_create();
 
-    asr_client_set_flush_data(client, true);
+    asr_client_set_enable_flush_data(client, true);
     if (argc == 3) {
         asr_client_set_product_id(client, argv[1]);
         if (asr_client_init(client, argv[2]) != 0) {
