@@ -38,7 +38,7 @@
 
 - [python](https://github.com/baidubce/pie/blob/master/audio-streaming-client-python)
 
-- [c#](https://github.com/baidubce/pie/blob/master/audio-streaming-client-c#)
+- [c#](https://github.com/baidubce/pie/tree/master/audio-streaming-client-c#)
 
 - [android]()
 
