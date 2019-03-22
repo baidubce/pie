@@ -8,7 +8,7 @@ using Google.Protobuf;
 
 namespace Com.Baidu.Acu.Pie
 {
-    class AsrStream
+    public class AsrStream
     {
         private readonly AsyncDuplexStreamingCall<AudioFragmentRequest, AudioFragmentResponse> stream;
         internal AsrStream(AsyncDuplexStreamingCall<AudioFragmentRequest, AudioFragmentResponse> stream)
@@ -35,7 +35,6 @@ namespace Com.Baidu.Acu.Pie
 
         public Task<bool> MoveNext()
         {
-            Console.WriteLine("Move next");
             return stream.ResponseStream.MoveNext();
         }
 
@@ -44,8 +43,9 @@ namespace Com.Baidu.Acu.Pie
             return stream.ResponseStream.Current;
         }
     }
-    class AsrClient
+    public class AsrClient
     {
+        private Channel channel;
         public bool Flush { get; set; }
         public string ProductId { get; }
         public string AppName { get; set; }
@@ -86,8 +86,14 @@ namespace Com.Baidu.Acu.Pie
             this.LogLevel = 4;
             this.AppName = "csharp_sdk";
             this.Flush = true;
-            var channel = new Channel(serverAddress, ChannelCredentials.Insecure);
+            channel = new Channel(serverAddress, ChannelCredentials.Insecure);
             client = new AsrServiceClient(channel);
+        }
+
+        ~AsrClient()
+        {
+            // do not wait
+            channel.ShutdownAsync();
         }
 
         public AsrStream NewStream()
@@ -104,7 +110,6 @@ namespace Com.Baidu.Acu.Pie
             initRequest.SendPerSeconds = this.SendPerSeconds;
             initRequest.SamplePointBytes = 2;
             Metadata meta = new Metadata();
-            //initRequest.ToByteString().ToBase64();
             meta.Add("audio_meta", initRequest.ToByteString().ToBase64());
             var stream = client.send(meta);
             return new AsrStream(stream);

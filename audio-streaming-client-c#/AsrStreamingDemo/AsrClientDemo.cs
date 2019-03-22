@@ -19,12 +19,9 @@ namespace ASRStreamingSdk
             Console.WriteLine(s);
         }
 
-        public async Task FileAsrAsync(string fileName)
+        public async Task FileAsrAsync(AsrStream stream, string fileName, int packageSize)
         {
-            var client = new AsrClient("180.76.107.131:8213", "1903");
-            client.LogLevel = 0;
-            Log("Create client");
-            var stream = client.NewStream();
+
             Log("Create new stream");
 
             FileStream file = new FileStream(fileName, FileMode.Open, FileAccess.Read);
@@ -50,28 +47,38 @@ namespace ASRStreamingSdk
 
             while (true)
             {
-                var bytes = reader.ReadBytes(client.RecommendPacketSize);
+                var bytes = reader.ReadBytes(packageSize);
                 if (bytes.Length == 0)
                 {
                     await stream.WriteComplete();
-                    Console.WriteLine("Write done");
+                    Log("Write done");
                     break;
                 }
                 await stream.Write(bytes);
-                Console.WriteLine("Write one fragment with size={0}", client.RecommendPacketSize);
+                Log("Write one fragment with size={0}", packageSize);
             }
 
             await responseReaderTask;
             reader.Close();
             file.Close();
             Log("demo complete");
-
         }
 
         static void Main(string[] args)
         {
+            var client = new AsrClient("127.0.0.1:8200", "1903");
+            client.LogLevel = 0;
+            Console.WriteLine("Create client");
             AsrClientDemo demo = new AsrClientDemo();
-            demo.FileAsrAsync("./your_real_wav_or_pcm").Wait();
+
+            var stream0 = client.NewStream();
+            var task0 = demo.FileAsrAsync(stream0, ".\\your_file_0.wav", client.RecommendPacketSize);
+
+            var stream1 = client.NewStream();
+            var task1 = demo.FileAsrAsync(stream1, ".\\your_file_1.wav", client.RecommendPacketSize);
+
+            task0.Wait();
+            task1.Wait();
             Console.ReadLine();
         }
     }
