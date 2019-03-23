@@ -1,3 +1,8 @@
+# 0.9.2
+## feature
+- 开放了对于 sendPerSeconds 参数的设置
+- 现在 sleepRatio 可以小于 1
+
 # 0.9.1
 ## feature
 添加了两种新的 Product 类型：远场模型和远场模型-机器人领域

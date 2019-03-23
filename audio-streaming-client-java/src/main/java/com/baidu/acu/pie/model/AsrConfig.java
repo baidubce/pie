@@ -91,10 +91,12 @@ public class AsrConfig {
         return this;
     }
 
+    public AsrConfig sendPerSeconds(double sendPerSeconds) {
+        this.sendPerSeconds = sendPerSeconds;
+        return this;
+    }
+
     public AsrConfig sleepRatio(double sleepRatio) {
-        if (sleepRatio < 1) {
-            throw new AsrClientException("sleep ratio must greater than 1.0");
-        }
         this.sleepRatio = sleepRatio;
         return this;
     }
