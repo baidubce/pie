@@ -15,7 +15,8 @@ DEFINE_bool(default_enable_chunk, true, "enable chunk");
 DEFINE_uint32(default_log_level, 4, "log level");
 DEFINE_double(default_send_per_second, 0.02, "send per second");
 DEFINE_double(default_sleep_ratio, 1, "sleep ratio");
-DEFINE_int32(default_timeout, 100, "timeout");
+// you can set timeout by your own
+//DEFINE_int32(default_timeout, 100, "timeout");
 DEFINE_uint32(default_send_package_size, 320, "default bytes send to server");
 
 namespace com {
@@ -130,8 +131,9 @@ AsrStream* AsrClient::get_stream() {
     } else {
         std::cout << "[debug] Create stub success in get_stream" << std::endl;
     }
-    asr_stream->_context.set_deadline(std::chrono::system_clock::now() + 
-                                      std::chrono::seconds(FLAGS_default_timeout));
+    // you can set timeout on your own
+    //asr_stream->_context.set_deadline(std::chrono::system_clock::now() + 
+    //                                  std::chrono::seconds(FLAGS_default_timeout));
     asr_stream->_context.AddMetadata("audio_meta", base64_encode(_init_request.SerializeAsString()));
     asr_stream->_stream = asr_stream->_stub->send(&(asr_stream->_context));
     if (!asr_stream->_stream) {
@@ -210,7 +212,8 @@ int AsrStream::read(AsrStreamCallBack callback_fun, void* data) {
 int AsrStream::finish() {
     grpc::Status status = _stream->Finish();
     if (!status.ok()) {
-        std::cerr << "Fail to finish stream when destroy AsrStream" << std::endl;
+        std::cerr << "Fail to finish stream when destroy AsrStream, error code = " << status.error_code() 
+                  << ", error message = " << status.error_message() << std::endl;
         return -1;
     }
     std::cout << "Stream finished." << std::endl;
