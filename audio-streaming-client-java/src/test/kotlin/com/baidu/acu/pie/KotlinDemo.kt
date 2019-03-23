@@ -9,6 +9,7 @@ import com.baidu.acu.pie.model.AsrProduct
 import org.junit.Ignore
 import org.junit.Test
 import java.io.File
+import java.nio.file.Files
 import java.nio.file.Paths
 
 /**
@@ -23,11 +24,56 @@ class KotlinDemo {
         val asrConfig = AsrConfig()
             .serverIp("127.0.0.1")
             .serverPort(80)
-            .appName("simple demo")
             .product(AsrProduct.CUSTOMER_SERVICE_FINANCE)
+            .appName("simple demo")
+            .timeoutMinutes(120)
 
         val asrClient = AsrClientFactory.buildClient(asrConfig)
         return asrClient
+    }
+
+    @Test
+    fun `batch Test And Save Result to File`() {
+        val asrClient = createAsrClient()
+        val dirPath = Paths.get("testaudio")
+        val fileList = Files.list(dirPath)
+
+        val resultFile = dirPath.resolve("result.txt").toFile()
+        resultFile.writeText(
+            String.format(
+                AsrConfig.TITLE_FORMAT,
+                "file_name",
+                "serial_num",
+                "err_no",
+                "err_message",
+                "start_time",
+                "end_time",
+                "result"
+            )
+        )
+        resultFile.appendText("\n")
+
+        for (file in fileList) {
+            val results = asrClient.syncRecognize(dirPath.resolve(file.fileName))
+            for (result in results) {
+                resultFile.appendText(
+                    String.format(
+                        AsrConfig.TITLE_FORMAT,
+                        file.fileName,
+                        result.serialNum,
+                        result.errorCode,
+                        result.errorMessage,
+                        result.startTime,
+                        result.endTime,
+                        result.result
+                    )
+                )
+                resultFile.appendText("\n")
+            }
+            resultFile.appendText("\n\n")
+        }
+        // don't forget to shutdown !!!
+        asrClient.shutdown()
     }
 
     @Test
@@ -44,6 +90,7 @@ class KotlinDemo {
             println(
                 String.format(
                     AsrConfig.TITLE_FORMAT,
+                    "file_name",
                     "serial_num",
                     "err_no",
                     "err_message",
@@ -55,6 +102,7 @@ class KotlinDemo {
             println(
                 String.format(
                     AsrConfig.TITLE_FORMAT,
+                    audioFilePath,
                     result.serialNum,
                     result.errorCode,
                     result.errorMessage,
@@ -80,6 +128,7 @@ class KotlinDemo {
             println(
                 String.format(
                     AsrConfig.TITLE_FORMAT,
+                    "file_name",
                     "serial_num",
                     "err_no",
                     "err_message",
@@ -91,6 +140,7 @@ class KotlinDemo {
             println(
                 String.format(
                     AsrConfig.TITLE_FORMAT,
+                    audioFilePath,
                     result.serialNum,
                     result.errorCode,
                     result.errorMessage,
