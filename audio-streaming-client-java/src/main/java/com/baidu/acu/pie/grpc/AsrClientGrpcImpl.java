@@ -11,6 +11,7 @@ import java.io.InputStream;
 import java.nio.file.Path;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
@@ -227,6 +228,14 @@ public class AsrClientGrpcImpl implements AsrClient {
 
         DateTimeFormatter asrRecognitionResultTimeFormatter =
                 DateTimeFormatter.ofPattern(ASR_RECOGNITION_RESULT_TIME_FORMAT);
-        return LocalTime.parse(toBeParsed, asrRecognitionResultTimeFormatter);
+
+        LocalTime ret = LocalTime.MIN;
+
+        try {
+            ret = LocalTime.parse(toBeParsed, asrRecognitionResultTimeFormatter);
+        } catch (DateTimeParseException e) {
+            log.error("parse time failed, the time string from asr sdk is : {}, exception: ", time, e);
+        }
+        return ret;
     }
 }

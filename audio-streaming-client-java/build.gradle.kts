@@ -1,6 +1,5 @@
-import com.jfrog.bintray.gradle.BintrayExtension.PackageConfig
 import com.google.protobuf.gradle.*
-import org.gradle.kotlin.dsl.provider.gradleKotlinDslOf
+import com.jfrog.bintray.gradle.BintrayExtension.PackageConfig
 
 plugins {
     id("java")
@@ -15,7 +14,7 @@ val kotlinVersion by extra("1.3.10")
 val grpcVersion by extra("1.16.1")
 
 group = "com.baidu.acu.pie"
-version = "0.9.2.SNAPSHOT"
+version = "0.9.3.SNAPSHOT"
 
 tasks.withType<JavaCompile> {
     sourceCompatibility = "1.8"
