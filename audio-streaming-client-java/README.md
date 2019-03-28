@@ -17,7 +17,7 @@ repositories {
     jcenter()
 }
 dependencies {
-	compile "com.baidu.acu.pie:audio-streaming-client-java:0.9.0.SNAPSHOT"
+	compile "com.baidu.acu.pie:audio-streaming-client-java:0.9.4.SNAPSHOT"
 }
 ```
 
@@ -37,7 +37,7 @@ dependencies {
 	<dependency>
 	  <groupId>com.baidu.acu.pie</groupId>
 	  <artifactId>audio-streaming-client-java</artifactId>
-	  <version>0.9.0.SNAPSHOT</version>
+	  <version>0.9.4.SNAPSHOT</version>
 	</dependency>
 </dependencies>
 ```
