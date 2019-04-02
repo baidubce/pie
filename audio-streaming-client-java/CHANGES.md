@@ -1,3 +1,11 @@
+# 0.9.4
+## improvement
+- 现在可以直接设置productId，详见 com.baidu.acu.pie.demo.JavaDemo的43行。对于不存在与 AsrProduct 中的模型类型，可以使用 productId 进行更灵活的设置。
+- 在 JavaDemo 里添加了一些注释说明
+
+## fix
+- 修改了依赖策略，将 io.grpc:grpc-stub 和 com.google.protobuf:protobuf-java:3.6.1 两个包暴露到上层，避免上层重复引用。
+
 # 0.9.3
 ## fix
 - 引入了slf4j-包，避免上层业务忘记引入而导致没日志输出

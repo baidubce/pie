@@ -75,7 +75,7 @@ public class AsrClientGrpcImpl implements AsrClient {
                 .setEnableLongSpeech(true)
                 .setEnableChunk(true)
                 .setEnableFlushData(asrConfig.isEnableFlushData())
-                .setProductId(asrConfig.getProduct().getCode())
+                .setProductId(asrConfig.getProductId())
                 .setSamplePointBytes(asrConfig.getBitDepth())
                 .setSendPerSeconds(asrConfig.getSendPerSeconds())
                 .setSleepRatio(asrConfig.getSleepRatio())

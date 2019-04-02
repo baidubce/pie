@@ -6,6 +6,7 @@ import com.baidu.acu.pie.exception.AsrClientException;
 
 import lombok.Getter;
 import lombok.NonNull;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * AsrConfig
@@ -14,6 +15,7 @@ import lombok.NonNull;
  * @author Cynric Shu (cynricshu@gmail.com)
  */
 @Getter
+@Slf4j
 public class AsrConfig {
     public static final String TITLE_FORMAT = "%-40s\t%-36s\t%-6s\t%-10s\t%-14s\t%-13s\t%s";
 
@@ -31,8 +33,12 @@ public class AsrConfig {
     /**
      * asr识别服务的产品类型，私有化版本请咨询供应商
      */
-    @NonNull
     private AsrProduct product;
+
+    /**
+     * 和 AsrProduct 作用相同，两者只需要配置一个即可。
+     */
+    private String productId;
 
     /**
      * asr客户端的名称，为便于后端查错，请设置一个易于辨识的appName
@@ -87,6 +93,20 @@ public class AsrConfig {
 
     public AsrConfig product(AsrProduct product) {
         this.product = product;
+        this.productId = product.getCode();
+        return this;
+    }
+
+    public AsrConfig productId(String productId) {
+        this.productId = productId;
+
+        for (AsrProduct product : AsrProduct.values()) {
+            if (product.getCode().equals(productId)) {
+                log.info("find productId [{}] in AsrProduct", productId);
+                this.product = product;
+            }
+        }
+
         return this;
     }
 
