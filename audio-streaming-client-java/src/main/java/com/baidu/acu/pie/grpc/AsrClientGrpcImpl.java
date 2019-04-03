@@ -2,39 +2,40 @@
 
 package com.baidu.acu.pie.grpc;
 
-import static com.baidu.acu.pie.model.Constants.ASR_RECOGNITION_RESULT_TIME_FORMAT;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Path;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.List;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
-import java.util.function.Consumer;
-
 import com.baidu.acu.pie.AsrServiceGrpc;
 import com.baidu.acu.pie.AsrServiceGrpc.AsrServiceStub;
 import com.baidu.acu.pie.AudioStreaming;
 import com.baidu.acu.pie.AudioStreaming.AudioFragmentRequest;
 import com.baidu.acu.pie.AudioStreaming.AudioFragmentResponse;
 import com.baidu.acu.pie.client.AsrClient;
+import com.baidu.acu.pie.client.Consumer;
 import com.baidu.acu.pie.exception.AsrClientException;
 import com.baidu.acu.pie.model.AsrConfig;
 import com.baidu.acu.pie.model.RecognitionResult;
+import com.baidu.acu.pie.util.Base64;
 import com.google.protobuf.ByteString;
-
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.Metadata;
 import io.grpc.stub.MetadataUtils;
 import io.grpc.stub.StreamObserver;
 import lombok.extern.slf4j.Slf4j;
+import org.joda.time.LocalTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Path;
+import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+
+import static com.baidu.acu.pie.model.Constants.ASR_RECOGNITION_RESULT_TIME_FORMAT;
 
 /**
  * AsrClientGrpcImpl
@@ -55,7 +56,9 @@ public class AsrClientGrpcImpl implements AsrClient {
                 .build();
         Metadata headers = new Metadata();
         headers.put(Metadata.Key.of("audio_meta", Metadata.ASCII_STRING_MARSHALLER),
-                Base64.getEncoder().encodeToString(this.buildInitRequest().toByteArray()));
+                Base64.encode(this.buildInitRequest().toByteArray()));
+//                DatatypeConverter.printBase64Binary(this.buildInitRequest().toByteArray()));
+//                Base64.getEncoder().encodeToString(this.buildInitRequest().toByteArray()));
 
         asyncStub = MetadataUtils.attachHeaders(AsrServiceGrpc.newStub(managedChannel), headers);
     }
@@ -65,7 +68,7 @@ public class AsrClientGrpcImpl implements AsrClient {
         try {
             managedChannel.shutdown().awaitTermination(5, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
-            log.error("shutdown failed: {}", e);
+            log.error("shutdown failed: ", e);
         }
     }
 
@@ -74,7 +77,7 @@ public class AsrClientGrpcImpl implements AsrClient {
                 .setEnableLongSpeech(true)
                 .setEnableChunk(true)
                 .setEnableFlushData(asrConfig.isEnableFlushData())
-                .setProductId(asrConfig.getProduct().getCode())
+                .setProductId(asrConfig.getProductId())
                 .setSamplePointBytes(asrConfig.getBitDepth())
                 .setSendPerSeconds(asrConfig.getSendPerSeconds())
                 .setSleepRatio(asrConfig.getSleepRatio())
@@ -85,7 +88,7 @@ public class AsrClientGrpcImpl implements AsrClient {
 
     @Override
     public int getFragmentSize() {
-        return (int) (asrConfig.getSendPerSeconds() * asrConfig.getProduct().getSampleRate() * asrConfig.getBitDepth());
+        return (int) (asrConfig.getSendPerSeconds() * asrConfig.getProduct().getSampleRate() * asrConfig.getBitDepth() * 1.5);
     }
 
     @Override
@@ -106,7 +109,7 @@ public class AsrClientGrpcImpl implements AsrClient {
                         asrConfig.getTimeoutMinutes());
             }
         } catch (InterruptedException e) {
-            log.error("error when wait for CountDownLatch: {}", e);
+            log.error("error when wait for CountDownLatch: ", e);
         }
 
         log.info("finish recognition request");
@@ -115,8 +118,8 @@ public class AsrClientGrpcImpl implements AsrClient {
 
     @Override
     public StreamObserver<AudioFragmentRequest> asyncRecognize(
-            Consumer<RecognitionResult> resultConsumer,
-            CountDownLatch finishLatch) {
+            final Consumer<RecognitionResult> resultConsumer,
+            final CountDownLatch finishLatch) {
 
         return asyncStub.send(
                 new StreamObserver<AudioFragmentResponse>() {
@@ -143,7 +146,7 @@ public class AsrClientGrpcImpl implements AsrClient {
         try (InputStream inputStream = new FileInputStream(audioFile)) {
             return prepareRequests(inputStream);
         } catch (IOException e) {
-            log.error("Read audio file failed: {}", e);
+            log.error("Read audio file failed: ", e);
             throw new AsrClientException("Read audio file failed");
         }
     }
@@ -163,7 +166,7 @@ public class AsrClientGrpcImpl implements AsrClient {
         return requests;
     }
 
-    private CountDownLatch sendRequests(List<AudioFragmentRequest> requests, List<RecognitionResult> results) {
+    private CountDownLatch sendRequests(List<AudioFragmentRequest> requests, final List<RecognitionResult> results) {
         final CountDownLatch finishLatch = new CountDownLatch(1);
 
         StreamObserver<AudioFragmentRequest> requestStreamObserver = asyncStub.send(
@@ -194,7 +197,7 @@ public class AsrClientGrpcImpl implements AsrClient {
             }
         } catch (RuntimeException e) {
             requestStreamObserver.onError(e);
-            log.error("send request failed: {}", e);
+            log.error("send request failed: ", e);
         } finally {
             requestStreamObserver.onCompleted();
         }
@@ -226,7 +229,15 @@ public class AsrClientGrpcImpl implements AsrClient {
         }
 
         DateTimeFormatter asrRecognitionResultTimeFormatter =
-                DateTimeFormatter.ofPattern(ASR_RECOGNITION_RESULT_TIME_FORMAT);
-        return LocalTime.parse(toBeParsed, asrRecognitionResultTimeFormatter);
+                DateTimeFormat.forPattern(ASR_RECOGNITION_RESULT_TIME_FORMAT);
+
+        LocalTime ret = LocalTime.MIDNIGHT;
+
+        try {
+            ret = LocalTime.parse(toBeParsed, asrRecognitionResultTimeFormatter);
+        } catch (IllegalArgumentException | UnsupportedOperationException e) {
+            log.warn("parse time failed, the time string from asr sdk is : {}, exception: ", time, e);
+        }
+        return ret;
     }
 }

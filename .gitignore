@@ -147,6 +147,9 @@ scripts/ci/kubernetes/kube/.generated/airflow.yaml
 # data
 data/
 
+# rd_test
+*/rd_test/
+
 # protobuf
 *.pb.cc
 *.pb.h

@@ -2,16 +2,14 @@
 
 package com.baidu.acu.pie.client;
 
+import com.baidu.acu.pie.AudioStreaming.AudioFragmentRequest;
+import com.baidu.acu.pie.model.RecognitionResult;
+import io.grpc.stub.StreamObserver;
+
 import java.io.File;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
-import java.util.function.Consumer;
-
-import com.baidu.acu.pie.AudioStreaming.AudioFragmentRequest;
-import com.baidu.acu.pie.model.RecognitionResult;
-
-import io.grpc.stub.StreamObserver;
 
 /**
  * AsrClient
@@ -40,7 +38,6 @@ public interface AsrClient {
      * 用于对实时性要求较高的场景，如会议记录
      *
      * @param resultConsumer
-     *
      * @return CountDownLatch，来自jdk1.5标准库，具体用法请参见 java doc
      */
     StreamObserver<AudioFragmentRequest> asyncRecognize(

@@ -30,7 +30,7 @@ client_demo_multi_thread: client_demo_multi_thread.cpp
 	$(CXX) $^ $(CXXFLAGS) $(LDFLAGS) $(INC) -o $@
 
 clean:
-	rm -f *.o client_demo client_demo_multi_thread
+	rm -f *.o client_demo_c client_demo client_demo_multi_thread
 
 
 # The following is to test your system and ensure a smoother experience.

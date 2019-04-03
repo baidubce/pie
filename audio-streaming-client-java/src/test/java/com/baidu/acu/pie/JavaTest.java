@@ -2,26 +2,28 @@
 
 package com.baidu.acu.pie;
 
+import com.baidu.acu.pie.AudioStreaming.AudioFragmentRequest;
+import com.baidu.acu.pie.client.AsrClient;
+import com.baidu.acu.pie.client.AsrClientFactory;
+import com.baidu.acu.pie.client.Consumer;
+import com.baidu.acu.pie.model.AsrConfig;
+import com.baidu.acu.pie.model.AsrProduct;
+import com.baidu.acu.pie.model.RecognitionResult;
+import com.baidu.acu.pie.util.Base64;
+import com.google.protobuf.ByteString;
+import io.grpc.stub.StreamObserver;
+import org.joda.time.DateTime;
+import org.junit.Assert;
+import org.junit.Ignore;
+import org.junit.Test;
+
+import javax.xml.bind.DatatypeConverter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.time.Instant;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
-
-import org.junit.Ignore;
-import org.junit.Test;
-
-import com.baidu.acu.pie.AudioStreaming.AudioFragmentRequest;
-import com.baidu.acu.pie.client.AsrClient;
-import com.baidu.acu.pie.client.AsrClientFactory;
-import com.baidu.acu.pie.model.AsrConfig;
-import com.baidu.acu.pie.model.AsrProduct;
-import com.baidu.acu.pie.model.RecognitionResult;
-import com.google.protobuf.ByteString;
-
-import io.grpc.stub.StreamObserver;
 
 /**
  * JavaTest
@@ -51,8 +53,11 @@ public class JavaTest {
             byte[] data = new byte[asrClient.getFragmentSize()];
             int readSize;
 
-            StreamObserver<AudioFragmentRequest> sender = asrClient.asyncRecognize(it -> {
-                System.out.println(it);
+            StreamObserver<AudioFragmentRequest> sender = asrClient.asyncRecognize(new Consumer<RecognitionResult>() {
+                @Override
+                public void accept(RecognitionResult it) {
+                    System.out.println(it);
+                }
             }, new CountDownLatch(1));
 
             while ((readSize = audioStream.read(data)) != -1) {
@@ -72,21 +77,24 @@ public class JavaTest {
     @Ignore
     @Test
     public void testSendFileMultiThread() {
-        String audioFilePath = "testaudio/bj8k.wav";
-        AsrClient asrClient = createAsrClient();
+        final String audioFilePath = "testaudio/bj8k.wav";
+        final AsrClient asrClient = createAsrClient();
 
         int concurrentNum = 5;
         final CountDownLatch finishLatch = new CountDownLatch(concurrentNum);
 
         for (int i = 0; i < concurrentNum; i++) {
-            new Thread(() -> {
-                List<RecognitionResult> results = asrClient.syncRecognize(Paths.get(audioFilePath));
-                System.out.printf("thread %d finished at time: %s, result: %s\n",
-                        Thread.currentThread().getId(),
-                        Instant.now().toString(),
-                        results.get(0).getResult()
-                );
-                finishLatch.countDown();
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    List<RecognitionResult> results = asrClient.syncRecognize(Paths.get(audioFilePath));
+                    System.out.printf("thread %d finished at time: %s, result: %s\n",
+                            Thread.currentThread().getId(),
+                            new DateTime().toString(),
+                            results.get(0).getResult()
+                    );
+                    finishLatch.countDown();
+                }
             }).start();
         }
 
@@ -97,5 +105,11 @@ public class JavaTest {
         }
         asrClient.shutdown();
         System.out.println("all task finished");
+    }
+
+    @Test
+    public void testBase64() {
+        String s = "abc+123+这是一个中文+😁";
+        Assert.assertEquals(Base64.encode(s.getBytes()), DatatypeConverter.printBase64Binary(s.getBytes()));
     }
 }

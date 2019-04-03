@@ -2,10 +2,10 @@
 
 package com.baidu.acu.pie.model;
 
-import java.time.LocalTime;
 
 import lombok.Builder;
 import lombok.Data;
+import org.joda.time.LocalTime;
 
 /**
  * 一个RecognitionResult对象就代表了一次识别结果

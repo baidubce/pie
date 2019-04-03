@@ -1,6 +1,5 @@
-import com.jfrog.bintray.gradle.BintrayExtension.PackageConfig
 import com.google.protobuf.gradle.*
-import org.gradle.kotlin.dsl.provider.gradleKotlinDslOf
+import com.jfrog.bintray.gradle.BintrayExtension.PackageConfig
 
 plugins {
     id("java")
@@ -15,11 +14,11 @@ val kotlinVersion by extra("1.3.10")
 val grpcVersion by extra("1.16.1")
 
 group = "com.baidu.acu.pie"
-version = "0.9.1-SNAPSHOT"
+version = "0.10.0.SNAPSHOT"
 
 tasks.withType<JavaCompile> {
-    sourceCompatibility = "1.8"
-    targetCompatibility = "1.8"
+    sourceCompatibility = "1.7"
+    targetCompatibility = "1.7"
 }
 
 repositories {
@@ -33,10 +32,11 @@ dependencies {
     implementation("org.projectlombok:lombok:1.18.4")
     implementation("io.grpc:grpc-netty:$grpcVersion")
     implementation("io.grpc:grpc-protobuf:$grpcVersion")
-    implementation("io.grpc:grpc-stub:$grpcVersion")
-    implementation("com.google.protobuf:protobuf-java:3.6.1")
+    compile("io.grpc:grpc-stub:$grpcVersion")
+    compile("com.google.protobuf:protobuf-java:3.6.1")
     implementation("org.slf4j:slf4j-api:1.7.25")
     implementation("org.slf4j:slf4j-simple:1.7.25")
+    implementation("joda-time:joda-time:2.10.1")
 
     testImplementation("org.slf4j:slf4j-simple:1.7.25")
     testImplementation("junit:junit")
