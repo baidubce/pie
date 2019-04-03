@@ -29,6 +29,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
@@ -67,7 +68,7 @@ public class AsrClientGrpcImpl implements AsrClient {
         try {
             managedChannel.shutdown().awaitTermination(5, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
-            log.error("shutdown failed: {}", e);
+            log.error("shutdown failed: ", e);
         }
     }
 
@@ -76,7 +77,7 @@ public class AsrClientGrpcImpl implements AsrClient {
                 .setEnableLongSpeech(true)
                 .setEnableChunk(true)
                 .setEnableFlushData(asrConfig.isEnableFlushData())
-                .setProductId(asrConfig.getProduct().getCode())
+                .setProductId(asrConfig.getProductId())
                 .setSamplePointBytes(asrConfig.getBitDepth())
                 .setSendPerSeconds(asrConfig.getSendPerSeconds())
                 .setSleepRatio(asrConfig.getSleepRatio())
@@ -87,7 +88,7 @@ public class AsrClientGrpcImpl implements AsrClient {
 
     @Override
     public int getFragmentSize() {
-        return (int) (asrConfig.getSendPerSeconds() * asrConfig.getProduct().getSampleRate() * asrConfig.getBitDepth());
+        return (int) (asrConfig.getSendPerSeconds() * asrConfig.getProduct().getSampleRate() * asrConfig.getBitDepth() * 1.5);
     }
 
     @Override
@@ -108,7 +109,7 @@ public class AsrClientGrpcImpl implements AsrClient {
                         asrConfig.getTimeoutMinutes());
             }
         } catch (InterruptedException e) {
-            log.error("error when wait for CountDownLatch: {}", e);
+            log.error("error when wait for CountDownLatch: ", e);
         }
 
         log.info("finish recognition request");
@@ -145,7 +146,7 @@ public class AsrClientGrpcImpl implements AsrClient {
         try (InputStream inputStream = new FileInputStream(audioFile)) {
             return prepareRequests(inputStream);
         } catch (IOException e) {
-            log.error("Read audio file failed: {}", e);
+            log.error("Read audio file failed: ", e);
             throw new AsrClientException("Read audio file failed");
         }
     }
@@ -196,7 +197,7 @@ public class AsrClientGrpcImpl implements AsrClient {
             }
         } catch (RuntimeException e) {
             requestStreamObserver.onError(e);
-            log.error("send request failed: {}", e);
+            log.error("send request failed: ", e);
         } finally {
             requestStreamObserver.onCompleted();
         }
@@ -229,6 +230,14 @@ public class AsrClientGrpcImpl implements AsrClient {
 
         DateTimeFormatter asrRecognitionResultTimeFormatter =
                 DateTimeFormat.forPattern(ASR_RECOGNITION_RESULT_TIME_FORMAT);
-        return LocalTime.parse(toBeParsed, asrRecognitionResultTimeFormatter);
+
+        LocalTime ret = LocalTime.MIDNIGHT;
+
+        try {
+            ret = LocalTime.parse(toBeParsed, asrRecognitionResultTimeFormatter);
+        } catch (IllegalArgumentException | UnsupportedOperationException e) {
+            log.warn("parse time failed, the time string from asr sdk is : {}, exception: ", time, e);
+        }
+        return ret;
     }
 }

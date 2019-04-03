@@ -2,28 +2,28 @@
 
 package com.baidu.acu.pie;
 
+import com.baidu.acu.pie.AudioStreaming.AudioFragmentRequest;
+import com.baidu.acu.pie.client.AsrClient;
+import com.baidu.acu.pie.client.AsrClientFactory;
+import com.baidu.acu.pie.client.Consumer;
+import com.baidu.acu.pie.model.AsrConfig;
+import com.baidu.acu.pie.model.AsrProduct;
+import com.baidu.acu.pie.model.RecognitionResult;
+import com.baidu.acu.pie.util.Base64;
+import com.google.protobuf.ByteString;
+import io.grpc.stub.StreamObserver;
+import org.joda.time.DateTime;
+import org.junit.Assert;
+import org.junit.Ignore;
+import org.junit.Test;
+
+import javax.xml.bind.DatatypeConverter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-//import java.time.Instant;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
-
-import com.baidu.acu.pie.client.Consumer;
-import com.baidu.acu.pie.util.Base64;
-import org.junit.Ignore;
-import org.junit.Test;
-
-import com.baidu.acu.pie.AudioStreaming.AudioFragmentRequest;
-import com.baidu.acu.pie.client.AsrClient;
-import com.baidu.acu.pie.client.AsrClientFactory;
-import com.baidu.acu.pie.model.AsrConfig;
-import com.baidu.acu.pie.model.AsrProduct;
-import com.baidu.acu.pie.model.RecognitionResult;
-import com.google.protobuf.ByteString;
-
-import io.grpc.stub.StreamObserver;
 
 /**
  * JavaTest
@@ -90,8 +90,7 @@ public class JavaTest {
                     List<RecognitionResult> results = asrClient.syncRecognize(Paths.get(audioFilePath));
                     System.out.printf("thread %d finished at time: %s, result: %s\n",
                             Thread.currentThread().getId(),
-"temp",
-//                            Instant.now().toString(),
+                            new DateTime().toString(),
                             results.get(0).getResult()
                     );
                     finishLatch.countDown();
@@ -106,5 +105,11 @@ public class JavaTest {
         }
         asrClient.shutdown();
         System.out.println("all task finished");
+    }
+
+    @Test
+    public void testBase64() {
+        String s = "abc+123+这是一个中文+😁";
+        Assert.assertEquals(Base64.encode(s.getBytes()), DatatypeConverter.printBase64Binary(s.getBytes()));
     }
 }
