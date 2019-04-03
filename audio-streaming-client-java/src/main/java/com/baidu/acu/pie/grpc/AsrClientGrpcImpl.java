@@ -66,7 +66,7 @@ public class AsrClientGrpcImpl implements AsrClient {
         try {
             managedChannel.shutdown().awaitTermination(5, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
-            log.error("shutdown failed: {}", e);
+            log.error("shutdown failed: ", e);
         }
     }
 
@@ -86,7 +86,7 @@ public class AsrClientGrpcImpl implements AsrClient {
 
     @Override
     public int getFragmentSize() {
-        return (int) (asrConfig.getSendPerSeconds() * asrConfig.getProduct().getSampleRate() * asrConfig.getBitDepth());
+        return (int) (asrConfig.getSendPerSeconds() * asrConfig.getProduct().getSampleRate() * asrConfig.getBitDepth() * 1.5);
     }
 
     @Override
@@ -107,7 +107,7 @@ public class AsrClientGrpcImpl implements AsrClient {
                         asrConfig.getTimeoutMinutes());
             }
         } catch (InterruptedException e) {
-            log.error("error when wait for CountDownLatch: {}", e);
+            log.error("error when wait for CountDownLatch: ", e);
         }
 
         log.info("finish recognition request");
@@ -144,7 +144,7 @@ public class AsrClientGrpcImpl implements AsrClient {
         try (InputStream inputStream = new FileInputStream(audioFile)) {
             return prepareRequests(inputStream);
         } catch (IOException e) {
-            log.error("Read audio file failed: {}", e);
+            log.error("Read audio file failed: ", e);
             throw new AsrClientException("Read audio file failed");
         }
     }
@@ -195,7 +195,7 @@ public class AsrClientGrpcImpl implements AsrClient {
             }
         } catch (RuntimeException e) {
             requestStreamObserver.onError(e);
-            log.error("send request failed: {}", e);
+            log.error("send request failed: ", e);
         } finally {
             requestStreamObserver.onCompleted();
         }
@@ -216,6 +216,11 @@ public class AsrClientGrpcImpl implements AsrClient {
     }
 
     private LocalTime parseLocalTime(String time) {
+        if (time == null || time.equals("")) {
+            log.warn("string time is empty");
+            return LocalTime.MIN;
+        }
+
         String toBeParsed;
 
         if (time.matches("\\d{2}:\\d{2}\\.\\d{2}")) { // mm:ss.SS like 01:00.40
@@ -234,7 +239,7 @@ public class AsrClientGrpcImpl implements AsrClient {
         try {
             ret = LocalTime.parse(toBeParsed, asrRecognitionResultTimeFormatter);
         } catch (DateTimeParseException e) {
-            log.error("parse time failed, the time string from asr sdk is : {}, exception: ", time, e);
+            log.warn("parse time failed, the time string from asr sdk is : {}, exception: ", time, e);
         }
         return ret;
     }

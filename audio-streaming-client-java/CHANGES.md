@@ -4,6 +4,7 @@
 - 在 JavaDemo 里添加了一些注释说明
 
 ## fix
+- 修改了由于发包大小偏小，导致异步流式识别过程中，识别出错中断的问题。
 - 修改了依赖策略，将 io.grpc:grpc-stub 和 com.google.protobuf:protobuf-java:3.6.1 两个包暴露到上层，避免上层重复引用。
 
 # 0.9.3
