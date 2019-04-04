@@ -361,23 +361,28 @@ public class AsrFragment extends BaseFragment {
         Log.e("tag", oneAddress + "::" + onePort);
 
         if (TextUtils.isEmpty(oneAddress) && TextUtils.isEmpty(onePort) && oneAsr == -1) {
+
+            defaultAsr = AsrProduct.CUSTOMER_SERVICE_FINANCE.ordinal();
+
+            Log.e("tag", "def:" + defaultAsr);
+
             SpUtils.getInstance().putString(Constants.ONEADDRESS, Constants.SERVER_IP_ADDR);
             SpUtils.getInstance().putString(Constants.ONEPORT, Constants.SERVER_IP_PORT + "");
             SpUtils.getInstance().putInt(Constants.ONEASRPRODUCT, defaultAsr);
             mRlOne.setVisibility(View.VISIBLE);
-            mTvOne.setText("address:" + Constants.SERVER_IP_ADDR + "   port:" + Constants.SERVER_IP_PORT + "  " + values[defaultAsr - 1].getName());
+            mTvOne.setText("address:" + Constants.SERVER_IP_ADDR + "   port:" + Constants.SERVER_IP_PORT + "  " + values[defaultAsr].getName());
         } else {
             mRlOne.setVisibility(View.VISIBLE);
-            mTvOne.setText("address:" + oneAddress + "   port:" + onePort + "  " + values[oneAsr - 1].getName());
+            mTvOne.setText("address:" + oneAddress + "   port:" + onePort + "  " + values[oneAsr].getName());
         }
 
         if (!TextUtils.isEmpty(twoAddress) && !TextUtils.isEmpty(twoPort)) {
             mRlTwo.setVisibility(View.VISIBLE);
-            mTvTwo.setText("address:" + twoAddress + "   port:" + twoPort + "  " + values[twoAsr - 1].getName());
+            mTvTwo.setText("address:" + twoAddress + "   port:" + twoPort + "  " + values[twoAsr].getName());
         }
         if (!TextUtils.isEmpty(threeAddress) && !TextUtils.isEmpty(threePort)) {
             mRlThree.setVisibility(View.VISIBLE);
-            mTvThree.setText("address:" + threeAddress + "   port:" + threePort + "  " + values[threeAsr - 1].getName());
+            mTvThree.setText("address:" + threeAddress + "   port:" + threePort + "  " + values[threeAsr].getName());
         }
     }
 

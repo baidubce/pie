@@ -140,21 +140,21 @@ public class SettingActivity extends AppCompatActivity {
                         if (!TextUtils.isEmpty(ip) && !TextUtils.isEmpty(port)) {
                             SpUtils.getInstance().putString(Constants.ONEADDRESS, ip);
                             SpUtils.getInstance().putString(Constants.ONEPORT, port);
-                            SpUtils.getInstance().putInt(Constants.ONEASRPRODUCT, checkedRadioButtonId);
+                            SpUtils.getInstance().putInt(Constants.ONEASRPRODUCT, checkedRadioButtonId - 1);
                         }
                         break;
                     case "two":
                         if (!TextUtils.isEmpty(ip) && !TextUtils.isEmpty(port)) {
                             SpUtils.getInstance().putString(Constants.TWOADDRESS, ip);
                             SpUtils.getInstance().putString(Constants.TWOPORT, port);
-                            SpUtils.getInstance().putInt(Constants.TWOASRPRODUCT, checkedRadioButtonId);
+                            SpUtils.getInstance().putInt(Constants.TWOASRPRODUCT, checkedRadioButtonId - 1);
                         }
                         break;
                     case "three":
                         if (!TextUtils.isEmpty(ip) && !TextUtils.isEmpty(port)) {
                             SpUtils.getInstance().putString(Constants.THREEADDRESS, ip);
                             SpUtils.getInstance().putString(Constants.THREEPORT, port);
-                            SpUtils.getInstance().putInt(Constants.THREEASRPRODUCT, checkedRadioButtonId);
+                            SpUtils.getInstance().putInt(Constants.THREEASRPRODUCT, checkedRadioButtonId - 1);
                         }
                         break;
                 }
@@ -226,7 +226,7 @@ public class SettingActivity extends AppCompatActivity {
             mRadioGroup.addView(radioButton);
         }
         if (isCheckId != -1) {
-            mRadioGroup.check(isCheckId);
+            mRadioGroup.check(isCheckId + 1);
         }
 
         mRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
