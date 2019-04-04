@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/mTitleAsr"
+        android:icon="@mipmap/shezhi"
+        android:title="Asr" />
+    <item
+        android:id="@+id/mTitleTts"
+        android:icon="@mipmap/shezhi"
+        android:title="Tts" />
+</menu>

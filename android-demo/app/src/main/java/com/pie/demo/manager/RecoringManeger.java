@@ -5,7 +5,9 @@ import android.media.AudioRecord;
 import android.media.MediaRecorder;
 import android.text.TextUtils;
 import android.util.Log;
+
 import com.baidu.acu.pie.AudioStreaming;
+import com.baidu.acu.pie.client.Consumer;
 import com.baidu.acu.pie.grpc.AsrClientGrpcImpl;
 import com.baidu.acu.pie.model.AsrConfig;
 import com.baidu.acu.pie.model.AsrProduct;
@@ -13,8 +15,9 @@ import com.baidu.acu.pie.model.RecognitionResult;
 import com.google.protobuf.ByteString;
 import com.pie.demo.Constants;
 import com.pie.demo.utils.SpUtils;
+
 import java.util.concurrent.CountDownLatch;
-import java.util.function.Consumer;
+
 import io.grpc.stub.StreamObserver;
 
 public class RecoringManeger {
@@ -177,12 +180,12 @@ public class RecoringManeger {
 
         if (!TextUtils.isEmpty(oneAddress) && !TextUtils.isEmpty(onePort) && oneAsr != -1) {
             HavaThread++;
-            Log.e("tag", values[oneAsr - 1] + "");
+            Log.e("tag", values[oneAsr] + "");
             AsrConfig config = new AsrConfig();
             config.serverIp(oneAddress)
                     .serverPort(Integer.parseInt(onePort))
                     .appName("android")
-                    .product(values[oneAsr - 1]);
+                    .product(values[oneAsr]);
 
             try {
                 asrClientGrpcOne = new AsrClientGrpcImpl(config);
@@ -221,7 +224,7 @@ public class RecoringManeger {
             config.serverIp(twoAddress)
                     .serverPort(Integer.parseInt(twoPort))
                     .appName("android")
-                    .product(values[twoAsr - 1]);
+                    .product(values[twoAsr]);
 
             try {
                 asrClientGrpcTwo = new AsrClientGrpcImpl(config);
@@ -260,7 +263,7 @@ public class RecoringManeger {
             config.serverIp(threeAddress)
                     .serverPort(Integer.parseInt(threePort))
                     .appName("android")
-                    .product(values[threeAsr - 1]);
+                    .product(values[threeAsr]);
 
             try {
                 asrClientGrpcThree = new AsrClientGrpcImpl(config);
