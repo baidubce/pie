@@ -37,7 +37,7 @@ dependencies {
 	<dependency>
 	  <groupId>com.baidu.acu.pie</groupId>
 	  <artifactId>audio-streaming-client-java</artifactId>
-	  <version>0.9.4.SNAPSHOT</version>
+	  <version>0.10.1.SNAPSHOT</version>
 	</dependency>
 </dependencies>
 ```
