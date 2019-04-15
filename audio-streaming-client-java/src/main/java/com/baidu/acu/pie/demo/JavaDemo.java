@@ -9,17 +9,14 @@ import com.baidu.acu.pie.client.Consumer;
 import com.baidu.acu.pie.model.AsrConfig;
 import com.baidu.acu.pie.model.AsrProduct;
 import com.baidu.acu.pie.model.RecognitionResult;
+import com.baidu.acu.pie.model.StreamContext;
 import com.google.protobuf.ByteString;
-import io.grpc.stub.StreamObserver;
 import org.joda.time.DateTime;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
 
 /**
  * JavaDemo
@@ -77,17 +74,17 @@ public class JavaDemo {
      * 使用长音频来模拟人对着麦克风不断说话的情况
      */
     public void asyncRecognition() {
-        String longAudioFilePath = "testaudio/300s.wav";
+        String longAudioFilePath = "testaudio/1.wav";
         AsrClient asrClient = createAsrClient();
-        CountDownLatch finishLatch = new CountDownLatch(1);
-        StreamObserver<AudioFragmentRequest> sender = asrClient.asyncRecognize(new Consumer<RecognitionResult>() {
+
+        StreamContext streamContext = asrClient.asyncRecognize(new Consumer<RecognitionResult>() {
             @Override
             public void accept(RecognitionResult it) {
                 System.out.println(
 //                        Instant.now().toString() + "\t" + Thread.currentThread().getId() + " receive fragment: " + it);
                         Thread.currentThread().getId() + " receive fragment: " + it);
             }
-        }, finishLatch);
+        });
 
         // 这里从文件中得到一个InputStream，实际场景下，也可以从麦克风或者其他音频源来得到InputStream
         try (InputStream audioStream = Files.newInputStream(Paths.get(longAudioFilePath))) {
@@ -97,10 +94,10 @@ public class JavaDemo {
             System.out.println(new DateTime().toString() + "\t" + Thread.currentThread().getId() + " start to send");
 
             // 使用 sender.onNext 方法，将 InputStream 中的数据不断地发送到 asr 后端，发送的最小单位是 AudioFragment
-            while ((readSize = audioStream.read(data)) != -1) {
+            while ((readSize = audioStream.read(data)) != -1 && !streamContext.getFinishLatch().finished()) {
                 System.out.println(new DateTime().toString() + "\t"
-                        +Thread.currentThread().getId() + " send fragment");
-                sender.onNext(AudioFragmentRequest.newBuilder()
+                        + Thread.currentThread().getId() + " send fragment");
+                streamContext.getSender().onNext(AudioFragmentRequest.newBuilder()
                         .setAudioData(ByteString.copyFrom(data, 0, readSize))
                         .build());
                 // 主动休眠一段时间，来模拟人说话场景下的音频产生速率
@@ -108,13 +105,13 @@ public class JavaDemo {
                 Thread.sleep(20);
             }
             System.out.println(new DateTime().toString() + "\t" + Thread.currentThread().getId() + " send finish");
+            streamContext.getSender().onCompleted();
 
             // wait to ensure to receive the last response
-            finishLatch.await(1000, TimeUnit.SECONDS);
-        } catch (IOException | InterruptedException e) {
+            streamContext.getFinishLatch().await();
+        } catch (Throwable e) {
             e.printStackTrace();
         } finally {
-            sender.onCompleted();
             asrClient.shutdown();
         }
 
