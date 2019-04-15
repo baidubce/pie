@@ -5,8 +5,8 @@ package com.pie.demo;
  */
 public class Constants {
 
-    public static final String SERVER_IP_ADDR = "180.76.107.131";
-    public static final int SERVER_IP_PORT = 8200;
+    public static final String SERVER_IP_ADDR = "127.0.0.1";
+    public static final int SERVER_IP_PORT = 8212;
 
     public static final String ONEADDRESS = "oneaddress";
     public static final String ONEPORT = "oneport";
@@ -25,4 +25,9 @@ public class Constants {
     public static final String SAMPLERATEINHZ = "sampleRateInHz";
 
 
+    public static final String SERVER_IP_ADDR_PORT_TTS = "server_ip_addr_port_tts";
+    public static final String SERVER_IP_ADDR_PORT_TTS_DEF = "http://127.0.0.1:8088";
+    public static final String SPD = "spd";
+    public static final String PIT = "pit";
+    public static final String VOl = "vol";
 }

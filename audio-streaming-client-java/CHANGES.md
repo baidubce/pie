@@ -1,3 +1,8 @@
+# 0.10.0
+## improvement
+- jdk降级到1.7版本， 同时支持android 7.x版本
+- **接口不完全兼容历史版本，asyncRecognize参数的类型有变化**
+
 # 0.9.4
 ## improvement
 - 现在可以直接设置productId，详见 com.baidu.acu.pie.demo.JavaDemo的43行。对于不存在与 AsrProduct 中的模型类型，可以使用 productId 进行更灵活的设置。

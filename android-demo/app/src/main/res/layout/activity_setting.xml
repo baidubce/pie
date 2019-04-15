@@ -1,44 +1,114 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
     android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/mToolbarSetting"
-        android:layout_width="match_parent"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorblue"
         app:title="设置"
-        app:titleTextColor="#fff" />
+        app:titleTextColor="#ffffffff" />
 
-    <EditText
-        android:id="@+id/mEtIp"
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:id="@+id/mLOne"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:digits="0123456789."
-        android:hint="设置ip"
-        android:inputType="number" />
+        android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/mEtPort"
-        android:layout_width="match_parent"
+        <EditText
+            android:id="@+id/mEtIp"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:digits="0123456789."
+            android:hint="设置ip"
+            android:inputType="number" />
+
+        <EditText
+            android:id="@+id/mEtPort"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:digits="0123456789."
+            android:hint="设置port"
+            android:inputType="number" />
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RadioGroup
+                android:id="@+id/mRadioGroup"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" />
+        </HorizontalScrollView>
+
+        <Button
+            android:id="@+id/mBT"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="保存" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/mLTwo"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:digits="0123456789."
-        android:hint="设置port"
-        android:inputType="number" />
+        android:orientation="vertical">
 
-    <RadioGroup
-        android:id="@+id/mRadioGroup"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="设置ip,port"
+            android:textColor="#000" />
+
+        <EditText
+            android:id="@+id/mEtPortIpTTS"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="设置语速，取值0-15，默认为5中语速"
+            android:textColor="#000" />
+
+        <EditText
+            android:id="@+id/mEtSpd"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
 
 
-    <Button
-        android:id="@+id/mBT"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="保存" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="设置音调，取值0-15，默认为5中语调"
+            android:textColor="#000" />
+
+        <EditText
+            android:id="@+id/mEtPit"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="设置音量，取值0-15，默认为5中音量"
+            android:textColor="#000" />
+
+        <EditText
+            android:id="@+id/mEtVol"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/mBTTTS"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="保存" />
+
+    </LinearLayout>
 </LinearLayout>

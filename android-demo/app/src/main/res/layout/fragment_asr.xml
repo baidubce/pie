@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <com.pie.demo.view.weiget.VoiceImgView
+        android:id="@+id/vivButton"
+        android:layout_width="200.0dip"
+        android:layout_height="50.0dip"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20.0dip"
+        android:text="开始录音" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@id/vivButton"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/mRlOne"
+            android:layout_width="fill_parent"
+            android:layout_height="0.0dip"
+            android:layout_weight="1.0"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/mTvOne"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10.0dip"
+                android:layout_marginTop="10.0dip"
+                android:layout_marginRight="10.0dip"
+                android:background="@drawable/bg_scrollview"
+                android:padding="10.0dip"
+                android:textColor="#ff000000"
+                android:textSize="16.0sp" />
+
+            <TextView
+                android:id="@+id/mTvOneError"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10.0dip"
+                android:layout_marginRight="10.0dip"
+                android:background="@drawable/bg_scrollview"
+                android:drawableLeft="@mipmap/error"
+                android:drawablePadding="3.0dip"
+                android:padding="10.0dip"
+                android:textColor="#ff000000"
+                android:textSize="13.0sp"
+                android:visibility="gone" />
+
+            <ScrollView
+                android:id="@+id/mSlOne"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_marginLeft="10.0dip"
+                android:layout_marginRight="10.0dip"
+                android:layout_marginBottom="10.0dip"
+                android:background="@drawable/bg_scrollview">
+
+                <TextView
+                    android:id="@+id/ttvText1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorblue"
+                    android:textSize="20.0sp" />
+            </ScrollView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/mRlTwo"
+            android:layout_width="fill_parent"
+            android:layout_height="0.0dip"
+            android:layout_weight="1.0"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/mTvTwo"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10.0dip"
+                android:layout_marginTop="10.0dip"
+                android:layout_marginRight="10.0dip"
+                android:background="@drawable/bg_scrollview"
+                android:padding="10.0dip"
+                android:textColor="#ff000000"
+                android:textSize="16.0sp" />
+
+            <TextView
+                android:id="@+id/mTvTwoError"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10.0dip"
+                android:layout_marginRight="10.0dip"
+                android:background="@drawable/bg_scrollview"
+                android:drawableLeft="@mipmap/error"
+                android:drawablePadding="3.0dip"
+                android:padding="10.0dip"
+                android:textColor="#ff000000"
+                android:textSize="13.0sp"
+                android:visibility="gone" />
+
+            <ScrollView
+                android:id="@+id/mSlTwo"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_marginLeft="10.0dip"
+                android:layout_marginRight="10.0dip"
+                android:layout_marginBottom="10.0dip"
+                android:background="@drawable/bg_scrollview">
+
+                <TextView
+                    android:id="@+id/ttvText2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorblue"
+                    android:textSize="20.0sp" />
+            </ScrollView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/mRlThree"
+            android:layout_width="fill_parent"
+            android:layout_height="0.0dip"
+            android:layout_weight="1.0"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/mTvThree"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10.0dip"
+                android:layout_marginTop="10.0dip"
+                android:layout_marginRight="10.0dip"
+                android:background="@drawable/bg_scrollview"
+                android:padding="10.0dip"
+                android:textColor="#ff000000"
+                android:textSize="16.0sp" />
+
+            <TextView
+                android:id="@+id/mTvThreeError"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10.0dip"
+                android:layout_marginRight="10.0dip"
+                android:background="@drawable/bg_scrollview"
+                android:drawableLeft="@mipmap/error"
+                android:drawablePadding="3.0dip"
+                android:padding="10.0dip"
+                android:textColor="#ff000000"
+                android:textSize="13.0sp"
+                android:visibility="gone" />
+
+            <ScrollView
+                android:id="@+id/mSlTHree"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_marginLeft="10.0dip"
+                android:layout_marginRight="10.0dip"
+                android:layout_marginBottom="10.0dip"
+                android:background="@drawable/bg_scrollview">
+
+                <TextView
+                    android:id="@+id/ttvText3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorblue"
+                    android:textSize="20.0sp" />
+            </ScrollView>
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>
