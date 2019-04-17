@@ -11,7 +11,9 @@ import com.baidu.acu.pie.client.AsrClient;
 import com.baidu.acu.pie.client.Consumer;
 import com.baidu.acu.pie.exception.AsrClientException;
 import com.baidu.acu.pie.model.AsrConfig;
+import com.baidu.acu.pie.model.FinishLatch;
 import com.baidu.acu.pie.model.RecognitionResult;
+import com.baidu.acu.pie.model.StreamContext;
 import com.baidu.acu.pie.util.Base64;
 import com.google.protobuf.ByteString;
 import io.grpc.ManagedChannel;
@@ -29,7 +31,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
-import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
@@ -57,9 +58,6 @@ public class AsrClientGrpcImpl implements AsrClient {
         Metadata headers = new Metadata();
         headers.put(Metadata.Key.of("audio_meta", Metadata.ASCII_STRING_MARSHALLER),
                 Base64.encode(this.buildInitRequest().toByteArray()));
-//                DatatypeConverter.printBase64Binary(this.buildInitRequest().toByteArray()));
-//                Base64.getEncoder().encodeToString(this.buildInitRequest().toByteArray()));
-
         asyncStub = MetadataUtils.attachHeaders(AsrServiceGrpc.newStub(managedChannel), headers);
     }
 
@@ -140,6 +138,30 @@ public class AsrClientGrpcImpl implements AsrClient {
                         finishLatch.countDown();
                     }
                 });
+    }
+
+    @Override
+    public StreamContext asyncRecognize(final Consumer<RecognitionResult> resultConsumer) {
+        final FinishLatch finishLatch = new FinishLatch();
+        return StreamContext.builder()
+                .sender(asyncStub.send(new StreamObserver<AudioFragmentResponse>() {
+                    @Override
+                    public void onNext(AudioFragmentResponse response) {
+                        resultConsumer.accept(fromAudioFragmentResponse(response));
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        finishLatch.fail(t);
+                    }
+
+                    @Override
+                    public void onCompleted() {
+                        finishLatch.finish();
+                    }
+                }))
+                .finishLatch(finishLatch)
+                .build();
     }
 
     private List<AudioFragmentRequest> prepareRequests(File audioFile) {

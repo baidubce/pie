@@ -4,6 +4,7 @@ package com.baidu.acu.pie.client;
 
 import com.baidu.acu.pie.AudioStreaming.AudioFragmentRequest;
 import com.baidu.acu.pie.model.RecognitionResult;
+import com.baidu.acu.pie.model.StreamContext;
 import io.grpc.stub.StreamObserver;
 
 import java.io.File;
@@ -37,12 +38,22 @@ public interface AsrClient {
      * 异步识别，输入一个语音流，会准实时返回每个句子的结果
      * 用于对实时性要求较高的场景，如会议记录
      *
-     * @param resultConsumer
-     * @return CountDownLatch，来自jdk1.5标准库，具体用法请参见 java doc
+     * @param resultConsumer 回调函数处理异步返回的识别结果
+     * @param finishLatch 1.5标准库，具体用法请参见 java doc
      */
+    @Deprecated
     StreamObserver<AudioFragmentRequest> asyncRecognize(
             Consumer<RecognitionResult> resultConsumer,
             CountDownLatch finishLatch);
+
+    /**
+     * 异步识别，输入一个语音流，会准实时返回每个句子的结果
+     * 用于对实时性要求较高的场景，如会议记录
+     *
+     * @param resultConsumer 回调函数处理异步返回的识别结果
+     * @return StreamContext 流的上下文信息，通过这个结构体写入和读取数据
+     */
+    StreamContext asyncRecognize(Consumer<RecognitionResult> resultConsumer);
 
     /**
      * 异步识别的时候，需要用户手动调用发送逻辑。
