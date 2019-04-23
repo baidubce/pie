@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.baidu.acu.pie.model.AsrProduct;
@@ -38,6 +39,7 @@ public class AsrFragment extends BaseFragment {
     private TextView mTvOne, mTvTwo, mTvThree;
     private TextView mTvOneError, mTvTwoError, mTvThreeError;
     private TextView ttvText1, ttvText2, ttvText3;
+    private ScrollView mSlOne, mSlTwo, mSlTHree;
 
     private RecoringManeger recoringManeger;
 
@@ -56,6 +58,10 @@ public class AsrFragment extends BaseFragment {
      * 初始化第一个客户端，默认使用 客服模型：金融领域
      */
     private int defaultAsr = 2;
+
+    private boolean switchone;
+    private boolean switchtwo;
+    private boolean switchthree;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -100,6 +106,11 @@ public class AsrFragment extends BaseFragment {
         mTvThree = view.findViewById(R.id.mTvThree);
         mTvThreeError = view.findViewById(R.id.mTvThreeError);
         ttvText3 = view.findViewById(R.id.ttvText3);
+
+        mSlOne = view.findViewById(R.id.mSlOne);
+        mSlTwo = view.findViewById(R.id.mSlTwo);
+        mSlTHree = view.findViewById(R.id.mSlTHree);
+
     }
 
     private void initLisener() {
@@ -166,14 +177,23 @@ public class AsrFragment extends BaseFragment {
                 mActivity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        if (!TextUtils.isEmpty(result)) {
+                        mSlOne.fullScroll(ScrollView.FOCUS_DOWN);// 滚动到底部
+                        if (switchone) {
+                            if (!TextUtils.isEmpty(result)) {
+                                if (completed) {
+                                    s1.append(result);
+                                    ttvText1.setText(s1);
+                                } else {
+                                    ttvText1.setText(s1.toString() + result);
+                                }
+                            }
+                        } else {
                             if (completed) {
                                 s1.append(result);
                                 ttvText1.setText(s1);
-                            } else {
-                                ttvText1.setText(s1.toString() + result);
                             }
                         }
+
                     }
                 });
             }
@@ -198,14 +218,24 @@ public class AsrFragment extends BaseFragment {
                 mActivity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        if (!TextUtils.isEmpty(result)) {
+                        mSlTwo.fullScroll(ScrollView.FOCUS_DOWN);// 滚动到底部
+
+                        if (switchtwo) {
+                            if (!TextUtils.isEmpty(result)) {
+                                if (completed) {
+                                    s2.append(result);
+                                    ttvText2.setText(s2);
+                                } else {
+                                    ttvText2.setText(s2.toString() + result);
+                                }
+                            }
+                        } else {
                             if (completed) {
                                 s2.append(result);
                                 ttvText2.setText(s2);
-                            } else {
-                                ttvText2.setText(s2.toString() + result);
                             }
                         }
+
                     }
                 });
             }
@@ -230,12 +260,22 @@ public class AsrFragment extends BaseFragment {
                 mActivity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        if (!TextUtils.isEmpty(result)) {
+                        mSlTHree.fullScroll(ScrollView.FOCUS_DOWN);// 滚动到底部
+
+
+                        if (switchthree) {
+                            if (!TextUtils.isEmpty(result)) {
+                                if (completed) {
+                                    s3.append(result);
+                                    ttvText3.setText(s3);
+                                } else {
+                                    ttvText3.setText(s3.toString() + result);
+                                }
+                            }
+                        } else {
                             if (completed) {
                                 s3.append(result);
                                 ttvText3.setText(s3);
-                            } else {
-                                ttvText3.setText(s3.toString() + result);
                             }
                         }
                     }
@@ -279,13 +319,22 @@ public class AsrFragment extends BaseFragment {
             case R.id.action_add:
                 if (mRlOne.getVisibility() == View.GONE) {
                     mRlOne.setVisibility(View.VISIBLE);
-                    mTvOne.setText("请去设置ip和post");
+                    mTvOne.setText("address:" + Constants.SERVER_IP_ADDR + "   port:" + Constants.SERVER_IP_PORT + "  " + values[defaultAsr].getName() + "(" + getSampleHz(values[defaultAsr]) + ")");
+                    SpUtils.getInstance().putString(Constants.ONEADDRESS, Constants.SERVER_IP_ADDR);
+                    SpUtils.getInstance().putString(Constants.ONEPORT, Constants.SERVER_IP_PORT + "");
+                    SpUtils.getInstance().putInt(Constants.ONEASRPRODUCT, defaultAsr);
                 } else if (mRlTwo.getVisibility() == View.GONE) {
                     mRlTwo.setVisibility(View.VISIBLE);
-                    mTvTwo.setText("请去设置ip和post");
+                    mTvTwo.setText("address:" + Constants.SERVER_IP_ADDR + "   port:" + Constants.SERVER_IP_PORT + "  " + values[defaultAsr].getName() + "(" + getSampleHz(values[defaultAsr]) + ")");
+                    SpUtils.getInstance().putString(Constants.TWOADDRESS, Constants.SERVER_IP_ADDR);
+                    SpUtils.getInstance().putString(Constants.TWOPORT, Constants.SERVER_IP_PORT + "");
+                    SpUtils.getInstance().putInt(Constants.TWOASRPRODUCT, defaultAsr);
                 } else if (mRlThree.getVisibility() == View.GONE) {
                     mRlThree.setVisibility(View.VISIBLE);
-                    mTvThree.setText("请去设置ip和post");
+                    mTvThree.setText("address:" + Constants.SERVER_IP_ADDR + "   port:" + Constants.SERVER_IP_PORT + "  " + values[defaultAsr].getName() + "(" + getSampleHz(values[defaultAsr]) + ")");
+                    SpUtils.getInstance().putString(Constants.THREEADDRESS, Constants.SERVER_IP_ADDR);
+                    SpUtils.getInstance().putString(Constants.THREEPORT, Constants.SERVER_IP_PORT + "");
+                    SpUtils.getInstance().putInt(Constants.THREEASRPRODUCT, defaultAsr);
                 }
                 break;
             case R.id.action_delete:
@@ -300,6 +349,12 @@ public class AsrFragment extends BaseFragment {
                     SpUtils.getInstance().putString(Constants.TWOPORT, null);
                     ttvText2.setText("");
                 }
+//                else if (mRlOne.getVisibility() == View.VISIBLE) {
+//                    mRlOne.setVisibility(View.GONE);
+//                    SpUtils.getInstance().putString(Constants.ONEADDRESS, null);
+//                    SpUtils.getInstance().putString(Constants.ONEPORT, null);
+//                    ttvText1.setText("");
+//                }
                 break;
             case R.id.action_set:
                 String hz = SpUtils.getInstance().getString(Constants.SAMPLERATEINHZ);
@@ -358,11 +413,16 @@ public class AsrFragment extends BaseFragment {
         String threePort = SpUtils.getInstance().getString(Constants.THREEPORT);
         int threeAsr = SpUtils.getInstance().getInt(Constants.THREEASRPRODUCT);
 
+        switchone = SpUtils.getInstance().getBool(Constants.SWITCHISCHECKEDONE);
+        switchtwo = SpUtils.getInstance().getBool(Constants.SWITCHISCHECKEDTWO);
+        switchthree = SpUtils.getInstance().getBool(Constants.SWITCHISCHECKEDTHREE);
+
+
         Log.e("tag", oneAddress + "::" + onePort);
 
-        if (TextUtils.isEmpty(oneAddress) && TextUtils.isEmpty(onePort) && oneAsr == -1) {
+        defaultAsr = AsrProduct.CUSTOMER_SERVICE_FINANCE.ordinal();
 
-            defaultAsr = AsrProduct.CUSTOMER_SERVICE_FINANCE.ordinal();
+        if (TextUtils.isEmpty(oneAddress) && TextUtils.isEmpty(onePort) && oneAsr == -1) {
 
             Log.e("tag", "def:" + defaultAsr);
 
@@ -370,19 +430,34 @@ public class AsrFragment extends BaseFragment {
             SpUtils.getInstance().putString(Constants.ONEPORT, Constants.SERVER_IP_PORT + "");
             SpUtils.getInstance().putInt(Constants.ONEASRPRODUCT, defaultAsr);
             mRlOne.setVisibility(View.VISIBLE);
-            mTvOne.setText("address:" + Constants.SERVER_IP_ADDR + "   port:" + Constants.SERVER_IP_PORT + "  " + values[defaultAsr].getName());
+            mTvOne.setText("address:" + Constants.SERVER_IP_ADDR + "   port:" + Constants.SERVER_IP_PORT + "  " + values[defaultAsr].getName() + "(" + getSampleHz(values[defaultAsr]) + ")");
         } else {
+
+            Log.e("tag", "one:" + oneAsr);
+
             mRlOne.setVisibility(View.VISIBLE);
-            mTvOne.setText("address:" + oneAddress + "   port:" + onePort + "  " + values[oneAsr].getName());
+            mTvOne.setText("address:" + oneAddress + "   port:" + onePort + "  " + values[oneAsr].getName() + "(" + getSampleHz(values[oneAsr]) + ")");
         }
 
+//        if (!TextUtils.isEmpty(oneAddress) && !TextUtils.isEmpty(onePort)) {
+//            mRlOne.setVisibility(View.VISIBLE);
+//            mTvOne.setText("address:" + oneAddress + "   port:" + onePort + "  " + values[oneAsr].getName() + "(" + getSampleHz(values[oneAsr]) + ")");
+//
+//        }
+
         if (!TextUtils.isEmpty(twoAddress) && !TextUtils.isEmpty(twoPort)) {
+
+            Log.e("tag", "two:" + twoAsr);
+
             mRlTwo.setVisibility(View.VISIBLE);
-            mTvTwo.setText("address:" + twoAddress + "   port:" + twoPort + "  " + values[twoAsr].getName());
+            mTvTwo.setText("address:" + twoAddress + "   port:" + twoPort + "  " + values[twoAsr].getName() + "(" + getSampleHz(values[twoAsr]) + ")");
         }
         if (!TextUtils.isEmpty(threeAddress) && !TextUtils.isEmpty(threePort)) {
+
+            Log.e("tag", "three:" + threeAsr);
+
             mRlThree.setVisibility(View.VISIBLE);
-            mTvThree.setText("address:" + threeAddress + "   port:" + threePort + "  " + values[threeAsr].getName());
+            mTvThree.setText("address:" + threeAddress + "   port:" + threePort + "  " + values[threeAsr].getName() + "(" + getSampleHz(values[threeAsr]) + ")");
         }
     }
 
@@ -393,6 +468,16 @@ public class AsrFragment extends BaseFragment {
             RecoringManeger.getInstance().stopRecord();
             stopThread = 0;
         }
+    }
+
+    private int getSampleHz(AsrProduct value) {
+        int hz;
+        if (value == AsrProduct.INPUT_METHOD || value == AsrProduct.FAR_FIELD || value == AsrProduct.FAR_FIELD_ROBOT) {
+            hz = 16000;
+        } else {
+            hz = 8000;
+        }
+        return hz;
     }
 
 }

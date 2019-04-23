@@ -15,5 +15,6 @@
         android:id="@+id/action_set"
         android:icon="@mipmap/shezhi"
         android:title="set"
+        android:visible="false"
         app:showAsAction="ifRoom" />
 </menu>

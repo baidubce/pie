@@ -23,7 +23,7 @@ import io.grpc.stub.StreamObserver;
 public class RecoringManeger {
 
     //44100、22050、11025，4000、8000。
-    private static final int SAMPLERATEINHZ = 8000;
+    private int SAMPLERATEINHZ = 8000;
     //MONO单声道，STEREO立体声
     private static final int CHANNELCONFIG = AudioFormat.CHANNEL_IN_MONO;
     //采样大小16bit 或者8bit。
@@ -119,15 +119,27 @@ public class RecoringManeger {
     private void initAudioRecord() {
 
 
-        String hz = SpUtils.getInstance().getString(Constants.SAMPLERATEINHZ);
-
-        if (TextUtils.isEmpty(hz)) {
-            MINBUFFERSIZE = AudioRecord.getMinBufferSize(SAMPLERATEINHZ, CHANNELCONFIG, AUDIOFORMAT) * 25;
-            audioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC, SAMPLERATEINHZ, CHANNELCONFIG, AUDIOFORMAT, MINBUFFERSIZE);
+//        String hz = SpUtils.getInstance().getString(Constants.SAMPLERATEINHZ);
+        int oneAsr = SpUtils.getInstance().getInt(Constants.ONEASRPRODUCT);
+        AsrProduct value = values[oneAsr];
+        if (value == AsrProduct.INPUT_METHOD || value == AsrProduct.FAR_FIELD || value == AsrProduct.FAR_FIELD_ROBOT) {
+            SAMPLERATEINHZ = 16000;
         } else {
-            MINBUFFERSIZE = AudioRecord.getMinBufferSize(Integer.parseInt(hz), CHANNELCONFIG, AUDIOFORMAT) * 25;
-            audioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC, Integer.parseInt(hz), CHANNELCONFIG, AUDIOFORMAT, MINBUFFERSIZE);
+            SAMPLERATEINHZ = 8000;
         }
+
+        Log.e("tag", SAMPLERATEINHZ + "");
+
+        MINBUFFERSIZE = AudioRecord.getMinBufferSize(SAMPLERATEINHZ, CHANNELCONFIG, AUDIOFORMAT) * 25;
+        audioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC, SAMPLERATEINHZ, CHANNELCONFIG, AUDIOFORMAT, MINBUFFERSIZE);
+
+//        if (TextUtils.isEmpty(hz)) {
+//            MINBUFFERSIZE = AudioRecord.getMinBufferSize(SAMPLERATEINHZ, CHANNELCONFIG, AUDIOFORMAT) * 25;
+//            audioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC, SAMPLERATEINHZ, CHANNELCONFIG, AUDIOFORMAT, MINBUFFERSIZE);
+//        } else {
+//            MINBUFFERSIZE = AudioRecord.getMinBufferSize(Integer.parseInt(hz), CHANNELCONFIG, AUDIOFORMAT) * 25;
+//            audioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC, Integer.parseInt(hz), CHANNELCONFIG, AUDIOFORMAT, MINBUFFERSIZE);
+//        }
     }
 
     private void writeData() {
@@ -180,7 +192,7 @@ public class RecoringManeger {
 
         if (!TextUtils.isEmpty(oneAddress) && !TextUtils.isEmpty(onePort) && oneAsr != -1) {
             HavaThread++;
-            Log.e("tag", values[oneAsr] + "");
+            Log.e("tag", values[oneAsr] + "xxx");
             AsrConfig config = new AsrConfig();
             config.serverIp(oneAddress)
                     .serverPort(Integer.parseInt(onePort))

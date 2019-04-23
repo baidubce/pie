@@ -41,4 +41,12 @@ public class SpUtils {
     public int getInt(String key) {
         return sp.getInt(key, -1);
     }
+
+    public void putBool(String key, boolean value) {
+        sp.edit().putBoolean(key, value).commit();
+    }
+
+    public boolean getBool(String key) {
+        return sp.getBoolean(key, true);
+    }
 }

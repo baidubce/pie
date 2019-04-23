@@ -4,13 +4,16 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Switch;
 
 import com.baidu.acu.pie.model.AsrProduct;
 import com.pie.demo.Constants;
@@ -24,11 +27,17 @@ public class SettingActivity extends AppCompatActivity {
     private EditText mEtPort;
     private Button mBT;
     private RadioGroup mRadioGroup;
+    private Switch mSwitch;
+    private boolean mSwitchIsChecked;
     private String flag;
     private int checkedRadioButtonId = -1;
 
     private Button mBTTTS;
     private EditText mEtPortIpTTS, mEtSpd, mEtPit, mEtVol;
+
+    private boolean isChanged = false;
+    private AsrProduct[] values;
+    private int isCheckId = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +65,7 @@ public class SettingActivity extends AppCompatActivity {
         mEtPort = findViewById(R.id.mEtPort);
         mBT = findViewById(R.id.mBT);
         mRadioGroup = findViewById(R.id.mRadioGroup);
+        mSwitch = findViewById(R.id.mSwitch);
 
 
         this.mEtPortIpTTS = ((EditText) findViewById(R.id.mEtPortIpTTS));
@@ -93,6 +103,12 @@ public class SettingActivity extends AppCompatActivity {
                     mEtIp.setText(oneAddress);
                     mEtPort.setText(onePort);
                 }
+
+                boolean switchone = SpUtils.getInstance().getBool(Constants.SWITCHISCHECKEDONE);
+                mSwitchIsChecked = switchone;
+                Log.e("tag", switchone + "");
+                mSwitch.setChecked(switchone);
+
                 break;
             case "two":
                 String twoAddress = SpUtils.getInstance().getString(Constants.TWOADDRESS);
@@ -101,6 +117,11 @@ public class SettingActivity extends AppCompatActivity {
                     mEtIp.setText(twoAddress);
                     mEtPort.setText(twoPort);
                 }
+
+                boolean switchtwo = SpUtils.getInstance().getBool(Constants.SWITCHISCHECKEDTWO);
+                mSwitchIsChecked = switchtwo;
+                mSwitch.setChecked(switchtwo);
+
                 break;
             case "three":
                 String threeAddress = SpUtils.getInstance().getString(Constants.THREEADDRESS);
@@ -109,6 +130,11 @@ public class SettingActivity extends AppCompatActivity {
                     mEtIp.setText(threeAddress);
                     mEtPort.setText(threePort);
                 }
+
+                boolean switchthree = SpUtils.getInstance().getBool(Constants.SWITCHISCHECKEDTHREE);
+                mSwitchIsChecked = switchthree;
+                mSwitch.setChecked(switchthree);
+
                 break;
         }
 
@@ -128,6 +154,14 @@ public class SettingActivity extends AppCompatActivity {
 
     private void initLisener() {
 
+
+        mSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                mSwitchIsChecked = isChecked;
+            }
+        });
+
         mBT.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -140,21 +174,30 @@ public class SettingActivity extends AppCompatActivity {
                         if (!TextUtils.isEmpty(ip) && !TextUtils.isEmpty(port)) {
                             SpUtils.getInstance().putString(Constants.ONEADDRESS, ip);
                             SpUtils.getInstance().putString(Constants.ONEPORT, port);
-                            SpUtils.getInstance().putInt(Constants.ONEASRPRODUCT, checkedRadioButtonId - 1);
+                            if (isChanged) {
+                                SpUtils.getInstance().putInt(Constants.ONEASRPRODUCT, checkedRadioButtonId - 1);
+                            }
+                            SpUtils.getInstance().putBool(Constants.SWITCHISCHECKEDONE, mSwitchIsChecked);
                         }
                         break;
                     case "two":
                         if (!TextUtils.isEmpty(ip) && !TextUtils.isEmpty(port)) {
                             SpUtils.getInstance().putString(Constants.TWOADDRESS, ip);
                             SpUtils.getInstance().putString(Constants.TWOPORT, port);
-                            SpUtils.getInstance().putInt(Constants.TWOASRPRODUCT, checkedRadioButtonId - 1);
+                            if (isChanged) {
+                                SpUtils.getInstance().putInt(Constants.TWOASRPRODUCT, checkedRadioButtonId - 1);
+                            }
+                            SpUtils.getInstance().putBool(Constants.SWITCHISCHECKEDTWO, mSwitchIsChecked);
                         }
                         break;
                     case "three":
                         if (!TextUtils.isEmpty(ip) && !TextUtils.isEmpty(port)) {
                             SpUtils.getInstance().putString(Constants.THREEADDRESS, ip);
                             SpUtils.getInstance().putString(Constants.THREEPORT, port);
-                            SpUtils.getInstance().putInt(Constants.THREEASRPRODUCT, checkedRadioButtonId - 1);
+                            if (isChanged) {
+                                SpUtils.getInstance().putInt(Constants.THREEASRPRODUCT, checkedRadioButtonId - 1);
+                            }
+                            SpUtils.getInstance().putBool(Constants.SWITCHISCHECKEDTHREE, mSwitchIsChecked);
                         }
                         break;
                 }
@@ -198,8 +241,6 @@ public class SettingActivity extends AppCompatActivity {
 
     private void initRadioGroup() {
 
-        int isCheckId = -1;
-
         switch (flag) {
             case "one":
                 int oneAsr = SpUtils.getInstance().getInt(Constants.ONEASRPRODUCT);
@@ -218,11 +259,11 @@ public class SettingActivity extends AppCompatActivity {
                 break;
         }
         mRadioGroup.removeAllViews();
-        AsrProduct[] values = AsrProduct.values();
+        values = AsrProduct.values();
         for (int i = 0; i < values.length; i++) {
             RadioButton radioButton = new RadioButton(SettingActivity.this);
             radioButton.setId(i + 1);
-            radioButton.setText(values[i].getName());
+            radioButton.setText(values[i].getName() + "(" + values[i].getSampleRate() + ")");
             mRadioGroup.addView(radioButton);
         }
         if (isCheckId != -1) {
@@ -232,7 +273,9 @@ public class SettingActivity extends AppCompatActivity {
         mRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
+                isChanged = true;
                 checkedRadioButtonId = checkedId;
+
             }
         });
     }
