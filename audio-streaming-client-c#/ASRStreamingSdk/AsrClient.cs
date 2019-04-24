@@ -1,15 +1,18 @@
 ﻿using Grpc.Core;
 using System;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using System.IO;
 using System.Threading.Tasks;
 using static Com.Baidu.Acu.Pie.AsrService;
 using Google.Protobuf;
+using System.Text;
 
 namespace Com.Baidu.Acu.Pie
 {
     public class AsrStream
     {
+        private uint sequence = 0;
         private readonly AsyncDuplexStreamingCall<AudioFragmentRequest, AudioFragmentResponse> stream;
         internal AsrStream(AsyncDuplexStreamingCall<AudioFragmentRequest, AudioFragmentResponse> stream)
         {
@@ -24,7 +27,9 @@ namespace Com.Baidu.Acu.Pie
         public Task Write(byte[] audioData, int offset, int count)
         {
             AudioFragmentRequest request = new AudioFragmentRequest();
-            request.AudioData = Google.Protobuf.ByteString.CopyFrom(audioData, offset, count);
+            request.SequenceNum = sequence++;
+            request.SendTimestamp = (ulong)DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+            request.AudioData = ByteString.CopyFrom(audioData, offset, count);
             return stream.RequestStream.WriteAsync(request);
         }
 
@@ -43,6 +48,42 @@ namespace Com.Baidu.Acu.Pie
             return stream.ResponseStream.Current;
         }
     }
+
+    public class StreamToken
+    {
+        public string UserName { get; }
+        public DateTime Expire { get; }
+        public string Password { get; }
+        public string ExpireString
+        {
+            get
+            {
+                return Expire.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'");
+            }
+        }
+        public string Token
+        {
+            get
+            {
+                var crypt = new SHA256Managed();
+                var bytes = crypt.ComputeHash(Encoding.ASCII.GetBytes(UserName + Password + ExpireString));
+                StringBuilder result = new StringBuilder();
+                for (int i = 0; i < bytes.Length; i++)
+                {
+                    result.Append(bytes[i].ToString("X2"));
+                }
+                return result.ToString().ToLower();
+            }
+        }
+
+        public StreamToken(string userName, DateTime expire, string password)
+        {
+            this.UserName = userName;
+            this.Expire = expire;
+            this.Password = password;
+        }
+    }
+
     public class AsrClient
     {
         private Channel channel;
@@ -98,19 +139,36 @@ namespace Com.Baidu.Acu.Pie
 
         public AsrStream NewStream()
         {
+            return NewStream(null);
+        }
 
-            InitRequest initRequest = new InitRequest();
-            initRequest.ProductId = this.ProductId;
-            initRequest.AppName = this.AppName;
-            initRequest.EnableChunk = true;
-            initRequest.EnableFlushData = this.Flush;
-            initRequest.EnableLongSpeech = true;
-            initRequest.LogLevel = this.LogLevel;
-            initRequest.SleepRatio = this.SleepRatio;
-            initRequest.SendPerSeconds = this.SendPerSeconds;
-            initRequest.SamplePointBytes = 2;
-            Metadata meta = new Metadata();
-            meta.Add("audio_meta", initRequest.ToByteString().ToBase64());
+        public AsrStream NewStream(StreamToken streamToken)
+        {
+
+            InitRequest initRequest = new InitRequest
+            {
+                ProductId = this.ProductId,
+                AppName = this.AppName,
+                EnableChunk = true,
+                EnableFlushData = this.Flush,
+                EnableLongSpeech = true,
+                LogLevel = this.LogLevel,
+                SleepRatio = this.SleepRatio,
+                SendPerSeconds = this.SendPerSeconds,
+                SamplePointBytes = 2,
+                Version = ProtoVersion.Version1
+            };
+            if (streamToken != null)
+            {
+                initRequest.UserName = streamToken.UserName;
+                initRequest.ExpireTime = streamToken.ExpireString;
+                initRequest.Token = streamToken.Token;
+            }
+            Console.WriteLine("initRequest:{0}", initRequest.ToString());
+            Metadata meta = new Metadata
+            {
+                { "audio_meta", initRequest.ToByteString().ToBase64() }
+            };
             var stream = client.send(meta);
             return new AsrStream(stream);
         }

@@ -35,7 +35,14 @@ namespace ASRStreamingSdk
                     var response = stream.Current();
                     if (response.ErrorCode == 0)
                     {
-                        Log("{0}: result={1} start_time={2}, end_time={3}", response.SerialNum, response.Result, response.StartTime, response.EndTime);
+                        if (response.Type == ResponseType.FragmentData)
+                        {
+                            var fragment = response.AudioFragment;
+                            Log("{0}: result={1} start_time={2}, end_time={3}", fragment.SerialNum, fragment.Result, fragment.StartTime, fragment.EndTime);
+                        } else
+                        {
+                            Log("Fail: unknown response type = {}", response.Type);
+                        }
                     }
                     else
                     {
@@ -66,16 +73,16 @@ namespace ASRStreamingSdk
 
         static void Main(string[] args)
         {
-            var client = new AsrClient("127.0.0.1:8200", "1903");
+            var client = new AsrClient("127.0.0.1:8050", "1906");
             client.LogLevel = 0;
             Console.WriteLine("Create client");
             AsrClientDemo demo = new AsrClientDemo();
 
-            var stream0 = client.NewStream();
-            var task0 = demo.FileAsrAsync(stream0, ".\\your_file_0.wav", client.RecommendPacketSize);
+            var stream0 = client.NewStream(new StreamToken("fakeuser", new DateTime(2019, 4, 25, 12, 41, 16), "fakepassword"));
+            var task0 = demo.FileAsrAsync(stream0, "C:\\Users\\temp.wav", client.RecommendPacketSize);
 
-            var stream1 = client.NewStream();
-            var task1 = demo.FileAsrAsync(stream1, ".\\your_file_1.wav", client.RecommendPacketSize);
+            var stream1 = client.NewStream(new StreamToken("fakeuser", new DateTime(2021, 1, 1), "fakepassword"));
+            var task1 = demo.FileAsrAsync(stream1, "C:\\Users\\zhiyu2.wav", client.RecommendPacketSize);
 
             task0.Wait();
             task1.Wait();
