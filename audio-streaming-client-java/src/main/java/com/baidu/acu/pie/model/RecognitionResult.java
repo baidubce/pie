@@ -3,9 +3,10 @@
 package com.baidu.acu.pie.model;
 
 
+import org.joda.time.LocalTime;
+
 import lombok.Builder;
 import lombok.Data;
-import org.joda.time.LocalTime;
 
 /**
  * 一个RecognitionResult对象就代表了一次识别结果
@@ -17,14 +18,6 @@ import org.joda.time.LocalTime;
 @Data
 @Builder
 public class RecognitionResult {
-    /**
-     * 0表示没有错误
-     */
-    private int errorCode;
-    /**
-     * 如果 errorCode 不为0，那么会显示具体的错误信息
-     */
-    private String errorMessage;
     /**
      * 句子的开始时间
      */

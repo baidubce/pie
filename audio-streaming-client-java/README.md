@@ -3,7 +3,7 @@
 
 **使用要求：**
 
- - 支持 jdk1.8及以上版本
+ - 支持 jdk1.7及以上版本
  - 使用 gradle 或 maven 构建项目
 
 **使用方式**
@@ -17,7 +17,7 @@ repositories {
     jcenter()
 }
 dependencies {
-	compile "com.baidu.acu.pie:audio-streaming-client-java:0.9.4.SNAPSHOT"
+	compile "com.baidu.acu.pie:audio-streaming-client-java:1.0.0.SNAPSHOT"
 }
 ```
 
