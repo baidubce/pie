@@ -10,6 +10,8 @@ import header_manipulator_client_interceptor
 import base64
 import os
 import logging
+import hashlib
+import datetime
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(filename)s[line:%(lineno)d] - %(levelname)s: %(message)s')
 
@@ -22,6 +24,8 @@ class AsrClient(object):
     request = audio_streaming_pb2.InitRequest()
 
     def __init__(self, server_ip, port, product, enable_flush_data,
+                 user_name=None,
+                 password=None,
                  enable_chunk=True,
                  enable_long_speech=True,
                  sample_point_bytes=2,
@@ -48,6 +52,14 @@ class AsrClient(object):
         self.request.app_name = app_name
         # 服务端的日志输出级别
         self.request.log_level = log_level
+        if user_name and password is not None:
+            # 用户名
+            self.request.user_name = user_name
+            # 超时时间 UTC 格式
+            expire_time = (datetime.datetime.utcnow()+datetime.timedelta(hours=1)).strftime('%Y-%m-%dT%H:%M:%SZ')
+            self.request.expire_time = expire_time
+            # user_name password expire_time 生成的token
+            self.request.token = hashlib.sha256(user_name + password + expire_time).hexdigest()
         # 每次发送的音频字节数
         self.send_package_size = int(send_per_seconds * product.value[2] * sample_point_bytes)
 
