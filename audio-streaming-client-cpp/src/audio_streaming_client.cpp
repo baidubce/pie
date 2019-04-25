@@ -105,6 +105,18 @@ void AsrClient::set_product_id(const std::string& product_id) {
     _set_product_id = true;
 }
 
+void AsrClient::set_user_name(const std::string& user_name) {
+    _init_request.set_user_name(user_name);
+}
+
+void AsrClient::set_expire_time(const std::string& expire_time) {
+    _init_request.set_expire_time(expire_time);
+}
+
+void AsrClient::set_token(const std::string& token) {
+    _init_request.set_token(token);
+}
+
 int AsrClient::init(const std::string& address) {
     if (!_set_product_id || !_set_enable_flush_data) {
         std::cerr << "Missing required field `product_id` or `enable_flush_data`" 

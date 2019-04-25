@@ -1,13 +1,20 @@
 #include "audio_streaming_client_wrapper.h"
 #include <stdio.h>
 #include <pthread.h>
+#include <string.h>
+#include "sha256.h"
 
 void default_callback(AudioFragmentResponseWrapper* resp, void* data) {
     if (resp->error_code != 0) {
         printf("Server error, error_code=%d error_message=%s\n", resp->error_code, resp->error_message);
     } else {
-        printf("Receive response from server, serial_num=%s, complete=%d, start=%s, end=%s, content=%s\n",
-               resp->serial_num, resp->complete, resp->start_time, resp->end_time, resp->result);
+        if(resp->type == FRAGMENT_DATA) {
+            printf("Receive response from server, serial_num=%s, complete=%d, start=%s, end=%s, content=%s\n",
+               resp->audio_fragment.serial_num, resp->audio_fragment.complete, resp->audio_fragment.start_time,
+               resp->audio_fragment.end_time, resp->audio_fragment.result);
+        } else {
+            printf("error resp type is : %d", resp->type);
+        }
     }
 }
 
@@ -46,6 +53,19 @@ void* write_to_stream(void* args) {
     return NULL;
 }
 
+void gen_hash(char* in, char * out)
+{
+    int idx;
+    unsigned char hash[32];
+    SHA256_CTX ctx;
+    sha256_init(&ctx);
+    sha256_update(&ctx, (unsigned char*)in, strlen(in));
+    sha256_final(&ctx,hash);
+    for (idx=0; idx < 32; idx++) {
+      sprintf(out,"%02x",hash[idx]);
+      out = out+2;
+   }
+}
 
 int main(int argc, char* argv[]) {
     size_t case_count = 2;
@@ -57,12 +77,21 @@ int main(int argc, char* argv[]) {
     AsrClientWrapper* client = asr_client_create();
 
     asr_client_set_enable_flush_data(client, true);
-    if (argc == 3) {
+    if (argc == 6) {
         asr_client_set_product_id(client, argv[1]);
         if (asr_client_init(client, argv[2]) != 0) {
             printf("Init asr client failed\n");
             return -1;
         }
+        asr_client_set_user_name(client, argv[3]);
+        asr_client_set_expire_time(client, argv[5]);
+        char str[512] = {0};
+        char token[512] = {0};
+        strcat(str, argv[3]); //user_name
+        strcat(str, argv[4]); //password
+        strcat(str, argv[5]); //expire_time UTC format, 2019-04-25T12:41:16Z
+        gen_hash(str, token);
+        asr_client_set_token(client, (char*)token);
     } else {
         asr_client_set_product_id(client, "1906");
         if (asr_client_init(client, "127.0.0.1:8200")) {
