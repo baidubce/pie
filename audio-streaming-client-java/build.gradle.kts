@@ -35,7 +35,6 @@ dependencies {
     compile("io.grpc:grpc-stub:$grpcVersion")
     compile("com.google.protobuf:protobuf-java:3.6.1")
     implementation("org.slf4j:slf4j-api:1.7.25")
-    implementation("org.slf4j:slf4j-simple:1.7.25")
     compile("joda-time:joda-time:2.10.1")
 
     testImplementation("org.slf4j:slf4j-simple:1.7.25")
