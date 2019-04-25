@@ -5,7 +5,8 @@ import os
 import time
 import logging
 import threadpool
-
+import baidu_acu_asr.audio_streaming_pb2
+from baidu_acu_asr.asr_product import AsrProduct
 
 class AudioHandler:
 
@@ -13,12 +14,13 @@ class AudioHandler:
         pass
 
     logging.basicConfig(filename="asr_result.log")
-    url = "172.18.53.12"
-    port = "8200"
+    url = "180.76.107.131"
+    port = "8050"
     log_level = 0
-    product_id = "1906"
+    product_id = AsrProduct.CUSTOMER_SERVICE_FINANCE
     enable_flush_data = False
-
+    user_name = "user1"
+    password = "password1"
     def write_file(self, file_path, file_content):
         with open(file_path, "w") as file:
             file.write(file_content.encode("UTF-8"))
@@ -35,6 +37,7 @@ class AudioHandler:
     def run(self, file_path):
         while True:
             client = AsrClient(self.url, self.port, self.product_id, self.enable_flush_data,
+                               self.user_name, self.password,
                                log_level=self.log_level, send_per_seconds=0.02)
             responses = client.get_result(file_path)
             file_content = ""

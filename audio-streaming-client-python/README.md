@@ -25,7 +25,7 @@ def run():
     :return:
     """
     for i in range(30):
-        client = AsrClient(url, port, product_id, enable_flush_data, log_level=log_level)
+        client = AsrClient(url, port, product_id, enable_flush_data, user_name, password, log_level=log_level)
         responses = client.get_result("/Users/xiashuai01/Downloads/300s.wav")
 
         try:
@@ -45,7 +45,7 @@ def generate_file_stream():
     产生流（本地音频流）
     :return:
     """
-    client = AsrClient(url, port, product_id, enable_flush_data, log_level=log_level, send_per_seconds=0.16)
+    client = AsrClient(url, port, product_id, enable_flush_data, user_name, password, log_level=log_level, send_per_seconds=0.16)
     file_path = "/Users/xiashuai01/Downloads/300s.wav"
     if not os.path.exists(file_path):
         logging.info("%s file is not exist, please check it!", file_path)
@@ -58,7 +58,7 @@ def generate_file_stream():
         
 
 def run_stream():
-    client = AsrClient(url, port, product_id, enable_flush_data, log_level=log_level)
+    client = AsrClient(url, port, product_id, enable_flush_data, user_name, password, log_level=log_level)
     responses = client.get_result_by_stream(generate_file_stream())
     for response in responses:
         # for res in responses:
@@ -93,14 +93,14 @@ def run_stream():
 ```python
 def read_streaming_from_url():
     print("streaming reading")
-    client = AsrClient(url, port, product_id, enable_flush_data, log_level=log_level)
+    client = AsrClient(url, port, product_id, enable_flush_data, user_name, password, log_level=log_level)
     data = urllib2.urlopen(audio_url)
     while True:
         yield client.generate_stream_request(data.read(size=2560))
 
 
 def run_url_streaming():
-    client = AsrClient(url, port, product_id, enable_flush_data, log_level=log_level)
+    client = AsrClient(url, port, product_id, enable_flush_data, user_name, password, log_level=log_level)
     responses = client.get_result_by_stream(read_streaming_from_url())
     for response in responses:
         # for res in responses:
@@ -122,7 +122,9 @@ def run_url_streaming():
 | sleep_ratio | double  | 1 | ASR识别时长间隔 |
 | app_name | String  | python | 可自己设定，log查看用 |
 | log_level | int  | 4 | log级别，0：Trace，1：Debug， 2：Info，3：Warning，4：Error，5：Fatal，6：关闭log |
-
+| user_name | String  | python | 用户名，服务端预分配 |
+| expire_time | String  | python | 超时时间，表示该次流式识别有效时间，为UTC时间，例:2019-04-25T12:41:16Z |
+| token | String  | python | user_name+password+expire_time 通过 sha256 生成的token |
 
 返回数据参数详情：
 
