@@ -33,6 +33,7 @@ import com.baidu.acu.pie.model.RequestMetaData;
 import com.baidu.acu.pie.model.StreamContext;
 import com.baidu.acu.pie.util.Base64;
 import com.baidu.acu.pie.util.DateTimeParser;
+import com.google.common.base.Strings;
 import com.google.protobuf.ByteString;
 
 import io.grpc.ManagedChannel;
@@ -232,10 +233,23 @@ public class AsrClientGrpcImpl implements AsrClient {
     }
 
     private Metadata prepareMetadata(RequestMetaData requestMetaData) {
-        String expireDateTime = DateTime.now().plusMinutes(30).toString(UTC_DATE_TIME_FORMAT);
+        String digestedToken;
+        String expireDateTime;
 
-        String rawToken = asrConfig.getUserName() + asrConfig.getPassword() + expireDateTime;
-        String digestedToken = sha256().hashString(rawToken, StandardCharsets.UTF_8).toString();
+        if (Strings.isNullOrEmpty(asrConfig.getToken())) {
+            expireDateTime = DateTime.now().plusMinutes(30).toString(UTC_DATE_TIME_FORMAT);
+            String rawToken = asrConfig.getUserName() + asrConfig.getPassword() + expireDateTime;
+            digestedToken = sha256().hashString(rawToken, StandardCharsets.UTF_8).toString();
+        } else {
+            // 如果传入了 token，必须同时传入相应的 expireDateTime
+            if (Strings.isNullOrEmpty(asrConfig.getExpireDateTime())) {
+                throw new AsrClientException("Neither `token` nor `expireDateTime` should be Null");
+            } else {
+                expireDateTime = asrConfig.getExpireDateTime();
+            }
+
+            digestedToken = asrConfig.getToken();
+        }
 
         AudioStreaming.InitRequest initRequest = AudioStreaming.InitRequest.newBuilder()
                 .setEnableLongSpeech(true)

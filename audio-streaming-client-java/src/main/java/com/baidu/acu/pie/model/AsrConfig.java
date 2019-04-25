@@ -65,6 +65,11 @@ public class AsrConfig {
     private String password;
 
     /**
+     * 认证过期时间，使用标准 UTC string(yyyy-MM-dd'T'HH:mm:ss'Z')
+     */
+    private String expireDateTime;
+
+    /**
      * 和后端 server 建立连接时，用来鉴权的
      */
     private String token;
