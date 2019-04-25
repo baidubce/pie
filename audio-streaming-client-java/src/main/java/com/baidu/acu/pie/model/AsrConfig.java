@@ -2,6 +2,8 @@
 
 package com.baidu.acu.pie.model;
 
+import org.joda.time.DateTime;
+
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
@@ -67,7 +69,7 @@ public class AsrConfig {
     /**
      * 认证过期时间，使用标准 UTC string(yyyy-MM-dd'T'HH:mm:ss'Z')
      */
-    private String expireDateTime;
+    private DateTime expireDateTime;
 
     /**
      * 和后端 server 建立连接时，用来鉴权的
@@ -120,6 +122,11 @@ public class AsrConfig {
 
     public AsrConfig token(String token) {
         this.token = token;
+        return this;
+    }
+
+    public AsrConfig expireDateTime(DateTime dateTime) {
+        this.expireDateTime = dateTime;
         return this;
     }
 }

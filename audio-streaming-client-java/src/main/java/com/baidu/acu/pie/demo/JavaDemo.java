@@ -45,7 +45,10 @@ public class JavaDemo {
     public void recognizeFile() {
         String audioFilePath = "testaudio/bj8k.wav";
         AsrClient asrClient = createAsrClient();
-        List<RecognitionResult> results = asrClient.syncRecognize(Paths.get(audioFilePath).toFile());
+
+        RequestMetaData requestMetaData = RequestMetaData.defaultRequestMeta();
+        requestMetaData.enableFlushData(false);
+        List<RecognitionResult> results = asrClient.syncRecognize(Paths.get(audioFilePath).toFile(), requestMetaData);
 
         // don't forget to shutdown !!!
         asrClient.shutdown();

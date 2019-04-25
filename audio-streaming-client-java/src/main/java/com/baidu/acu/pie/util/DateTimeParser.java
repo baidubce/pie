@@ -2,9 +2,12 @@ package com.baidu.acu.pie.util;
 
 import static com.baidu.acu.pie.model.Constants.ASR_RECOGNITION_RESULT_TIME_FORMAT;
 
+import org.joda.time.DateTime;
 import org.joda.time.LocalTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+
+import com.baidu.acu.pie.model.Constants;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -15,6 +18,10 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 public class DateTimeParser {
+    public static String toUTCString(DateTime dateTime) {
+        return dateTime.toString(Constants.UTC_DATE_TIME_FORMAT);
+    }
+
     public static LocalTime parseLocalTime(String time) {
         String toBeParsed;
 
