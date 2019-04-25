@@ -4,34 +4,39 @@ import threading
 import sys
 import logging
 import time
-
-
+from baidu_acu_asr.asr_product import AsrProduct
+import baidu_acu_asr.audio_streaming_pb2
 class demo:
 
     def run(self, repeat_num=1):
         i = 0
         # ip和端口可根据需要修改
-        url = "172.18.53.12"
-        port = "30050"
-        product_id = "1905"
+        url = "180.76.107.131"
+        port = "8050"
+        product_id = AsrProduct.CUSTOMER_SERVICE_FINANCE
         enable_flush_data = True
         log_level = 0
-        client = AsrClient(url, port, product_id, enable_flush_data, log_level=log_level)
+        user_name = "abc"
+        password = "123"
+        client = AsrClient(url, port, product_id, enable_flush_data, log_level=log_level, user_name=user_name, password=password)
         name = threading.currentThread().getName()
-        audio_path = "/Users/xiashuai01/Downloads/10s.wav"
+        audio_path = "/Users/lijialong02/code/client/data/10s.wav"
         while i < repeat_num:
             try:
                 response = client.get_result(audio_path)
                 for res in response:
-                    logging.info(name + "\t" + str(res.error_code) + "\t" + res.error_message + "\t" + res.start_time + "\t" +
-                              res.end_time + "\t" + res.result + "\t" + res.serial_num + "\t" + str(res.completed))
+                    if res.type == baidu_acu_asr.audio_streaming_pb2.FRAGMENT_DATA:
+                        logging.info(name + "\t" + str(res.error_code) + "\t" + res.error_message + "\t" + res.audio_fragment.start_time + "\t" +
+                            res.audio_fragment.end_time + "\t" + res.audio_fragment.result + "\t" + res.audio_fragment.serial_num + "\t" +
+                            str(res.audio_fragment.completed))
+                    else:
+                        logging.warning("type is: %d", res.type)
                 i += 1
             except:
                 # 如果出现异常，此处需要重试当前音频
                 logging.error("connect to server error, will create a new channel and retry audio!")
                 time.sleep(0.5)
-                client = AsrClient(url, port, product_id, enable_flush_data, log_level=log_level)
-
+                client = AsrClient(url, port, product_id, enable_flush_data, log_level=log_level, user_name=user_name, password=password)
 
 if __name__ == '__main__':
     logging.basicConfig(filename="asr_result.log")
