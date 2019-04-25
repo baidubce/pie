@@ -2,6 +2,22 @@
 
 package com.baidu.acu.pie.grpc;
 
+import static com.baidu.acu.pie.model.Constants.UTC_DATE_TIME_FORMAT;
+import static com.google.common.hash.Hashing.sha256;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+
+import org.joda.time.DateTime;
+
 import com.baidu.acu.pie.AsrServiceGrpc;
 import com.baidu.acu.pie.AsrServiceGrpc.AsrServiceStub;
 import com.baidu.acu.pie.AudioStreaming;
@@ -13,30 +29,19 @@ import com.baidu.acu.pie.exception.AsrClientException;
 import com.baidu.acu.pie.model.AsrConfig;
 import com.baidu.acu.pie.model.FinishLatch;
 import com.baidu.acu.pie.model.RecognitionResult;
+import com.baidu.acu.pie.model.RequestMetaData;
 import com.baidu.acu.pie.model.StreamContext;
 import com.baidu.acu.pie.util.Base64;
+import com.baidu.acu.pie.util.DateTimeParser;
+import com.google.common.base.Strings;
 import com.google.protobuf.ByteString;
+
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.Metadata;
 import io.grpc.stub.MetadataUtils;
 import io.grpc.stub.StreamObserver;
 import lombok.extern.slf4j.Slf4j;
-import org.joda.time.LocalTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
-
-import static com.baidu.acu.pie.model.Constants.ASR_RECOGNITION_RESULT_TIME_FORMAT;
 
 /**
  * AsrClientGrpcImpl
@@ -55,10 +60,8 @@ public class AsrClientGrpcImpl implements AsrClient {
                 .forAddress(asrConfig.getServerIp(), asrConfig.getServerPort())
                 .usePlaintext()
                 .build();
-        Metadata headers = new Metadata();
-        headers.put(Metadata.Key.of("audio_meta", Metadata.ASCII_STRING_MARSHALLER),
-                Base64.encode(this.buildInitRequest().toByteArray()));
-        asyncStub = MetadataUtils.attachHeaders(AsrServiceGrpc.newStub(managedChannel), headers);
+
+        asyncStub = AsrServiceGrpc.newStub(managedChannel);
     }
 
     @Override
@@ -70,41 +73,61 @@ public class AsrClientGrpcImpl implements AsrClient {
         }
     }
 
-    private AudioStreaming.InitRequest buildInitRequest() {
-        return AudioStreaming.InitRequest.newBuilder()
-                .setEnableLongSpeech(true)
-                .setEnableChunk(true)
-                .setEnableFlushData(asrConfig.isEnableFlushData())
-                .setProductId(asrConfig.getProductId())
-                .setSamplePointBytes(asrConfig.getBitDepth())
-                .setSendPerSeconds(asrConfig.getSendPerSeconds())
-                .setSleepRatio(asrConfig.getSleepRatio())
-                .setAppName(asrConfig.getAppName())
-                .setLogLevel(asrConfig.getLogLevel().getCode())
-                .build();
-    }
-
     @Override
     public int getFragmentSize() {
-        return (int) (asrConfig.getSendPerSeconds() * asrConfig.getProduct().getSampleRate() * asrConfig.getBitDepth() * 1.5);
+        return this.getFragmentSize(RequestMetaData.defaultRequestMeta());
     }
 
-    @Override
-    public List<RecognitionResult> syncRecognize(Path audioFilePath) {
-        return this.syncRecognize(audioFilePath.toFile());
+    private int getFragmentSize(RequestMetaData requestMetaData) {
+        return (int) (asrConfig.getProduct().getSampleRate()
+                              * asrConfig.getBitDepth()
+                              * requestMetaData.getSendPerSeconds()
+                              * requestMetaData.getSendPackageRatio());
     }
 
     @Override
     public List<RecognitionResult> syncRecognize(File audioFile) {
+        return this.syncRecognize(audioFile, RequestMetaData.defaultRequestMeta());
+    }
+
+    @Override
+    public List<RecognitionResult> syncRecognize(File audioFile, RequestMetaData requestMetaData) {
         log.info("start to recognition, file: {}", audioFile);
 
+        InputStream inputStream;
+        try {
+            inputStream = new FileInputStream(audioFile);
+        } catch (FileNotFoundException e) {
+            log.error("AudioFile not exists: ", e);
+            throw new AsrClientException("AudioFile not exists");
+        }
+
+        return this.syncRecognize(inputStream);
+    }
+
+    @Override
+    public List<RecognitionResult> syncRecognize(InputStream inputStream) {
+        return this.syncRecognize(inputStream, RequestMetaData.defaultRequestMeta());
+    }
+
+    @Override
+    public List<RecognitionResult> syncRecognize(InputStream inputStream, RequestMetaData requestMetaData) {
         final List<RecognitionResult> results = new ArrayList<>();
-        CountDownLatch finishLatch = this.sendRequests(prepareRequests(audioFile), results);
+
+        List<AudioFragmentRequest> requests;
+        try {
+            requests = this.prepareRequests(inputStream);
+        } catch (IOException e) {
+            log.error("Read audio file failed: ", e);
+            throw new AsrClientException("Read audio file failed");
+        }
+
+        CountDownLatch finishLatch = this.sendRequests(requests, requestMetaData, results);
 
         try {
-            if (!finishLatch.await(asrConfig.getTimeoutMinutes(), TimeUnit.MINUTES)) {
+            if (!finishLatch.await(requestMetaData.getTimeoutMinutes(), TimeUnit.MINUTES)) {
                 log.error("Recognition request not finish within {} minutes, maybe the audio is too large",
-                        asrConfig.getTimeoutMinutes());
+                        requestMetaData.getTimeoutMinutes());
             }
         } catch (InterruptedException e) {
             log.error("error when wait for CountDownLatch: ", e);
@@ -112,65 +135,6 @@ public class AsrClientGrpcImpl implements AsrClient {
 
         log.info("finish recognition request");
         return results;
-    }
-
-    @Override
-    public StreamObserver<AudioFragmentRequest> asyncRecognize(
-            final Consumer<RecognitionResult> resultConsumer,
-            final CountDownLatch finishLatch) {
-
-        return asyncStub.send(
-                new StreamObserver<AudioFragmentResponse>() {
-                    @Override
-                    public void onNext(AudioFragmentResponse response) {
-                        resultConsumer.accept(fromAudioFragmentResponse(response));
-                    }
-
-                    @Override
-                    public void onError(Throwable t) {
-                        log.error("receive response error: ", t);
-                        finishLatch.countDown();
-                    }
-
-                    @Override
-                    public void onCompleted() {
-                        log.info("StreamObserver completed");
-                        finishLatch.countDown();
-                    }
-                });
-    }
-
-    @Override
-    public StreamContext asyncRecognize(final Consumer<RecognitionResult> resultConsumer) {
-        final FinishLatch finishLatch = new FinishLatch();
-        return StreamContext.builder()
-                .sender(asyncStub.send(new StreamObserver<AudioFragmentResponse>() {
-                    @Override
-                    public void onNext(AudioFragmentResponse response) {
-                        resultConsumer.accept(fromAudioFragmentResponse(response));
-                    }
-
-                    @Override
-                    public void onError(Throwable t) {
-                        finishLatch.fail(t);
-                    }
-
-                    @Override
-                    public void onCompleted() {
-                        finishLatch.finish();
-                    }
-                }))
-                .finishLatch(finishLatch)
-                .build();
-    }
-
-    private List<AudioFragmentRequest> prepareRequests(File audioFile) {
-        try (InputStream inputStream = new FileInputStream(audioFile)) {
-            return prepareRequests(inputStream);
-        } catch (IOException e) {
-            log.error("Read audio file failed: ", e);
-            throw new AsrClientException("Read audio file failed");
-        }
     }
 
     private List<AudioFragmentRequest> prepareRequests(InputStream inputStream) throws IOException {
@@ -188,15 +152,20 @@ public class AsrClientGrpcImpl implements AsrClient {
         return requests;
     }
 
-    private CountDownLatch sendRequests(List<AudioFragmentRequest> requests, final List<RecognitionResult> results) {
+    private CountDownLatch sendRequests(List<AudioFragmentRequest> requests, RequestMetaData requestMetaData,
+            final List<RecognitionResult> results) {
         final CountDownLatch finishLatch = new CountDownLatch(1);
+        AsrServiceStub stubWithMetadata = MetadataUtils.attachHeaders(asyncStub, prepareMetadata(requestMetaData));
 
-        StreamObserver<AudioFragmentRequest> requestStreamObserver = asyncStub.send(
+        StreamObserver<AudioFragmentRequest> requestStreamObserver = stubWithMetadata.send(
                 new StreamObserver<AudioFragmentResponse>() {
                     @Override
                     public void onNext(AudioFragmentResponse response) {
-                        if (response.getCompleted()) {
-                            results.add(fromAudioFragmentResponse(response));
+                        if (response.getErrorCode() == 0) {
+                            results.add(fromAudioFragmentResponse(response.getAudioFragment()));
+                        } else {
+                            log.error("response with error: {}, {}",
+                                    response.getErrorCode(), response.getErrorMessage());
                         }
                     }
 
@@ -227,39 +196,90 @@ public class AsrClientGrpcImpl implements AsrClient {
         return finishLatch;
     }
 
-    private RecognitionResult fromAudioFragmentResponse(AudioFragmentResponse response) {
+    @Override
+    public StreamContext asyncRecognize(final Consumer<RecognitionResult> resultConsumer) {
+        return this.asyncRecognize(resultConsumer, RequestMetaData.defaultRequestMeta());
+    }
+
+    @Override
+    public StreamContext asyncRecognize(final Consumer<RecognitionResult> resultConsumer,
+            RequestMetaData requestMetaData) {
+        final FinishLatch finishLatch = new FinishLatch();
+        AsrServiceStub stubWithMetadata = MetadataUtils.attachHeaders(asyncStub, prepareMetadata(requestMetaData));
+
+        return StreamContext.builder()
+                .sender(stubWithMetadata.send(new StreamObserver<AudioFragmentResponse>() {
+                    @Override
+                    public void onNext(AudioFragmentResponse response) {
+                        if (response.getErrorCode() == 0) {
+                            resultConsumer.accept(fromAudioFragmentResponse(response.getAudioFragment()));
+                        } else {
+
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        finishLatch.fail(t);
+                    }
+
+                    @Override
+                    public void onCompleted() {
+                        finishLatch.finish();
+                    }
+                }))
+                .finishLatch(finishLatch)
+                .build();
+    }
+
+    private Metadata prepareMetadata(RequestMetaData requestMetaData) {
+        String digestedToken;
+        String expireDateTime;
+
+        if (Strings.isNullOrEmpty(asrConfig.getToken())) {
+            expireDateTime = DateTime.now().plusMinutes(30).toString(UTC_DATE_TIME_FORMAT);
+            String rawToken = asrConfig.getUserName() + asrConfig.getPassword() + expireDateTime;
+            digestedToken = sha256().hashString(rawToken, StandardCharsets.UTF_8).toString();
+        } else {
+            // 如果传入了 token，必须同时传入相应的 expireDateTime
+            if (Strings.isNullOrEmpty(asrConfig.getExpireDateTime())) {
+                throw new AsrClientException("Neither `token` nor `expireDateTime` should be Null");
+            } else {
+                expireDateTime = asrConfig.getExpireDateTime();
+            }
+
+            digestedToken = asrConfig.getToken();
+        }
+
+        AudioStreaming.InitRequest initRequest = AudioStreaming.InitRequest.newBuilder()
+                .setEnableLongSpeech(true)
+                .setEnableChunk(true)
+                .setProductId(asrConfig.getProductId())
+                .setSamplePointBytes(asrConfig.getBitDepth())
+                .setAppName(asrConfig.getAppName())
+                .setLogLevel(asrConfig.getLogLevel().getCode())
+                .setUserName(asrConfig.getUserName())
+                .setExpireTime(expireDateTime)
+                .setToken(digestedToken)
+                .setEnableFlushData(requestMetaData.isEnableFlushData())
+                .setSendPerSeconds(requestMetaData.getSendPerSeconds())
+                .setSleepRatio(requestMetaData.getSleepRatio())
+                .build();
+
+        Metadata headers = new Metadata();
+        headers.put(Metadata.Key.of("audio_meta", Metadata.ASCII_STRING_MARSHALLER),
+                Base64.encode(initRequest.toByteArray()));
+        return headers;
+    }
+
+    private RecognitionResult fromAudioFragmentResponse(AudioStreaming.AudioFragmentResult response) {
         return RecognitionResult.builder()
                 .serialNum(response.getSerialNum())
-                .errorCode(response.getErrorCode())
-                .errorMessage(response.getErrorMessage())
-                .startTime(parseLocalTime(response.getStartTime()))
-                .endTime(parseLocalTime(response.getEndTime()))
+                .startTime(DateTimeParser.parseLocalTime(response.getStartTime()))
+                .endTime(DateTimeParser.parseLocalTime(response.getEndTime()))
                 .result(response.getResult())
                 .completed(response.getCompleted())
                 .build();
     }
 
-    private LocalTime parseLocalTime(String time) {
-        String toBeParsed;
-
-        if (time.matches("\\d{2}:\\d{2}\\.\\d{2}")) { // mm:ss.SS like 01:00.40
-            toBeParsed = "00:" + time + "0";
-        } else if (time.matches("\\d{2}:\\d{2}\\.\\d{3}")) { // mm:ss.SSS without HH:
-            toBeParsed = "00:" + time;
-        } else {
-            toBeParsed = time;
-        }
-
-        DateTimeFormatter asrRecognitionResultTimeFormatter =
-                DateTimeFormat.forPattern(ASR_RECOGNITION_RESULT_TIME_FORMAT);
-
-        LocalTime ret = LocalTime.MIDNIGHT;
-
-        try {
-            ret = LocalTime.parse(toBeParsed, asrRecognitionResultTimeFormatter);
-        } catch (IllegalArgumentException | UnsupportedOperationException e) {
-            log.warn("parse time failed, the time string from asr sdk is : {}, exception: ", time, e);
-        }
-        return ret;
-    }
 }
