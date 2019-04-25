@@ -2,6 +2,15 @@
 
 package com.baidu.acu.pie;
 
+enum ProtoVersion {
+    UNKNOWN_VER = 0;
+    VERSION_1 = 1;
+    VERSION_2 = 2;
+    VERSION_3 = 3;
+    VERSION_4 = 4;
+    VERSION_5 = 5;
+}
+
 message InitRequest {
     bool enable_long_speech = 1;
     bool enable_chunk = 2;
@@ -14,20 +23,37 @@ message InitRequest {
 
     string app_name = 8;
     uint32 log_level = 9;
+
+    string user_name = 10;
+    string expire_time = 11;
+    string token = 12;
+    ProtoVersion version = 13;
 }
 
 message AudioFragmentRequest {
-    bytes audio_data = 1;
+    uint32 sequence_num = 1;
+    uint64 send_timestamp = 2;
+    bytes audio_data = 3;
+}
+
+enum ResponseType {
+    UNKNOWN_TYPE = 0;
+    FRAGMENT_DATA = 1;
+}
+
+message AudioFragmentResult {
+    string start_time = 1;
+    string end_time = 2;
+    string result = 3;
+    bool completed = 4;
+    string serial_num = 5;
 }
 
 message AudioFragmentResponse {
     int32 error_code = 1;
     string error_message = 2;
-    string start_time = 3;
-    string end_time = 4;
-    string result = 5;
-    bool completed = 6;
-    string serial_num = 7;
+    ResponseType type = 3;
+    AudioFragmentResult audio_fragment = 4;
 }
 
 service AsrService {
