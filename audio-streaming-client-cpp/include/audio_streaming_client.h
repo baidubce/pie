@@ -14,7 +14,7 @@ namespace baidu {
 namespace acu {
 namespace pie {
 
-typedef void (*AsrStreamCallBack) (const AudioFragmentResponse& resp, void* data);
+typedef void (*AsrStreamCallBack) (AudioFragmentResponse& resp, void* data);
 
 class AsrStream;
 
@@ -55,6 +55,12 @@ public:
     void set_sleep_ratio(double sleep_raio);
     // asr识别服务的产品类型，私有化版本请咨询供应商
     void set_product_id(const std::string& product_id);
+    // 用户名
+    void set_user_name(const std::string& user_name);
+    // 超时时间为UTC格式（），如果小于当前时间，校验失败
+    void set_expire_time(const std::string& expire_time);
+    // user_name passwd expire_time 用sha256生成的token
+    void set_token(const std::string& token);
     // 获取每次发送的音频字节数
     unsigned int get_send_package_size() const;
     // 初始化：指定asr流式服务器的地址和端口，私有化版本请咨询供应商
