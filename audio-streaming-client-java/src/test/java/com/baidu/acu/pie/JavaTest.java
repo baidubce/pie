@@ -2,28 +2,28 @@
 
 package com.baidu.acu.pie;
 
-import com.baidu.acu.pie.AudioStreaming.AudioFragmentRequest;
-import com.baidu.acu.pie.client.AsrClient;
-import com.baidu.acu.pie.client.AsrClientFactory;
-import com.baidu.acu.pie.client.Consumer;
-import com.baidu.acu.pie.model.AsrConfig;
-import com.baidu.acu.pie.model.AsrProduct;
-import com.baidu.acu.pie.model.RecognitionResult;
-import com.baidu.acu.pie.util.Base64;
-import com.google.protobuf.ByteString;
-import io.grpc.stub.StreamObserver;
-import org.joda.time.DateTime;
-import org.junit.Assert;
-import org.junit.Ignore;
-import org.junit.Test;
-
-import javax.xml.bind.DatatypeConverter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
+
+import javax.xml.bind.DatatypeConverter;
+
+import org.joda.time.DateTime;
+import org.junit.Assert;
+import org.junit.Ignore;
+import org.junit.Test;
+
+import com.baidu.acu.pie.client.AsrClient;
+import com.baidu.acu.pie.client.AsrClientFactory;
+import com.baidu.acu.pie.client.Consumer;
+import com.baidu.acu.pie.model.AsrConfig;
+import com.baidu.acu.pie.model.AsrProduct;
+import com.baidu.acu.pie.model.RecognitionResult;
+import com.baidu.acu.pie.model.StreamContext;
+import com.baidu.acu.pie.util.Base64;
 
 /**
  * JavaTest
@@ -53,17 +53,15 @@ public class JavaTest {
             byte[] data = new byte[asrClient.getFragmentSize()];
             int readSize;
 
-            StreamObserver<AudioFragmentRequest> sender = asrClient.asyncRecognize(new Consumer<RecognitionResult>() {
+            StreamContext context = asrClient.asyncRecognize(new Consumer<RecognitionResult>() {
                 @Override
                 public void accept(RecognitionResult it) {
                     System.out.println(it);
                 }
-            }, new CountDownLatch(1));
+            });
 
             while ((readSize = audioStream.read(data)) != -1) {
-                sender.onNext(AudioFragmentRequest.newBuilder()
-                        .setAudioData(ByteString.copyFrom(data, 0, readSize))
-                        .build());
+                context.send(data);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -87,7 +85,7 @@ public class JavaTest {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    List<RecognitionResult> results = asrClient.syncRecognize(Paths.get(audioFilePath));
+                    List<RecognitionResult> results = asrClient.syncRecognize(Paths.get(audioFilePath).toFile());
                     System.out.printf("thread %d finished at time: %s, result: %s\n",
                             Thread.currentThread().getId(),
                             new DateTime().toString(),

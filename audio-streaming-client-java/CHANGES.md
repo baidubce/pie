@@ -1,3 +1,13 @@
+# 1.0.0
+**这是一次不向下兼容的升级。**
+
+## feature
+- 在每次构建 AsrClient 的时候，支持传入用户名和密码，可以做一些 authentication。
+- 在每次调用 AsrClient 进行识别的时候，可以传入一个 RequestMeta 对象，对本次识别进行一些调整(如改变发包速度，是否展示中间结果等)
+
+## deprecated
+- 废弃了 AsrClient 中老的 asyncRecognize 接口。
+
 # 0.10.0
 ## improvement
 - jdk降级到1.7版本， 同时支持android 7.x版本

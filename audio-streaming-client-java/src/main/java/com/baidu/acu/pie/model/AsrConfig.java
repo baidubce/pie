@@ -2,7 +2,7 @@
 
 package com.baidu.acu.pie.model;
 
-import com.baidu.acu.pie.exception.AsrClientException;
+import org.joda.time.DateTime;
 
 import lombok.Getter;
 import lombok.NonNull;
@@ -17,7 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 @Getter
 @Slf4j
 public class AsrConfig {
-    public static final String TITLE_FORMAT = "%-40s\t%-36s\t%-6s\t%-10s\t%-14s\t%-13s\t%s";
+    public static final String TITLE_FORMAT = "%-40s\t%-36s\t%-14s\t%-13s\t%s";
 
     /**
      * asr流式服务器的地址，私有化版本请咨询供应商
@@ -52,29 +52,29 @@ public class AsrConfig {
     private AsrServerLogLevel logLevel = AsrServerLogLevel.INFO;
 
     /**
-     * 是否返回中间翻译结果
-     */
-    private boolean enableFlushData = true;
-
-    /**
      * do not change this
      */
     private int bitDepth = 2;
 
     /**
-     * 指定每次发送的音频数据包大小，通常不需要修改
+     * 用户名
      */
-    private double sendPerSeconds = 0.02;
+    private String userName;
 
     /**
-     * 指定asr服务的识别间隔，通常不需要修改，不能小于1
+     * 密码
      */
-    private double sleepRatio = 1;
+    private String password;
 
     /**
-     * 识别单个文件的最大等待时间，默认10分，最长不能超过120分
+     * 认证过期时间，使用标准 UTC string(yyyy-MM-dd'T'HH:mm:ss'Z')
      */
-    private int timeoutMinutes = 10;
+    private DateTime expireDateTime;
+
+    /**
+     * 和后端 server 建立连接时，用来鉴权的
+     */
+    private String token;
 
     public AsrConfig serverIp(String serverIp) {
         this.serverIp = serverIp;
@@ -110,21 +110,23 @@ public class AsrConfig {
         return this;
     }
 
-    public AsrConfig sendPerSeconds(double sendPerSeconds) {
-        this.sendPerSeconds = sendPerSeconds;
+    public AsrConfig userName(String userName) {
+        this.userName = userName;
         return this;
     }
 
-    public AsrConfig sleepRatio(double sleepRatio) {
-        this.sleepRatio = sleepRatio;
+    public AsrConfig password(String password) {
+        this.password = password;
         return this;
     }
 
-    public AsrConfig timeoutMinutes(int timeoutMinutes) {
-        if (timeoutMinutes > 120) {
-            throw new AsrClientException("timeoutMinutes should not exceed 120");
-        }
-        this.timeoutMinutes = timeoutMinutes;
+    public AsrConfig token(String token) {
+        this.token = token;
+        return this;
+    }
+
+    public AsrConfig expireDateTime(DateTime dateTime) {
+        this.expireDateTime = dateTime;
         return this;
     }
 }

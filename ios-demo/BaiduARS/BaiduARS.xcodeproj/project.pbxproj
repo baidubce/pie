@@ -1,0 +1,592 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		3673C3F62970DFBC181AFF21 /* libPods-BaiduARS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B9BA51AFA1CAC454B2ED6920 /* libPods-BaiduARS.a */; };
+		708459B52260995200B16A4C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 708459B42260995200B16A4C /* AppDelegate.m */; };
+		708459B82260995200B16A4C /* ViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 708459B72260995200B16A4C /* ViewController.mm */; };
+		708459BB2260995200B16A4C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 708459B92260995200B16A4C /* Main.storyboard */; };
+		708459BD2260995400B16A4C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 708459BC2260995400B16A4C /* Assets.xcassets */; };
+		708459C02260995400B16A4C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 708459BE2260995400B16A4C /* LaunchScreen.storyboard */; };
+		708459C32260995400B16A4C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 708459C22260995400B16A4C /* main.m */; };
+		708459CD2260995400B16A4C /* BaiduARSUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 708459CC2260995400B16A4C /* BaiduARSUITests.m */; };
+		708459DD22646D1800B16A4C /* BDASRConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 708459DC22646D1800B16A4C /* BDASRConfig.m */; };
+		708459E02264726000B16A4C /* BDASRRecognitionResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 708459DF2264726000B16A4C /* BDASRRecognitionResult.m */; };
+		708459E92265B9D300B16A4C /* bj8k.wav in Resources */ = {isa = PBXBuildFile; fileRef = 708459E82265B9D300B16A4C /* bj8k.wav */; };
+		708459EE226DB14700B16A4C /* AudioStreaming.pbrpc.m in Sources */ = {isa = PBXBuildFile; fileRef = 708459EB226DB14700B16A4C /* AudioStreaming.pbrpc.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		708459EF226DB14700B16A4C /* AudioStreaming.pbobjc.m in Sources */ = {isa = PBXBuildFile; fileRef = 708459EC226DB14700B16A4C /* AudioStreaming.pbobjc.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		708459F1226DBED700B16A4C /* xeq16k.wav in Resources */ = {isa = PBXBuildFile; fileRef = 708459F0226DBED700B16A4C /* xeq16k.wav */; };
+		708459F4226DC19100B16A4C /* BDAudioManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 708459F3226DC19100B16A4C /* BDAudioManager.m */; };
+		708459F6227095B500B16A4C /* 1.wav in Resources */ = {isa = PBXBuildFile; fileRef = 708459F5227095B500B16A4C /* 1.wav */; };
+		708459F82270963E00B16A4C /* 10-245.wav in Resources */ = {isa = PBXBuildFile; fileRef = 708459F72270963E00B16A4C /* 10-245.wav */; };
+		708459FB2271AB5E00B16A4C /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 708459FA2271AB5E00B16A4C /* SettingViewController.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		708459C92260995400B16A4C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 708459A82260995200B16A4C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 708459AF2260995200B16A4C;
+			remoteInfo = BaiduARS;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		6EDC4A73EC7BA4F7929B2F76 /* Pods-BaiduARS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BaiduARS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BaiduARS/Pods-BaiduARS.debug.xcconfig"; sourceTree = "<group>"; };
+		708459B02260995200B16A4C /* BaiduARS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BaiduARS.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		708459B32260995200B16A4C /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		708459B42260995200B16A4C /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		708459B62260995200B16A4C /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		708459B72260995200B16A4C /* ViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ViewController.mm; sourceTree = "<group>"; };
+		708459BA2260995200B16A4C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		708459BC2260995400B16A4C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		708459BF2260995400B16A4C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		708459C12260995400B16A4C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		708459C22260995400B16A4C /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		708459C82260995400B16A4C /* BaiduARSUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BaiduARSUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		708459CC2260995400B16A4C /* BaiduARSUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BaiduARSUITests.m; sourceTree = "<group>"; };
+		708459CE2260995400B16A4C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		708459DB22646D1800B16A4C /* BDASRConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BDASRConfig.h; sourceTree = "<group>"; };
+		708459DC22646D1800B16A4C /* BDASRConfig.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BDASRConfig.m; sourceTree = "<group>"; };
+		708459DE2264726000B16A4C /* BDASRRecognitionResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BDASRRecognitionResult.h; sourceTree = "<group>"; };
+		708459DF2264726000B16A4C /* BDASRRecognitionResult.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BDASRRecognitionResult.m; sourceTree = "<group>"; };
+		708459E82265B9D300B16A4C /* bj8k.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = bj8k.wav; sourceTree = "<group>"; };
+		708459EA226DB14700B16A4C /* AudioStreaming.pbrpc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioStreaming.pbrpc.h; sourceTree = "<group>"; };
+		708459EB226DB14700B16A4C /* AudioStreaming.pbrpc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AudioStreaming.pbrpc.m; sourceTree = "<group>"; };
+		708459EC226DB14700B16A4C /* AudioStreaming.pbobjc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AudioStreaming.pbobjc.m; sourceTree = "<group>"; };
+		708459ED226DB14700B16A4C /* AudioStreaming.pbobjc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioStreaming.pbobjc.h; sourceTree = "<group>"; };
+		708459F0226DBED700B16A4C /* xeq16k.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = xeq16k.wav; sourceTree = "<group>"; };
+		708459F2226DC19100B16A4C /* BDAudioManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BDAudioManager.h; sourceTree = "<group>"; };
+		708459F3226DC19100B16A4C /* BDAudioManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BDAudioManager.m; sourceTree = "<group>"; };
+		708459F5227095B500B16A4C /* 1.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = 1.wav; sourceTree = "<group>"; };
+		708459F72270963E00B16A4C /* 10-245.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "10-245.wav"; sourceTree = "<group>"; };
+		708459F92271AB5E00B16A4C /* SettingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SettingViewController.h; sourceTree = "<group>"; };
+		708459FA2271AB5E00B16A4C /* SettingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SettingViewController.m; sourceTree = "<group>"; };
+		B9BA51AFA1CAC454B2ED6920 /* libPods-BaiduARS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BaiduARS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		EFC7C8C095B6C8B85A81F76C /* Pods-BaiduARS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BaiduARS.release.xcconfig"; path = "Pods/Target Support Files/Pods-BaiduARS/Pods-BaiduARS.release.xcconfig"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		708459AD2260995200B16A4C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3673C3F62970DFBC181AFF21 /* libPods-BaiduARS.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		708459C52260995400B16A4C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		708459A72260995200B16A4C = {
+			isa = PBXGroup;
+			children = (
+				708459B22260995200B16A4C /* BaiduARS */,
+				708459CB2260995400B16A4C /* BaiduARSUITests */,
+				708459B12260995200B16A4C /* Products */,
+				D43BA780298329EDD8407B29 /* Pods */,
+				BCC1FAE24D49852A8FFB8ADC /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		708459B12260995200B16A4C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				708459B02260995200B16A4C /* BaiduARS.app */,
+				708459C82260995400B16A4C /* BaiduARSUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		708459B22260995200B16A4C /* BaiduARS */ = {
+			isa = PBXGroup;
+			children = (
+				708459B32260995200B16A4C /* AppDelegate.h */,
+				708459B42260995200B16A4C /* AppDelegate.m */,
+				708459B62260995200B16A4C /* ViewController.h */,
+				708459B72260995200B16A4C /* ViewController.mm */,
+				708459F92271AB5E00B16A4C /* SettingViewController.h */,
+				708459FA2271AB5E00B16A4C /* SettingViewController.m */,
+				708459DB22646D1800B16A4C /* BDASRConfig.h */,
+				708459DC22646D1800B16A4C /* BDASRConfig.m */,
+				708459F2226DC19100B16A4C /* BDAudioManager.h */,
+				708459F3226DC19100B16A4C /* BDAudioManager.m */,
+				708459DE2264726000B16A4C /* BDASRRecognitionResult.h */,
+				708459DF2264726000B16A4C /* BDASRRecognitionResult.m */,
+				708459ED226DB14700B16A4C /* AudioStreaming.pbobjc.h */,
+				708459EC226DB14700B16A4C /* AudioStreaming.pbobjc.m */,
+				708459EA226DB14700B16A4C /* AudioStreaming.pbrpc.h */,
+				708459EB226DB14700B16A4C /* AudioStreaming.pbrpc.m */,
+				708459E82265B9D300B16A4C /* bj8k.wav */,
+				708459F0226DBED700B16A4C /* xeq16k.wav */,
+				708459F5227095B500B16A4C /* 1.wav */,
+				708459F72270963E00B16A4C /* 10-245.wav */,
+				708459B92260995200B16A4C /* Main.storyboard */,
+				708459BC2260995400B16A4C /* Assets.xcassets */,
+				708459BE2260995400B16A4C /* LaunchScreen.storyboard */,
+				708459C12260995400B16A4C /* Info.plist */,
+				708459C22260995400B16A4C /* main.m */,
+			);
+			path = BaiduARS;
+			sourceTree = "<group>";
+		};
+		708459CB2260995400B16A4C /* BaiduARSUITests */ = {
+			isa = PBXGroup;
+			children = (
+				708459CC2260995400B16A4C /* BaiduARSUITests.m */,
+				708459CE2260995400B16A4C /* Info.plist */,
+			);
+			path = BaiduARSUITests;
+			sourceTree = "<group>";
+		};
+		BCC1FAE24D49852A8FFB8ADC /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				B9BA51AFA1CAC454B2ED6920 /* libPods-BaiduARS.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		D43BA780298329EDD8407B29 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				6EDC4A73EC7BA4F7929B2F76 /* Pods-BaiduARS.debug.xcconfig */,
+				EFC7C8C095B6C8B85A81F76C /* Pods-BaiduARS.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		708459AF2260995200B16A4C /* BaiduARS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 708459D12260995400B16A4C /* Build configuration list for PBXNativeTarget "BaiduARS" */;
+			buildPhases = (
+				801C9D3A46FAE3655880AE1B /* [CP] Check Pods Manifest.lock */,
+				708459AC2260995200B16A4C /* Sources */,
+				708459AD2260995200B16A4C /* Frameworks */,
+				708459AE2260995200B16A4C /* Resources */,
+				7BBC48527A0C5025FB394B1A /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = BaiduARS;
+			productName = BaiduARS;
+			productReference = 708459B02260995200B16A4C /* BaiduARS.app */;
+			productType = "com.apple.product-type.application";
+		};
+		708459C72260995400B16A4C /* BaiduARSUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 708459D42260995400B16A4C /* Build configuration list for PBXNativeTarget "BaiduARSUITests" */;
+			buildPhases = (
+				708459C42260995400B16A4C /* Sources */,
+				708459C52260995400B16A4C /* Frameworks */,
+				708459C62260995400B16A4C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				708459CA2260995400B16A4C /* PBXTargetDependency */,
+			);
+			name = BaiduARSUITests;
+			productName = BaiduARSUITests;
+			productReference = 708459C82260995400B16A4C /* BaiduARSUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		708459A82260995200B16A4C /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 1020;
+				ORGANIZATIONNAME = Cloud;
+				TargetAttributes = {
+					708459AF2260995200B16A4C = {
+						CreatedOnToolsVersion = 10.2;
+					};
+					708459C72260995400B16A4C = {
+						CreatedOnToolsVersion = 10.2;
+						TestTargetID = 708459AF2260995200B16A4C;
+					};
+				};
+			};
+			buildConfigurationList = 708459AB2260995200B16A4C /* Build configuration list for PBXProject "BaiduARS" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 708459A72260995200B16A4C;
+			productRefGroup = 708459B12260995200B16A4C /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				708459AF2260995200B16A4C /* BaiduARS */,
+				708459C72260995400B16A4C /* BaiduARSUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		708459AE2260995200B16A4C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				708459F6227095B500B16A4C /* 1.wav in Resources */,
+				708459C02260995400B16A4C /* LaunchScreen.storyboard in Resources */,
+				708459F82270963E00B16A4C /* 10-245.wav in Resources */,
+				708459BD2260995400B16A4C /* Assets.xcassets in Resources */,
+				708459F1226DBED700B16A4C /* xeq16k.wav in Resources */,
+				708459BB2260995200B16A4C /* Main.storyboard in Resources */,
+				708459E92265B9D300B16A4C /* bj8k.wav in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		708459C62260995400B16A4C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		7BBC48527A0C5025FB394B1A /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-BaiduARS/Pods-BaiduARS-resources.sh",
+				"${PODS_CONFIGURATION_BUILD_DIR}/gRPC/gRPCCertificates.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/gRPCCertificates.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BaiduARS/Pods-BaiduARS-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		801C9D3A46FAE3655880AE1B /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-BaiduARS-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		708459AC2260995200B16A4C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				708459B82260995200B16A4C /* ViewController.mm in Sources */,
+				708459E02264726000B16A4C /* BDASRRecognitionResult.m in Sources */,
+				708459C32260995400B16A4C /* main.m in Sources */,
+				708459DD22646D1800B16A4C /* BDASRConfig.m in Sources */,
+				708459EE226DB14700B16A4C /* AudioStreaming.pbrpc.m in Sources */,
+				708459FB2271AB5E00B16A4C /* SettingViewController.m in Sources */,
+				708459B52260995200B16A4C /* AppDelegate.m in Sources */,
+				708459F4226DC19100B16A4C /* BDAudioManager.m in Sources */,
+				708459EF226DB14700B16A4C /* AudioStreaming.pbobjc.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		708459C42260995400B16A4C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				708459CD2260995400B16A4C /* BaiduARSUITests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		708459CA2260995400B16A4C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 708459AF2260995200B16A4C /* BaiduARS */;
+			targetProxy = 708459C92260995400B16A4C /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		708459B92260995200B16A4C /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				708459BA2260995200B16A4C /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		708459BE2260995400B16A4C /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				708459BF2260995400B16A4C /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		708459CF2260995400B16A4C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		708459D02260995400B16A4C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		708459D22260995400B16A4C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6EDC4A73EC7BA4F7929B2F76 /* Pods-BaiduARS.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = C789GLWV85;
+				INFOPLIST_FILE = BaiduARS/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = Baidu.BaiduARS;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		708459D32260995400B16A4C /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = EFC7C8C095B6C8B85A81F76C /* Pods-BaiduARS.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = C789GLWV85;
+				INFOPLIST_FILE = BaiduARS/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = Baidu.BaiduARS;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		708459D52260995400B16A4C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = BaiduARSUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = Baidu.BaiduARSUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = BaiduARS;
+			};
+			name = Debug;
+		};
+		708459D62260995400B16A4C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = BaiduARSUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = Baidu.BaiduARSUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = BaiduARS;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		708459AB2260995200B16A4C /* Build configuration list for PBXProject "BaiduARS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				708459CF2260995400B16A4C /* Debug */,
+				708459D02260995400B16A4C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		708459D12260995400B16A4C /* Build configuration list for PBXNativeTarget "BaiduARS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				708459D22260995400B16A4C /* Debug */,
+				708459D32260995400B16A4C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		708459D42260995400B16A4C /* Build configuration list for PBXNativeTarget "BaiduARSUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				708459D52260995400B16A4C /* Debug */,
+				708459D62260995400B16A4C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 708459A82260995200B16A4C /* Project object */;
+}
