@@ -241,7 +241,7 @@ public class AsrClientGrpcImpl implements AsrClient {
             digestedToken = sha256().hashString(rawToken, StandardCharsets.UTF_8).toString();
         } else {
             // 如果传入了 token，必须同时传入相应的 expireDateTime
-            if (asrConfig.getExpireDateTime() != null) {
+            if (asrConfig.getExpireDateTime() == null) {
                 throw new AsrClientException("Neither `token` nor `expireDateTime` should be Null");
             } else {
                 expireDateTime = DateTimeParser.toUTCString(asrConfig.getExpireDateTime());
