@@ -2,14 +2,15 @@ package com.baidu.acu.pie.model;
 
 import com.baidu.acu.pie.AudioStreaming;
 import com.google.protobuf.ByteString;
-
 import io.grpc.stub.StreamObserver;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.experimental.Delegate;
 
 @Getter
 @Builder
-public class StreamContext {
+public class StreamContext implements FinishLatch {
+    @Delegate(types = FinishLatch.class)
     private FinishLatch finishLatch;
     private StreamObserver<AudioStreaming.AudioFragmentRequest> sender;
 
