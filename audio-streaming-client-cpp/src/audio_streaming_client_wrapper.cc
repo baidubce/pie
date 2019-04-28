@@ -31,6 +31,18 @@ void asr_client_set_log_level(AsrClientWrapper* asr_client, int log_level) {
     return ((AsrClient*) asr_client)->set_log_level(log_level);
 }
 
+void asr_client_set_user_name(AsrClientWrapper* asr_client, char* user_name) {
+    return ((AsrClient*) asr_client)->set_user_name(user_name);
+}
+
+void asr_client_set_expire_time(AsrClientWrapper* asr_client, char* expire_time) {
+    return ((AsrClient*) asr_client)->set_expire_time(expire_time);
+}
+
+void asr_client_set_token(AsrClientWrapper* asr_client, char* token) {
+    return ((AsrClient*) asr_client)->set_token(token);
+}
+
 void asr_client_set_send_per_seconds(AsrClientWrapper* asr_client, double send_per_seconds) {
     return ((AsrClient*) asr_client)->set_send_per_seconds(send_per_seconds);
 }
@@ -60,17 +72,19 @@ typedef struct {
     void * data;
 } CallbackAdaptor;
 
-void callback_wrapper(const AudioFragmentResponse &resp, void* data) {
+void callback_wrapper(AudioFragmentResponse &resp, void* data) {
     CallbackAdaptor* adaptor = (CallbackAdaptor*)data;
     AsrStreamCallBackWrapper callBackWrapper = (AsrStreamCallBackWrapper)(adaptor->callback);
     AudioFragmentResponseWrapper responseWrapper;
+    com::baidu::acu::pie::AudioFragmentResult *audio_fragment = resp.mutable_audio_fragment();
     responseWrapper.error_code = resp.error_code();
     responseWrapper.error_message = resp.error_message().data();
-    responseWrapper.serial_num = resp.serial_num().data();
-    responseWrapper.start_time = resp.start_time().data();
-    responseWrapper.end_time = resp.end_time().data();
-    responseWrapper.result = resp.result().data();
-    responseWrapper.complete = resp.completed();
+    responseWrapper.type = resp.type();
+    responseWrapper.audio_fragment.serial_num = audio_fragment->serial_num().data();
+    responseWrapper.audio_fragment.start_time = audio_fragment->start_time().data();
+    responseWrapper.audio_fragment.end_time = audio_fragment->end_time().data();
+    responseWrapper.audio_fragment.result = audio_fragment->result().data();
+    responseWrapper.audio_fragment.complete = audio_fragment->completed();
     callBackWrapper(&responseWrapper, adaptor->data);
 }
 

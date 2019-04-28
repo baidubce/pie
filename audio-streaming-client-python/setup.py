@@ -8,7 +8,7 @@ import os
 
 setup(
     name="baidu-acu-asr",
-    version="1.1.6",
+    version="1.2.0",
     description="asr grpc client",
     long_description="[https://github.com/baidubce/pie/tree/master/audio-streaming-client-python]" +
                      "(https://github.com/baidubce/pie/tree/master/audio-streaming-client-python)",

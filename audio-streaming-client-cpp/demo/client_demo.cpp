@@ -3,13 +3,15 @@
 #include <iostream>
 #include <sstream>
 #include <thread>
-
+#include <string>
+#include "picosha2.h"
 
 typedef com::baidu::acu::pie::AsrClient AsrClient;
 typedef com::baidu::acu::pie::AsrStream AsrStream;
 typedef com::baidu::acu::pie::AudioFragmentResponse AudioFragmentResponse;
+typedef com::baidu::acu::pie::AudioFragmentResult AudioFragmentResult;
 
-void default_callback(const AudioFragmentResponse& resp, 
+void default_callback(AudioFragmentResponse& resp, 
                       void* data) {
     //std::cout << "[debug] do recoging ... ..." << std::endl;
     std::stringstream ss;
@@ -17,14 +19,19 @@ void default_callback(const AudioFragmentResponse& resp,
         char* tmp = (char*) data;
         std::cout << "data = " << tmp << std::endl;
     }
-    ss << "Receive " << (resp.completed() ? "completed" : "uncompleted")
-       << ", serial_num=" << resp.serial_num()
-       << ", start=" << resp.start_time()
-       << ", end=" << resp.end_time()
-       << ", error_code=" << resp.error_code()
-       << ", error_message=" << resp.error_message()
-       << ", content=" << resp.result();
-    std::cout << ss.str() << std::endl;
+    if (resp.type() == com::baidu::acu::pie::FRAGMENT_DATA) {
+        AudioFragmentResult *audio_fragment = resp.mutable_audio_fragment();
+        ss << "Receive " << (audio_fragment->completed() ? "completed" : "uncompleted")
+           << ", serial_num=" << audio_fragment->serial_num()
+           << ", start=" << audio_fragment->start_time()
+           << ", end=" << audio_fragment->end_time()
+           << ", error_code=" << resp.error_code()
+           << ", error_message=" << resp.error_message()
+           << ", content=" << audio_fragment->result();
+        std::cout << ss.str() << std::endl;
+    } else {
+        std::cout << "error resp type is=" << resp.type() << std::endl;
+    }
 }
 
 void write_to_stream(AsrClient client, AsrStream* stream, 
@@ -71,9 +78,15 @@ int main(int argc, char* argv[]) {
     // create AsrClient
     AsrClient client;
     client.set_enable_flush_data(true);
-    if (argc == 3) {
+    if (argc == 6) {
         client.set_product_id(argv[1]);
         client.init(argv[2]);
+        client.set_user_name(argv[3]);
+        std::string passwd = argv[4];
+        std::string str = argv[3] + passwd + argv[5];
+        std::string token = picosha2::hash256_hex_string(str);
+        client.set_token(token);
+        client.set_expire_time(argv[5]); //expire_time UTC format, 2019-04-25T12:41:16Z
     } else {
         client.set_product_id("1906");
         client.init("127.0.0.1:8200");

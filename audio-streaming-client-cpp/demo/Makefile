@@ -20,7 +20,13 @@ GRPC_CPP_PLUGIN_PATH ?= `which $(GRPC_CPP_PLUGIN)`
 
 all: system-check client_demo client_demo_multi_thread client_demo_c
 
-client_demo_c : client_demo_c.cc
+sha256.o : sha256.c
+	$(CC) -c $^ $(LDFLAGS) $(INC) -o $@
+
+client_demo_c.o : client_demo_c.cc
+	$(CC) -c $^ $(LDFLAGS) $(INC) -o $@
+
+client_demo_c: sha256.o client_demo_c.o
 	$(CC) $^ $(LDFLAGS) $(INC) -o $@
 
 client_demo: client_demo.cpp

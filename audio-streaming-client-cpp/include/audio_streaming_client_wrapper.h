@@ -11,14 +11,24 @@ extern "C" {
 
 #include <stdbool.h>
 
+typedef enum { 
+    UNKNOWN_TYPE = 0,
+    FRAGMENT_DATA = 1
+} ResponseType;
+
 typedef struct {
-    int error_code;
-    const char* error_message;
     const char* start_time;
     const char* end_time;
     const char* result;
     bool complete;
     const char* serial_num;
+} AudioFragmentResult;
+
+typedef struct {
+    int error_code;
+    const char* error_message;
+    int type;
+    AudioFragmentResult audio_fragment;
 } AudioFragmentResponseWrapper;
 typedef void AsrClientWrapper;
 typedef void AsrStreamWrapper;
@@ -37,6 +47,12 @@ void asr_client_set_enable_flush_data(AsrClientWrapper* asr_client, bool enable_
 void asr_client_set_enable_long_speech(AsrClientWrapper* asr_client, bool enable_long_speech);
 // 服务端的日志输出级别
 void asr_client_set_log_level(AsrClientWrapper* asr_client, int log_level);
+// 用户名
+void asr_client_set_user_name(AsrClientWrapper* asr_client, char* user_name);
+// 超时时间
+void asr_client_set_expire_time(AsrClientWrapper* asr_client, char* expire_time);
+// 生成的 token
+void asr_client_set_token(AsrClientWrapper* asr_client, char* token);
 // 指定每次发送的音频数据包大小，通常不需要修改
 void asr_client_set_send_per_seconds(AsrClientWrapper* asr_client, double send_per_seconds);
 // 指定asr服务的识别间隔，通常不需要修改，不能小于1

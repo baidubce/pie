@@ -1,3 +1,12 @@
+# version 1.2.0
+
+### improvement 
+
+### feature
+- 添加用户验证
+
+### bug fix
+
 # version 1.1.3 & 1.1.4 & 1.1.5 & 1.1.6
 
 ### improvement 
