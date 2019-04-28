@@ -2,20 +2,6 @@
 
 package com.baidu.acu.pie;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.List;
-import java.util.concurrent.CountDownLatch;
-
-import javax.xml.bind.DatatypeConverter;
-
-import org.joda.time.DateTime;
-import org.junit.Assert;
-import org.junit.Ignore;
-import org.junit.Test;
-
 import com.baidu.acu.pie.client.AsrClient;
 import com.baidu.acu.pie.client.AsrClientFactory;
 import com.baidu.acu.pie.client.Consumer;
@@ -24,6 +10,18 @@ import com.baidu.acu.pie.model.AsrProduct;
 import com.baidu.acu.pie.model.RecognitionResult;
 import com.baidu.acu.pie.model.StreamContext;
 import com.baidu.acu.pie.util.Base64;
+import org.joda.time.DateTime;
+import org.junit.Assert;
+import org.junit.Ignore;
+import org.junit.Test;
+
+import javax.xml.bind.DatatypeConverter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.List;
+import java.util.concurrent.CountDownLatch;
 
 /**
  * JavaTest
@@ -37,6 +35,8 @@ public class JavaTest {
                 .serverIp("127.0.0.1")
                 .serverPort(80)
                 .appName("simple demo")
+                .userName("user")
+                .password("password")
                 .product(AsrProduct.CUSTOMER_SERVICE);
 
         return AsrClientFactory.buildClient(asrConfig);
@@ -89,7 +89,7 @@ public class JavaTest {
                     System.out.printf("thread %d finished at time: %s, result: %s\n",
                             Thread.currentThread().getId(),
                             new DateTime().toString(),
-                            results.get(0).getResult()
+                            results
                     );
                     finishLatch.countDown();
                 }
