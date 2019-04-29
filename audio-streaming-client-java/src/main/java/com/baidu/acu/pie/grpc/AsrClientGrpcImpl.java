@@ -2,21 +2,6 @@
 
 package com.baidu.acu.pie.grpc;
 
-import static com.google.common.hash.Hashing.sha256;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
-
-import org.joda.time.DateTime;
-
 import com.baidu.acu.pie.AsrServiceGrpc;
 import com.baidu.acu.pie.AsrServiceGrpc.AsrServiceStub;
 import com.baidu.acu.pie.AudioStreaming;
@@ -25,22 +10,28 @@ import com.baidu.acu.pie.AudioStreaming.AudioFragmentResponse;
 import com.baidu.acu.pie.client.AsrClient;
 import com.baidu.acu.pie.client.Consumer;
 import com.baidu.acu.pie.exception.AsrClientException;
-import com.baidu.acu.pie.model.AsrConfig;
-import com.baidu.acu.pie.model.FinishLatch;
-import com.baidu.acu.pie.model.RecognitionResult;
-import com.baidu.acu.pie.model.RequestMetaData;
-import com.baidu.acu.pie.model.StreamContext;
+import com.baidu.acu.pie.exception.AsrException;
+import com.baidu.acu.pie.model.*;
 import com.baidu.acu.pie.util.Base64;
 import com.baidu.acu.pie.util.DateTimeParser;
 import com.google.common.base.Strings;
 import com.google.protobuf.ByteString;
-
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.Metadata;
 import io.grpc.stub.MetadataUtils;
 import io.grpc.stub.StreamObserver;
 import lombok.extern.slf4j.Slf4j;
+import org.joda.time.DateTime;
+
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+
+import static com.google.common.hash.Hashing.sha256;
 
 /**
  * AsrClientGrpcImpl
@@ -54,10 +45,18 @@ public class AsrClientGrpcImpl implements AsrClient {
     private AsrConfig asrConfig;
 
     public AsrClientGrpcImpl(AsrConfig asrConfig) {
+        this(asrConfig, ChannelConfig.builder().build());
+    }
+
+    public AsrClientGrpcImpl(AsrConfig asrConfig, ChannelConfig channelConfig) {
         this.asrConfig = asrConfig;
         managedChannel = ManagedChannelBuilder
                 .forAddress(asrConfig.getServerIp(), asrConfig.getServerPort())
                 .usePlaintext()
+                .keepAliveTime(channelConfig.getKeepAliveTime().getTime(),
+                        channelConfig.getKeepAliveTime().getTimeUnit())
+                .keepAliveTimeout(channelConfig.getKeepAliveTimeout().getTime(),
+                        channelConfig.getKeepAliveTimeout().getTimeUnit())
                 .build();
 
         asyncStub = AsrServiceGrpc.newStub(managedChannel);
@@ -79,9 +78,9 @@ public class AsrClientGrpcImpl implements AsrClient {
 
     private int getFragmentSize(RequestMetaData requestMetaData) {
         return (int) (asrConfig.getProduct().getSampleRate()
-                              * asrConfig.getBitDepth()
-                              * requestMetaData.getSendPerSeconds()
-                              * requestMetaData.getSendPackageRatio());
+                * asrConfig.getBitDepth()
+                * requestMetaData.getSendPerSeconds()
+                * requestMetaData.getSendPackageRatio());
     }
 
     @Override
@@ -152,7 +151,7 @@ public class AsrClientGrpcImpl implements AsrClient {
     }
 
     private CountDownLatch sendRequests(List<AudioFragmentRequest> requests, RequestMetaData requestMetaData,
-            final List<RecognitionResult> results) {
+                                        final List<RecognitionResult> results) {
         final CountDownLatch finishLatch = new CountDownLatch(1);
         AsrServiceStub stubWithMetadata = MetadataUtils.attachHeaders(asyncStub, prepareMetadata(requestMetaData));
 
@@ -202,8 +201,8 @@ public class AsrClientGrpcImpl implements AsrClient {
 
     @Override
     public StreamContext asyncRecognize(final Consumer<RecognitionResult> resultConsumer,
-            RequestMetaData requestMetaData) {
-        final FinishLatch finishLatch = new FinishLatch();
+                                        RequestMetaData requestMetaData) {
+        final FinishLatchImpl finishLatch = new FinishLatchImpl();
         AsrServiceStub stubWithMetadata = MetadataUtils.attachHeaders(asyncStub, prepareMetadata(requestMetaData));
 
         return StreamContext.builder()
@@ -213,13 +212,14 @@ public class AsrClientGrpcImpl implements AsrClient {
                         if (response.getErrorCode() == 0) {
                             resultConsumer.accept(fromAudioFragmentResponse(response.getAudioFragment()));
                         } else {
-
+                            finishLatch.fail(new AsrException(response.getErrorCode(), response.getErrorMessage()));
                         }
                     }
 
                     @Override
                     public void onError(Throwable t) {
-                        finishLatch.fail(t);
+                        // TODO: 2019-04-28 错误码需要规范一下
+                        finishLatch.fail(new AsrException(-2000, t));
                     }
 
                     @Override

@@ -5,10 +5,8 @@ package com.baidu.acu.pie;
 import com.baidu.acu.pie.client.AsrClient;
 import com.baidu.acu.pie.client.AsrClientFactory;
 import com.baidu.acu.pie.client.Consumer;
-import com.baidu.acu.pie.model.AsrConfig;
-import com.baidu.acu.pie.model.AsrProduct;
-import com.baidu.acu.pie.model.RecognitionResult;
-import com.baidu.acu.pie.model.StreamContext;
+import com.baidu.acu.pie.exception.AsrException;
+import com.baidu.acu.pie.model.*;
 import com.baidu.acu.pie.util.Base64;
 import org.joda.time.DateTime;
 import org.junit.Assert;
@@ -16,7 +14,6 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import javax.xml.bind.DatatypeConverter;
-import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -58,12 +55,23 @@ public class JavaTest {
                 public void accept(RecognitionResult it) {
                     System.out.println(it);
                 }
+            }, RequestMetaData.defaultRequestMeta().enableFlushData(false));
+            context.enableCallback(new Consumer<AsrException>() {
+                @Override
+                public void accept(AsrException e) {
+                    if (e != null) {
+                        System.out.println("Error happened in asr call " + e.getMessage());
+                    } else {
+                        System.out.println("Asr success finished");
+                    }
+                }
             });
 
             while ((readSize = audioStream.read(data)) != -1) {
                 context.send(data);
             }
-        } catch (IOException e) {
+            context.await();
+        } catch (Throwable e) {
             e.printStackTrace();
         }
 
@@ -75,7 +83,7 @@ public class JavaTest {
     @Ignore
     @Test
     public void testSendFileMultiThread() {
-        final String audioFilePath = "testaudio/bj8k.wav";
+        final String audioFilePath = "testaudio/1.wav";
         final AsrClient asrClient = createAsrClient();
 
         int concurrentNum = 5;
