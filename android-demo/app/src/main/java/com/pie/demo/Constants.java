@@ -6,7 +6,7 @@ package com.pie.demo;
 public class Constants {
 
     public static final String SERVER_IP_ADDR = "180.76.107.131";
-    public static final int SERVER_IP_PORT = 8212;
+    public static final int SERVER_IP_PORT = 8050;
 
     public static final String ONEADDRESS = "oneaddress";
     public static final String ONEPORT = "oneport";
@@ -25,6 +25,10 @@ public class Constants {
     public static final String SWITCHISCHECKEDTWO = "switchischeckedtwo";
     public static final String SWITCHISCHECKEDTHREE = "switchischeckedthree";
 
+    public static final String ISCHANGEHZONE = "ischangehzone";
+    public static final String ISCHANGEHZTWO = "ischangehztwo";
+    public static final String ISCHANGEHZTHREE = "ischangehzthree";
+
 
     public static final String SAMPLERATEINHZ = "sampleRateInHz";
 
@@ -34,4 +38,25 @@ public class Constants {
     public static final String SPD = "spd";
     public static final String PIT = "pit";
     public static final String VOl = "vol";
+
+
+    public static final String ACCOUTONE = "accoutone";
+    public static final String PWDONE = "pwdone";
+    public static final String TIMEONE = "timeone";
+    public static final String TOKENONE = "tokenone";
+
+    public static final String ACCOUTTWO = "accouttwo";
+    public static final String PWDTWO = "pwdtwo";
+    public static final String TIMETWO = "timetwo";
+    public static final String TOKENTWO = "tokentwo";
+
+    public static final String ACCOUTHREE = "accoutthree";
+    public static final String PWDTHREE = "pwdthree";
+    public static final String TIMETHREE = "timethree";
+    public static final String TOKENTHREE = "tokenthree";
+
+    public static final String LOGINSTYLEONE = "loginstyleone";
+    public static final String LOGINSTYLETWO = "loginstyletwo";
+    public static final String LOGINSTYLETHREE = "loginstylethree";
+
 }

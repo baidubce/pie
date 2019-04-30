@@ -13,123 +13,137 @@
         app:title="设置"
         app:titleTextColor="#ffffffff" />
 
-    <LinearLayout
-        android:id="@+id/mLOne"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-        <EditText
-            android:id="@+id/mEtIp"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:digits="0123456789."
-            android:hint="设置ip"
-            android:inputType="number" />
-
-        <EditText
-            android:id="@+id/mEtPort"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:digits="0123456789."
-            android:hint="设置port"
-            android:inputType="number" />
-
-        <ScrollView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-            <RadioGroup
-                android:id="@+id/mRadioGroup"
+            <LinearLayout
+                android:id="@+id/mLOne"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical" />
-        </ScrollView>
+                android:orientation="vertical">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+                <EditText
+                    android:id="@+id/mEtIp"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:digits="0123456789."
+                    android:hint="设置ip"
+                    android:inputType="number" />
 
-            <TextView
-                android:layout_width="wrap_content"
+                <EditText
+                    android:id="@+id/mEtPort"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:digits="0123456789."
+                    android:hint="设置port"
+                    android:inputType="number" />
+
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <RadioGroup
+                        android:id="@+id/mRadioGroup"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical" />
+                </ScrollView>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:text="实时显示文字"
+                        android:textColor="#000" />
+
+                    <Switch
+                        android:id="@+id/mSwitch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true" />
+
+
+                </RelativeLayout>
+
+                <include layout="@layout/login" />
+
+
+                <Button
+                    android:id="@+id/mBT"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="保存" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/mLTwo"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:text="实时显示文字"
-                android:textColor="#000" />
+                android:orientation="vertical">
 
-            <Switch
-                android:id="@+id/mSwitch"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="设置ip,port"
+                    android:textColor="#000" />
 
+                <EditText
+                    android:id="@+id/mEtPortIpTTS"
+                    android:layout_width="fill_parent" android:inputType="" 
+                    android:layout_height="wrap_content" />
 
-        </RelativeLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="设置语速，取值0-15，默认为5中语速"
+                    android:textColor="#000" />
 
-        <Button
-            android:id="@+id/mBT"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="保存" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/mLTwo"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="设置ip,port"
-            android:textColor="#000" />
-
-        <EditText
-            android:id="@+id/mEtPortIpTTS"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="设置语速，取值0-15，默认为5中语速"
-            android:textColor="#000" />
-
-        <EditText
-            android:id="@+id/mEtSpd"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content" />
+                <EditText
+                    android:id="@+id/mEtSpd"
+                    android:layout_width="fill_parent" android:inputType="" 
+                    android:layout_height="wrap_content" />
 
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="设置音调，取值0-15，默认为5中语调"
-            android:textColor="#000" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="设置音调，取值0-15，默认为5中语调"
+                    android:textColor="#000" />
 
-        <EditText
-            android:id="@+id/mEtPit"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content" />
+                <EditText
+                    android:id="@+id/mEtPit"
+                    android:layout_width="fill_parent" android:inputType="" 
+                    android:layout_height="wrap_content" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="设置音量，取值0-15，默认为5中音量"
-            android:textColor="#000" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="设置音量，取值0-15，默认为5中音量"
+                    android:textColor="#000" />
 
-        <EditText
-            android:id="@+id/mEtVol"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content" />
+                <EditText
+                    android:id="@+id/mEtVol"
+                    android:layout_width="fill_parent" android:inputType="" 
+                    android:layout_height="wrap_content" />
 
-        <Button
-            android:id="@+id/mBTTTS"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="保存" />
+                <Button
+                    android:id="@+id/mBTTTS"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="保存" />
 
-    </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>

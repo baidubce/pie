@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">百度ASRTTS</string>
+    <string name="digits">0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ~!@#_$%^*()+=|{}:;,\\[\\].?~！@#￥%……*（）—+|{}【】‘；：”“’。，、？</string>
 </resources>

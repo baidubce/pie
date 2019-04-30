@@ -57,7 +57,7 @@ public class AsrFragment extends BaseFragment {
     /**
      * 初始化第一个客户端，默认使用 客服模型：金融领域
      */
-    private int defaultAsr = 2;
+    private int defaultAsr;
 
     private boolean switchone;
     private boolean switchtwo;
@@ -348,13 +348,12 @@ public class AsrFragment extends BaseFragment {
                     SpUtils.getInstance().putString(Constants.TWOADDRESS, null);
                     SpUtils.getInstance().putString(Constants.TWOPORT, null);
                     ttvText2.setText("");
+                } else if (mRlOne.getVisibility() == View.VISIBLE) {
+                    mRlOne.setVisibility(View.GONE);
+                    SpUtils.getInstance().putString(Constants.ONEADDRESS, null);
+                    SpUtils.getInstance().putString(Constants.ONEPORT, null);
+                    ttvText1.setText("");
                 }
-//                else if (mRlOne.getVisibility() == View.VISIBLE) {
-//                    mRlOne.setVisibility(View.GONE);
-//                    SpUtils.getInstance().putString(Constants.ONEADDRESS, null);
-//                    SpUtils.getInstance().putString(Constants.ONEPORT, null);
-//                    ttvText1.setText("");
-//                }
                 break;
             case R.id.action_set:
                 String hz = SpUtils.getInstance().getString(Constants.SAMPLERATEINHZ);
@@ -417,33 +416,30 @@ public class AsrFragment extends BaseFragment {
         switchtwo = SpUtils.getInstance().getBool(Constants.SWITCHISCHECKEDTWO);
         switchthree = SpUtils.getInstance().getBool(Constants.SWITCHISCHECKEDTHREE);
 
-
-        Log.e("tag", oneAddress + "::" + onePort);
-
-        defaultAsr = AsrProduct.CUSTOMER_SERVICE_FINANCE.ordinal();
-
-        if (TextUtils.isEmpty(oneAddress) && TextUtils.isEmpty(onePort) && oneAsr == -1) {
-
-            Log.e("tag", "def:" + defaultAsr);
-
-            SpUtils.getInstance().putString(Constants.ONEADDRESS, Constants.SERVER_IP_ADDR);
-            SpUtils.getInstance().putString(Constants.ONEPORT, Constants.SERVER_IP_PORT + "");
-            SpUtils.getInstance().putInt(Constants.ONEASRPRODUCT, defaultAsr);
-            mRlOne.setVisibility(View.VISIBLE);
-            mTvOne.setText("address:" + Constants.SERVER_IP_ADDR + "   port:" + Constants.SERVER_IP_PORT + "  " + values[defaultAsr].getName() + "(" + getSampleHz(values[defaultAsr]) + ")");
-        } else {
-
-            Log.e("tag", "one:" + oneAsr);
-
-            mRlOne.setVisibility(View.VISIBLE);
-            mTvOne.setText("address:" + oneAddress + "   port:" + onePort + "  " + values[oneAsr].getName() + "(" + getSampleHz(values[oneAsr]) + ")");
-        }
-
-//        if (!TextUtils.isEmpty(oneAddress) && !TextUtils.isEmpty(onePort)) {
+//        if (TextUtils.isEmpty(oneAddress) && TextUtils.isEmpty(onePort) && oneAsr == -1) {
+//
+//            Log.e("tag", "def:" + defaultAsr);
+//
+//            SpUtils.getInstance().putString(Constants.ONEADDRESS, Constants.SERVER_IP_ADDR);
+//            SpUtils.getInstance().putString(Constants.ONEPORT, Constants.SERVER_IP_PORT + "");
+//            SpUtils.getInstance().putInt(Constants.ONEASRPRODUCT, defaultAsr);
+//            mRlOne.setVisibility(View.VISIBLE);
+//            mTvOne.setText("address:" + Constants.SERVER_IP_ADDR + "   port:" + Constants.SERVER_IP_PORT + "  " + values[defaultAsr].getName() + "(" + getSampleHz(values[defaultAsr]) + ")");
+//        } else {
+//
+//            Log.e("tag", "one:" + oneAsr);
+//
 //            mRlOne.setVisibility(View.VISIBLE);
 //            mTvOne.setText("address:" + oneAddress + "   port:" + onePort + "  " + values[oneAsr].getName() + "(" + getSampleHz(values[oneAsr]) + ")");
-//
 //        }
+
+        if (!TextUtils.isEmpty(oneAddress) && !TextUtils.isEmpty(onePort)) {
+            mRlOne.setVisibility(View.VISIBLE);
+            mTvOne.setText("address:" + oneAddress + "   port:" + onePort + "  " + values[oneAsr].getName() + "(" + getSampleHz(values[oneAsr]) + ")");
+            defaultAsr = oneAsr;
+        } else {
+            defaultAsr = AsrProduct.CUSTOMER_SERVICE_FINANCE.ordinal();
+        }
 
         if (!TextUtils.isEmpty(twoAddress) && !TextUtils.isEmpty(twoPort)) {
 
@@ -459,6 +455,65 @@ public class AsrFragment extends BaseFragment {
             mRlThree.setVisibility(View.VISIBLE);
             mTvThree.setText("address:" + threeAddress + "   port:" + threePort + "  " + values[threeAsr].getName() + "(" + getSampleHz(values[threeAsr]) + ")");
         }
+
+
+        boolean ischangehz = SpUtils.getInstance().getBool(Constants.ISCHANGEHZONE);
+        Log.e("tag", "ischangehz:" + ischangehz);
+        if (!ischangehz) {
+            if (mRlThree.getVisibility() == View.VISIBLE) {
+                mRlThree.setVisibility(View.GONE);
+                SpUtils.getInstance().putString(Constants.THREEADDRESS, null);
+                SpUtils.getInstance().putString(Constants.THREEPORT, null);
+                ttvText3.setText("");
+            }
+            if (mRlTwo.getVisibility() == View.VISIBLE) {
+                mRlTwo.setVisibility(View.GONE);
+                SpUtils.getInstance().putString(Constants.TWOADDRESS, null);
+                SpUtils.getInstance().putString(Constants.TWOPORT, null);
+                ttvText2.setText("");
+            }
+            SpUtils.getInstance().putBool(Constants.ISCHANGEHZONE, true);
+            defaultAsr = SpUtils.getInstance().getInt(Constants.ONEASRPRODUCT);
+        }
+
+        boolean ischangehz2 = SpUtils.getInstance().getBool(Constants.ISCHANGEHZTWO);
+        Log.e("tag", "ischangehz2:" + ischangehz2);
+        if (!ischangehz2) {
+            if (mRlThree.getVisibility() == View.VISIBLE) {
+                mRlThree.setVisibility(View.GONE);
+                SpUtils.getInstance().putString(Constants.THREEADDRESS, null);
+                SpUtils.getInstance().putString(Constants.THREEPORT, null);
+                ttvText3.setText("");
+            }
+            if (mRlOne.getVisibility() == View.VISIBLE) {
+                mRlOne.setVisibility(View.GONE);
+                SpUtils.getInstance().putString(Constants.ONEADDRESS, null);
+                SpUtils.getInstance().putString(Constants.ONEPORT, null);
+                ttvText1.setText("");
+            }
+            SpUtils.getInstance().putBool(Constants.ISCHANGEHZTWO, true);
+            defaultAsr = SpUtils.getInstance().getInt(Constants.TWOASRPRODUCT);
+        }
+
+        boolean ischangehz3 = SpUtils.getInstance().getBool(Constants.ISCHANGEHZTHREE);
+        Log.e("tag", "ischangehz3:" + ischangehz3);
+        if (!ischangehz3) {
+            if (mRlTwo.getVisibility() == View.VISIBLE) {
+                mRlTwo.setVisibility(View.GONE);
+                SpUtils.getInstance().putString(Constants.TWOADDRESS, null);
+                SpUtils.getInstance().putString(Constants.TWOPORT, null);
+                ttvText3.setText("");
+            }
+            if (mRlOne.getVisibility() == View.VISIBLE) {
+                mRlOne.setVisibility(View.GONE);
+                SpUtils.getInstance().putString(Constants.ONEADDRESS, null);
+                SpUtils.getInstance().putString(Constants.ONEPORT, null);
+                ttvText1.setText("");
+            }
+            SpUtils.getInstance().putBool(Constants.ISCHANGEHZTHREE, true);
+            defaultAsr = SpUtils.getInstance().getInt(Constants.THREEASRPRODUCT);
+        }
+
     }
 
     private void errorStopVoice() {
