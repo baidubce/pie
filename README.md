@@ -11,6 +11,8 @@
 
 - [android-demo](https://github.com/baidubce/pie/tree/master/android-demo)：基于java sdk实现的android实时音频流识别的demo app
 
+- [ios-demo](https://github.com/baidubce/pie/tree/master/ios-demo) 基于 proto 实现的 ios 实时音频流识别的 demo app，内部实现了 ios 的 grpc client
+
 ### 功能
 本部分代码为asr streaming client端，支持的场景如下：
 
