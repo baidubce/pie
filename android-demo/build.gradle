@@ -19,8 +19,6 @@ allprojects {
     repositories {
         google()
         jcenter()
-        maven { url "http://maven.scm.baidu.com:8081/nexus/content/groups/public/" }
-        maven { url "http://maven.scm.baidu.com:8081/nexus/content/groups/public-snapshots/" }
     }
 }
 
