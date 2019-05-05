@@ -66,12 +66,12 @@ public class MainActivity extends AppCompatActivity {
                     default:
                         break;
                     case R.id.mTitleTts:
-                        MainActivity.this.mToolbar.setTitle("百度Tts");
+                        MainActivity.this.mToolbar.setTitle("百度TTS");
                         MainActivity.this.mViewPager.setCurrentItem(1, false);
                         MainActivity.this.asrFragment.isRecord();
                         break;
                     case R.id.mTitleAsr:
-                        MainActivity.this.mToolbar.setTitle("百度Asr");
+                        MainActivity.this.mToolbar.setTitle("百度ASR");
                         MainActivity.this.mViewPager.setCurrentItem(0, false);
                         MainActivity.this.hideSoftKeyboard();
                         MainActivity.this.ttsFragment.stopAll();
@@ -94,10 +94,10 @@ public class MainActivity extends AppCompatActivity {
                     default:
                         break;
                     case 1:
-                        MainActivity.this.mToolbar.setTitle("百度Tts");
+                        MainActivity.this.mToolbar.setTitle("百度TTS");
                         break;
                     case 0:
-                        MainActivity.this.mToolbar.setTitle("百度Asr");
+                        MainActivity.this.mToolbar.setTitle("百度ASR");
                         MainActivity.this.hideSoftKeyboard();
                 }
             }

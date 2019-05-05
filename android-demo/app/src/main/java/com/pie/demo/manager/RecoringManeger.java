@@ -12,18 +12,18 @@ import com.baidu.acu.pie.grpc.AsrClientGrpcImpl;
 import com.baidu.acu.pie.model.AsrConfig;
 import com.baidu.acu.pie.model.AsrProduct;
 import com.baidu.acu.pie.model.RecognitionResult;
+import com.baidu.acu.pie.model.StreamContext;
 import com.google.protobuf.ByteString;
 import com.pie.demo.Constants;
 import com.pie.demo.utils.SpUtils;
 
-import java.util.concurrent.CountDownLatch;
-
-import io.grpc.stub.StreamObserver;
+import org.joda.time.DateTime;
 
 public class RecoringManeger {
 
+
     //44100、22050、11025，4000、8000。
-    private static final int SAMPLERATEINHZ = 8000;
+    private int SAMPLERATEINHZ = 8000;
     //MONO单声道，STEREO立体声
     private static final int CHANNELCONFIG = AudioFormat.CHANNEL_IN_MONO;
     //采样大小16bit 或者8bit。
@@ -93,20 +93,36 @@ public class RecoringManeger {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                isRecord = false;
-                if (audioRecord != null) {
-                    audioRecord.stop();
-                    audioRecord.release();
-                    audioRecord = null;
-                }
-                if (asrClientGrpcOne != null) {
-                    asrClientGrpcOne.shutdown();
-                }
-                if (asrClientGrpcTwo != null) {
-                    asrClientGrpcTwo.shutdown();
-                }
-                if (asrClientGrpcThree != null) {
-                    asrClientGrpcThree.shutdown();
+                try {
+                    isRecord = false;
+                    if (audioRecord != null) {
+                        audioRecord.stop();
+                        audioRecord.release();
+                        audioRecord = null;
+                    }
+                    if (streamObserverOne != null) {
+                        streamObserverOne.getFinishLatch().await();
+                        streamObserverOne.complete();
+                    }
+                    if (streamObserverTwo != null) {
+                        streamObserverTwo.complete();
+                        streamObserverTwo.getFinishLatch().await();
+                    }
+                    if (streamObserverThree != null) {
+                        streamObserverThree.complete();
+                        streamObserverThree.getFinishLatch().await();
+                    }
+                    if (asrClientGrpcOne != null) {
+                        asrClientGrpcOne.shutdown();
+                    }
+                    if (asrClientGrpcTwo != null) {
+                        asrClientGrpcTwo.shutdown();
+                    }
+                    if (asrClientGrpcThree != null) {
+                        asrClientGrpcThree.shutdown();
+                    }
+                } catch (Throwable throwable) {
+                    throwable.printStackTrace();
                 }
             }
         }).start();
@@ -119,15 +135,27 @@ public class RecoringManeger {
     private void initAudioRecord() {
 
 
-        String hz = SpUtils.getInstance().getString(Constants.SAMPLERATEINHZ);
-
-        if (TextUtils.isEmpty(hz)) {
-            MINBUFFERSIZE = AudioRecord.getMinBufferSize(SAMPLERATEINHZ, CHANNELCONFIG, AUDIOFORMAT) * 25;
-            audioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC, SAMPLERATEINHZ, CHANNELCONFIG, AUDIOFORMAT, MINBUFFERSIZE);
+//        String hz = SpUtils.getInstance().getString(Constants.SAMPLERATEINHZ);
+        int oneAsr = SpUtils.getInstance().getInt(Constants.ONEASRPRODUCT);
+        AsrProduct value = values[oneAsr];
+        if (value == AsrProduct.INPUT_METHOD || value == AsrProduct.FAR_FIELD || value == AsrProduct.FAR_FIELD_ROBOT) {
+            SAMPLERATEINHZ = 16000;
         } else {
-            MINBUFFERSIZE = AudioRecord.getMinBufferSize(Integer.parseInt(hz), CHANNELCONFIG, AUDIOFORMAT) * 25;
-            audioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC, Integer.parseInt(hz), CHANNELCONFIG, AUDIOFORMAT, MINBUFFERSIZE);
+            SAMPLERATEINHZ = 8000;
         }
+
+        Log.e("tag", SAMPLERATEINHZ + "");
+
+        MINBUFFERSIZE = AudioRecord.getMinBufferSize(SAMPLERATEINHZ, CHANNELCONFIG, AUDIOFORMAT) * 25;
+        audioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC, SAMPLERATEINHZ, CHANNELCONFIG, AUDIOFORMAT, MINBUFFERSIZE);
+
+//        if (TextUtils.isEmpty(hz)) {
+//            MINBUFFERSIZE = AudioRecord.getMinBufferSize(SAMPLERATEINHZ, CHANNELCONFIG, AUDIOFORMAT) * 25;
+//            audioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC, SAMPLERATEINHZ, CHANNELCONFIG, AUDIOFORMAT, MINBUFFERSIZE);
+//        } else {
+//            MINBUFFERSIZE = AudioRecord.getMinBufferSize(Integer.parseInt(hz), CHANNELCONFIG, AUDIOFORMAT) * 25;
+//            audioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC, Integer.parseInt(hz), CHANNELCONFIG, AUDIOFORMAT, MINBUFFERSIZE);
+//        }
     }
 
     private void writeData() {
@@ -146,29 +174,34 @@ public class RecoringManeger {
             //  -3(可能录音被禁止)
             if (AudioRecord.ERROR_INVALID_OPERATION != readSize) {
                 try {
+
                     AudioStreaming.AudioFragmentRequest request = AudioStreaming.AudioFragmentRequest.newBuilder()
                             .setAudioData(ByteString.copyFrom(audiodata))
                             .build();
                     if (streamObserverOne != null) {
-                        streamObserverOne.onNext(request);
+//                        streamObserverOne.getSender().onNext(request);
+                        streamObserverOne.send(audiodata);
                     }
                     if (streamObserverTwo != null) {
-                        streamObserverTwo.onNext(request);
+//                        streamObserverTwo.getSender().onNext(request);
+                        streamObserverTwo.send(audiodata);
                     }
                     if (streamObserverThree != null) {
-                        streamObserverThree.onNext(request);
+//                        streamObserverThree.getSender().onNext(request);
+                        streamObserverThree.send(audiodata);
                     }
                 } catch (Exception e) {
                     if (streamObserverOne != null) {
-                        streamObserverOne.onError(e);
+                        streamObserverOne.getSender().onError(e);
                     }
                     if (streamObserverTwo != null) {
-                        streamObserverTwo.onError(e);
+                        streamObserverTwo.getSender().onError(e);
                     }
                     if (streamObserverThree != null) {
-                        streamObserverThree.onError(e);
+                        streamObserverThree.getSender().onError(e);
                     }
                 }
+
             }
         }
     }
@@ -178,41 +211,64 @@ public class RecoringManeger {
         String onePort = SpUtils.getInstance().getString(Constants.ONEPORT);
         int oneAsr = SpUtils.getInstance().getInt(Constants.ONEASRPRODUCT);
 
+        String oneAccout = SpUtils.getInstance().getString(Constants.ACCOUTONE);
+        String onePwd = SpUtils.getInstance().getString(Constants.PWDONE);
+        String oneTime = SpUtils.getInstance().getString(Constants.TIMEONE);
+        String oneToken = SpUtils.getInstance().getString(Constants.TOKENONE);
+
+
         if (!TextUtils.isEmpty(oneAddress) && !TextUtils.isEmpty(onePort) && oneAsr != -1) {
             HavaThread++;
-            Log.e("tag", values[oneAsr] + "");
+            Log.e("tag", values[oneAsr] + "xxx");
             AsrConfig config = new AsrConfig();
             config.serverIp(oneAddress)
                     .serverPort(Integer.parseInt(onePort))
                     .appName("android")
-                    .product(values[oneAsr]);
+                    .productId(values[oneAsr].getCode())
+                    .userName(oneAccout)
+                    .password(onePwd)
+                    .token(oneToken);
+            if (!TextUtils.isEmpty(oneTime)) {
+                config.expireDateTime(DateTime.parse(oneTime));
+            }
 
             try {
                 asrClientGrpcOne = new AsrClientGrpcImpl(config);
                 streamObserverOne = asrClientGrpcOne.asyncRecognize(new Consumer<RecognitionResult>() {
                     @Override
                     public void accept(RecognitionResult recognitionResult) {
-                        int errorCode = recognitionResult.getErrorCode();
-                        if (0 != errorCode) {
-                            String errorMessage = recognitionResult.getErrorMessage();
+
+                        String result = recognitionResult.getResult();
+                        Log.e("tag", "res:" + result);
+                        if (TextUtils.isEmpty(result)) {
+                            Log.e("tag", "error");
                             if (recoringManaegerInterfaceOne != null) {
-                                recoringManaegerInterfaceOne.onError(errorMessage);
+                                recoringManaegerInterfaceOne.onError("err");
                             }
                         } else {
-                            String result = recognitionResult.getResult();
                             boolean completed = recognitionResult.isCompleted();
                             if (recoringManaegerInterfaceOne != null) {
                                 recoringManaegerInterfaceOne.onNext(result, completed);
                             }
                         }
+
                     }
-                }, new CountDownLatch(1));
+                });
             } catch (Exception e) {
+                e.printStackTrace();
+                Log.e("tag", "catch:");
                 if (recoringManaegerInterfaceOne != null) {
                     recoringManaegerInterfaceOne.onError(e.getMessage());
                 }
             }
         }
+
+
+        String twoAccout = SpUtils.getInstance().getString(Constants.ACCOUTTWO);
+        String twoPwd = SpUtils.getInstance().getString(Constants.PWDTWO);
+        String twoTime = SpUtils.getInstance().getString(Constants.TIMETWO);
+        String twoToken = SpUtils.getInstance().getString(Constants.TOKENTWO);
+
 
         String twoAddress = SpUtils.getInstance().getString(Constants.TWOADDRESS);
         String twoPort = SpUtils.getInstance().getString(Constants.TWOPORT);
@@ -224,34 +280,47 @@ public class RecoringManeger {
             config.serverIp(twoAddress)
                     .serverPort(Integer.parseInt(twoPort))
                     .appName("android")
-                    .product(values[twoAsr]);
+                    .productId(values[twoAsr].getCode())
+                    .userName(twoAccout)
+                    .password(twoPwd)
+                    .token(twoToken);
+
+            if (!TextUtils.isEmpty(twoTime)) {
+                config.expireDateTime(DateTime.parse(twoTime));
+            }
 
             try {
                 asrClientGrpcTwo = new AsrClientGrpcImpl(config);
                 streamObserverTwo = asrClientGrpcTwo.asyncRecognize(new Consumer<RecognitionResult>() {
                     @Override
                     public void accept(RecognitionResult recognitionResult) {
-                        int errorCode = recognitionResult.getErrorCode();
-                        if (0 != errorCode) {
-                            String errorMessage = recognitionResult.getErrorMessage();
+
+                        String result = recognitionResult.getResult();
+                        Log.e("tag", "res:" + result);
+                        if (TextUtils.isEmpty(result)) {
                             if (recoringManaegerInterfaceTwo != null) {
-                                recoringManaegerInterfaceTwo.onError(errorMessage);
+                                recoringManaegerInterfaceTwo.onError("err");
                             }
                         } else {
-                            String result = recognitionResult.getResult();
                             boolean completed = recognitionResult.isCompleted();
                             if (recoringManaegerInterfaceTwo != null) {
                                 recoringManaegerInterfaceTwo.onNext(result, completed);
                             }
                         }
                     }
-                }, new CountDownLatch(1));
+                });
             } catch (Exception e) {
                 if (recoringManaegerInterfaceTwo != null) {
                     recoringManaegerInterfaceTwo.onError(e.getMessage());
                 }
             }
         }
+
+        String threeAccout = SpUtils.getInstance().getString(Constants.ACCOUTHREE);
+        String threePwd = SpUtils.getInstance().getString(Constants.PWDTHREE);
+        String threeTime = SpUtils.getInstance().getString(Constants.TIMETHREE);
+        String threeToken = SpUtils.getInstance().getString(Constants.TOKENTHREE);
+
 
         String threeAddress = SpUtils.getInstance().getString(Constants.THREEADDRESS);
         String threePort = SpUtils.getInstance().getString(Constants.THREEPORT);
@@ -263,28 +332,36 @@ public class RecoringManeger {
             config.serverIp(threeAddress)
                     .serverPort(Integer.parseInt(threePort))
                     .appName("android")
-                    .product(values[threeAsr]);
+                    .productId(values[threeAsr].getCode())
+                    .userName(threeAccout)
+                    .password(threePwd)
+                    .token(threeToken);
+
+            if (!TextUtils.isEmpty(threeTime)) {
+                config.expireDateTime(DateTime.parse(threeTime));
+            }
+
 
             try {
                 asrClientGrpcThree = new AsrClientGrpcImpl(config);
                 streamObserverThree = asrClientGrpcThree.asyncRecognize(new Consumer<RecognitionResult>() {
                     @Override
                     public void accept(RecognitionResult recognitionResult) {
-                        int errorCode = recognitionResult.getErrorCode();
-                        if (0 != errorCode) {
-                            String errorMessage = recognitionResult.getErrorMessage();
+
+                        String result = recognitionResult.getResult();
+                        Log.e("tag", "res:" + result);
+                        if (TextUtils.isEmpty(result)) {
                             if (recoringManaegerInterfaceThree != null) {
-                                recoringManaegerInterfaceThree.onError(errorMessage);
+                                recoringManaegerInterfaceThree.onError("err");
                             }
                         } else {
-                            String result = recognitionResult.getResult();
                             boolean completed = recognitionResult.isCompleted();
                             if (recoringManaegerInterfaceThree != null) {
                                 recoringManaegerInterfaceThree.onNext(result, completed);
                             }
                         }
                     }
-                }, new CountDownLatch(1));
+                });
             } catch (Exception e) {
                 if (recoringManaegerInterfaceThree != null) {
                     recoringManaegerInterfaceThree.onError(e.getMessage());
@@ -294,7 +371,7 @@ public class RecoringManeger {
     }
 
     private AsrClientGrpcImpl asrClientGrpcOne = null;
-    private StreamObserver<AudioStreaming.AudioFragmentRequest> streamObserverOne;
+    private StreamContext streamObserverOne;
     private RecoringManaegerInterfaceOne recoringManaegerInterfaceOne = null;
 
     public void setRecoringManaegerInterfaceOne(RecoringManaegerInterfaceOne recoringManaegerInterfaceOne) {
@@ -302,7 +379,7 @@ public class RecoringManeger {
     }
 
     private AsrClientGrpcImpl asrClientGrpcTwo = null;
-    private StreamObserver<AudioStreaming.AudioFragmentRequest> streamObserverTwo;
+    private StreamContext streamObserverTwo;
     private RecoringManaegerInterfaceTwo recoringManaegerInterfaceTwo = null;
 
     public void setRecoringManaegerInterfaceTwo(RecoringManaegerInterfaceTwo recoringManaegerInterfaceTwo) {
@@ -310,7 +387,7 @@ public class RecoringManeger {
     }
 
     private AsrClientGrpcImpl asrClientGrpcThree = null;
-    private StreamObserver<AudioStreaming.AudioFragmentRequest> streamObserverThree;
+    private StreamContext streamObserverThree;
     private RecoringManaegerInterfaceThree recoringManaegerInterfaceThree = null;
 
     public void setRecoringManaegerInterfaceThree(RecoringManaegerInterfaceThree recoringManaegerInterfaceThree) {

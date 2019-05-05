@@ -3,9 +3,9 @@
     <item
         android:id="@+id/mTitleAsr"
         android:icon="@mipmap/shezhi"
-        android:title="Asr" />
+        android:title="ASR" />
     <item
         android:id="@+id/mTitleTts"
         android:icon="@mipmap/shezhi"
-        android:title="Tts" />
+        android:title="TTS" />
 </menu>

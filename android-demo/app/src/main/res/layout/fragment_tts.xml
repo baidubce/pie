@@ -1,25 +1,131 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:gravity="center_horizontal"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/mTvTts"
+    <!--<TextView-->
+    <!--android:id="@+id/mTvTts"-->
+    <!--android:layout_width="fill_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginLeft="10.0dip"-->
+    <!--android:layout_marginTop="10.0dip"-->
+    <!--android:layout_marginRight="10.0dip"-->
+    <!--android:background="@drawable/bg_scrollview"-->
+    <!--android:padding="10.0dip"-->
+    <!--android:textColor="#ff000000"-->
+    <!--android:textSize="16.0sp" />-->
+
+    <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10.0dip"
-        android:layout_marginTop="10.0dip"
-        android:layout_marginRight="10.0dip"
-        android:background="@drawable/bg_scrollview"
-        android:padding="10.0dip"
-        android:textColor="#ff000000"
-        android:textSize="16.0sp" />
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="设置ip,port"
+                android:textColor="#000" />
+
+            <EditText
+                android:id="@+id/mEtPortIpTTS"
+                android:layout_width="fill_parent" android:inputType="" 
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="设置语速"
+                android:textColor="#000" />
+
+            <com.warkiz.widget.IndicatorSeekBar
+                android:id="@+id/mSeekBarOne"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:isb_max="15"
+                app:isb_show_indicator="none"
+                app:isb_show_thumb_text="true"
+                app:isb_thumb_color="@color/colorblue"
+                app:isb_thumb_text_color="@color/colorblue"
+                app:isb_track_progress_color="@color/colorblue" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="设置音调"
+                android:textColor="#000" />
+
+
+            <com.warkiz.widget.IndicatorSeekBar
+                android:id="@+id/mSeekBarTwo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:isb_max="15"
+                app:isb_show_indicator="none"
+                app:isb_show_thumb_text="true"
+                app:isb_thumb_color="@color/colorblue"
+                app:isb_thumb_text_color="@color/colorblue"
+                app:isb_track_progress_color="@color/colorblue" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="设置音量"
+                android:textColor="#000" />
+
+            <com.warkiz.widget.IndicatorSeekBar
+                android:id="@+id/mSeekBarThree"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:isb_max="15"
+                app:isb_show_indicator="none"
+                app:isb_show_thumb_text="true"
+                app:isb_thumb_color="@color/colorblue"
+                app:isb_thumb_text_color="@color/colorblue"
+                app:isb_track_progress_color="@color/colorblue" />
+
+        </LinearLayout>
+
+    </LinearLayout>
 
     <EditText
         android:id="@+id/mEditText"
-        android:layout_width="fill_parent"
+        android:layout_width="fill_parent" android:inputType="" 
         android:layout_height="0.0dip"
         android:layout_marginLeft="10.0dip"
         android:layout_marginRight="10.0dip"
