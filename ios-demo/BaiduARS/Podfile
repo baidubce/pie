@@ -1,15 +1,25 @@
 platform :ios,'8.0'
-target 'BaiduARS' do
-    
-pod '!ProtoCompiler'
-pod '!ProtoCompiler-gRPCPlugin'
-pod 'BoringSSL-GRPC'
-pod 'Protobuf'
-pod 'gRPC'
-pod 'gRPC-Core'
-pod 'gRPC-ProtoRPC'
-pod 'gRPC-RxLibrary'
-pod 'nanopb'
-pod 'Novocaine'
 
+def commonPods
+    pod '!ProtoCompiler'
+    pod '!ProtoCompiler-gRPCPlugin'
+    pod 'BoringSSL-GRPC'
+    pod 'Protobuf'
+    pod 'gRPC'
+    pod 'gRPC-Core'
+    pod 'gRPC-ProtoRPC'
+    pod 'gRPC-RxLibrary'
+    pod 'nanopb'
+    pod 'Novocaine'
+end
+
+workspace 'BaiduARS.xcworkspace'
+
+target 'BaiduARS' do
+    commonPods
+end
+
+target 'BaiduASR' do
+    project 'BaiduASR/BaiduASR.xcodeproj'
+    commonPods
 end
