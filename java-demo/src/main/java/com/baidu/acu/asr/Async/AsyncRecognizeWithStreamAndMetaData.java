@@ -13,7 +13,8 @@ import com.baidu.acu.pie.model.RequestMetaData;
 import com.baidu.acu.pie.model.StreamContext;
 
 /**
- * AsyncRecognizeWithStreamAndMetaData
+ * 异步识别: 会准实时返回每个句子的结果.输入一个语音流以及自定义RequestMetaData对象,用来控制请求时候的数据发送速度等参数
+ * 使用场景: 用于对实时性要求较高的场景,如会议记录
  *
  * @author xutengchao
  * @create 2019-05-06 16:59
@@ -21,11 +22,11 @@ import com.baidu.acu.pie.model.StreamContext;
 public class AsyncRecognizeWithStreamAndMetaData {
 
     private static String appName = "test";
-    private static String ip = "180.76.107.131";    // asr服务的ip地址
-    private static Integer port = 8050;             // asr服务的端口
-    private static String pid = "1906";             // asr模型编号(不同的模型在不同的场景下asr识别的最终结果可能会存在很大差异)
-    private static String userName = "user1";       // 用户名
-    private static String passWord = "password1";   // 密码
+    private static String ip = "";          // asr服务的ip地址
+    private static Integer port = 8050;     // asr服务的端口
+    private static String pid = "1906";     // asr模型编号(不同的模型在不同的场景下asr识别的最终结果可能会存在很大差异)
+    private static String userName = "";    // 用户名, 请联系百度相关人员进行申请
+    private static String passWord = "";    // 密码, 请联系百度相关人员进行申请
     private static String audioPath = "/Users/v_xutengchao/Desktop/data-audios/60s.wav"; // 音频文件路径
 
     public static void main(String[] args) {
@@ -46,11 +47,11 @@ public class AsyncRecognizeWithStreamAndMetaData {
     }
 
     private static void asyncRecognizeWithStreamAndMetaData(AsrClient asrClient) {
-        // 创建metaData
+        // 创建RequestMetaData
         RequestMetaData requestMetaData = new RequestMetaData();
-        requestMetaData.sendPerSeconds(0.05); //
-        requestMetaData.sendPackageRatio(1);  //
-        requestMetaData.sleepRatio(1);        //
+        requestMetaData.sendPerSeconds(0.05); //指定每次发送的音频数据包大小，数值越大，识别越快，但准确率可能下降
+        requestMetaData.sendPackageRatio(1);  //用来控制发包大小的倍率，一般不需要修改
+        requestMetaData.sleepRatio(1);        //指定asr服务的识别间隔，数值越小，识别越快，但准确率可能下降
         StreamContext streamContext = asrClient.asyncRecognize(new Consumer<RecognitionResult>() {
             public void accept(RecognitionResult recognitionResult) {
                 System.out.println(
@@ -73,14 +74,13 @@ public class AsyncRecognizeWithStreamAndMetaData {
             }
             System.out.println(new DateTime().toString() + "\t" + Thread.currentThread().getId() + " send finish");
             streamContext.complete();
-            // wait to ensure to receive the last response
+            // 等待最后输入的音频流识别的结果返回完毕（如果略掉这行代码会造成音频识别不完整!）
             streamContext.getFinishLatch().await();
         } catch (Throwable e) {
             e.printStackTrace();
         } finally {
             asrClient.shutdown();
         }
-
         System.out.println("all task finished");
     }
 }

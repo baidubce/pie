@@ -10,19 +10,20 @@ import com.baidu.acu.pie.model.RecognitionResult;
 import com.baidu.acu.pie.model.RequestMetaData;
 
 /**
- *
- * 通过传入音频文件 以及 自己创建一个 RequestMetaData 对象,用来控制请求时候的数据发送速度等参数
+ * 同步识别: 通过传入音频文件以及RequestMetaData对象,用来控制请求时候的数据发送速度等参数.
+ *          识别开始后线程会进入等待,直到识别完毕,一次性返回所有结果.
+ * 使用场景: 通常用于对实时性要求不高的场景，如离线语音分析
  *
  * @author xutengchao
  * @create 2019-05-05 17:23
  */
 public class SyncRecognizeWithFileAndMetaData {
     private static String appName = "test";
-    private static String ip = "180.76.107.131";    // asr服务的ip地址
-    private static Integer port = 8050;             // asr服务的端口
-    private static String pid = "1906";             // asr模型编号(不同的模型在不同的场景下asr识别的最终结果可能会存在很大差异)
-    private static String userName = "user1";       // 用户名
-    private static String passWord = "password1";   // 密码
+    private static String ip = "";          // asr服务的ip地址
+    private static Integer port = 8050;     // asr服务的端口
+    private static String pid = "1906";     // asr模型编号(不同的模型在不同的场景下asr识别的最终结果可能会存在很大差异)
+    private static String userName = "";    // 用户名, 请联系百度相关人员进行申请
+    private static String passWord = "";    // 密码, 请联系百度相关人员进行申请
     private static String audioPath = "/Users/v_xutengchao/Desktop/data-audios/60s.wav"; // 音频文件路径
 
     public static void main(String[] args) {
@@ -40,11 +41,11 @@ public class SyncRecognizeWithFileAndMetaData {
                 .userName(userName)
                 .password(passWord);
         AsrClient asrClient = AsrClientFactory.buildClient(asrConfig);
-        // 创建metaData
+        // 创建RequestMetaData
         RequestMetaData requestMetaData = new RequestMetaData();
-        requestMetaData.sendPerSeconds(0.05); //
-        requestMetaData.sendPackageRatio(1);  //
-        requestMetaData.sleepRatio(1);        //
+        requestMetaData.sendPerSeconds(0.05); //指定每次发送的音频数据包大小，数值越大，识别越快，但准确率可能下降
+        requestMetaData.sendPackageRatio(1);  //用来控制发包大小的倍率，一般不需要修改
+        requestMetaData.sleepRatio(1);        //指定asr服务的识别间隔，数值越小，识别越快，但准确率可能下降
         List<RecognitionResult> results = asrClient.syncRecognize(new File(audioPath), requestMetaData);
         // don't forget to shutdown !!!
         asrClient.shutdown();
