@@ -1,22 +1,25 @@
-package com.baidu.acu.asr.Async;
+package com.baidu.acu.asr.async;
 
 import java.io.FileInputStream;
+
 import org.joda.time.DateTime;
+
 import com.baidu.acu.pie.client.AsrClient;
 import com.baidu.acu.pie.client.AsrClientFactory;
 import com.baidu.acu.pie.client.Consumer;
 import com.baidu.acu.pie.model.AsrConfig;
 import com.baidu.acu.pie.model.RecognitionResult;
+import com.baidu.acu.pie.model.RequestMetaData;
 import com.baidu.acu.pie.model.StreamContext;
 
 /**
- * 异步识别: 输入一个语音流,会实时返回每一句话识别的结果
+ * 异步识别: 会准实时返回每个句子的结果.输入一个语音流以及自定义RequestMetaData对象,用来控制请求时候的数据发送速度等参数
  * 使用场景: 用于对实时性要求较高的场景,如会议记录
  *
  * @author xutengchao
- * @create 2019-05-06 16:58
+ * @create 2019-05-06 16:59
  */
-public class AsyncRecognizeWithStream {
+public class AsyncRecognizeWithStreamAndMetaData {
 
     private static String appName = "test";
     private static String ip = "";          // asr服务的ip地址
@@ -27,7 +30,7 @@ public class AsyncRecognizeWithStream {
     private static String audioPath = "/Users/v_xutengchao/Desktop/data-audios/60s.wav"; // 音频文件路径
 
     public static void main(String[] args) {
-        asyncRecognizeWithStream(createAsrClient());
+        asyncRecognizeWithStreamAndMetaData(createAsrClient());
     }
 
     private static AsrClient createAsrClient() {
@@ -43,14 +46,19 @@ public class AsyncRecognizeWithStream {
         return AsrClientFactory.buildClient(asrConfig);
     }
 
-    private static void asyncRecognizeWithStream(AsrClient asrClient) {
+    private static void asyncRecognizeWithStreamAndMetaData(AsrClient asrClient) {
+        // 创建RequestMetaData
+        RequestMetaData requestMetaData = new RequestMetaData();
+        requestMetaData.sendPerSeconds(0.05); //指定每次发送的音频数据包大小，数值越大，识别越快，但准确率可能下降
+        requestMetaData.sendPackageRatio(1);  //用来控制发包大小的倍率，一般不需要修改
+        requestMetaData.sleepRatio(1);        //指定asr服务的识别间隔，数值越小，识别越快，但准确率可能下降
         StreamContext streamContext = asrClient.asyncRecognize(new Consumer<RecognitionResult>() {
             public void accept(RecognitionResult recognitionResult) {
                 System.out.println(
                         DateTime.now().toString() + "\t" + Thread.currentThread().getId() +
                                 " receive fragment: " + recognitionResult);
             }
-        });
+        }, requestMetaData);
         // 这里从文件中得到一个InputStream，实际场景下，也可以从麦克风或者其他音频源来得到InputStream
         try {
             FileInputStream audioStream = new FileInputStream(audioPath);
@@ -73,8 +81,6 @@ public class AsyncRecognizeWithStream {
         } finally {
             asrClient.shutdown();
         }
-
         System.out.println("all task finished");
     }
-
 }
