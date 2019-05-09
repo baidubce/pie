@@ -2,7 +2,7 @@ package com.baidu.acu.pie.model;
 
 import com.baidu.acu.pie.exception.AsrClientException;
 
-import lombok.Getter;
+import lombok.Data;
 
 /**
  * RequestMetaData
@@ -10,7 +10,7 @@ import lombok.Getter;
  *
  * @author Shu Lingjie
  */
-@Getter
+@Data
 public class RequestMetaData {
     /**
      * 是否返回中间翻译结果
@@ -37,35 +37,10 @@ public class RequestMetaData {
      */
     private int timeoutMinutes = 10;
 
-    public static RequestMetaData defaultRequestMeta() {
-        return new RequestMetaData();
-    }
-
-    public RequestMetaData enableFlushData(boolean enableFlushData) {
-        this.enableFlushData = enableFlushData;
-        return this;
-    }
-
-    public RequestMetaData sendPerSeconds(double sendPerSeconds) {
-        this.sendPerSeconds = sendPerSeconds;
-        return this;
-    }
-
-    public RequestMetaData sendPackageRatio(double sendPackageRatio) {
-        this.sendPackageRatio = sendPackageRatio;
-        return this;
-    }
-
-    public RequestMetaData sleepRatio(double sleepRatio) {
-        this.sleepRatio = sleepRatio;
-        return this;
-    }
-
-    public RequestMetaData timeoutMinutes(int timeoutMinutes) {
+    public void setTimeoutMinutes(int timeoutMinutes) {
         if (timeoutMinutes > 120) {
             throw new AsrClientException("timeoutMinutes should not exceed 120");
         }
         this.timeoutMinutes = timeoutMinutes;
-        return this;
     }
 }
