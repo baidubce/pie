@@ -7,6 +7,7 @@ import java.util.List;
 import com.baidu.acu.pie.client.AsrClient;
 import com.baidu.acu.pie.client.AsrClientFactory;
 import com.baidu.acu.pie.model.AsrConfig;
+import com.baidu.acu.pie.model.AsrProduct;
 import com.baidu.acu.pie.model.RecognitionResult;
 
 /**
@@ -20,7 +21,7 @@ public class SyncRecognizeWithStream {
     private static String appName = "test";
     private static String ip = "";          // asr服务的ip地址
     private static Integer port = 8050;     // asr服务的端口
-    private static String pid = "1906";     // asr模型编号(不同的模型在不同的场景下asr识别的最终结果可能会存在很大差异)
+    private static AsrProduct pid = AsrProduct.CUSTOMER_SERVICE_FINANCE;     // asr模型编号(不同的模型在不同的场景下asr识别的最终结果可能会存在很大差异)
     private static String userName = "";    // 用户名, 请联系百度相关人员进行申请
     private static String passWord = "";    // 密码, 请联系百度相关人员进行申请
     private static String audioPath = "/Users/v_xutengchao/Desktop/data-audios/60s.wav"; // 音频文件路径
@@ -32,13 +33,14 @@ public class SyncRecognizeWithStream {
     private static void syncRecognizeWithStream() {
         // 创建调用asr服务的客户端
         // asrConfig构造后就不可修改
-        AsrConfig asrConfig = new AsrConfig()
+        AsrConfig asrConfig = AsrConfig.builder()
                 .appName(appName)
                 .serverIp(ip)
                 .serverPort(port)
-                .productId(pid)
+                .product(pid)
                 .userName(userName)
-                .password(passWord);
+                .password(passWord)
+                .build();
         AsrClient asrClient = AsrClientFactory.buildClient(asrConfig);
         List<RecognitionResult> results = null;
         try {

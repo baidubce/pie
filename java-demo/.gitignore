@@ -1,0 +1,39 @@
+# gradle ignore
+target/
+output/
+build/
+origin-data/
+data/
+.gradle/
+bin/
+
+*.class
+*.war
+*.zip
+*.tar
+*.tar.gz
+tree.txt
+
+# eclipse ignore
+.settings/
+.project
+.classpath
+
+# idea ignore
+.idea/
+*.ipr
+*.iml
+*.iws
+out/
+
+# temp ignore
+*.log
+*.cache
+*.diff
+*.patch
+*.tmp
+
+# system ignore
+.DS_Store
+Thumbs.db
+
