@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.baidu.acu.pie.model.AsrProduct;
 import com.pie.demo.Constants;
@@ -132,7 +133,15 @@ public class AsrFragment extends BaseFragment {
                 ttvText2.setText("");
                 ttvText3.setText("");
 
-                recoringManeger.startRecord();
+                if (mRlOne.getVisibility() == View.GONE &&
+                        mRlTwo.getVisibility() == View.GONE &&
+                        mRlThree.getVisibility() == View.GONE) {
+                    Toast.makeText(getActivity(), "请先点击加号选择一个模型在录音", Toast.LENGTH_SHORT).show();
+                    vivButton.stopAnim();
+                    return;
+                } else {
+                    recoringManeger.startRecord();
+                }
             }
 
             @Override

@@ -68,19 +68,26 @@ public class RecoringManeger {
      */
     public void startRecord() {
 
-        if (audioRecord == null) {
-            initAudioRecord();
-        }
+        try {
 
-        isRecord = true;
-        audioRecord.startRecording();
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                writeData();
+            if (audioRecord == null) {
+                initAudioRecord();
             }
-        }).start();
+
+
+            isRecord = true;
+            audioRecord.startRecording();
+
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    writeData();
+                }
+            }).start();
+
+        } catch (Exception e) {
+            Log.e("tag", "error " + e.getMessage());
+        }
 
     }
 
@@ -100,6 +107,8 @@ public class RecoringManeger {
                         audioRecord.release();
                         audioRecord = null;
                     }
+
+
                     if (streamObserverOne != null) {
                         streamObserverOne.getFinishLatch().await();
                         streamObserverOne.complete();
@@ -169,11 +178,11 @@ public class RecoringManeger {
 
         byte[] audiodata = new byte[MINBUFFERSIZE];
 
-        while (isRecord) {
-            int readSize = audioRecord.read(audiodata, 0, MINBUFFERSIZE);
-            //  -3(可能录音被禁止)
-            if (AudioRecord.ERROR_INVALID_OPERATION != readSize) {
-                try {
+        try {
+            while (isRecord) {
+                int readSize = audioRecord.read(audiodata, 0, MINBUFFERSIZE);
+                //  -3(可能录音被禁止)
+                if (AudioRecord.ERROR_INVALID_OPERATION != readSize) {
 
                     AudioStreaming.AudioFragmentRequest request = AudioStreaming.AudioFragmentRequest.newBuilder()
                             .setAudioData(ByteString.copyFrom(audiodata))
@@ -190,18 +199,17 @@ public class RecoringManeger {
 //                        streamObserverThree.getSender().onNext(request);
                         streamObserverThree.send(audiodata);
                     }
-                } catch (Exception e) {
-                    if (streamObserverOne != null) {
-                        streamObserverOne.getSender().onError(e);
-                    }
-                    if (streamObserverTwo != null) {
-                        streamObserverTwo.getSender().onError(e);
-                    }
-                    if (streamObserverThree != null) {
-                        streamObserverThree.getSender().onError(e);
-                    }
                 }
-
+            }
+        } catch (Exception e) {
+            if (streamObserverOne != null) {
+                streamObserverOne.getSender().onError(e);
+            }
+            if (streamObserverTwo != null) {
+                streamObserverTwo.getSender().onError(e);
+            }
+            if (streamObserverThree != null) {
+                streamObserverThree.getSender().onError(e);
             }
         }
     }
