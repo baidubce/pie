@@ -241,6 +241,7 @@ public class AsrClientGrpcImpl implements AsrClient {
                     }
                 }))
                 .finishLatch(finishLatch)
+                .fragmentSize(getFragmentSize())
                 .build();
     }
 
