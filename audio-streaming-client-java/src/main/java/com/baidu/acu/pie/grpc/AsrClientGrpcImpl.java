@@ -84,19 +84,19 @@ public class AsrClientGrpcImpl implements AsrClient {
 
     @Override
     public int getFragmentSize() {
-        return this.getFragmentSize(RequestMetaData.defaultRequestMeta());
+        return this.getFragmentSize(new RequestMetaData());
     }
 
     private int getFragmentSize(RequestMetaData requestMetaData) {
         return (int) (asrConfig.getProduct().getSampleRate()
-                * asrConfig.getBitDepth()
-                * requestMetaData.getSendPerSeconds()
-                * requestMetaData.getSendPackageRatio());
+                              * requestMetaData.getSendPerSeconds()
+                              * requestMetaData.getSendPackageRatio()
+                              * 2); // bit-depth
     }
 
     @Override
     public List<RecognitionResult> syncRecognize(File audioFile) {
-        return this.syncRecognize(audioFile, RequestMetaData.defaultRequestMeta());
+        return this.syncRecognize(audioFile, new RequestMetaData());
     }
 
     @Override
@@ -116,7 +116,7 @@ public class AsrClientGrpcImpl implements AsrClient {
 
     @Override
     public List<RecognitionResult> syncRecognize(InputStream inputStream) {
-        return this.syncRecognize(inputStream, RequestMetaData.defaultRequestMeta());
+        return this.syncRecognize(inputStream, new RequestMetaData());
     }
 
     @Override
@@ -207,7 +207,7 @@ public class AsrClientGrpcImpl implements AsrClient {
 
     @Override
     public StreamContext asyncRecognize(final Consumer<RecognitionResult> resultConsumer) {
-        return this.asyncRecognize(resultConsumer, RequestMetaData.defaultRequestMeta());
+        return this.asyncRecognize(resultConsumer, new RequestMetaData());
     }
 
     @Override
@@ -266,8 +266,8 @@ public class AsrClientGrpcImpl implements AsrClient {
         AudioStreaming.InitRequest initRequest = AudioStreaming.InitRequest.newBuilder()
                 .setEnableLongSpeech(true)
                 .setEnableChunk(true)
-                .setProductId(asrConfig.getProductId())
-                .setSamplePointBytes(asrConfig.getBitDepth())
+                .setProductId(asrConfig.getProduct().getCode())
+                .setSamplePointBytes(2)
                 .setAppName(asrConfig.getAppName())
                 .setLogLevel(asrConfig.getLogLevel().getCode())
                 .setUserName(asrConfig.getUserName())

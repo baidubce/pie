@@ -4,17 +4,18 @@ package com.baidu.acu.pie.model;
 
 import org.joda.time.DateTime;
 
-import lombok.Getter;
+import lombok.Builder;
+import lombok.Data;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 
 /**
  * AsrConfig
- * 不提供Setter，构造时就必须将所有参数设置好。
  *
  * @author Cynric Shu (cynricshu@gmail.com)
  */
-@Getter
+@Builder
+@Data
 @Slf4j
 public class AsrConfig {
     public static final String TITLE_FORMAT = "%-40s\t%-36s\t%-14s\t%-13s\t%s";
@@ -36,11 +37,6 @@ public class AsrConfig {
     private AsrProduct product;
 
     /**
-     * 和 AsrProduct 作用相同，两者只需要配置一个即可。
-     */
-    private String productId;
-
-    /**
      * asr客户端的名称，为便于后端查错，请设置一个易于辨识的appName
      */
     @NonNull
@@ -49,12 +45,8 @@ public class AsrConfig {
     /**
      * 服务端的日志输出级别
      */
+    @Builder.Default
     private AsrServerLogLevel logLevel = AsrServerLogLevel.INFO;
-
-    /**
-     * do not change this
-     */
-    private int bitDepth = 2;
 
     /**
      * 用户名
@@ -75,58 +67,4 @@ public class AsrConfig {
      * 和后端 server 建立连接时，用来鉴权的
      */
     private String token;
-
-    public AsrConfig serverIp(String serverIp) {
-        this.serverIp = serverIp;
-        return this;
-    }
-
-    public AsrConfig serverPort(int serverPort) {
-        this.serverPort = serverPort;
-        return this;
-    }
-
-    public AsrConfig appName(String appName) {
-        this.appName = appName;
-        return this;
-    }
-
-    public AsrConfig product(AsrProduct product) {
-        this.product = product;
-        this.productId = product.getCode();
-        return this;
-    }
-
-    public AsrConfig productId(String productId) {
-        this.productId = productId;
-
-        for (AsrProduct product : AsrProduct.values()) {
-            if (product.getCode().equals(productId)) {
-                log.info("find productId [{}] in AsrProduct", productId);
-                this.product = product;
-            }
-        }
-
-        return this;
-    }
-
-    public AsrConfig userName(String userName) {
-        this.userName = userName;
-        return this;
-    }
-
-    public AsrConfig password(String password) {
-        this.password = password;
-        return this;
-    }
-
-    public AsrConfig token(String token) {
-        this.token = token;
-        return this;
-    }
-
-    public AsrConfig expireDateTime(DateTime dateTime) {
-        this.expireDateTime = dateTime;
-        return this;
-    }
 }

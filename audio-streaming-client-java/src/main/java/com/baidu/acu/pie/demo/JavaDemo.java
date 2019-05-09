@@ -13,6 +13,7 @@ import com.baidu.acu.pie.client.AsrClient;
 import com.baidu.acu.pie.client.AsrClientFactory;
 import com.baidu.acu.pie.client.Consumer;
 import com.baidu.acu.pie.model.AsrConfig;
+import com.baidu.acu.pie.model.AsrProduct;
 import com.baidu.acu.pie.model.RecognitionResult;
 import com.baidu.acu.pie.model.RequestMetaData;
 import com.baidu.acu.pie.model.StreamContext;
@@ -35,9 +36,10 @@ public class JavaDemo {
                 .serverIp("127.0.0.1")
                 .serverPort(80)
                 .appName("simple demo")
-                .productId("1903")
+                .product(AsrProduct.CUSTOMER_SERVICE)
                 .userName("user1")
-                .password("password1");
+                .password("password1")
+                .build();
 
         return AsrClientFactory.buildClient(asrConfig);
     }
@@ -46,8 +48,8 @@ public class JavaDemo {
         String audioFilePath = "testaudio/bj8k.wav";
         AsrClient asrClient = createAsrClient();
 
-        RequestMetaData requestMetaData = RequestMetaData.defaultRequestMeta();
-        requestMetaData.enableFlushData(false);
+        RequestMetaData requestMetaData = new RequestMetaData();
+        requestMetaData.setEnableFlushData(false);
         List<RecognitionResult> results = asrClient.syncRecognize(Paths.get(audioFilePath).toFile(), requestMetaData);
 
         // don't forget to shutdown !!!
@@ -78,9 +80,11 @@ public class JavaDemo {
         AsrClient asrClient = createAsrClient();
 
         RequestMetaData requestMetaData = new RequestMetaData();
-        requestMetaData.sendPerSeconds(0.05);
-        requestMetaData.sendPackageRatio(1);
-        requestMetaData.sleepRatio(1);
+        requestMetaData.setSendPerSeconds(0.05);
+        requestMetaData.setSendPackageRatio(1);
+        requestMetaData.setSleepRatio(1);
+        requestMetaData.setTimeoutMinutes(120);
+        requestMetaData.setEnableFlushData(false);
 
         List<RecognitionResult> results = asrClient.syncRecognize(Paths.get(audioFilePath).toFile(), requestMetaData);
 

@@ -14,7 +14,7 @@ val kotlinVersion by extra("1.3.10")
 val grpcVersion by extra("1.16.1")
 
 group = "com.baidu.acu.pie"
-version = "1.0.0.SNAPSHOT"
+version = "1.0.1-SNAPSHOT"
 
 tasks.withType<JavaCompile> {
     sourceCompatibility = "1.7"

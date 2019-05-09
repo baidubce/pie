@@ -5,8 +5,13 @@
 - 在每次构建 AsrClient 的时候，支持传入用户名和密码，可以做一些 authentication。
 - 在每次调用 AsrClient 进行识别的时候，可以传入一个 RequestMeta 对象，对本次识别进行一些调整(如改变发包速度，是否展示中间结果等)
 
+## improvement
+- AsrConfig 现在支持 builder 和 标准的 getter/setter。[issue #56](https://github.com/baidubce/pie/issues/56)
+
 ## deprecated
 - 废弃了 AsrClient 中老的 asyncRecognize 接口。
+- 废弃了 AsrConfig 中一些老的方法，请使用新加入的 builder 或者 setter。
+- 废弃了 0.9.4 版本中加入的 productId。
 
 # 0.10.0
 ## improvement
