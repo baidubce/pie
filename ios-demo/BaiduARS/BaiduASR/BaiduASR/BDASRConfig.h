@@ -42,6 +42,12 @@ typedef enum : NSUInteger {
 @property (nonatomic, assign) ASRProduct product;
 
 /**
+ * asr识别服务的产品id
+ */
+
+@property (nonatomic, copy) NSString *productId;
+
+/**
  * asr客户端的名称，为便于后端查错，请设置一个易于辨识的appName
  */
 @property (nonatomic, copy) NSString *appName;
@@ -92,6 +98,12 @@ typedef enum : NSUInteger {
 @property (nonatomic, strong) NSArray *productIDArray;
 
 @property (nonatomic, strong) NSArray *productIDDataSource;
+
+/**
+ * userName & password
+ */
+@property (nonatomic, copy) NSString *userName;
+@property (nonatomic, copy) NSString *passWord;
 
 
 - (NSString *)hostAddress_Port;

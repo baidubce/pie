@@ -10,7 +10,7 @@ def commonPods
     pod 'gRPC-ProtoRPC'
     pod 'gRPC-RxLibrary'
     pod 'nanopb'
-    pod 'Novocaine'
+    #pod 'Novocaine'
 end
 
 workspace 'BaiduARS.xcworkspace'

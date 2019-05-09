@@ -37,6 +37,7 @@ static BDASRConfig *commonConfig = nil;
         self.hostAddress = kHostAddress;
         self.serverPort = defServerPort;
         self.product = CUSTOMERSERVICEFINANCE;
+        self.productId = [NSString stringWithFormat:@"%lu",(unsigned long)CUSTOMERSERVICEFINANCE];
         self.appName = defAppName;
         self.enableFlushData = defEnableFlushData;
         self.bitDepth = defBitDepth;
@@ -101,7 +102,7 @@ static BDASRConfig *commonConfig = nil;
     
     uint8_t digest[CC_SHA256_DIGEST_LENGTH];
     
-    CC_SHA256(data.bytes, data.length, digest);
+    CC_SHA256(data.bytes, (unsigned int)data.length, digest);
     
     NSMutableString* output = [NSMutableString stringWithCapacity:CC_SHA256_DIGEST_LENGTH * 2];
     

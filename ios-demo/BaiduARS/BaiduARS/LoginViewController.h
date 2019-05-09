@@ -1,8 +1,8 @@
 //
-//  SettingViewController.h
+//  LoginViewController.h
 //  BaiduARS
 //
-//  Created by Wu,Yunpeng(AI2B) on 2019/4/25.
+//  Created by Wu,Yunpeng(AI2B) on 2019/5/9.
 //  Copyright © 2019 Cloud. All rights reserved.
 //
 
@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface SettingViewController : UIViewController
+@interface LoginViewController : UIViewController
 
 @end
 

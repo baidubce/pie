@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		3673C3F62970DFBC181AFF21 /* libPods-BaiduARS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B9BA51AFA1CAC454B2ED6920 /* libPods-BaiduARS.a */; };
+		7011FBBE22841E41000E8F33 /* ASRConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 7011FBBD22841E41000E8F33 /* ASRConfig.m */; };
+		7011FBCC2284496F000E8F33 /* BaiduASR.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7011FBCB2284496F000E8F33 /* BaiduASR.framework */; };
+		7011FBCF22845226000E8F33 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7011FBCE22845226000E8F33 /* LoginViewController.m */; };
 		708459B52260995200B16A4C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 708459B42260995200B16A4C /* AppDelegate.m */; };
 		708459B82260995200B16A4C /* ViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 708459B72260995200B16A4C /* ViewController.mm */; };
 		708459BB2260995200B16A4C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 708459B92260995200B16A4C /* Main.storyboard */; };
@@ -15,13 +18,8 @@
 		708459C02260995400B16A4C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 708459BE2260995400B16A4C /* LaunchScreen.storyboard */; };
 		708459C32260995400B16A4C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 708459C22260995400B16A4C /* main.m */; };
 		708459CD2260995400B16A4C /* BaiduARSUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 708459CC2260995400B16A4C /* BaiduARSUITests.m */; };
-		708459DD22646D1800B16A4C /* BDASRConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 708459DC22646D1800B16A4C /* BDASRConfig.m */; };
-		708459E02264726000B16A4C /* BDASRRecognitionResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 708459DF2264726000B16A4C /* BDASRRecognitionResult.m */; };
 		708459E92265B9D300B16A4C /* bj8k.wav in Resources */ = {isa = PBXBuildFile; fileRef = 708459E82265B9D300B16A4C /* bj8k.wav */; };
-		708459EE226DB14700B16A4C /* AudioStreaming.pbrpc.m in Sources */ = {isa = PBXBuildFile; fileRef = 708459EB226DB14700B16A4C /* AudioStreaming.pbrpc.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		708459EF226DB14700B16A4C /* AudioStreaming.pbobjc.m in Sources */ = {isa = PBXBuildFile; fileRef = 708459EC226DB14700B16A4C /* AudioStreaming.pbobjc.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		708459F1226DBED700B16A4C /* xeq16k.wav in Resources */ = {isa = PBXBuildFile; fileRef = 708459F0226DBED700B16A4C /* xeq16k.wav */; };
-		708459F4226DC19100B16A4C /* BDAudioManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 708459F3226DC19100B16A4C /* BDAudioManager.m */; };
 		708459F6227095B500B16A4C /* 1.wav in Resources */ = {isa = PBXBuildFile; fileRef = 708459F5227095B500B16A4C /* 1.wav */; };
 		708459F82270963E00B16A4C /* 10-245.wav in Resources */ = {isa = PBXBuildFile; fileRef = 708459F72270963E00B16A4C /* 10-245.wav */; };
 		708459FB2271AB5E00B16A4C /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 708459FA2271AB5E00B16A4C /* SettingViewController.m */; };
@@ -39,6 +37,11 @@
 
 /* Begin PBXFileReference section */
 		6EDC4A73EC7BA4F7929B2F76 /* Pods-BaiduARS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BaiduARS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BaiduARS/Pods-BaiduARS.debug.xcconfig"; sourceTree = "<group>"; };
+		7011FBBC22841E41000E8F33 /* ASRConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ASRConfig.h; sourceTree = "<group>"; };
+		7011FBBD22841E41000E8F33 /* ASRConfig.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ASRConfig.m; sourceTree = "<group>"; };
+		7011FBCB2284496F000E8F33 /* BaiduASR.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BaiduASR.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7011FBCD22845226000E8F33 /* LoginViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
+		7011FBCE22845226000E8F33 /* LoginViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		708459B02260995200B16A4C /* BaiduARS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BaiduARS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		708459B32260995200B16A4C /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		708459B42260995200B16A4C /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -52,18 +55,8 @@
 		708459C82260995400B16A4C /* BaiduARSUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BaiduARSUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		708459CC2260995400B16A4C /* BaiduARSUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BaiduARSUITests.m; sourceTree = "<group>"; };
 		708459CE2260995400B16A4C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		708459DB22646D1800B16A4C /* BDASRConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BDASRConfig.h; sourceTree = "<group>"; };
-		708459DC22646D1800B16A4C /* BDASRConfig.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BDASRConfig.m; sourceTree = "<group>"; };
-		708459DE2264726000B16A4C /* BDASRRecognitionResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BDASRRecognitionResult.h; sourceTree = "<group>"; };
-		708459DF2264726000B16A4C /* BDASRRecognitionResult.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BDASRRecognitionResult.m; sourceTree = "<group>"; };
 		708459E82265B9D300B16A4C /* bj8k.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = bj8k.wav; sourceTree = "<group>"; };
-		708459EA226DB14700B16A4C /* AudioStreaming.pbrpc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioStreaming.pbrpc.h; sourceTree = "<group>"; };
-		708459EB226DB14700B16A4C /* AudioStreaming.pbrpc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AudioStreaming.pbrpc.m; sourceTree = "<group>"; };
-		708459EC226DB14700B16A4C /* AudioStreaming.pbobjc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AudioStreaming.pbobjc.m; sourceTree = "<group>"; };
-		708459ED226DB14700B16A4C /* AudioStreaming.pbobjc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioStreaming.pbobjc.h; sourceTree = "<group>"; };
 		708459F0226DBED700B16A4C /* xeq16k.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = xeq16k.wav; sourceTree = "<group>"; };
-		708459F2226DC19100B16A4C /* BDAudioManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BDAudioManager.h; sourceTree = "<group>"; };
-		708459F3226DC19100B16A4C /* BDAudioManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BDAudioManager.m; sourceTree = "<group>"; };
 		708459F5227095B500B16A4C /* 1.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = 1.wav; sourceTree = "<group>"; };
 		708459F72270963E00B16A4C /* 10-245.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "10-245.wav"; sourceTree = "<group>"; };
 		708459F92271AB5E00B16A4C /* SettingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SettingViewController.h; sourceTree = "<group>"; };
@@ -77,6 +70,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7011FBCC2284496F000E8F33 /* BaiduASR.framework in Frameworks */,
 				3673C3F62970DFBC181AFF21 /* libPods-BaiduARS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -120,16 +114,10 @@
 				708459B72260995200B16A4C /* ViewController.mm */,
 				708459F92271AB5E00B16A4C /* SettingViewController.h */,
 				708459FA2271AB5E00B16A4C /* SettingViewController.m */,
-				708459DB22646D1800B16A4C /* BDASRConfig.h */,
-				708459DC22646D1800B16A4C /* BDASRConfig.m */,
-				708459F2226DC19100B16A4C /* BDAudioManager.h */,
-				708459F3226DC19100B16A4C /* BDAudioManager.m */,
-				708459DE2264726000B16A4C /* BDASRRecognitionResult.h */,
-				708459DF2264726000B16A4C /* BDASRRecognitionResult.m */,
-				708459ED226DB14700B16A4C /* AudioStreaming.pbobjc.h */,
-				708459EC226DB14700B16A4C /* AudioStreaming.pbobjc.m */,
-				708459EA226DB14700B16A4C /* AudioStreaming.pbrpc.h */,
-				708459EB226DB14700B16A4C /* AudioStreaming.pbrpc.m */,
+				7011FBCD22845226000E8F33 /* LoginViewController.h */,
+				7011FBCE22845226000E8F33 /* LoginViewController.m */,
+				7011FBBC22841E41000E8F33 /* ASRConfig.h */,
+				7011FBBD22841E41000E8F33 /* ASRConfig.m */,
 				708459E82265B9D300B16A4C /* bj8k.wav */,
 				708459F0226DBED700B16A4C /* xeq16k.wav */,
 				708459F5227095B500B16A4C /* 1.wav */,
@@ -155,6 +143,7 @@
 		BCC1FAE24D49852A8FFB8ADC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				7011FBCB2284496F000E8F33 /* BaiduASR.framework */,
 				B9BA51AFA1CAC454B2ED6920 /* libPods-BaiduARS.a */,
 			);
 			name = Frameworks;
@@ -323,14 +312,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				708459B82260995200B16A4C /* ViewController.mm in Sources */,
-				708459E02264726000B16A4C /* BDASRRecognitionResult.m in Sources */,
+				7011FBBE22841E41000E8F33 /* ASRConfig.m in Sources */,
+				7011FBCF22845226000E8F33 /* LoginViewController.m in Sources */,
 				708459C32260995400B16A4C /* main.m in Sources */,
-				708459DD22646D1800B16A4C /* BDASRConfig.m in Sources */,
-				708459EE226DB14700B16A4C /* AudioStreaming.pbrpc.m in Sources */,
 				708459FB2271AB5E00B16A4C /* SettingViewController.m in Sources */,
 				708459B52260995200B16A4C /* AppDelegate.m in Sources */,
-				708459F4226DC19100B16A4C /* BDAudioManager.m in Sources */,
-				708459EF226DB14700B16A4C /* AudioStreaming.pbobjc.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -489,16 +475,22 @@
 			baseConfigurationReference = 6EDC4A73EC7BA4F7929B2F76 /* Pods-BaiduARS.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = C789GLWV85;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = "";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = BaiduARS/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = Baidu.BaiduARS;
+				PRODUCT_BUNDLE_IDENTIFIER = com.baidu.rimdemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -508,16 +500,22 @@
 			baseConfigurationReference = EFC7C8C095B6C8B85A81F76C /* Pods-BaiduARS.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = C789GLWV85;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = BaiduARS/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = Baidu.BaiduARS;
+				PRODUCT_BUNDLE_IDENTIFIER = com.baidu.rimdemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "Distribution_baidu rim sdk";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

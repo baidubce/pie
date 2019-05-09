@@ -7,6 +7,7 @@
 //
 
 #import "SettingViewController.h"
+#import "ASRConfig.h"
 
 @interface SettingViewController ()<UIPickerViewDelegate, UIPickerViewDataSource>
 
@@ -25,17 +26,16 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
 
-    BDASRConfig *config = [BDASRConfig config];
+    ASRConfig *config = [ASRConfig config];
     self.addressTF.text = config.hostAddress;
-    self.portTF.text = [NSString stringWithFormat:@"%d", config.serverPort];
+    self.portTF.text = config.serverPort;
     
-    NSInteger product = config.product;
-    NSString *proS = [NSString stringWithFormat:@"%ld", (long)product];
-    NSInteger index = [config.productIDArray indexOfObject:proS];
+    NSString *productId = config.productId;
+    NSInteger index = [config.productIDArray indexOfObject:productId];
     NSString *proDes = [self productDesWithIndex:index];
     [self.modelBtn setTitle:proDes forState:UIControlStateNormal];
     
-    NSString *sampleRate = [NSString stringWithFormat:@"%d", config.sampleRate];
+    NSString *sampleRate = config.sampleRate;
     self.sampleRateTF.text = sampleRate;
     
     UITapGestureRecognizer *cancel = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(cancelEdit)];
@@ -50,7 +50,7 @@
 
 - (NSString *)productDesWithIndex:(NSInteger)index {
     NSString *proDes = @"";
-    BDASRConfig *config = [BDASRConfig config];
+    ASRConfig *config = [ASRConfig config];
 
     if (index >= 0 && index <= config.productIDDataSource.count) {
         proDes = [config.productIDDataSource objectAtIndex:index];
@@ -59,10 +59,9 @@
 }
 
 - (IBAction)pickModel:(id)sender {
-    BDASRConfig *config = [BDASRConfig config];
-    NSInteger product = config.product;
-    NSString *proS = [NSString stringWithFormat:@"%ld", (long)product];
-    NSInteger index = [config.productIDArray indexOfObject:proS];
+    ASRConfig *config = [ASRConfig config];
+    NSString *product = config.productId;
+    NSInteger index = [config.productIDArray indexOfObject:product];
     
     if (index >= 0 && index <= config.productIDDataSource.count) {
         [self.modelPicker selectRow:index inComponent:0 animated:NO];
@@ -78,27 +77,37 @@
 - (IBAction)conform:(id)sender {
     [self cancelEdit];
     
-    BDASRConfig *config = [BDASRConfig config];
+    ASRConfig *config = [ASRConfig config];
+
     NSString *address = self.addressTF.text;
-    int port = [self.portTF.text intValue];
-    int sampleRate = [self.sampleRateTF.text intValue];
-    
-    NSString *title = [config.productIDArray objectAtIndex:[self.modelPicker selectedRowInComponent:0]];
-    ASRProduct product = [title integerValue];
+    NSString *port = self.portTF.text;
+    NSString *productID = [config.productIDArray objectAtIndex:[self.modelPicker selectedRowInComponent:0]];
+    NSString *sampleRate = self.sampleRateTF.text;
     
     config.hostAddress = address;
     config.serverPort = port;
-    config.product = product;
+    config.productId = productID;
     config.sampleRate = sampleRate;
+    
+    [config save];
     
     [self performSelector:@selector(back:) withObject:nil afterDelay:.5f];
 }
+
+- (IBAction)reset:(id)sender {
+    [[ASRConfig config] reset];
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:@"数据已恢复为原始设置，重启App生效！" preferredStyle:UIAlertControllerStyleAlert];
+    [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:nil]];
+    [self presentViewController:alert animated:YES completion:nil];
+}
+
+
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView {
     return 1;
 }
 
 - (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
-    BDASRConfig *config = [BDASRConfig config];
+    ASRConfig *config = [ASRConfig config];
     return config.productIDArray.count;
 }
 
@@ -111,7 +120,7 @@
 }
 
 - (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
-    BDASRConfig *config = [BDASRConfig config];
+    ASRConfig *config = [ASRConfig config];
     NSString *title = [config.productIDDataSource objectAtIndex:row];
     return title;
 }
