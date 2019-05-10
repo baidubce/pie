@@ -19,13 +19,13 @@ import com.baidu.acu.pie.model.RequestMetaData;
  * @create 2019-05-05 17:23
  */
 public class SyncRecognizeWithFileAndMetaData {
-    private static String appName = "test";
+    private static String appName = "";
     private static String ip = "";          // asr服务的ip地址
     private static Integer port = 8050;     // asr服务的端口
     private static AsrProduct pid = AsrProduct.CUSTOMER_SERVICE_FINANCE;     // asr模型编号(不同的模型在不同的场景下asr识别的最终结果可能会存在很大差异)
     private static String userName = "";    // 用户名, 请联系百度相关人员进行申请
     private static String passWord = "";    // 密码, 请联系百度相关人员进行申请
-    private static String audioPath = "/Users/v_xutengchao/Desktop/data-audios/60s.wav"; // 音频文件路径
+    private static String audioPath = ""; // 音频文件路径
 
     public static void main(String[] args) {
         syncRecognizeWithFileAndMetaData();
@@ -45,9 +45,7 @@ public class SyncRecognizeWithFileAndMetaData {
         AsrClient asrClient = AsrClientFactory.buildClient(asrConfig);
         // 创建RequestMetaData
         RequestMetaData requestMetaData = new RequestMetaData();
-        requestMetaData.setSendPerSeconds(0.05); //指定每次发送的音频数据包大小，数值越大，识别越快，但准确率可能下降
-        requestMetaData.setSendPackageRatio(1);  //用来控制发包大小的倍率，一般不需要修改
-        requestMetaData.setSleepRatio(1);        //指定asr服务的识别间隔，数值越小，识别越快，但准确率可能下降
+        requestMetaData.setEnableFlushData(false);// 是否返回中间翻译结果
         List<RecognitionResult> results = asrClient.syncRecognize(new File(audioPath), requestMetaData);
         // don't forget to shutdown !!!
         asrClient.shutdown();
