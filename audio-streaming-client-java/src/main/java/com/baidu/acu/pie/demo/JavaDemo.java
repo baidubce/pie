@@ -32,7 +32,7 @@ public class JavaDemo {
 
     private AsrClient createAsrClient() {
         // asrConfig构造后就不可修改
-        AsrConfig asrConfig = new AsrConfig()
+        AsrConfig asrConfig = AsrConfig.builder()
                 .serverIp("127.0.0.1")
                 .serverPort(80)
                 .appName("simple demo")
