@@ -10,16 +10,15 @@ def commonPods
     pod 'gRPC-ProtoRPC'
     pod 'gRPC-RxLibrary'
     pod 'nanopb'
-    #pod 'Novocaine'
 end
 
-workspace 'BaiduARS.xcworkspace'
-
-target 'BaiduARS' do
-    commonPods
-end
+workspace 'BaiduASR.xcworkspace'
 
 target 'BaiduASR' do
     project 'BaiduASR/BaiduASR.xcodeproj'
     commonPods
+end
+
+target 'BaiduASRDemo' do
+    project 'BaiduASRDemo.xcodeproj'
 end

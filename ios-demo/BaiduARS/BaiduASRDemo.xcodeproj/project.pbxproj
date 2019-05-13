@@ -7,21 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3673C3F62970DFBC181AFF21 /* libPods-BaiduARS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B9BA51AFA1CAC454B2ED6920 /* libPods-BaiduARS.a */; };
+		3673C3F62970DFBC181AFF21 /* libPods-BaiduASRDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B9BA51AFA1CAC454B2ED6920 /* libPods-BaiduASRDemo.a */; };
 		7011FBBE22841E41000E8F33 /* ASRConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 7011FBBD22841E41000E8F33 /* ASRConfig.m */; };
-		7011FBCC2284496F000E8F33 /* BaiduASR.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7011FBCB2284496F000E8F33 /* BaiduASR.framework */; };
 		7011FBCF22845226000E8F33 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7011FBCE22845226000E8F33 /* LoginViewController.m */; };
+		7031815B228923990019F915 /* BaiduASR.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7031815A228923990019F915 /* BaiduASR.framework */; };
+		7031815C228923990019F915 /* BaiduASR.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 7031815A228923990019F915 /* BaiduASR.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		708459B52260995200B16A4C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 708459B42260995200B16A4C /* AppDelegate.m */; };
 		708459B82260995200B16A4C /* ViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 708459B72260995200B16A4C /* ViewController.mm */; };
 		708459BB2260995200B16A4C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 708459B92260995200B16A4C /* Main.storyboard */; };
 		708459BD2260995400B16A4C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 708459BC2260995400B16A4C /* Assets.xcassets */; };
 		708459C02260995400B16A4C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 708459BE2260995400B16A4C /* LaunchScreen.storyboard */; };
 		708459C32260995400B16A4C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 708459C22260995400B16A4C /* main.m */; };
-		708459CD2260995400B16A4C /* BaiduARSUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 708459CC2260995400B16A4C /* BaiduARSUITests.m */; };
-		708459E92265B9D300B16A4C /* bj8k.wav in Resources */ = {isa = PBXBuildFile; fileRef = 708459E82265B9D300B16A4C /* bj8k.wav */; };
-		708459F1226DBED700B16A4C /* xeq16k.wav in Resources */ = {isa = PBXBuildFile; fileRef = 708459F0226DBED700B16A4C /* xeq16k.wav */; };
-		708459F6227095B500B16A4C /* 1.wav in Resources */ = {isa = PBXBuildFile; fileRef = 708459F5227095B500B16A4C /* 1.wav */; };
-		708459F82270963E00B16A4C /* 10-245.wav in Resources */ = {isa = PBXBuildFile; fileRef = 708459F72270963E00B16A4C /* 10-245.wav */; };
+		708459CD2260995400B16A4C /* BaiduASRDemoUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 708459CC2260995400B16A4C /* BaiduASRDemoUITests.m */; };
 		708459FB2271AB5E00B16A4C /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 708459FA2271AB5E00B16A4C /* SettingViewController.m */; };
 /* End PBXBuildFile section */
 
@@ -31,18 +28,32 @@
 			containerPortal = 708459A82260995200B16A4C /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 708459AF2260995200B16A4C;
-			remoteInfo = BaiduARS;
+			remoteInfo = BaiduASRDemo;
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		7031815D228923990019F915 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				7031815C228923990019F915 /* BaiduASR.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
-		6EDC4A73EC7BA4F7929B2F76 /* Pods-BaiduARS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BaiduARS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BaiduARS/Pods-BaiduARS.debug.xcconfig"; sourceTree = "<group>"; };
+		6EDC4A73EC7BA4F7929B2F76 /* Pods-BaiduASRDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BaiduASRDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BaiduASRDemo/Pods-BaiduASRDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		7011FBBC22841E41000E8F33 /* ASRConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ASRConfig.h; sourceTree = "<group>"; };
 		7011FBBD22841E41000E8F33 /* ASRConfig.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ASRConfig.m; sourceTree = "<group>"; };
-		7011FBCB2284496F000E8F33 /* BaiduASR.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BaiduASR.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7011FBCD22845226000E8F33 /* LoginViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		7011FBCE22845226000E8F33 /* LoginViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
-		708459B02260995200B16A4C /* BaiduARS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BaiduARS.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		7031815A228923990019F915 /* BaiduASR.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BaiduASR.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		708459B02260995200B16A4C /* BaiduASRDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BaiduASRDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		708459B32260995200B16A4C /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		708459B42260995200B16A4C /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		708459B62260995200B16A4C /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
@@ -52,17 +63,13 @@
 		708459BF2260995400B16A4C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		708459C12260995400B16A4C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		708459C22260995400B16A4C /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		708459C82260995400B16A4C /* BaiduARSUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BaiduARSUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		708459CC2260995400B16A4C /* BaiduARSUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BaiduARSUITests.m; sourceTree = "<group>"; };
+		708459C82260995400B16A4C /* BaiduASRDemoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BaiduASRDemoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		708459CC2260995400B16A4C /* BaiduASRDemoUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BaiduASRDemoUITests.m; sourceTree = "<group>"; };
 		708459CE2260995400B16A4C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		708459E82265B9D300B16A4C /* bj8k.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = bj8k.wav; sourceTree = "<group>"; };
-		708459F0226DBED700B16A4C /* xeq16k.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = xeq16k.wav; sourceTree = "<group>"; };
-		708459F5227095B500B16A4C /* 1.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = 1.wav; sourceTree = "<group>"; };
-		708459F72270963E00B16A4C /* 10-245.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "10-245.wav"; sourceTree = "<group>"; };
 		708459F92271AB5E00B16A4C /* SettingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SettingViewController.h; sourceTree = "<group>"; };
 		708459FA2271AB5E00B16A4C /* SettingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SettingViewController.m; sourceTree = "<group>"; };
-		B9BA51AFA1CAC454B2ED6920 /* libPods-BaiduARS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BaiduARS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		EFC7C8C095B6C8B85A81F76C /* Pods-BaiduARS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BaiduARS.release.xcconfig"; path = "Pods/Target Support Files/Pods-BaiduARS/Pods-BaiduARS.release.xcconfig"; sourceTree = "<group>"; };
+		B9BA51AFA1CAC454B2ED6920 /* libPods-BaiduASRDemo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BaiduASRDemo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		EFC7C8C095B6C8B85A81F76C /* Pods-BaiduASRDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BaiduASRDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-BaiduASRDemo/Pods-BaiduASRDemo.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,8 +77,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7011FBCC2284496F000E8F33 /* BaiduASR.framework in Frameworks */,
-				3673C3F62970DFBC181AFF21 /* libPods-BaiduARS.a in Frameworks */,
+				3673C3F62970DFBC181AFF21 /* libPods-BaiduASRDemo.a in Frameworks */,
+				7031815B228923990019F915 /* BaiduASR.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -88,8 +95,9 @@
 		708459A72260995200B16A4C = {
 			isa = PBXGroup;
 			children = (
-				708459B22260995200B16A4C /* BaiduARS */,
-				708459CB2260995400B16A4C /* BaiduARSUITests */,
+				7031815A228923990019F915 /* BaiduASR.framework */,
+				708459B22260995200B16A4C /* BaiduASRDemo */,
+				708459CB2260995400B16A4C /* BaiduASRDemoUITests */,
 				708459B12260995200B16A4C /* Products */,
 				D43BA780298329EDD8407B29 /* Pods */,
 				BCC1FAE24D49852A8FFB8ADC /* Frameworks */,
@@ -99,13 +107,13 @@
 		708459B12260995200B16A4C /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				708459B02260995200B16A4C /* BaiduARS.app */,
-				708459C82260995400B16A4C /* BaiduARSUITests.xctest */,
+				708459B02260995200B16A4C /* BaiduASRDemo.app */,
+				708459C82260995400B16A4C /* BaiduASRDemoUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		708459B22260995200B16A4C /* BaiduARS */ = {
+		708459B22260995200B16A4C /* BaiduASRDemo */ = {
 			isa = PBXGroup;
 			children = (
 				708459B32260995200B16A4C /* AppDelegate.h */,
@@ -118,33 +126,28 @@
 				7011FBCE22845226000E8F33 /* LoginViewController.m */,
 				7011FBBC22841E41000E8F33 /* ASRConfig.h */,
 				7011FBBD22841E41000E8F33 /* ASRConfig.m */,
-				708459E82265B9D300B16A4C /* bj8k.wav */,
-				708459F0226DBED700B16A4C /* xeq16k.wav */,
-				708459F5227095B500B16A4C /* 1.wav */,
-				708459F72270963E00B16A4C /* 10-245.wav */,
 				708459B92260995200B16A4C /* Main.storyboard */,
 				708459BC2260995400B16A4C /* Assets.xcassets */,
 				708459BE2260995400B16A4C /* LaunchScreen.storyboard */,
 				708459C12260995400B16A4C /* Info.plist */,
 				708459C22260995400B16A4C /* main.m */,
 			);
-			path = BaiduARS;
+			path = BaiduASRDemo;
 			sourceTree = "<group>";
 		};
-		708459CB2260995400B16A4C /* BaiduARSUITests */ = {
+		708459CB2260995400B16A4C /* BaiduASRDemoUITests */ = {
 			isa = PBXGroup;
 			children = (
-				708459CC2260995400B16A4C /* BaiduARSUITests.m */,
+				708459CC2260995400B16A4C /* BaiduASRDemoUITests.m */,
 				708459CE2260995400B16A4C /* Info.plist */,
 			);
-			path = BaiduARSUITests;
+			path = BaiduASRDemoUITests;
 			sourceTree = "<group>";
 		};
 		BCC1FAE24D49852A8FFB8ADC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				7011FBCB2284496F000E8F33 /* BaiduASR.framework */,
-				B9BA51AFA1CAC454B2ED6920 /* libPods-BaiduARS.a */,
+				B9BA51AFA1CAC454B2ED6920 /* libPods-BaiduASRDemo.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -152,8 +155,8 @@
 		D43BA780298329EDD8407B29 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				6EDC4A73EC7BA4F7929B2F76 /* Pods-BaiduARS.debug.xcconfig */,
-				EFC7C8C095B6C8B85A81F76C /* Pods-BaiduARS.release.xcconfig */,
+				6EDC4A73EC7BA4F7929B2F76 /* Pods-BaiduASRDemo.debug.xcconfig */,
+				EFC7C8C095B6C8B85A81F76C /* Pods-BaiduASRDemo.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -161,28 +164,28 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		708459AF2260995200B16A4C /* BaiduARS */ = {
+		708459AF2260995200B16A4C /* BaiduASRDemo */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 708459D12260995400B16A4C /* Build configuration list for PBXNativeTarget "BaiduARS" */;
+			buildConfigurationList = 708459D12260995400B16A4C /* Build configuration list for PBXNativeTarget "BaiduASRDemo" */;
 			buildPhases = (
 				801C9D3A46FAE3655880AE1B /* [CP] Check Pods Manifest.lock */,
 				708459AC2260995200B16A4C /* Sources */,
 				708459AD2260995200B16A4C /* Frameworks */,
 				708459AE2260995200B16A4C /* Resources */,
-				7BBC48527A0C5025FB394B1A /* [CP] Copy Pods Resources */,
+				7031815D228923990019F915 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = BaiduARS;
-			productName = BaiduARS;
-			productReference = 708459B02260995200B16A4C /* BaiduARS.app */;
+			name = BaiduASRDemo;
+			productName = BaiduASRDemo;
+			productReference = 708459B02260995200B16A4C /* BaiduASRDemo.app */;
 			productType = "com.apple.product-type.application";
 		};
-		708459C72260995400B16A4C /* BaiduARSUITests */ = {
+		708459C72260995400B16A4C /* BaiduASRDemoUITests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 708459D42260995400B16A4C /* Build configuration list for PBXNativeTarget "BaiduARSUITests" */;
+			buildConfigurationList = 708459D42260995400B16A4C /* Build configuration list for PBXNativeTarget "BaiduASRDemoUITests" */;
 			buildPhases = (
 				708459C42260995400B16A4C /* Sources */,
 				708459C52260995400B16A4C /* Frameworks */,
@@ -193,9 +196,9 @@
 			dependencies = (
 				708459CA2260995400B16A4C /* PBXTargetDependency */,
 			);
-			name = BaiduARSUITests;
-			productName = BaiduARSUITests;
-			productReference = 708459C82260995400B16A4C /* BaiduARSUITests.xctest */;
+			name = BaiduASRDemoUITests;
+			productName = BaiduASRDemoUITests;
+			productReference = 708459C82260995400B16A4C /* BaiduASRDemoUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
@@ -216,7 +219,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 708459AB2260995200B16A4C /* Build configuration list for PBXProject "BaiduARS" */;
+			buildConfigurationList = 708459AB2260995200B16A4C /* Build configuration list for PBXProject "BaiduASRDemo" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -229,8 +232,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				708459AF2260995200B16A4C /* BaiduARS */,
-				708459C72260995400B16A4C /* BaiduARSUITests */,
+				708459AF2260995200B16A4C /* BaiduASRDemo */,
+				708459C72260995400B16A4C /* BaiduASRDemoUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -240,13 +243,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				708459F6227095B500B16A4C /* 1.wav in Resources */,
 				708459C02260995400B16A4C /* LaunchScreen.storyboard in Resources */,
-				708459F82270963E00B16A4C /* 10-245.wav in Resources */,
 				708459BD2260995400B16A4C /* Assets.xcassets in Resources */,
-				708459F1226DBED700B16A4C /* xeq16k.wav in Resources */,
 				708459BB2260995200B16A4C /* Main.storyboard in Resources */,
-				708459E92265B9D300B16A4C /* bj8k.wav in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -260,28 +259,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		7BBC48527A0C5025FB394B1A /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-BaiduARS/Pods-BaiduARS-resources.sh",
-				"${PODS_CONFIGURATION_BUILD_DIR}/gRPC/gRPCCertificates.bundle",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/gRPCCertificates.bundle",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BaiduARS/Pods-BaiduARS-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		801C9D3A46FAE3655880AE1B /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -297,7 +274,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-BaiduARS-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-BaiduASRDemo-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -324,7 +301,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				708459CD2260995400B16A4C /* BaiduARSUITests.m in Sources */,
+				708459CD2260995400B16A4C /* BaiduASRDemoUITests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -333,7 +310,7 @@
 /* Begin PBXTargetDependency section */
 		708459CA2260995400B16A4C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 708459AF2260995200B16A4C /* BaiduARS */;
+			target = 708459AF2260995200B16A4C /* BaiduASRDemo */;
 			targetProxy = 708459C92260995400B16A4C /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -472,22 +449,23 @@
 		};
 		708459D22260995400B16A4C /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6EDC4A73EC7BA4F7929B2F76 /* Pods-BaiduARS.debug.xcconfig */;
+			baseConfigurationReference = 6EDC4A73EC7BA4F7929B2F76 /* Pods-BaiduASRDemo.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = "";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = C789GLWV85;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
-				INFOPLIST_FILE = BaiduARS/Info.plist;
+				INFOPLIST_FILE = BaiduASRDemo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.baidu.rimdemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -497,25 +475,26 @@
 		};
 		708459D32260995400B16A4C /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = EFC7C8C095B6C8B85A81F76C /* Pods-BaiduARS.release.xcconfig */;
+			baseConfigurationReference = EFC7C8C095B6C8B85A81F76C /* Pods-BaiduASRDemo.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = C789GLWV85;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
-				INFOPLIST_FILE = BaiduARS/Info.plist;
+				INFOPLIST_FILE = BaiduASRDemo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.baidu.rimdemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "Distribution_baidu rim sdk";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -524,16 +503,17 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = BaiduARSUITests/Info.plist;
+				DEVELOPMENT_TEAM = "";
+				INFOPLIST_FILE = BaiduASRDemoUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = Baidu.BaiduARSUITests;
+				PRODUCT_BUNDLE_IDENTIFIER = Baidu.BaiduASRDemoUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = BaiduARS;
+				TEST_TARGET_NAME = BaiduASRDemo;
 			};
 			name = Debug;
 		};
@@ -541,23 +521,24 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = BaiduARSUITests/Info.plist;
+				DEVELOPMENT_TEAM = "";
+				INFOPLIST_FILE = BaiduASRDemoUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = Baidu.BaiduARSUITests;
+				PRODUCT_BUNDLE_IDENTIFIER = Baidu.BaiduASRDemoUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = BaiduARS;
+				TEST_TARGET_NAME = BaiduASRDemo;
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		708459AB2260995200B16A4C /* Build configuration list for PBXProject "BaiduARS" */ = {
+		708459AB2260995200B16A4C /* Build configuration list for PBXProject "BaiduASRDemo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				708459CF2260995400B16A4C /* Debug */,
@@ -566,7 +547,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		708459D12260995400B16A4C /* Build configuration list for PBXNativeTarget "BaiduARS" */ = {
+		708459D12260995400B16A4C /* Build configuration list for PBXNativeTarget "BaiduASRDemo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				708459D22260995400B16A4C /* Debug */,
@@ -575,7 +556,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		708459D42260995400B16A4C /* Build configuration list for PBXNativeTarget "BaiduARSUITests" */ = {
+		708459D42260995400B16A4C /* Build configuration list for PBXNativeTarget "BaiduASRDemoUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				708459D52260995400B16A4C /* Debug */,

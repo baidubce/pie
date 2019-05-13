@@ -5,7 +5,7 @@
       location = "group:BaiduASR/BaiduASR.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:BaiduARS.xcodeproj">
+      location = "group:BaiduASRDemo.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:Pods/Pods.xcodeproj">

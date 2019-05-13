@@ -1,6 +1,6 @@
 //
 //  SettingViewController.h
-//  BaiduARS
+//  BaiduASRDemo
 //
 //  Created by Wu,Yunpeng(AI2B) on 2019/4/25.
 //  Copyright © 2019 Cloud. All rights reserved.
