@@ -14,14 +14,13 @@ import com.baidu.acu.pie.model.RecognitionResult;
 import com.baidu.acu.pie.model.StreamContext;
 
 /**
- * 异步识别: 输入一个语音流,会实时返回每一句话识别的结果（等待所有音频识别完成才结束）
+ * 异步识别: 输入一个语音流,会实时返回每一句话识别的结果（在指定时间最后音频流识别没有返回就结束）
  * 使用场景: 用于对实时性要求较高的场景,如会议记录
  *
  * @author xutengchao
- * @create 2019-05-06 16:58
+ * @create 2019-05-15 10:03
  */
-public class AsyncRecognizeWithStream {
-
+public class AsyncRecognize {
     private static String appName = "";     // 根据自己需求命名
     private static String ip = "";          // asr服务的ip地址
     private static Integer port = 8050;     // asr服务的端口
@@ -29,6 +28,7 @@ public class AsyncRecognizeWithStream {
     private static String userName = "";    // 用户名, 请联系百度相关人员进行申请
     private static String passWord = "";    // 密码, 请联系百度相关人员进行申请
     private static String audioPath = ""; // 音频文件路径
+    private static Long awaitTime = 10L; // 设置最后音频流识别时间限制，单位秒
 
     public static void main(String[] args) {
         asyncRecognizeWithStream(createAsrClient());
@@ -72,7 +72,9 @@ public class AsyncRecognizeWithStream {
             streamContext.complete();
             System.out.println(new DateTime().toString() + "\t" + Thread.currentThread().getId() + " send finish");
             // 等待最后输入的音频流识别的结果返回完毕（如果略掉这行代码会造成音频识别不完整!）(等待最长的时间)
-            streamContext.await();
+            if (!streamContext.await(awaitTime, TimeUnit.SECONDS)) {
+                System.out.println("error : The last audio stream recognized timeout");
+            }
         } catch (Throwable e) {
             e.printStackTrace();
         } finally {
@@ -81,5 +83,4 @@ public class AsyncRecognizeWithStream {
 
         System.out.println("all task finished");
     }
-
 }
