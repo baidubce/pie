@@ -44,34 +44,6 @@ public class JavaDemo {
         return AsrClientFactory.buildClient(asrConfig);
     }
 
-    public void recognizeFile() {
-        String audioFilePath = "testaudio/bj8k.wav";
-        AsrClient asrClient = createAsrClient();
-
-        RequestMetaData requestMetaData = new RequestMetaData();
-        requestMetaData.setEnableFlushData(false);
-        List<RecognitionResult> results = asrClient.syncRecognize(Paths.get(audioFilePath).toFile(), requestMetaData);
-
-        // don't forget to shutdown !!!
-        asrClient.shutdown();
-
-        for (RecognitionResult result : results) {
-            System.out.println(String.format(AsrConfig.TITLE_FORMAT,
-                    "file_name",
-                    "serial_num",
-                    "start_time",
-                    "end_time",
-                    "result"));
-            System.out.println(String.format(AsrConfig.TITLE_FORMAT,
-                    audioFilePath,
-                    result.getSerialNum(),
-                    result.getStartTime(),
-                    result.getEndTime(),
-                    result.getResult()
-            ));
-        }
-    }
-
     /**
      * 用户可以自己创建一个 RequestMeta 对象，用来控制请求时候的数据发送速度等参数
      */
