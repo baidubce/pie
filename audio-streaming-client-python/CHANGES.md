@@ -1,3 +1,13 @@
+# version 2.0.0
+
+### improvement 
+- 修改相关字段
+
+### feature
+- 添加用户验证
+
+### bug fix
+
 # version 1.2.0
 
 ### improvement 
