@@ -8,6 +8,7 @@ import threadpool
 import baidu_acu_asr.audio_streaming_pb2
 from baidu_acu_asr.asr_product import AsrProduct
 
+
 class AudioHandler:
 
     def __init__(self):
@@ -21,6 +22,7 @@ class AudioHandler:
     enable_flush_data = False
     user_name = "abc"
     password = "123"
+
     def write_file(self, file_path, file_content):
         with open(file_path, "w") as file:
             file.write(file_content.encode("UTF-8"))
@@ -37,7 +39,10 @@ class AudioHandler:
     def run(self, file_path):
         while True:
             client = AsrClient(self.url, self.port, self.product_id, self.enable_flush_data,
-                               log_level=self.log_level, send_per_seconds=0.02, user_name=user_name, password=password)
+                               log_level=self.log_level,
+                               send_per_seconds=0.02,
+                               user_name=self.user_name,
+                               password=self.password)
             responses = client.get_result(file_path)
             file_content = ""
             try:
@@ -50,9 +55,9 @@ class AudioHandler:
                 self.write_file(file_path + ".txt", file_content)
                 logging.info("file %s write complete!", file_path)
                 break
-            except:
+            except Exception as ex:
                 # 如果出现异常，此处需要重试当前音频
-                logging.error("connect to server error, will create a new channel and retry audio!")
+                logging.error("encounter an error: %s, will create a new channel and retry audio!", ex.message)
                 time.sleep(0.5)
 
 
@@ -60,7 +65,7 @@ if __name__ == '__main__':
     start_time = time.time()
     handler = AudioHandler()
 
-    audio_path = "/home/luoyl001/PycharmProjects/baidu_asr/new_wav_8k"
+    audio_path = "/Users/xiashuai01/Downloads/tem"
     audio_files = handler.get_audio_files(audio_path)
     pool = threadpool.ThreadPool(10)
     requests = threadpool.makeRequests(handler.run, audio_files)
