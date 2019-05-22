@@ -29,6 +29,8 @@ public class DateTimeParser {
             toBeParsed = "00:" + time + "0";
         } else if (time.matches("\\d{2}:\\d{2}\\.\\d{3}")) { // mm:ss.SSS without HH:
             toBeParsed = "00:" + time;
+        } else if (time.matches("\\d{2}:\\d{2}:\\d{2}\\.\\d{2}")) {
+            toBeParsed = time + "0";
         } else {
             toBeParsed = time;
         }
