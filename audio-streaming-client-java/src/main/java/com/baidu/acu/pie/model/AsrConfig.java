@@ -67,4 +67,52 @@ public class AsrConfig {
      * 和后端 server 建立连接时，用来鉴权的
      */
     private String token;
+
+    @Deprecated
+    public AsrConfig serverIp(String serverIp) {
+        this.serverIp = serverIp;
+        return this;
+    }
+
+    @Deprecated
+    public AsrConfig serverPort(int serverPort) {
+        this.serverPort = serverPort;
+        return this;
+    }
+
+    @Deprecated
+    public AsrConfig appName(String appName) {
+        this.appName = appName;
+        return this;
+    }
+
+    @Deprecated
+    public AsrConfig product(AsrProduct product) {
+        this.product = product;
+        return this;
+    }
+
+    @Deprecated
+    public AsrConfig userName(String userName) {
+        this.userName = userName;
+        return this;
+    }
+
+    @Deprecated
+    public AsrConfig password(String password) {
+        this.password = password;
+        return this;
+    }
+
+    @Deprecated
+    public AsrConfig token(String token) {
+        this.token = token;
+        return this;
+    }
+
+    @Deprecated
+    public AsrConfig expireDateTime(DateTime dateTime) {
+        this.expireDateTime = dateTime;
+        return this;
+    }
 }
