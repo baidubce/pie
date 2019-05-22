@@ -3,6 +3,7 @@ package com.baidu.acu.pie.model;
 import com.baidu.acu.pie.exception.AsrClientException;
 
 import lombok.Data;
+import lombok.ToString;
 
 /**
  * RequestMetaData
@@ -11,6 +12,7 @@ import lombok.Data;
  * @author Shu Lingjie
  */
 @Data
+@ToString
 public class RequestMetaData {
     /**
      * 是否返回中间翻译结果

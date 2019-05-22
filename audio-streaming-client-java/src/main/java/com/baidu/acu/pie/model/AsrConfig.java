@@ -7,6 +7,7 @@ import org.joda.time.DateTime;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;
+import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -17,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 @Builder
 @Data
 @Slf4j
+@ToString
 public class AsrConfig {
     public static final String TITLE_FORMAT = "%-40s\t%-36s\t%-14s\t%-13s\t%s";
 

@@ -1,14 +1,15 @@
 package com.baidu.acu.pie.model;
 
+import java.util.concurrent.TimeUnit;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 
-import java.util.concurrent.TimeUnit;
-
 @Getter
 @Builder
+@ToString
 public class ChannelConfig {
     @Builder.Default
     private final TimeSpan keepAliveTime = new TimeSpan(30, TimeUnit.SECONDS);
