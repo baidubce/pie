@@ -60,6 +60,17 @@ static ASRConfig *config = nil;
     return self;
 }
 
+- (NSString *)productDescription {
+    NSString *proDes = nil;
+    
+    NSInteger index = [self.productIDArray indexOfObject:self.productId ?: @"0"];
+    if (index != NSNotFound && index <= self.productIDDataSource.count && index >= 0) {
+        proDes = [self.productIDDataSource objectAtIndex:index];
+    }
+    
+    return proDes;
+}
+
 - (void)save {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     

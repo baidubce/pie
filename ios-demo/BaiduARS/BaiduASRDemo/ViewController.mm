@@ -141,7 +141,8 @@ UIColor *bgColor = [UIColor colorWithRed:0.0 green:122/255.0 blue:1.0 alpha:1.0]
 
 - (void)bdasrAnalizeDone:(BOOL)done result:(id)result error:(NSError *)error {
     NSLog(@"result:%@----done:%d", result, done);
-    
+
+    NSString *completed = @"0";
     NSString *newText = @"";
     if (error) {
         NSLog(@"error: %@", error);
@@ -159,7 +160,7 @@ UIColor *bgColor = [UIColor colorWithRed:0.0 green:122/255.0 blue:1.0 alpha:1.0]
             
             if (responseDic.count > 0) {
                 NSString *result = [resultDic objectForKey:@"result"];
-                NSString *completed = [resultDic objectForKey:@"completed"];
+                completed = [resultDic objectForKey:@"completed"];
                 
                 newText = result;
                 
@@ -170,7 +171,7 @@ UIColor *bgColor = [UIColor colorWithRed:0.0 green:122/255.0 blue:1.0 alpha:1.0]
         }
     }
     
-    if (done) {
+    if ([completed isEqualToString:@"1"]) {
         if (newText.length > 0) {
             self.resultTextView.text = [NSString stringWithFormat:@"%@%@", self.resultString, newText];
         }
