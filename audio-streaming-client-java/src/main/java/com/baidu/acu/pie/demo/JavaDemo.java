@@ -2,12 +2,15 @@
 
 package com.baidu.acu.pie.demo;
 
+import java.io.File;
+import java.io.FileFilter;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 
 import org.joda.time.DateTime;
+import org.joda.time.Duration;
 
 import com.baidu.acu.pie.client.AsrClient;
 import com.baidu.acu.pie.client.AsrClientFactory;
@@ -36,9 +39,9 @@ public class JavaDemo {
                 .serverIp("127.0.0.1")
                 .serverPort(80)
                 .appName("simple demo")
-                .product(AsrProduct.CUSTOMER_SERVICE)
-                .userName("user1")
-                .password("password1")
+                .product(AsrProduct.CUSTOMER_SERVICE_FINANCE)
+                .userName("user")
+                .password("password")
                 .build();
 
         return AsrClientFactory.buildClient(asrConfig);
@@ -58,17 +61,16 @@ public class JavaDemo {
      * 用户可以自己创建一个 RequestMeta 对象，用来控制请求时候的数据发送速度等参数
      */
     public void recognizeFileWithRequestMeta() {
-        String audioFilePath = "testaudio/bj8k.wav";
+        File audioFile = new File("testaudio/10s.wav");
+
         AsrClient asrClient = createAsrClient();
 
-        RequestMetaData requestMetaData = new RequestMetaData();
-        requestMetaData.setSendPerSeconds(0.05);
-        requestMetaData.setSendPackageRatio(1);
-        requestMetaData.setSleepRatio(1);
-        requestMetaData.setTimeoutMinutes(120);
-        requestMetaData.setEnableFlushData(false);
+        DateTime startTime = DateTime.now();
+        List<RecognitionResult> results = asrClient.syncRecognize(audioFile, createRequestMeta());
+        DateTime endTime = DateTime.now();
 
-        List<RecognitionResult> results = asrClient.syncRecognize(Paths.get(audioFilePath).toFile(), requestMetaData);
+        Duration duration = new Duration(startTime, endTime);
+        System.out.println("time cost millis : " + duration.getMillis());
 
         // don't forget to shutdown !!!
         asrClient.shutdown();
@@ -81,13 +83,38 @@ public class JavaDemo {
                     "end_time",
                     "result"));
             System.out.println(String.format(AsrConfig.TITLE_FORMAT,
-                    audioFilePath,
+                    audioFile.getName(),
                     result.getSerialNum(),
                     result.getStartTime(),
                     result.getEndTime(),
                     result.getResult()
             ));
         }
+    }
+
+    public void recognizeDirectory() {
+        AsrClient asrClient = createAsrClient();
+
+        RequestMetaData requestMetaData = createRequestMeta();
+
+        String audioFileDir = "testaudio";
+        File dir = new File(audioFileDir);
+        File[] files = dir.listFiles(new FileFilter() {
+            @Override
+            public boolean accept(File pathname) {
+                return pathname.getName().endsWith("wav");
+            }
+        });
+
+        int count = 0;
+        for (File file : files) {
+            List<RecognitionResult> results = asrClient.syncRecognize(file, requestMetaData);
+            count += 1;
+        }
+        System.out.println("***********************  count: " + count);
+
+        // don't forget to shutdown !!!
+        asrClient.shutdown();
     }
 
     /**
