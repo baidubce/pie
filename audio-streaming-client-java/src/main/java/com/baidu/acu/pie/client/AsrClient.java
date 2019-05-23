@@ -74,5 +74,11 @@ public interface AsrClient {
      */
     int getFragmentSize();
 
+    /**
+     * 异步识别的时候，需要用户手动调用发送逻辑。
+     * 在发送的时候，需要设置发包大小，该方法返回最佳发包大小。
+     */
+    int getFragmentSize(RequestMetaData requestMetaData);
+
     void shutdown();
 }

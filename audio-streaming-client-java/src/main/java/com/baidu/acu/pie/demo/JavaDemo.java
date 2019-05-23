@@ -44,6 +44,16 @@ public class JavaDemo {
         return AsrClientFactory.buildClient(asrConfig);
     }
 
+    private RequestMetaData createRequestMeta() {
+        RequestMetaData requestMetaData = new RequestMetaData();
+        requestMetaData.setSendPackageRatio(1);
+        requestMetaData.setSleepRatio(1);
+        requestMetaData.setTimeoutMinutes(120);
+        requestMetaData.setEnableFlushData(false);
+
+        return requestMetaData;
+    }
+
     /**
      * 用户可以自己创建一个 RequestMeta 对象，用来控制请求时候的数据发送速度等参数
      */
@@ -87,6 +97,8 @@ public class JavaDemo {
         String longAudioFilePath = "testaudio/1.wav";
         AsrClient asrClient = createAsrClient();
 
+        RequestMetaData requestMetaData = createRequestMeta();
+
         StreamContext streamContext = asrClient.asyncRecognize(new Consumer<RecognitionResult>() {
             @Override
             public void accept(RecognitionResult it) {
@@ -94,17 +106,16 @@ public class JavaDemo {
                         DateTime.now().toString() + "\t" + Thread.currentThread().getId() +
                                 " receive fragment: " + it);
             }
-        });
+        }, requestMetaData);
 
         // 这里从文件中得到一个InputStream，实际场景下，也可以从麦克风或者其他音频源来得到InputStream
         try (InputStream audioStream = Files.newInputStream(Paths.get(longAudioFilePath))) {
-            byte[] data = new byte[asrClient.getFragmentSize()];
-            int readSize;
+            byte[] data = new byte[asrClient.getFragmentSize(requestMetaData)];
 
             System.out.println(new DateTime().toString() + "\t" + Thread.currentThread().getId() + " start to send");
 
             // 使用 sender.onNext 方法，将 InputStream 中的数据不断地发送到 asr 后端，发送的最小单位是 AudioFragment
-            while ((readSize = audioStream.read(data)) != -1 && !streamContext.getFinishLatch().finished()) {
+            while (audioStream.read(data) != -1 && !streamContext.getFinishLatch().finished()) {
                 streamContext.send(data);
                 // 主动休眠一段时间，来模拟人说话场景下的音频产生速率
                 // 在对接麦克风等设备的时候，可以去掉这个 sleep
