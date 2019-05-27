@@ -54,7 +54,8 @@ public class AsyncRecognizeWithStreamAndMetaData {
         requestMetaData.setSendPackageRatio(1);  // 用来控制发包大小的倍率，一般不需要修改
         requestMetaData.setSleepRatio(1);        // 指定asr服务的识别间隔，数值越小，识别越快，但准确率可能下降
         requestMetaData.setTimeoutMinutes(120);  // 识别单个文件的最大等待时间，默认10分，最长不能超过120分
-        requestMetaData.setEnableFlushData(false);// 是否返回中间翻译结果
+        requestMetaData.setEnableFlushData(true);// 是否返回中间翻译结果
+
         StreamContext streamContext = asrClient.asyncRecognize(new Consumer<RecognitionResult>() {
             public void accept(RecognitionResult recognitionResult) {
                 System.out.println(
@@ -62,6 +63,7 @@ public class AsyncRecognizeWithStreamAndMetaData {
                                 " receive fragment: " + recognitionResult);
             }
         }, requestMetaData);
+
         // 这里从文件中得到一个InputStream，实际场景下，也可以从麦克风或者其他音频源来得到InputStream
         try {
             FileInputStream audioStream = new FileInputStream(audioPath);
@@ -69,6 +71,7 @@ public class AsyncRecognizeWithStreamAndMetaData {
 
             int readSize;
             System.out.println(new DateTime().toString() + "\t" + Thread.currentThread().getId() + " start to send");
+
             // 使用 send 方法，将 InputStream 中的数据不断地发送到 asr 后端，发送的最小单位是 AudioFragment
             while ((readSize = audioStream.read(data)) != -1 && !streamContext.getFinishLatch().finished()) {
                 streamContext.send(data);
