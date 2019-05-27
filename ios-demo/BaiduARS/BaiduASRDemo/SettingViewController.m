@@ -15,7 +15,7 @@
 
 @property (nonatomic, weak) IBOutlet UIPickerView *modelPicker;
 @property (nonatomic, weak) IBOutlet UITableView *settingTableView;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *pickerHeight;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *tableViewBottom;
 
 @property (nonatomic, strong) NSMutableArray *settings;
 @property (nonatomic, strong) SettingViewCell *editingCell;
@@ -70,6 +70,10 @@
     self.settings = settingsArray;
 }
 
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
@@ -78,13 +82,17 @@
 
     UIView *footer = [[UIView alloc] init];
     self.settingTableView.tableFooterView = footer;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 }
 
 - (void)cancelEdit {
     if (self.editingCell != nil && self.editingCell.textField.isFirstResponder) {
         [self.editingCell.textField resignFirstResponder];
     }
-    self.pickerHeight.constant = 0.0;
+    self.tableViewBottom.constant = 0.0;
 }
 
 - (NSString *)productDesWithIndex:(NSInteger)index {
@@ -144,9 +152,24 @@
     [self presentViewController:alert animated:YES completion:nil];
 }
 
+#pragma mark- notification
+- (void)keyboardWillShow:(NSNotification *)notification {
+    NSDictionary *userInfo = [notification userInfo];
+    NSValue *value = [userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
+    
+    float height = [value CGRectValue].size.height;
+    
+    self.tableViewBottom.constant = -height;
+}
+
+- (void)keyboardWillHide:(NSNotification *)notification {
+    self.tableViewBottom.constant = 0.0;
+}
+
+#pragma mark- SettingViewCellDelegate
 - (void)settingViewCellBeginEdit:(SettingViewCell *)cell indexPath:(NSIndexPath *)indexPath {
     self.editingCell = cell;
-    self.pickerHeight.constant = 0.0;
+    self.modelPicker.hidden = YES;
 }
 
 #pragma mark- UITableViewDelegate UITableViewDataSource
@@ -178,19 +201,26 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     NSLog(@"index - %ld", indexPath.row);
+    
     if (self.editingCell != nil && self.editingCell.textField.isFirstResponder) {
         [self.editingCell.textField resignFirstResponder];
-        return;
     }
 
-    if (self.pickerHeight.constant == 220.0) {
-        self.pickerHeight.constant = 0.0;
-        return;
+    if (self.tableViewBottom.constant != 0.0) {
+        self.tableViewBottom.constant = 0.0;
     }
 
     if (indexPath.row == 2) {
-        [self pickModel:nil];
-        self.pickerHeight.constant = 220.0;
+        if (self.modelPicker.hidden) {
+            [self pickModel:nil];
+            self.tableViewBottom.constant = -220.0;
+            self.modelPicker.hidden = NO;
+        }else {
+            self.tableViewBottom.constant = 0.0;
+            self.modelPicker.hidden = YES;
+        }
+    }else {
+        self.modelPicker.hidden = YES;
     }
     
     if (indexPath.row == 4) {

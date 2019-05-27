@@ -152,10 +152,10 @@
                                     <outlet property="delegate" destination="Hat-bs-EEX" id="qJh-jR-vtg"/>
                                 </connections>
                             </tableView>
-                            <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oF5-tH-VCh">
-                                <rect key="frame" x="2" y="862" width="410" height="0.0"/>
+                            <pickerView hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oF5-tH-VCh">
+                                <rect key="frame" x="2" y="642" width="410" height="220"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" id="ZoU-Lh-4DI"/>
+                                    <constraint firstAttribute="height" constant="220" id="ZoU-Lh-4DI"/>
                                 </constraints>
                                 <connections>
                                     <outlet property="dataSource" destination="Hat-bs-EEX" id="YRQ-Ll-M2h"/>
@@ -163,26 +163,26 @@
                                 </connections>
                             </pickerView>
                         </subviews>
-                        <color key="backgroundColor" red="0.99149480625167241" green="1" blue="0.90543919563904418" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="6OM-Q9-WwC" secondAttribute="trailing" constant="20" id="4ti-mF-wcC"/>
-                            <constraint firstItem="oF5-tH-VCh" firstAttribute="top" secondItem="VQz-HA-aUb" secondAttribute="bottom" id="8CY-2C-ubk"/>
                             <constraint firstItem="bQH-SC-IqI" firstAttribute="leading" secondItem="99B-v3-VGU" secondAttribute="leading" constant="20" id="91p-Id-D05"/>
+                            <constraint firstItem="VQz-HA-aUb" firstAttribute="bottom" secondItem="Ei2-NL-NYs" secondAttribute="bottom" id="ABC-6m-Asd"/>
                             <constraint firstItem="bQH-SC-IqI" firstAttribute="top" secondItem="99B-v3-VGU" secondAttribute="top" constant="44" id="BSL-Y2-FfL"/>
-                            <constraint firstItem="VQz-HA-aUb" firstAttribute="top" secondItem="bQH-SC-IqI" secondAttribute="bottom" constant="8" id="GRB-yJ-o04"/>
-                            <constraint firstItem="VQz-HA-aUb" firstAttribute="trailing" secondItem="Ei2-NL-NYs" secondAttribute="trailing" id="Gtf-OS-vQp"/>
                             <constraint firstItem="6OM-Q9-WwC" firstAttribute="top" secondItem="99B-v3-VGU" secondAttribute="top" constant="44" id="Oa1-QH-3XJ"/>
                             <constraint firstItem="oF5-tH-VCh" firstAttribute="leading" secondItem="99B-v3-VGU" secondAttribute="leading" constant="2" id="be1-wA-egX"/>
+                            <constraint firstItem="VQz-HA-aUb" firstAttribute="top" secondItem="bQH-SC-IqI" secondAttribute="bottom" constant="8" id="dg4-n0-AXg"/>
+                            <constraint firstItem="VQz-HA-aUb" firstAttribute="leading" secondItem="Ei2-NL-NYs" secondAttribute="leading" id="m25-v6-pmq"/>
                             <constraint firstAttribute="trailing" secondItem="oF5-tH-VCh" secondAttribute="trailing" constant="2" id="tqK-4T-whW"/>
                             <constraint firstItem="oF5-tH-VCh" firstAttribute="bottom" secondItem="Ei2-NL-NYs" secondAttribute="bottom" id="unr-RI-rNP"/>
-                            <constraint firstItem="VQz-HA-aUb" firstAttribute="leading" secondItem="Ei2-NL-NYs" secondAttribute="leading" id="xEJ-y9-rEG"/>
+                            <constraint firstItem="VQz-HA-aUb" firstAttribute="trailing" secondItem="Ei2-NL-NYs" secondAttribute="trailing" id="zme-AX-3Pt"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Ei2-NL-NYs"/>
                     </view>
                     <connections>
                         <outlet property="modelPicker" destination="oF5-tH-VCh" id="JJu-gx-VJ6"/>
-                        <outlet property="pickerHeight" destination="ZoU-Lh-4DI" id="Owm-hR-qA9"/>
                         <outlet property="settingTableView" destination="VQz-HA-aUb" id="c2Z-eL-5Gd"/>
+                        <outlet property="tableViewBottom" destination="ABC-6m-Asd" id="3Br-Rp-dWa"/>
                         <segue destination="1sB-Dw-KVI" kind="modal" identifier="gotoLogin" id="XIs-lN-3aL"/>
                     </connections>
                 </viewController>

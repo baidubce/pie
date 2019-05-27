@@ -42,11 +42,13 @@ static ASRConfig *config = nil;
         self.productIDDataSource = [NSArray arrayWithObjects:@"客服模型1903",
                                     @"客服模型-旅游领域1904",
                                     @"客服模型-股票领域1905",
-                                    @"客服模型-股票领域1906",
-                                    @"客服模型-股票领域1907",
+                                    @"客服模型-金融领域1906",
+                                    @"客服模型-能源领域1907",
                                     @"输入法模型888",
                                     @"远场模型1888",
-                                    @"远场模型-机器人领域1889",nil];
+                                    @"远场模型-机器人领域1889",
+                                    @"远场模型-法院用1",
+                                    nil];
         
         self.productIDArray = [NSArray arrayWithObjects:@"1903",
                                @"1904",
@@ -55,7 +57,9 @@ static ASRConfig *config = nil;
                                @"1907",
                                @"888",
                                @"1888",
-                               @"1889",nil];
+                               @"1889",
+                               @"1",
+                               nil];
     }
     return self;
 }

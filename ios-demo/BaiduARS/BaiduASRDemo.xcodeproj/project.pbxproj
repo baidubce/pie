@@ -484,8 +484,8 @@
 			baseConfigurationReference = 6EDC4A73EC7BA4F7929B2F76 /* Pods-BaiduASRDemo.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = C789GLWV85;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -500,7 +500,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.baidu.rimdemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE_SPECIFIER = "Distribution_baidu rim sdk";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -510,8 +510,8 @@
 			baseConfigurationReference = EFC7C8C095B6C8B85A81F76C /* Pods-BaiduASRDemo.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = C789GLWV85;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -526,7 +526,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.baidu.rimdemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE_SPECIFIER = "Distribution_baidu rim sdk";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
