@@ -4,8 +4,10 @@ package com.baidu.acu.pie.model;
 
 import org.joda.time.DateTime;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +21,8 @@ import lombok.extern.slf4j.Slf4j;
 @Data
 @Slf4j
 @ToString
+@NoArgsConstructor
+@AllArgsConstructor
 public class AsrConfig {
     public static final String TITLE_FORMAT = "%-40s\t%-36s\t%-14s\t%-13s\t%s";
 

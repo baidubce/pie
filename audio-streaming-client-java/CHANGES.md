@@ -1,3 +1,7 @@
+# 1.1.0
+## feature
+在构建 AsrClient 的时候，可以传入一个 ChannelConfig 实例，用来控制 keepalive 超时相关参数。
+
 # 1.0.0
 **这是一次不向下兼容的升级。**
 
