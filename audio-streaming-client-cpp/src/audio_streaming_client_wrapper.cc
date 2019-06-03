@@ -8,8 +8,8 @@ extern "C" {
 AsrClientWrapper* asr_client_create() {
     return new AsrClient();
 }
-int asr_client_init(AsrClientWrapper* asr_client, char* address) {
-    return ((AsrClient*) asr_client)->init(std::string(address));
+int asr_client_init(AsrClientWrapper* asr_client, char* address, int is_ssl) {
+    return ((AsrClient*) asr_client)->init(std::string(address), is_ssl);
 }
 void asr_client_destroy(AsrClientWrapper* asr_client) {
     delete (AsrClient*) asr_client;

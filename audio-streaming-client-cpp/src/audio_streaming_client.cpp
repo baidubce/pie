@@ -24,6 +24,17 @@ namespace baidu {
 namespace acu {
 namespace pie {
 
+void read_fs(const std::string &filename, std::string &data) {
+    std::ifstream file(filename.c_str(), std::ios::in);
+    if (file.is_open()) {
+        std::stringstream ss;
+        ss << file.rdbuf();
+        file.close();
+        data = ss.str();
+    }
+    return;
+}
+
 int ProductMap::init() {
     set("1903", 8000, "客服模型");
     set("1904", 8000, "客服模型：旅游领域");
@@ -117,14 +128,23 @@ void AsrClient::set_token(const std::string& token) {
     _init_request.set_token(token);
 }
 
-int AsrClient::init(const std::string& address) {
+int AsrClient::init(const std::string& address, int is_ssl) {
     if (!_set_product_id || !_set_enable_flush_data) {
         std::cerr << "Missing required field `product_id` or `enable_flush_data`" 
                   << std::endl;
         return -1;
     }
-
-    _channel = grpc::CreateChannel(address, grpc::InsecureChannelCredentials());
+    std::shared_ptr<grpc::ChannelCredentials> channel;
+    if (is_ssl) {
+        std::string root;
+        read_fs("./cert/baiduai.cloud_ca.crt", root);
+        grpc::SslCredentialsOptions opts;
+        opts.pem_root_certs = root;
+        channel = grpc::SslCredentials(opts);
+    } else {
+        channel = grpc::InsecureChannelCredentials();
+    }
+    _channel = grpc::CreateChannel(address, channel);
     _inited = true;
     
     return 0;

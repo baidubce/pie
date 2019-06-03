@@ -130,9 +130,9 @@ int main(int argc, char* argv[]) {
     // create AsrClient
     AsrClient client;
     client.set_enable_flush_data(true);
-    if (argc == 6) {
+    if (argc == 7) {
         client.set_product_id(argv[1]);
-        client.init(argv[2]);
+        client.init(argv[2], std::atoi(argv[6]));
         client.set_user_name(argv[3]);
         std::string passwd = argv[4];
         std::string str = argv[3] + passwd + argv[5];
@@ -141,7 +141,7 @@ int main(int argc, char* argv[]) {
         client.set_expire_time(argv[5]); //expire_time UTC format, 2019-04-25T12:41:16Z
     } else {
         client.set_product_id("1906");
-        client.init("127.0.0.1:8200");
+        client.init("127.0.0.1:8200", 0);
     }
    
     // create threads
