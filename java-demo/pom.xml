@@ -19,9 +19,10 @@
         <dependency>
             <groupId>com.baidu.acu.pie</groupId>
             <artifactId>audio-streaming-client-java</artifactId>
-            <version>1.0.2.SNAPSHOT</version>
+            <version>1.1.0.SNAPSHOT</version>
         </dependency>
 
+        <!-- 如果自己的项目使用了 logback 等日志框架，请把下面的依赖去掉 -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
