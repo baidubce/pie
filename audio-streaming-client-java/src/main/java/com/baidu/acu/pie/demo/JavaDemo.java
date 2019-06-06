@@ -38,7 +38,7 @@ public class JavaDemo {
         AsrConfig asrConfig = AsrConfig.builder()
                 .serverIp("127.0.0.1")
                 .serverPort(80)
-                .appName("simple demo")
+                .appName("simpleDemo")
                 .product(AsrProduct.CUSTOMER_SERVICE_FINANCE)
                 .userName("user")
                 .password("password")
