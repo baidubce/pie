@@ -4,6 +4,8 @@ import java.io.FileInputStream;
 import java.util.concurrent.TimeUnit;
 
 import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.baidu.acu.pie.client.AsrClient;
 import com.baidu.acu.pie.client.AsrClientFactory;
@@ -30,9 +32,10 @@ public class AsyncRecognize {
     private static String passWord = "";    // 密码, 请联系百度相关人员进行申请
     private static String audioPath = ""; // 音频文件路径
     private static Long awaitTime = 10L; // 设置最后音频流识别时间限制，单位秒
+    private static Logger logger = LoggerFactory.getLogger(AsyncRecognize.class);
 
     public static void main(String[] args) {
-        asyncRecognizeWithStream(createAsrClient());
+        asyncRecognize(createAsrClient());
     }
 
     private static AsrClient createAsrClient() {
@@ -49,7 +52,7 @@ public class AsyncRecognize {
         return AsrClientFactory.buildClient(asrConfig);
     }
 
-    private static void asyncRecognizeWithStream(AsrClient asrClient) {
+    private static void asyncRecognize(AsrClient asrClient) {
         StreamContext streamContext = asrClient.asyncRecognize(new Consumer<RecognitionResult>() {
             public void accept(RecognitionResult recognitionResult) {
                 System.out.println(
@@ -57,10 +60,10 @@ public class AsyncRecognize {
                                 " receive fragment: " + recognitionResult);
             }
         });
+        // 异常回调
         streamContext.enableCallback(new Consumer<AsrException>() {
             public void accept(AsrException e) {
-                System.out.println("start to print error logs：");
-                e.printStackTrace();
+                logger.error("Exception recognition for asr ： " , e);
             }
         });
         // 这里从文件中得到一个InputStream，实际场景下，也可以从麦克风或者其他音频源来得到InputStream
