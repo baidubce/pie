@@ -3,10 +3,13 @@ package com.baidu.acu.asr.async;
 import java.io.FileInputStream;
 
 import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.baidu.acu.pie.client.AsrClient;
 import com.baidu.acu.pie.client.AsrClientFactory;
 import com.baidu.acu.pie.client.Consumer;
+import com.baidu.acu.pie.exception.AsrException;
 import com.baidu.acu.pie.model.AsrConfig;
 import com.baidu.acu.pie.model.AsrProduct;
 import com.baidu.acu.pie.model.RecognitionResult;
@@ -29,6 +32,7 @@ public class AsyncRecognizeWithStreamAndMetaData {
     private static String userName = "";    // 用户名, 请联系百度相关人员进行申请
     private static String passWord = "";    // 密码, 请联系百度相关人员进行申请
     private static String audioPath = ""; // 音频文件路径
+    private static Logger logger = LoggerFactory.getLogger(AsyncRecognizeWithStream.class);
 
     public static void main(String[] args) {
         asyncRecognizeWithStreamAndMetaData(createAsrClient());
@@ -63,7 +67,12 @@ public class AsyncRecognizeWithStreamAndMetaData {
                                 " receive fragment: " + recognitionResult);
             }
         }, requestMetaData);
-
+        // 异常回调
+        streamContext.enableCallback(new Consumer<AsrException>() {
+            public void accept(AsrException e) {
+                logger.error("Exception recognition for asr ： ", e);
+            }
+        });
         // 这里从文件中得到一个InputStream，实际场景下，也可以从麦克风或者其他音频源来得到InputStream
         try {
             FileInputStream audioStream = new FileInputStream(audioPath);
