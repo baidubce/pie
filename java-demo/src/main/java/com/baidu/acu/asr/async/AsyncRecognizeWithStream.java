@@ -8,6 +8,7 @@ import org.joda.time.DateTime;
 import com.baidu.acu.pie.client.AsrClient;
 import com.baidu.acu.pie.client.AsrClientFactory;
 import com.baidu.acu.pie.client.Consumer;
+import com.baidu.acu.pie.exception.AsrException;
 import com.baidu.acu.pie.model.AsrConfig;
 import com.baidu.acu.pie.model.AsrProduct;
 import com.baidu.acu.pie.model.RecognitionResult;
@@ -54,6 +55,12 @@ public class AsyncRecognizeWithStream {
                 System.out.println(
                         DateTime.now().toString() + "\t" + Thread.currentThread().getId() +
                                 " receive fragment: " + recognitionResult);
+            }
+        });
+        streamContext.enableCallback(new Consumer<AsrException>() {
+            public void accept(AsrException e) {
+                System.out.println("start to print error logs：");
+                e.printStackTrace();
             }
         });
         // 这里从文件中得到一个InputStream，实际场景下，也可以从麦克风或者其他音频源来得到InputStream

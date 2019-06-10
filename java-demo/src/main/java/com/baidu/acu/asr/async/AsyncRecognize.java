@@ -8,6 +8,7 @@ import org.joda.time.DateTime;
 import com.baidu.acu.pie.client.AsrClient;
 import com.baidu.acu.pie.client.AsrClientFactory;
 import com.baidu.acu.pie.client.Consumer;
+import com.baidu.acu.pie.exception.AsrException;
 import com.baidu.acu.pie.model.AsrConfig;
 import com.baidu.acu.pie.model.AsrProduct;
 import com.baidu.acu.pie.model.RecognitionResult;
@@ -23,7 +24,7 @@ import com.baidu.acu.pie.model.StreamContext;
 public class AsyncRecognize {
     private static String appName = "";     // 根据自己需求命名
     private static String ip = "";          // asr服务的ip地址
-    private static Integer port = 8050;     // asr服务的端口
+    private static Integer port = 8051;     // asr服务的端口
     private static AsrProduct pid = AsrProduct.CUSTOMER_SERVICE_FINANCE;     // asr模型(不同的模型在不同的场景下asr识别的最终结果可能会存在很大差异)
     private static String userName = "";    // 用户名, 请联系百度相关人员进行申请
     private static String passWord = "";    // 密码, 请联系百度相关人员进行申请
@@ -54,6 +55,12 @@ public class AsyncRecognize {
                 System.out.println(
                         DateTime.now().toString() + "\t" + Thread.currentThread().getId() +
                                 " receive fragment: " + recognitionResult);
+            }
+        });
+        streamContext.enableCallback(new Consumer<AsrException>() {
+            public void accept(AsrException e) {
+                System.out.println("start to print error logs：");
+                e.printStackTrace();
             }
         });
         // 这里从文件中得到一个InputStream，实际场景下，也可以从麦克风或者其他音频源来得到InputStream
