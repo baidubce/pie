@@ -1,5 +1,6 @@
 #include "audio_streaming_client_wrapper.h"
 #include <stdio.h>
+#include <stdlib.h>
 #include <pthread.h>
 #include <string.h>
 #include "sha256.h"
@@ -77,9 +78,9 @@ int main(int argc, char* argv[]) {
     AsrClientWrapper* client = asr_client_create();
 
     asr_client_set_enable_flush_data(client, true);
-    if (argc == 6) {
+    if (argc == 7) {
         asr_client_set_product_id(client, argv[1]);
-        if (asr_client_init(client, argv[2]) != 0) {
+        if (asr_client_init(client, argv[2], atoi(argv[6])) != 0) {
             printf("Init asr client failed\n");
             return -1;
         }
@@ -94,7 +95,7 @@ int main(int argc, char* argv[]) {
         asr_client_set_token(client, (char*)token);
     } else {
         asr_client_set_product_id(client, "1906");
-        if (asr_client_init(client, "127.0.0.1:8200")) {
+        if (asr_client_init(client, "127.0.0.1:8200", 0)) {
             printf("Init asr client failed\n");
             return -1;
         }

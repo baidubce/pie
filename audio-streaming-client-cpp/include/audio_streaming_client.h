@@ -64,7 +64,7 @@ public:
     // 获取每次发送的音频字节数
     unsigned int get_send_package_size() const;
     // 初始化：指定asr流式服务器的地址和端口，私有化版本请咨询供应商
-    int init(const std::string& address);
+    int init(const std::string& address, int is_ssl);
     // 创建语音流
     AsrStream* get_stream();
     // 销毁语音流

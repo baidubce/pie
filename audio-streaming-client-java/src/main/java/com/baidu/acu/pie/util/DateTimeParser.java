@@ -25,10 +25,16 @@ public class DateTimeParser {
     public static LocalTime parseLocalTime(String time) {
         String toBeParsed;
 
-        if (time.matches("\\d{2}:\\d{2}\\.\\d{2}")) { // mm:ss.SS like 01:00.40
+        if (time.matches("\\d{2}:\\d{2}\\.\\d")) { // mm:ss.S like 01:00.4
+            toBeParsed = "00:" + time + "00";
+        } else if (time.matches("\\d{2}:\\d{2}\\.\\d{2}")) { // mm:ss.SS like 01:00.41
             toBeParsed = "00:" + time + "0";
         } else if (time.matches("\\d{2}:\\d{2}\\.\\d{3}")) { // mm:ss.SSS without HH:
             toBeParsed = "00:" + time;
+        } else if (time.matches("\\d{2}:\\d{2}:\\d{2}\\.\\d")) { // HH:mm:ss.SS like 01:00:00.4
+            toBeParsed = time + "00";
+        } else if (time.matches("\\d{2}:\\d{2}:\\d{2}\\.\\d{2}")) { // HH:mm:ss.SS like 01:00:00.41
+            toBeParsed = time + "0";
         } else {
             toBeParsed = time;
         }

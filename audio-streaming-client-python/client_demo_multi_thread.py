@@ -6,6 +6,8 @@ import logging
 import time
 from baidu_acu_asr.asr_product import AsrProduct
 import baidu_acu_asr.audio_streaming_pb2
+
+
 class demo:
 
     def run(self, repeat_num=1):
@@ -26,20 +28,30 @@ class demo:
                 response = client.get_result(audio_path)
                 for res in response:
                     if res.type == baidu_acu_asr.audio_streaming_pb2.FRAGMENT_DATA:
-                        logging.info(name + "\t" + str(res.error_code) + "\t" + res.error_message + "\t" + res.audio_fragment.start_time + "\t" +
-                            res.audio_fragment.end_time + "\t" + res.audio_fragment.result + "\t" + res.audio_fragment.serial_num + "\t" +
-                            str(res.audio_fragment.completed))
+                        logging.info("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s",
+                                     name,
+                                     str(res.error_code),
+                                     res.error_message,
+                                     res.audio_fragment.start_time,
+                                     res.audio_fragment.end_time,
+                                     res.audio_fragment.result,
+                                     res.audio_fragment.serial_num,
+                                     str(res.audio_fragment.completed))
                     else:
                         logging.warning("type is: %d", res.type)
                 i += 1
-            except:
+            except Exception as ex:
                 # 如果出现异常，此处需要重试当前音频
-                logging.error("connect to server error, will create a new channel and retry audio!")
+                logging.error("encounter an error: %s, will create a new channel and retry audio!", ex.message)
                 time.sleep(0.5)
-                client = AsrClient(url, port, product_id, enable_flush_data, log_level=log_level, user_name=user_name, password=password)
+                client = AsrClient(url, port, product_id, enable_flush_data,
+                                   log_level=log_level,
+                                   user_name=user_name,
+                                   password=password)
+
 
 if __name__ == '__main__':
-    logging.basicConfig(filename="asr_result.log")
+    logging.basicConfig(filename="asr_result.log", level=logging.DEBUG)
     demo1 = demo()
     thread_num = sys.argv[1]
     repeat_num = sys.argv[2]

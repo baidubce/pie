@@ -1,19 +1,23 @@
 package com.baidu.acu.asr.async;
 
 import java.io.FileInputStream;
+import java.util.concurrent.TimeUnit;
 
 import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.baidu.acu.pie.client.AsrClient;
 import com.baidu.acu.pie.client.AsrClientFactory;
 import com.baidu.acu.pie.client.Consumer;
+import com.baidu.acu.pie.exception.AsrException;
 import com.baidu.acu.pie.model.AsrConfig;
 import com.baidu.acu.pie.model.AsrProduct;
 import com.baidu.acu.pie.model.RecognitionResult;
 import com.baidu.acu.pie.model.StreamContext;
 
 /**
- * 异步识别: 输入一个语音流,会实时返回每一句话识别的结果
+ * 异步识别: 输入一个语音流,会实时返回每一句话识别的结果（等待所有音频识别完成才结束）
  * 使用场景: 用于对实时性要求较高的场景,如会议记录
  *
  * @author xutengchao
@@ -28,6 +32,7 @@ public class AsyncRecognizeWithStream {
     private static String userName = "";    // 用户名, 请联系百度相关人员进行申请
     private static String passWord = "";    // 密码, 请联系百度相关人员进行申请
     private static String audioPath = ""; // 音频文件路径
+    private static Logger logger = LoggerFactory.getLogger(AsyncRecognizeWithStream.class);
 
     public static void main(String[] args) {
         asyncRecognizeWithStream(createAsrClient());
@@ -55,6 +60,12 @@ public class AsyncRecognizeWithStream {
                                 " receive fragment: " + recognitionResult);
             }
         });
+        // 异常回调
+        streamContext.enableCallback(new Consumer<AsrException>() {
+            public void accept(AsrException e) {
+                logger.error("Exception recognition for asr ： ", e);
+            }
+        });
         // 这里从文件中得到一个InputStream，实际场景下，也可以从麦克风或者其他音频源来得到InputStream
         try {
             FileInputStream audioStream = new FileInputStream(audioPath);
@@ -68,9 +79,9 @@ public class AsyncRecognizeWithStream {
                 // 在对接麦克风等设备的时候，可以去掉这个 sleep
                 Thread.sleep(20);
             }
-            System.out.println(new DateTime().toString() + "\t" + Thread.currentThread().getId() + " send finish");
             streamContext.complete();
-            // 等待最后输入的音频流识别的结果返回完毕（如果略掉这行代码会造成音频识别不完整!）
+            System.out.println(new DateTime().toString() + "\t" + Thread.currentThread().getId() + " send finish");
+            // 等待最后输入的音频流识别的结果返回完毕（如果略掉这行代码会造成音频识别不完整!）(等待最长的时间)
             streamContext.await();
         } catch (Throwable e) {
             e.printStackTrace();

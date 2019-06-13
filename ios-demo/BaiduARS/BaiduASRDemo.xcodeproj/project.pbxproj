@@ -10,6 +10,9 @@
 		3673C3F62970DFBC181AFF21 /* libPods-BaiduASRDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B9BA51AFA1CAC454B2ED6920 /* libPods-BaiduASRDemo.a */; };
 		7011FBBE22841E41000E8F33 /* ASRConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 7011FBBD22841E41000E8F33 /* ASRConfig.m */; };
 		7011FBCF22845226000E8F33 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7011FBCE22845226000E8F33 /* LoginViewController.m */; };
+		7017A39A229554E700AB6F1B /* SettingViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7017A397229554E700AB6F1B /* SettingViewCell.m */; };
+		7017A39B229554E700AB6F1B /* SettingViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7017A398229554E700AB6F1B /* SettingViewCell.xib */; };
+		7017A39F229555CA00AB6F1B /* SettingViewCellModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7017A39E229555CA00AB6F1B /* SettingViewCellModel.m */; };
 		7031815B228923990019F915 /* BaiduASR.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7031815A228923990019F915 /* BaiduASR.framework */; };
 		7031815C228923990019F915 /* BaiduASR.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 7031815A228923990019F915 /* BaiduASR.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		708459B52260995200B16A4C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 708459B42260995200B16A4C /* AppDelegate.m */; };
@@ -52,6 +55,11 @@
 		7011FBBD22841E41000E8F33 /* ASRConfig.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ASRConfig.m; sourceTree = "<group>"; };
 		7011FBCD22845226000E8F33 /* LoginViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		7011FBCE22845226000E8F33 /* LoginViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
+		7017A397229554E700AB6F1B /* SettingViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingViewCell.m; sourceTree = "<group>"; };
+		7017A398229554E700AB6F1B /* SettingViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingViewCell.xib; sourceTree = "<group>"; };
+		7017A399229554E700AB6F1B /* SettingViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingViewCell.h; sourceTree = "<group>"; };
+		7017A39D229555CA00AB6F1B /* SettingViewCellModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SettingViewCellModel.h; sourceTree = "<group>"; };
+		7017A39E229555CA00AB6F1B /* SettingViewCellModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SettingViewCellModel.m; sourceTree = "<group>"; };
 		7031815A228923990019F915 /* BaiduASR.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BaiduASR.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		708459B02260995200B16A4C /* BaiduASRDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BaiduASRDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		708459B32260995200B16A4C /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -92,6 +100,25 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7017A396229554E700AB6F1B /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				7017A399229554E700AB6F1B /* SettingViewCell.h */,
+				7017A397229554E700AB6F1B /* SettingViewCell.m */,
+				7017A398229554E700AB6F1B /* SettingViewCell.xib */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		7017A39C229555AF00AB6F1B /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				7017A39D229555CA00AB6F1B /* SettingViewCellModel.h */,
+				7017A39E229555CA00AB6F1B /* SettingViewCellModel.m */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		708459A72260995200B16A4C = {
 			isa = PBXGroup;
 			children = (
@@ -126,6 +153,8 @@
 				7011FBCE22845226000E8F33 /* LoginViewController.m */,
 				7011FBBC22841E41000E8F33 /* ASRConfig.h */,
 				7011FBBD22841E41000E8F33 /* ASRConfig.m */,
+				7017A39C229555AF00AB6F1B /* Models */,
+				7017A396229554E700AB6F1B /* Views */,
 				708459B92260995200B16A4C /* Main.storyboard */,
 				708459BC2260995400B16A4C /* Assets.xcassets */,
 				708459BE2260995400B16A4C /* LaunchScreen.storyboard */,
@@ -244,6 +273,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				708459C02260995400B16A4C /* LaunchScreen.storyboard in Resources */,
+				7017A39B229554E700AB6F1B /* SettingViewCell.xib in Resources */,
 				708459BD2260995400B16A4C /* Assets.xcassets in Resources */,
 				708459BB2260995200B16A4C /* Main.storyboard in Resources */,
 			);
@@ -291,9 +321,11 @@
 				708459B82260995200B16A4C /* ViewController.mm in Sources */,
 				7011FBBE22841E41000E8F33 /* ASRConfig.m in Sources */,
 				7011FBCF22845226000E8F33 /* LoginViewController.m in Sources */,
+				7017A39F229555CA00AB6F1B /* SettingViewCellModel.m in Sources */,
 				708459C32260995400B16A4C /* main.m in Sources */,
 				708459FB2271AB5E00B16A4C /* SettingViewController.m in Sources */,
 				708459B52260995200B16A4C /* AppDelegate.m in Sources */,
+				7017A39A229554E700AB6F1B /* SettingViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -452,8 +484,8 @@
 			baseConfigurationReference = 6EDC4A73EC7BA4F7929B2F76 /* Pods-BaiduASRDemo.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = C789GLWV85;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -468,7 +500,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.baidu.rimdemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE_SPECIFIER = "Distribution_baidu rim sdk";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -478,8 +510,8 @@
 			baseConfigurationReference = EFC7C8C095B6C8B85A81F76C /* Pods-BaiduASRDemo.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = C789GLWV85;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -494,7 +526,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.baidu.rimdemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE_SPECIFIER = "Distribution_baidu rim sdk";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

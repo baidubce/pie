@@ -8,44 +8,91 @@
 
 #import "SettingViewController.h"
 #import "ASRConfig.h"
+#import "SettingViewCell.h"
+#import "SettingViewCellModel.h"
 
-@interface SettingViewController ()<UIPickerViewDelegate, UIPickerViewDataSource>
-
-@property (nonatomic, weak) IBOutlet UITextField *addressTF;
-@property (nonatomic, weak) IBOutlet UITextField *portTF;
-@property (nonatomic, weak) IBOutlet UIButton *modelBtn;
-@property (nonatomic, weak) IBOutlet UITextField *sampleRateTF;
+@interface SettingViewController ()<UIPickerViewDelegate, UIPickerViewDataSource, UITableViewDelegate, UITableViewDataSource, SettingViewCellDelegate>
 
 @property (nonatomic, weak) IBOutlet UIPickerView *modelPicker;
+@property (nonatomic, weak) IBOutlet UITableView *settingTableView;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *tableViewBottom;
+
+@property (nonatomic, strong) NSMutableArray *settings;
+@property (nonatomic, strong) SettingViewCell *editingCell;
+
 
 @end
 
 @implementation SettingViewController
 
+- (void)initData {
+    ASRConfig *config = [ASRConfig config];
+    
+    NSMutableArray *settingsArray = [NSMutableArray array];
+    
+    SettingViewCellModel *settingModel = nil;
+    settingModel = [SettingViewCellModel new];
+    settingModel.title = @"HostAddress:";
+    settingModel.descrptionString = config.hostAddress;
+    settingModel.valueString = config.hostAddress;
+    [settingsArray addObject:settingModel];
+    
+    settingModel = [SettingViewCellModel new];
+    settingModel.title = @"Port:";
+    settingModel.descrptionString = config.serverPort;
+    settingModel.valueString = config.serverPort;
+    [settingsArray addObject:settingModel];
+    
+    settingModel = [SettingViewCellModel new];
+    settingModel.title = @"模型类别:";
+    settingModel.descrptionString = config.productDescription;
+    settingModel.valueString = config.productId;
+    settingModel.isTextFieldEditEnable = NO;
+    [settingsArray addObject:settingModel];
+    
+    settingModel = [SettingViewCellModel new];
+    settingModel.title = @"音频采样率:";
+    settingModel.descrptionString = config.sampleRate;
+    settingModel.valueString = config.sampleRate;
+    [settingsArray addObject:settingModel];
+    
+    settingModel = [SettingViewCellModel new];
+    settingModel.title = @"账户设置";
+    settingModel.isShowTextField = NO;
+    [settingsArray addObject:settingModel];
+    
+    settingModel = [SettingViewCellModel new];
+    settingModel.title = @"reset";
+    settingModel.titleColor = [UIColor redColor];
+    settingModel.isShowTextField = NO;
+    [settingsArray addObject:settingModel];
+    
+    self.settings = settingsArray;
+}
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
 
-    ASRConfig *config = [ASRConfig config];
-    self.addressTF.text = config.hostAddress;
-    self.portTF.text = config.serverPort;
+    [self initData];
+
+    UIView *footer = [[UIView alloc] init];
+    self.settingTableView.tableFooterView = footer;
     
-    NSString *productId = config.productId;
-    NSInteger index = [config.productIDArray indexOfObject:productId];
-    NSString *proDes = [self productDesWithIndex:index];
-    [self.modelBtn setTitle:proDes forState:UIControlStateNormal];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     
-    NSString *sampleRate = config.sampleRate;
-    self.sampleRateTF.text = sampleRate;
-    
-    UITapGestureRecognizer *cancel = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(cancelEdit)];
-    [self.view addGestureRecognizer:cancel];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 }
 
 - (void)cancelEdit {
-    [self.addressTF resignFirstResponder];
-    [self.portTF resignFirstResponder];
-    self.modelPicker.hidden = YES;
+    if (self.editingCell != nil && self.editingCell.textField.isFirstResponder) {
+        [self.editingCell.textField resignFirstResponder];
+    }
+    self.tableViewBottom.constant = 0.0;
 }
 
 - (NSString *)productDesWithIndex:(NSInteger)index {
@@ -66,8 +113,6 @@
     if (index >= 0 && index <= config.productIDDataSource.count) {
         [self.modelPicker selectRow:index inComponent:0 animated:NO];
     }
-    
-    self.modelPicker.hidden = NO;
 }
 
 - (IBAction)back:(id)sender {
@@ -78,11 +123,17 @@
     [self cancelEdit];
     
     ASRConfig *config = [ASRConfig config];
+    
+    SettingViewCell *cell = nil;
 
-    NSString *address = self.addressTF.text;
-    NSString *port = self.portTF.text;
+    cell = [self.settingTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+    NSString *address = cell.textField.text;
+    cell = [self.settingTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
+    NSString *port = cell.textField.text;
+
     NSString *productID = [config.productIDArray objectAtIndex:[self.modelPicker selectedRowInComponent:0]];
-    NSString *sampleRate = self.sampleRateTF.text;
+    cell = [self.settingTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:3 inSection:0]];
+    NSString *sampleRate = cell.textField.text;
     
     config.hostAddress = address;
     config.serverPort = port;
@@ -101,6 +152,87 @@
     [self presentViewController:alert animated:YES completion:nil];
 }
 
+#pragma mark- notification
+- (void)keyboardWillShow:(NSNotification *)notification {
+    NSDictionary *userInfo = [notification userInfo];
+    NSValue *value = [userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
+    
+    float height = [value CGRectValue].size.height;
+    
+    self.tableViewBottom.constant = -height;
+}
+
+- (void)keyboardWillHide:(NSNotification *)notification {
+    self.tableViewBottom.constant = 0.0;
+}
+
+#pragma mark- SettingViewCellDelegate
+- (void)settingViewCellBeginEdit:(SettingViewCell *)cell indexPath:(NSIndexPath *)indexPath {
+    self.editingCell = cell;
+    self.modelPicker.hidden = YES;
+}
+
+#pragma mark- UITableViewDelegate UITableViewDataSource
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return self.settings.count;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    SettingViewCellModel *model = [self.settings objectAtIndex:indexPath.row];
+    return model.cellHeight;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    SettingViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"SettingViewCell"];
+    if (cell == nil) {
+        cell = [SettingViewCell cellWithNib];
+    }
+    SettingViewCellModel *model = [self.settings objectAtIndex:indexPath.row];
+    
+    cell.title.text = model.title;
+    cell.textField.text = model.descrptionString;
+    cell.title.textColor = model.titleColor;
+    cell.textField.hidden = !model.isShowTextField;
+    cell.textField.userInteractionEnabled = model.isTextFieldEditEnable;
+    cell.indexPath = indexPath;
+    cell.cellDelegate = self;
+    return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    NSLog(@"index - %ld", indexPath.row);
+    
+    if (self.editingCell != nil && self.editingCell.textField.isFirstResponder) {
+        [self.editingCell.textField resignFirstResponder];
+    }
+
+    if (self.tableViewBottom.constant != 0.0) {
+        self.tableViewBottom.constant = 0.0;
+    }
+
+    if (indexPath.row == 2) {
+        if (self.modelPicker.hidden) {
+            [self pickModel:nil];
+            self.tableViewBottom.constant = -220.0;
+            self.modelPicker.hidden = NO;
+        }else {
+            self.tableViewBottom.constant = 0.0;
+            self.modelPicker.hidden = YES;
+        }
+    }else {
+        self.modelPicker.hidden = YES;
+    }
+    
+    if (indexPath.row == 4) {
+        [self performSegueWithIdentifier:@"gotoLogin" sender:nil];
+    }
+    
+    if (indexPath.row == 5) {
+        [self reset:nil];
+    }
+}
+
+#pragma mark- UIPickerViewDelegate UIPickerViewDataSource
 
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView {
     return 1;
@@ -108,7 +240,7 @@
 
 - (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
     ASRConfig *config = [ASRConfig config];
-    return config.productIDArray.count;
+    return config.productIDDataSource.count;
 }
 
 - (CGFloat)pickerView:(UIPickerView *)pickerView rowHeightForComponent:(NSInteger)component {
@@ -127,7 +259,13 @@
 
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
     NSString *proDes = [self productDesWithIndex:row];
-    [self.modelBtn setTitle:proDes forState:UIControlStateNormal];
+    
+    SettingViewCellModel *model = [self.settings objectAtIndex:2];
+    model.descrptionString = proDes;
+    
+    SettingViewCell *cell = [self.settingTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:2 inSection:0]];
+    cell.textField.text = proDes;
+//    [self.modelBtn setTitle:proDes forState:UIControlStateNormal];
 }
 
 

@@ -2,23 +2,23 @@
 
 package com.baidu.acu.pie;
 
-import com.baidu.acu.pie.client.AsrClient;
-import com.baidu.acu.pie.client.AsrClientFactory;
-import com.baidu.acu.pie.client.Consumer;
-import com.baidu.acu.pie.exception.AsrException;
-import com.baidu.acu.pie.model.*;
-import com.baidu.acu.pie.util.Base64;
+import java.nio.file.Paths;
+import java.util.List;
+import java.util.concurrent.CountDownLatch;
+
+import javax.xml.bind.DatatypeConverter;
+
 import org.joda.time.DateTime;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import javax.xml.bind.DatatypeConverter;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.List;
-import java.util.concurrent.CountDownLatch;
+import com.baidu.acu.pie.client.AsrClient;
+import com.baidu.acu.pie.client.AsrClientFactory;
+import com.baidu.acu.pie.model.AsrConfig;
+import com.baidu.acu.pie.model.AsrProduct;
+import com.baidu.acu.pie.model.RecognitionResult;
+import com.baidu.acu.pie.util.Base64;
 
 /**
  * JavaTest
@@ -28,56 +28,16 @@ import java.util.concurrent.CountDownLatch;
 public class JavaTest {
     private AsrClient createAsrClient() {
         // asrConfig构造后就不可修改
-        AsrConfig asrConfig = new AsrConfig()
+        AsrConfig asrConfig = AsrConfig.builder()
                 .serverIp("127.0.0.1")
                 .serverPort(80)
                 .appName("simple demo")
                 .userName("user")
                 .password("password")
-                .product(AsrProduct.CUSTOMER_SERVICE);
+                .product(AsrProduct.CUSTOMER_SERVICE)
+                .build();
 
         return AsrClientFactory.buildClient(asrConfig);
-    }
-
-    @Ignore
-    @Test
-    public void testAsyncRecognition() {
-        // 使用长音频来模拟不断输入的情况
-        String longAudioFilePath = "testaudio/1.wav";
-        AsrClient asrClient = createAsrClient();
-
-        try (InputStream audioStream = Files.newInputStream(Paths.get(longAudioFilePath))) {
-            byte[] data = new byte[asrClient.getFragmentSize()];
-            int readSize;
-
-            StreamContext context = asrClient.asyncRecognize(new Consumer<RecognitionResult>() {
-                @Override
-                public void accept(RecognitionResult it) {
-                    System.out.println(it);
-                }
-            }, RequestMetaData.defaultRequestMeta().enableFlushData(false));
-            context.enableCallback(new Consumer<AsrException>() {
-                @Override
-                public void accept(AsrException e) {
-                    if (e != null) {
-                        System.out.println("Error happened in asr call " + e.getMessage());
-                    } else {
-                        System.out.println("Asr success finished");
-                    }
-                }
-            });
-
-            while ((readSize = audioStream.read(data)) != -1) {
-                context.send(data);
-            }
-            context.await();
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
-
-        asrClient.shutdown();
-
-        System.out.println("all task finished");
     }
 
     @Ignore

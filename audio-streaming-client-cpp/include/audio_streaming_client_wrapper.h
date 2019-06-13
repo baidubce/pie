@@ -36,7 +36,7 @@ typedef void (* AsrStreamCallBackWrapper)(AudioFragmentResponseWrapper* resp, vo
 
 AsrClientWrapper* asr_client_create();
 // 初始化：指定asr流式服务器的地址和端口，私有化版本请咨询供应商
-int asr_client_init(AsrClientWrapper*, char* address);
+int asr_client_init(AsrClientWrapper*, char* address, int is_ssl);
 void asr_client_destroy(AsrClientWrapper*);
 
 // asr客户端的名称，为便于后端查错，请设置一个易于辨识的appName

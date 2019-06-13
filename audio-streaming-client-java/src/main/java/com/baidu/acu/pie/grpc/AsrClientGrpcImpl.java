@@ -28,6 +28,7 @@ import com.baidu.acu.pie.exception.AsrClientException;
 import com.baidu.acu.pie.exception.AsrException;
 import com.baidu.acu.pie.model.AsrConfig;
 import com.baidu.acu.pie.model.ChannelConfig;
+import com.baidu.acu.pie.model.Constants;
 import com.baidu.acu.pie.model.FinishLatchImpl;
 import com.baidu.acu.pie.model.RecognitionResult;
 import com.baidu.acu.pie.model.RequestMetaData;
@@ -87,11 +88,12 @@ public class AsrClientGrpcImpl implements AsrClient {
         return this.getFragmentSize(new RequestMetaData());
     }
 
-    private int getFragmentSize(RequestMetaData requestMetaData) {
+    @Override
+    public int getFragmentSize(RequestMetaData requestMetaData) {
         return (int) (asrConfig.getProduct().getSampleRate()
-                              * requestMetaData.getSendPerSeconds()
                               * requestMetaData.getSendPackageRatio()
-                              * 2); // bit-depth
+                              * requestMetaData.getSendPerSeconds()
+                              * Constants.DEFAULT_BIT_DEPTH); // bit-depth
     }
 
     @Override
@@ -123,15 +125,7 @@ public class AsrClientGrpcImpl implements AsrClient {
     public List<RecognitionResult> syncRecognize(InputStream inputStream, RequestMetaData requestMetaData) {
         final List<RecognitionResult> results = new ArrayList<>();
 
-        List<AudioFragmentRequest> requests;
-        try {
-            requests = this.prepareRequests(inputStream);
-        } catch (IOException e) {
-            log.error("Read audio file failed: ", e);
-            throw new AsrClientException("Read audio file failed");
-        }
-
-        CountDownLatch finishLatch = this.sendRequests(requests, requestMetaData, results);
+        CountDownLatch finishLatch = this.sendRequests(inputStream, requestMetaData, results);
 
         try {
             if (!finishLatch.await(requestMetaData.getTimeoutMinutes(), TimeUnit.MINUTES)) {
@@ -146,23 +140,24 @@ public class AsrClientGrpcImpl implements AsrClient {
         return results;
     }
 
-    private List<AudioFragmentRequest> prepareRequests(InputStream inputStream) throws IOException {
-        List<AudioFragmentRequest> requests = new ArrayList<>();
-        byte[] data = new byte[this.getFragmentSize()];
-        int readSize;
+    private CountDownLatch sendRequests(InputStream inputStream, RequestMetaData requestMetaData,
+            final List<RecognitionResult> results) {
 
-        while ((readSize = inputStream.read(data)) != -1) {
-            requests.add(AudioFragmentRequest.newBuilder()
-                    .setAudioData(ByteString.copyFrom(data, 0, readSize))
-                    .build()
-            );
+        List<AudioFragmentRequest> requests = new ArrayList<>();
+        byte[] data = new byte[this.getFragmentSize(requestMetaData)];
+
+        try {
+            while (inputStream.read(data) != -1) {
+                requests.add(AudioFragmentRequest.newBuilder()
+                        .setAudioData(ByteString.copyFrom(data))
+                        .build()
+                );
+            }
+        } catch (IOException e) {
+            log.error("Read audio failed: ", e);
+            throw new AsrClientException("Read audio failed");
         }
 
-        return requests;
-    }
-
-    private CountDownLatch sendRequests(List<AudioFragmentRequest> requests, RequestMetaData requestMetaData,
-            final List<RecognitionResult> results) {
         final CountDownLatch finishLatch = new CountDownLatch(1);
         AsrServiceStub stubWithMetadata = MetadataUtils.attachHeaders(asyncStub, prepareMetadata(requestMetaData));
 
@@ -241,7 +236,7 @@ public class AsrClientGrpcImpl implements AsrClient {
                     }
                 }))
                 .finishLatch(finishLatch)
-                .fragmentSize(getFragmentSize())
+                .fragmentSize(getFragmentSize(requestMetaData))
                 .build();
     }
 
@@ -274,8 +269,8 @@ public class AsrClientGrpcImpl implements AsrClient {
                 .setUserName(asrConfig.getUserName())
                 .setExpireTime(expireDateTime)
                 .setToken(digestedToken)
-                .setEnableFlushData(requestMetaData.isEnableFlushData())
                 .setSendPerSeconds(requestMetaData.getSendPerSeconds())
+                .setEnableFlushData(requestMetaData.isEnableFlushData())
                 .setSleepRatio(requestMetaData.getSleepRatio())
                 .build();
 

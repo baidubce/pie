@@ -29,6 +29,12 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString *productId;
 
 /**
+ * asr识别服务的产品类型描述
+ */
+
+@property (nonatomic, copy) NSString *productDescription;
+
+/**
  * 音频采样率
  */
 @property (nonatomic, copy) NSString *sampleRate;
