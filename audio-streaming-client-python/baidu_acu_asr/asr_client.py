@@ -95,6 +95,14 @@ class AsrClient(object):
         """
         header_adder_interceptor = header_manipulator_client_interceptor.header_adder_interceptor(
             'audio_meta', base64.b64encode(self.request.SerializeToString()))
+
+        # 添加ca认证
+        # with open(
+        #         '/path/of/xxx.crt',
+        #         'rb') as f:
+        #     creds = grpc.ssl_channel_credentials(f.read())
+        # with grpc.secure_channel(self.host, creds) as channel:
+
         with grpc.insecure_channel(target=self.host, options=[('grpc.keepalive_timeout_ms', 1000000), ]) as channel:
             intercept_channel = grpc.intercept_channel(channel,
                                                        header_adder_interceptor)
