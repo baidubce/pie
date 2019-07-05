@@ -184,7 +184,8 @@ public class TtsFragment extends BaseFragment {
                     "fa:16:3c:40:38:4a",
                     mSpd,
                     mPit,
-                    mVol);
+                    mVol,
+                    100);
             call.enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
