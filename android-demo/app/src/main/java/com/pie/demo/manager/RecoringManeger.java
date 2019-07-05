@@ -147,7 +147,7 @@ public class RecoringManeger {
 //        String hz = SpUtils.getInstance().getString(Constants.SAMPLERATEINHZ);
         int oneAsr = SpUtils.getInstance().getInt(Constants.ONEASRPRODUCT);
         AsrProduct value = values[oneAsr];
-        if (value == AsrProduct.INPUT_METHOD || value == AsrProduct.FAR_FIELD || value == AsrProduct.FAR_FIELD_ROBOT) {
+        if (value == AsrProduct.INPUT_METHOD || value == AsrProduct.FAR_FIELD || value == AsrProduct.FAR_FIELD_ROBOT || value ==AsrProduct.SPEECH_SERVICE) {
             SAMPLERATEINHZ = 16000;
         } else {
             SAMPLERATEINHZ = 8000;
@@ -232,7 +232,7 @@ public class RecoringManeger {
             config.serverIp(oneAddress)
                     .serverPort(Integer.parseInt(onePort))
                     .appName("android")
-                    .productId(values[oneAsr].getCode())
+                    .product(values[oneAsr])
                     .userName(oneAccout)
                     .password(onePwd)
                     .token(oneToken);
@@ -288,7 +288,7 @@ public class RecoringManeger {
             config.serverIp(twoAddress)
                     .serverPort(Integer.parseInt(twoPort))
                     .appName("android")
-                    .productId(values[twoAsr].getCode())
+                    .product(values[oneAsr])
                     .userName(twoAccout)
                     .password(twoPwd)
                     .token(twoToken);
@@ -340,7 +340,7 @@ public class RecoringManeger {
             config.serverIp(threeAddress)
                     .serverPort(Integer.parseInt(threePort))
                     .appName("android")
-                    .productId(values[threeAsr].getCode())
+                    .product(values[oneAsr])
                     .userName(threeAccout)
                     .password(threePwd)
                     .token(threeToken);
