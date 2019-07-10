@@ -31,3 +31,4 @@ class AsrProduct(Enum):
     FAR_FIELD = ["远场模型", "1888", 16000]
     FAR_FIELD_ROBOT = ["远场模型：机器人领域", "1889", 16000]
     CHONGQING_FAYUAN = ["重庆高院", "1", 16000]
+    TINGQING = ["演讲模型：听清", "1912", 16000]

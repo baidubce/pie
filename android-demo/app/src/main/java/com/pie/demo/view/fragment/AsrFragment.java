@@ -536,7 +536,7 @@ public class AsrFragment extends BaseFragment {
 
     private int getSampleHz(AsrProduct value) {
         int hz;
-        if (value == AsrProduct.INPUT_METHOD || value == AsrProduct.FAR_FIELD || value == AsrProduct.FAR_FIELD_ROBOT) {
+        if (value == AsrProduct.INPUT_METHOD || value == AsrProduct.FAR_FIELD || value == AsrProduct.FAR_FIELD_ROBOT || value == AsrProduct.SPEECH_SERVICE) {
             hz = 16000;
         } else {
             hz = 8000;
