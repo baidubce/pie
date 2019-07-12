@@ -44,11 +44,11 @@ if __name__ == '__main__':
     logging.basicConfig(filename="asr_result.log")
     log_level = 0
 
-    url = "10.136.172.23"
-    port = "8052"
+    url = "127.0.0.1"
+    port = "8050"
     product_id = AsrProduct.CUSTOMER_SERVICE_TOUR
     enable_flush_data = True
-    user_name = "admin"
-    password = "1234567809"
+    user_name = "abc"
+    password = "123"
 
     run()
