@@ -6,7 +6,7 @@ import os
 import time
 import logging
 from pyaudio import PyAudio, paInt16
-import urllib2
+import urllib
 import baidu_acu_asr.audio_streaming_pb2
 
 
@@ -94,15 +94,13 @@ def run():
     添加失败重传
     :return:
     """
-    for i in range(30):
+    for i in range(5):
         client = AsrClient(url, port, product_id, enable_flush_data,
                            log_level=log_level,
                            send_per_seconds=0.01,
                            user_name=user_name,
                            password=password)
-        # responses = client.get_result("/Users/xiashuai01/Downloads/10s.wav")
-        responses = client.get_result("/Users/lijialong02/code/client/data/8k-0.pcm")
-        # responses = client.get_result("/Users/xiashuai01/Downloads/300s.wav")
+        responses = client.get_result("/path/of/audio.wav")
 
         try:
             for response in responses:
@@ -126,12 +124,19 @@ def run():
 def run_stream():
     client = AsrClient(url, port, product_id, enable_flush_data,
                        log_level=log_level,
+                       send_per_seconds=0.01,
                        user_name=user_name,
                        password=password)
     responses = client.get_result_by_stream(record_micro())
     for response in responses:
-        # for res in responses:
-        logging.info("%s\t%s\t%s\t%s", response.start_time, response.end_time, response.result, response.serial_num)
+        if response.type == baidu_acu_asr.audio_streaming_pb2.FRAGMENT_DATA:
+            logging.info("%s\t%s\t%s\t%s",
+                         response.audio_fragment.start_time,
+                         response.audio_fragment.end_time,
+                         response.audio_fragment.result,
+                         response.audio_fragment.serial_num)
+        else:
+            logging.warning("type is: %d", response.type)
 
 
 def read_streaming_from_url():
@@ -143,7 +148,7 @@ def read_streaming_from_url():
                        log_level=log_level,
                        user_name=user_name,
                        password=password)
-    data = urllib2.urlopen(audio_url)
+    data = urllib.request.urlopen(audio_url)
     while True:
         yield client.generate_stream_request(data.read(size=2560))
 
@@ -161,10 +166,10 @@ def run_url_streaming():
 
 if __name__ == '__main__':
     logging.basicConfig(filename="asr_result.log")
-    # url = "10.190.115.11"
-    url = "180.76.107.131"
-    port = "8050"
     log_level = 0
+
+    url = "127.0.0.1"
+    port = "8050"
     product_id = AsrProduct.CUSTOMER_SERVICE_FINANCE
     enable_flush_data = True
     user_name = "abc"
@@ -175,7 +180,7 @@ if __name__ == '__main__':
 
     # 读取管道数据
     # run_fifo_stream()
-    # 传送文件
+    # 传送文件/Users/xiashuai01/MyLibrary/anaconda2/bin:/usr/local/opt/sqlite/bin:/Users/xiashuai01/bin:/bin:/usr/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
     run()
     # 传送流
     # run_stream()

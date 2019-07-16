@@ -1,12 +1,11 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import print_function
-from asr_product import ProductMap
 
 import grpc
-import audio_streaming_pb2
-import audio_streaming_pb2_grpc
-import header_manipulator_client_interceptor
+from . import audio_streaming_pb2
+from . import audio_streaming_pb2_grpc
+from . import header_manipulator_client_interceptor
 import base64
 import os
 import logging
@@ -59,7 +58,7 @@ class AsrClient(object):
             expire_time = (datetime.datetime.utcnow()+datetime.timedelta(hours=1)).strftime('%Y-%m-%dT%H:%M:%SZ')
             self.request.expire_time = expire_time
             # user_name password expire_time 生成的token
-            self.request.token = hashlib.sha256(user_name + password + expire_time).hexdigest()
+            self.request.token = hashlib.sha256((user_name + password + expire_time).encode("utf-8")).hexdigest()
         # 每次发送的音频字节数
         self.send_package_size = int(send_per_seconds * product.value[2] * sample_point_bytes)
 
@@ -72,7 +71,7 @@ class AsrClient(object):
         if not os.path.exists(file_path):
             logging.info("%s file is not exist, please check it!", file_path)
             os._exit(-1)
-        file = open(file_path, "r")
+        file = open(file_path, "rb")
         content = file.read(self.send_package_size)
         while len(content) > 0:
             yield audio_streaming_pb2.AudioFragmentRequest(audio_data=content)

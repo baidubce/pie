@@ -6,7 +6,8 @@ using System.Runtime.InteropServices;
 // 控制。更改这些特性值可修改
 // 与程序集关联的信息。
 [assembly: AssemblyTitle("ASRStreamingSdk4Framework")]
-[assembly: AssemblyDescription("")]
+
+[assembly: AssemblyDescription("baidu abc cloud asr streaming sdk for .net framework")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Baidu.Inc")]
 [assembly: AssemblyProduct("ASRStreamingSdk4Framework")]
@@ -20,7 +21,6 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // 如果此项目向 COM 公开，则下列 GUID 用于类型库的 ID
-[assembly: Guid("FB59DED9-5EEF-4F05-9720-7AD483A4A5E4")]
 
 // 程序集的版本信息由下列四个值组成: 
 //
@@ -32,5 +32,6 @@ using System.Runtime.InteropServices;
 // 可以指定所有值，也可以使用以下所示的 "*" 预置版本号和修订号
 //通过使用 "*"，如下所示:
 // [assembly: AssemblyVersion("1.0.*")]
+
 [assembly: AssemblyVersion("0.0.0.4")]
 [assembly: AssemblyFileVersion("0.0.0.4")]
