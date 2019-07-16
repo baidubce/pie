@@ -1,0 +1,61 @@
+﻿syntax = "proto3";
+
+package com.baidu.acu.pie;
+
+enum ProtoVersion {
+    UNKNOWN_VER = 0;
+    VERSION_1 = 1;
+    VERSION_2 = 2;
+    VERSION_3 = 3;
+    VERSION_4 = 4;
+    VERSION_5 = 5;
+}
+
+message InitRequest {
+    bool enable_long_speech = 1;
+    bool enable_chunk = 2;
+    bool enable_flush_data = 3;
+
+    string product_id = 4;
+    uint32 sample_point_bytes = 5;
+    double send_per_seconds = 6;
+    double sleep_ratio = 7;
+
+    string app_name = 8;
+    uint32 log_level = 9;
+
+    string user_name = 10;
+    string expire_time = 11;
+    string token = 12;
+    ProtoVersion version = 13;
+}
+
+message AudioFragmentRequest {
+    uint32 sequence_num = 1;
+    uint64 send_timestamp = 2;
+    bytes audio_data = 3;
+}
+
+enum ResponseType {
+    UNKNOWN_TYPE = 0;
+    FRAGMENT_DATA = 1;
+}
+
+message AudioFragmentResult {
+    string start_time = 1;
+    string end_time = 2;
+    string result = 3;
+    bool completed = 4;
+    string serial_num = 5;
+}
+
+message AudioFragmentResponse {
+    int32 error_code = 1;
+    string error_message = 2;
+    ResponseType type = 3;
+    AudioFragmentResult audio_fragment = 4;
+}
+
+service AsrService {
+    rpc send (stream AudioFragmentRequest) returns (stream AudioFragmentResponse);
+}
