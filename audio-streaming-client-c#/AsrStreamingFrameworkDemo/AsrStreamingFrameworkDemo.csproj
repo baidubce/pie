@@ -48,11 +48,5 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\ASRStreamingSdk4Framework\ASRStreamingSdk4Framework.csproj">
-      <Project>{fb59ded9-5eef-4f05-9720-7ad483a4a5e4}</Project>
-      <Name>ASRStreamingSdk4Framework</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

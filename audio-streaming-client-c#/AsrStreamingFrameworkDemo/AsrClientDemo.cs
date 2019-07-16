@@ -79,11 +79,11 @@ namespace ASRStreamingSdk
             Console.WriteLine("Create client");
             AsrClientDemo demo = new AsrClientDemo();
 
-            var stream0 = client.NewStream(new StreamToken("huijie01", new DateTime(2021, 4, 25, 12, 41, 16), "Baidu@1234"));
-            var task0 = demo.FileAsrAsync(stream0, "C:\\Users\\sunyumei\\Documents\\GitHub\\pie\\zhiyu1.wav", client.RecommendPacketSize);
+            var stream0 = client.NewStream(new StreamToken("fake_user", new DateTime(2021, 4, 25, 12, 41, 16), "fake_password"));
+            var task0 = demo.FileAsrAsync(stream0, "C:\\GitHub\\pie\\zhiyu1.wav", client.RecommendPacketSize);
 
-            var stream1 = client.NewStream(new StreamToken("huijie01", new DateTime(2021, 1, 1), "Baidu@1234"));
-            var task1 = demo.FileAsrAsync(stream1, "C:\\Users\\sunyumei\\Documents\\GitHub\\pie\\zhiyu2.wav", client.RecommendPacketSize);
+            var stream1 = client.NewStream(new StreamToken("fake_user", new DateTime(2021, 1, 1), "fake_password"));
+            var task1 = demo.FileAsrAsync(stream1, "C:\\GitHub\\pie\\zhiyu2.wav", client.RecommendPacketSize);
 
             task0.Wait();
             task1.Wait();

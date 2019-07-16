@@ -2,3 +2,6 @@
 */bin
 */obj
 MigrationBackup
+packages
+*.nuspec
+*.nupkg

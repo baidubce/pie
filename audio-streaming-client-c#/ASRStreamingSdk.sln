@@ -7,9 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ASRStreamingSdk", "ASRStrea
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AsrStreamingDemo", "AsrStreamingDemo\AsrStreamingDemo.csproj", "{51493677-E941-4276-BF65-F002BC729ED4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ASRStreamingSdk4Framework", "ASRStreamingSdk4Framework\ASRStreamingSdk4Framework.csproj", "{FB59DED9-5EEF-4F05-9720-7AD483A4A5E4}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsrStreamingFrameworkDemo", "AsrStreamingFrameworkDemo\AsrStreamingFrameworkDemo.csproj", "{699C399A-4CA3-48D4-80F2-2C9BFD9969E0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ASRStreamingSdk4Framework", "ASRStreamingSdk4Framework\ASRStreamingSdk4Framework.csproj", "{A379F091-C0DE-4BE4-A6ED-F6A04167EA82}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,14 +25,14 @@ Global
 		{51493677-E941-4276-BF65-F002BC729ED4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{51493677-E941-4276-BF65-F002BC729ED4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{51493677-E941-4276-BF65-F002BC729ED4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FB59DED9-5EEF-4F05-9720-7AD483A4A5E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FB59DED9-5EEF-4F05-9720-7AD483A4A5E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FB59DED9-5EEF-4F05-9720-7AD483A4A5E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FB59DED9-5EEF-4F05-9720-7AD483A4A5E4}.Release|Any CPU.Build.0 = Release|Any CPU
 		{699C399A-4CA3-48D4-80F2-2C9BFD9969E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{699C399A-4CA3-48D4-80F2-2C9BFD9969E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{699C399A-4CA3-48D4-80F2-2C9BFD9969E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{699C399A-4CA3-48D4-80F2-2C9BFD9969E0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A379F091-C0DE-4BE4-A6ED-F6A04167EA82}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A379F091-C0DE-4BE4-A6ED-F6A04167EA82}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A379F091-C0DE-4BE4-A6ED-F6A04167EA82}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A379F091-C0DE-4BE4-A6ED-F6A04167EA82}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

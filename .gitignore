@@ -156,3 +156,4 @@ data/
 
 #local_build
 *local_build.sh
+*.exe
