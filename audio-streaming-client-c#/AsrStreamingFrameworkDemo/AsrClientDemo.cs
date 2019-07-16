@@ -39,7 +39,8 @@ namespace ASRStreamingSdk
                         {
                             var fragment = response.AudioFragment;
                             Log("{0}: result={1} start_time={2}, end_time={3}", fragment.SerialNum, fragment.Result, fragment.StartTime, fragment.EndTime);
-                        } else
+                        }
+                        else
                         {
                             Log("Fail: unknown response type = {}", response.Type);
                         }
@@ -73,16 +74,16 @@ namespace ASRStreamingSdk
 
         static void Main(string[] args)
         {
-            var client = new AsrClient("127.0.0.1:8050", "1906");
+            var client = new AsrClient("asr.baiduai.cloud:8051", "1906");
             client.LogLevel = 0;
             Console.WriteLine("Create client");
             AsrClientDemo demo = new AsrClientDemo();
 
-            var stream0 = client.NewStream(new StreamToken("fakeuser", new DateTime(2019, 4, 25, 12, 41, 16), "fakepassword"));
-            var task0 = demo.FileAsrAsync(stream0, "C:\\Users\\temp.wav", client.RecommendPacketSize);
+            var stream0 = client.NewStream(new StreamToken("huijie01", new DateTime(2021, 4, 25, 12, 41, 16), "Baidu@1234"));
+            var task0 = demo.FileAsrAsync(stream0, "C:\\Users\\sunyumei\\Documents\\GitHub\\pie\\zhiyu1.wav", client.RecommendPacketSize);
 
-            var stream1 = client.NewStream(new StreamToken("fakeuser", new DateTime(2021, 1, 1), "fakepassword"));
-            var task1 = demo.FileAsrAsync(stream1, "C:\\Users\\zhiyu2.wav", client.RecommendPacketSize);
+            var stream1 = client.NewStream(new StreamToken("huijie01", new DateTime(2021, 1, 1), "Baidu@1234"));
+            var task1 = demo.FileAsrAsync(stream1, "C:\\Users\\sunyumei\\Documents\\GitHub\\pie\\zhiyu2.wav", client.RecommendPacketSize);
 
             task0.Wait();
             task1.Wait();
