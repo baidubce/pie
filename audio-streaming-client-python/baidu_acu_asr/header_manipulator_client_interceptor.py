@@ -16,7 +16,7 @@
 import collections
 
 import grpc
-import generic_client_interceptor
+from . import generic_client_interceptor
 
 
 class _ClientCallDetails(
