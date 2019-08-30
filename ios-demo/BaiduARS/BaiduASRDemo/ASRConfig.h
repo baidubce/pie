@@ -40,6 +40,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString *sampleRate;
 
 /**
+ * appname
+ */
+@property (nonatomic, copy) NSString *appName;
+
+/**
  * userName & password
  */
 @property (nonatomic, copy) NSString *userName;

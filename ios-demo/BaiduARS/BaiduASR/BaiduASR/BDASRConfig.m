@@ -11,7 +11,7 @@
 
 NSString *kHostAddress = @"180.76.107.131";
 int defServerPort = 8050;//8212;
-NSString *defAppName = @"ios demo";
+NSString *defAppName = @"iosdemo";
 BOOL defEnableFlushData = YES;
 int defBitDepth = 2;
 double defSendPerSeconds = 0.02;

@@ -31,6 +31,7 @@ static ASRConfig *config = nil;
         NSString *serverPort = [defaults objectForKey:@"serverPort"] ?: @"8050";
         NSString *productId = [defaults objectForKey:@"productId"] ?: @"1906";
         NSString *sampleRate = [defaults objectForKey:@"sampleRate"] ?: @"8000";
+        NSString *appName = [defaults objectForKey:@"appName"] ?: @"iosdemo";
         
         self.userName = userName;
         self.passWord = passWord;
@@ -38,6 +39,7 @@ static ASRConfig *config = nil;
         self.serverPort = serverPort;
         self.productId = productId;
         self.sampleRate = sampleRate;
+        self.appName = appName;
         
         self.productIDDataSource = [NSArray arrayWithObjects:@"客服模型1903",
                                     @"客服模型-旅游领域1904",
@@ -84,6 +86,7 @@ static ASRConfig *config = nil;
     NSString *serverPort = self.serverPort ?: @"8050";
     NSString *productId = self.productId ?: @"1906";
     NSString *sampleRate = self.sampleRate ?: @"8000";
+    NSString *appName = self.appName ?: @"iosdemo";
     
     [defaults setObject:userName forKey:@"userName"];
     [defaults setObject:passWord forKey:@"passWord"];
@@ -91,6 +94,7 @@ static ASRConfig *config = nil;
     [defaults setObject:serverPort forKey:@"serverPort"];
     [defaults setObject:productId forKey:@"productId"];
     [defaults setObject:sampleRate forKey:@"sampleRate"];
+    [defaults setObject:appName forKey:@"appName"];
     
     [defaults synchronize];
     
@@ -99,6 +103,7 @@ static ASRConfig *config = nil;
     [ins setServerPort:serverPort];
     [ins setProductId:productId];
     [ins setSampleRate:sampleRate];
+    [ins setAppName:appName];
     [ins refreshConfig];
 }
 
@@ -108,6 +113,7 @@ static ASRConfig *config = nil;
     [defaults removeObjectForKey:@"serverPort"];
     [defaults removeObjectForKey:@"productId"];
     [defaults removeObjectForKey:@"sampleRate"];
+    [defaults removeObjectForKey:@"appName"];
     [defaults synchronize];
 }
 

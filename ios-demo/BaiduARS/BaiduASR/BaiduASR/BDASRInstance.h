@@ -69,6 +69,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)setSampleRate:(NSString *)sampleRate;
 
 /**
+ * 设置appName
+ */
+- (void)setAppName:(NSString *)appName;
+
+/**
  * 开始录音
  */
 - (void)startRecord;

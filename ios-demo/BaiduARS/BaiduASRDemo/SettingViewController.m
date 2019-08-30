@@ -57,6 +57,12 @@
     [settingsArray addObject:settingModel];
     
     settingModel = [SettingViewCellModel new];
+    settingModel.title = @"AppName:";
+    settingModel.descrptionString = config.appName;
+    settingModel.valueString = config.appName;
+    [settingsArray addObject:settingModel];
+    
+    settingModel = [SettingViewCellModel new];
     settingModel.title = @"账户设置";
     settingModel.isShowTextField = NO;
     [settingsArray addObject:settingModel];
@@ -105,6 +111,16 @@
     return proDes;
 }
 
+- (NSString *)productIDWithIndex:(NSInteger)index {
+    NSString *proID = @"";
+    ASRConfig *config = [ASRConfig config];
+    
+    if (index >= 0 && index <= config.productIDArray.count) {
+        proID = [config.productIDArray objectAtIndex:index];
+    }
+    return proID;
+}
+
 - (IBAction)pickModel:(id)sender {
     ASRConfig *config = [ASRConfig config];
     NSString *product = config.productId;
@@ -128,17 +144,24 @@
 
     cell = [self.settingTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
     NSString *address = cell.textField.text;
+
     cell = [self.settingTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
     NSString *port = cell.textField.text;
 
-    NSString *productID = [config.productIDArray objectAtIndex:[self.modelPicker selectedRowInComponent:0]];
+    SettingViewCellModel *model = [self.settings objectAtIndex:2];
+    NSString *productID = model.valueString;
+    
     cell = [self.settingTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:3 inSection:0]];
     NSString *sampleRate = cell.textField.text;
+    
+    cell = [self.settingTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:4 inSection:0]];
+    NSString *appName = cell.textField.text;
     
     config.hostAddress = address;
     config.serverPort = port;
     config.productId = productID;
     config.sampleRate = sampleRate;
+    config.appName = appName;
     
     [config save];
     
@@ -223,11 +246,11 @@
         self.modelPicker.hidden = YES;
     }
     
-    if (indexPath.row == 4) {
+    if (indexPath.row == 5) {
         [self performSegueWithIdentifier:@"gotoLogin" sender:nil];
     }
     
-    if (indexPath.row == 5) {
+    if (indexPath.row == 6) {
         [self reset:nil];
     }
 }
@@ -259,9 +282,11 @@
 
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
     NSString *proDes = [self productDesWithIndex:row];
+    NSString *proID = [self productIDWithIndex:row];
     
     SettingViewCellModel *model = [self.settings objectAtIndex:2];
     model.descrptionString = proDes;
+    model.valueString = proID;
     
     SettingViewCell *cell = [self.settingTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:2 inSection:0]];
     cell.textField.text = proDes;

@@ -264,6 +264,21 @@
                                     <action selector="back:" destination="1sB-Dw-KVI" eventType="touchUpInside" id="tZq-w5-VV1"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rkH-M3-mSW">
+                                <rect key="frame" x="174" y="381" width="66" height="40"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="7kt-Sb-6h7"/>
+                                    <constraint firstAttribute="width" constant="66" id="KQU-08-vKU"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <state key="normal" title="Logout">
+                                    <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="logout:" destination="1sB-Dw-KVI" eventType="touchUpInside" id="Z7K-VP-lia"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
@@ -274,12 +289,14 @@
                             <constraint firstItem="lNT-fE-LUh" firstAttribute="top" secondItem="T1L-dt-HoG" secondAttribute="bottom" constant="58" id="POZ-ee-3m7"/>
                             <constraint firstItem="MQ4-eB-n3D" firstAttribute="top" secondItem="VUM-Kb-z9w" secondAttribute="top" constant="62" id="Q6H-3g-D4c"/>
                             <constraint firstItem="T1L-dt-HoG" firstAttribute="leading" secondItem="VUM-Kb-z9w" secondAttribute="leading" constant="20" id="VQ7-3w-1Bf"/>
+                            <constraint firstItem="rkH-M3-mSW" firstAttribute="top" secondItem="lNT-fE-LUh" secondAttribute="bottom" constant="27" id="ZdL-CP-Fs4"/>
                             <constraint firstItem="VUM-Kb-z9w" firstAttribute="trailing" secondItem="T1L-dt-HoG" secondAttribute="trailing" constant="20" id="eHU-2x-ibM"/>
                             <constraint firstItem="VUM-Kb-z9w" firstAttribute="trailing" secondItem="qgy-2Z-EtW" secondAttribute="trailing" constant="20" id="ez8-tv-lMH"/>
                             <constraint firstItem="EPQ-3F-joQ" firstAttribute="leading" secondItem="VUM-Kb-z9w" secondAttribute="leading" constant="20" id="hyM-y9-6XZ"/>
                             <constraint firstItem="qgy-2Z-EtW" firstAttribute="top" secondItem="MQ4-eB-n3D" secondAttribute="bottom" constant="10" id="j2U-tw-1LX"/>
                             <constraint firstItem="qgy-2Z-EtW" firstAttribute="leading" secondItem="VUM-Kb-z9w" secondAttribute="leading" constant="20" id="rRO-8L-LYq"/>
                             <constraint firstItem="1t4-Vh-3QG" firstAttribute="leading" secondItem="VUM-Kb-z9w" secondAttribute="leading" constant="20" id="rk7-uc-Bcu"/>
+                            <constraint firstItem="rkH-M3-mSW" firstAttribute="centerX" secondItem="Jn7-AH-Kjf" secondAttribute="centerX" id="ruE-3u-Muc"/>
                             <constraint firstItem="T1L-dt-HoG" firstAttribute="top" secondItem="1t4-Vh-3QG" secondAttribute="bottom" constant="10" id="yw0-mF-WXf"/>
                             <constraint firstItem="lNT-fE-LUh" firstAttribute="leading" secondItem="VUM-Kb-z9w" secondAttribute="leading" constant="22" id="z0P-x7-BxN"/>
                         </constraints>
@@ -293,7 +310,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TZi-Uy-Gun" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1551" y="125"/>
+            <point key="canvasLocation" x="1550.7246376811595" y="124.55357142857142"/>
         </scene>
     </scenes>
 </document>

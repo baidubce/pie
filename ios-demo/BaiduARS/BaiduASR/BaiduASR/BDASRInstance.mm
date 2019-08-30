@@ -107,6 +107,11 @@ static BDASRInstance *asrInstance = nil;
     config.sampleRate = [sampleRate intValue];
 }
 
+- (void)setAppName:(NSString *)appName {
+    BDASRConfig *config = [BDASRConfig config];
+    config.appName = appName;
+}
+
 - (void)startRecord {
     self.currentStatus = RECORDING;
     if (self.canRepChange) [self.delegate bdasrStatusDidChanged:RECORDING];

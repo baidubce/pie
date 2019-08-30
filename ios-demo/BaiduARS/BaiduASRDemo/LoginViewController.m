@@ -15,6 +15,7 @@
 @property (nonatomic, weak) IBOutlet UITextField *passWordTF;
 
 @property (nonatomic, weak) IBOutlet UIButton *loginBtn;
+@property (nonatomic, weak) IBOutlet UIButton *logoutBtn;
 
 @end
 
@@ -29,12 +30,6 @@
     NSString *passWord = config.passWord;
     self.userNameTF.text = userName;
     self.passWordTF.text = passWord;
-    
-    NSString *buttonTitle = @"Login";
-    if (userName.length > 0 && passWord.length > 0) {
-        buttonTitle = @"Logout";
-    }
-    [self.loginBtn setTitle:buttonTitle forState:UIControlStateNormal];
 }
 
 - (IBAction)back:(id)sender {
@@ -45,11 +40,14 @@
     [self.userNameTF resignFirstResponder];
     [self.passWordTF resignFirstResponder];
     
-    if ([self.loginBtn.titleLabel.text isEqualToString:@"Login"]) {
-        [self loginActon];
-    }else {
-        [self logoutAction];
-    }
+    [self loginActon];
+}
+
+- (IBAction)logout:(id)sender {
+    [self.userNameTF resignFirstResponder];
+    [self.passWordTF resignFirstResponder];
+    
+    [self logoutAction];
 }
 
 - (void)loginActon {
@@ -62,8 +60,6 @@
         config.passWord = passWord;
         
         [config login];
-        
-        [self.loginBtn setTitle:@"Logout" forState:UIControlStateNormal];
         
         [self performSelector:@selector(back:) withObject:nil afterDelay:1.0];
     }else {
@@ -82,8 +78,6 @@
     config.passWord = @"";
     
     [config logout];
-    
-    [self.loginBtn setTitle:@"Login" forState:UIControlStateNormal];
 }
 
 /*
