@@ -37,13 +37,7 @@ typedef enum : NSUInteger {
 @property (nonatomic, assign) int serverPort;
 
 /**
- * asr识别服务的产品类型，私有化版本请咨询供应商
- */
-
-@property (nonatomic, assign) ASRProduct product;
-
-/**
- * asr识别服务的产品id
+ * asr识别服务的产品类型id，私有化版本请咨询供应商
  */
 
 @property (nonatomic, copy) NSString *productId;
@@ -92,13 +86,6 @@ typedef enum : NSUInteger {
  * 音频采样率
  */
 @property (nonatomic, assign) int sampleRate;
-
-/**
- * 产品id 数据源
- */
-@property (nonatomic, strong) NSArray *productIDArray;
-
-@property (nonatomic, strong) NSArray *productIDDataSource;
 
 /**
  * userName & password

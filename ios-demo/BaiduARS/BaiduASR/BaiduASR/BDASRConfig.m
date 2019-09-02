@@ -12,6 +12,7 @@
 NSString *kHostAddress = @"180.76.107.131";
 int defServerPort = 8050;//8212;
 NSString *defAppName = @"iosdemo";
+NSString *defProducID = @"1903";
 BOOL defEnableFlushData = YES;
 int defBitDepth = 2;
 double defSendPerSeconds = 0.02;
@@ -36,8 +37,7 @@ static BDASRConfig *commonConfig = nil;
     if (self != nil) {
         self.hostAddress = kHostAddress;
         self.serverPort = defServerPort;
-        self.product = CUSTOMERSERVICEFINANCE;
-        self.productId = [NSString stringWithFormat:@"%lu",(unsigned long)CUSTOMERSERVICEFINANCE];
+        self.productId = defProducID;
         self.appName = defAppName;
         self.enableFlushData = defEnableFlushData;
         self.bitDepth = defBitDepth;
@@ -46,26 +46,6 @@ static BDASRConfig *commonConfig = nil;
         self.timeoutMinutes = defTimeoutMinutes;
         self.logLevel = defLogLevel;
         self.sampleRate = 8000;
-        
-        self.productIDDataSource = [NSArray arrayWithObjects:@"客服模型1903",
-                               @"客服模型-旅游领域1904",
-                               @"客服模型-股票领域1905",
-                               @"客服模型-股票领域1906",
-                               @"客服模型-股票领域1907",
-                               @"演讲模型1912",
-                               @"输入法模型888",
-                               @"远场模型1888",
-                               @"远场模型-机器人领域1889",nil];
-        
-        self.productIDArray = [NSArray arrayWithObjects:@"1903",
-                                    @"1904",
-                                    @"1905",
-                                    @"1906",
-                                    @"1907",
-                                    @"1912",
-                                    @"888",
-                                    @"1888",
-                                    @"1889",nil];
     }
     return self;
 }
@@ -73,15 +53,6 @@ static BDASRConfig *commonConfig = nil;
 - (NSString *)hostAddress_Port {
     return [NSString stringWithFormat:@"%@:%d", self.hostAddress, self.serverPort];
 }
-
-//- (void)setProduct:(ASRProduct)product {
-//    _product = product;
-//    if (product == INPUT_METHOD || product == FAR_FIELD || product == FARFIELDROBOT) {
-//        self.sampleRate = 16000;
-//    }else {
-//        self.sampleRate = 8000;
-//    }
-//}
 
 - (NSString *)getUTCTimeString
 {

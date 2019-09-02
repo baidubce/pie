@@ -67,6 +67,11 @@
     settingModel.isShowTextField = NO;
     [settingsArray addObject:settingModel];
     
+//    settingModel = [SettingViewCellModel new];
+//    settingModel.title = @"模型设置";
+//    settingModel.isShowTextField = NO;
+//    [settingsArray addObject:settingModel];
+    
     settingModel = [SettingViewCellModel new];
     settingModel.title = @"reset";
     settingModel.titleColor = [UIColor redColor];
@@ -92,6 +97,13 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    [self initData];
+    [self.settingTableView reloadData];
+    [self.modelPicker reloadAllComponents];
 }
 
 - (void)cancelEdit {
@@ -123,7 +135,8 @@
 
 - (IBAction)pickModel:(id)sender {
     ASRConfig *config = [ASRConfig config];
-    NSString *product = config.productId;
+    SettingViewCellModel *model = [self.settings objectAtIndex:2];
+    NSString *product = model.valueString;
     NSInteger index = [config.productIDArray indexOfObject:product];
     
     if (index >= 0 && index <= config.productIDDataSource.count) {
@@ -249,6 +262,10 @@
     if (indexPath.row == 5) {
         [self performSegueWithIdentifier:@"gotoLogin" sender:nil];
     }
+    
+//    if (indexPath.row == 6) {
+//        [self performSegueWithIdentifier:@"gotoEditModel" sender:nil];
+//    }
     
     if (indexPath.row == 6) {
         [self reset:nil];

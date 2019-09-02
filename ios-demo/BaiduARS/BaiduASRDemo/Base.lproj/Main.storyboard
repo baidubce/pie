@@ -184,6 +184,7 @@
                         <outlet property="settingTableView" destination="VQz-HA-aUb" id="c2Z-eL-5Gd"/>
                         <outlet property="tableViewBottom" destination="ABC-6m-Asd" id="3Br-Rp-dWa"/>
                         <segue destination="1sB-Dw-KVI" kind="modal" identifier="gotoLogin" id="XIs-lN-3aL"/>
+                        <segue destination="Q7E-x8-WJ8" kind="modal" identifier="gotoEditModel" id="4NV-bu-teF"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wSx-j2-muV" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -310,7 +311,70 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TZi-Uy-Gun" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1550.7246376811595" y="124.55357142857142"/>
+            <point key="canvasLocation" x="1583" y="-173"/>
+        </scene>
+        <!--Edit Model View Controller-->
+        <scene sceneID="0WQ-W9-Klg">
+            <objects>
+                <viewController id="Q7E-x8-WJ8" customClass="EditModelViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="c1U-en-Bmy">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="NEj-F5-76q">
+                                <rect key="frame" x="0.0" y="82" width="414" height="814"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="Q7E-x8-WJ8" id="SIn-JR-os8"/>
+                                    <outlet property="delegate" destination="Q7E-x8-WJ8" id="aNT-ff-yAh"/>
+                                </connections>
+                            </tableView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lHf-VU-Fgx">
+                                <rect key="frame" x="344" y="44" width="50" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="LGF-Oc-Sdx"/>
+                                    <constraint firstAttribute="width" constant="50" id="c72-ZY-dQj"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                                <state key="normal" title="确定"/>
+                                <connections>
+                                    <action selector="conform:" destination="Q7E-x8-WJ8" eventType="touchUpInside" id="AtS-In-JJT"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MfC-cP-ywG">
+                                <rect key="frame" x="20" y="44" width="50" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="SLP-P8-UpG"/>
+                                    <constraint firstAttribute="width" constant="50" id="jKl-rc-c6G"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                                <state key="normal" title="返回"/>
+                                <connections>
+                                    <action selector="back:" destination="Q7E-x8-WJ8" eventType="touchUpInside" id="Zhb-rz-tcK"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="NEj-F5-76q" firstAttribute="trailing" secondItem="AaM-lY-XD2" secondAttribute="trailing" id="Eez-1H-hIi"/>
+                            <constraint firstItem="NEj-F5-76q" firstAttribute="top" secondItem="MfC-cP-ywG" secondAttribute="bottom" constant="8" id="M59-QE-0GR"/>
+                            <constraint firstItem="MfC-cP-ywG" firstAttribute="leading" secondItem="AaM-lY-XD2" secondAttribute="leading" constant="20" id="TuF-DR-epj"/>
+                            <constraint firstItem="NEj-F5-76q" firstAttribute="leading" secondItem="AaM-lY-XD2" secondAttribute="leading" id="bvX-3m-HB8"/>
+                            <constraint firstAttribute="bottom" secondItem="NEj-F5-76q" secondAttribute="bottom" id="ck9-5h-FGU"/>
+                            <constraint firstItem="AaM-lY-XD2" firstAttribute="trailing" secondItem="lHf-VU-Fgx" secondAttribute="trailing" constant="20" id="d9M-61-Kon"/>
+                            <constraint firstItem="lHf-VU-Fgx" firstAttribute="top" secondItem="c1U-en-Bmy" secondAttribute="top" constant="44" id="s0P-lV-ubK"/>
+                            <constraint firstItem="MfC-cP-ywG" firstAttribute="top" secondItem="c1U-en-Bmy" secondAttribute="top" constant="44" id="z73-NU-0sk"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="AaM-lY-XD2"/>
+                    </view>
+                    <connections>
+                        <outlet property="tableView" destination="NEj-F5-76q" id="yTL-o4-FZC"/>
+                        <outlet property="tableViewBottom" destination="ck9-5h-FGU" id="Uhd-Ta-Vz8"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ESd-Qq-D4R" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1582.608695652174" y="520.98214285714289"/>
         </scene>
     </scenes>
 </document>

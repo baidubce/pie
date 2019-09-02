@@ -23,6 +23,10 @@
 		708459C32260995400B16A4C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 708459C22260995400B16A4C /* main.m */; };
 		708459CD2260995400B16A4C /* BaiduASRDemoUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 708459CC2260995400B16A4C /* BaiduASRDemoUITests.m */; };
 		708459FB2271AB5E00B16A4C /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 708459FA2271AB5E00B16A4C /* SettingViewController.m */; };
+		708D78D7231CFB0B00B4EAA9 /* EditModelViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 708D78D6231CFB0B00B4EAA9 /* EditModelViewController.m */; };
+		708D78DA231CFC8000B4EAA9 /* ModelCellModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 708D78D9231CFC8000B4EAA9 /* ModelCellModel.m */; };
+		708D78DE231CFCF300B4EAA9 /* ModelViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 708D78DC231CFCF300B4EAA9 /* ModelViewCell.m */; };
+		708D78DF231CFCF300B4EAA9 /* ModelViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 708D78DD231CFCF300B4EAA9 /* ModelViewCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -76,6 +80,13 @@
 		708459CE2260995400B16A4C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		708459F92271AB5E00B16A4C /* SettingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SettingViewController.h; sourceTree = "<group>"; };
 		708459FA2271AB5E00B16A4C /* SettingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SettingViewController.m; sourceTree = "<group>"; };
+		708D78D5231CFB0B00B4EAA9 /* EditModelViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EditModelViewController.h; sourceTree = "<group>"; };
+		708D78D6231CFB0B00B4EAA9 /* EditModelViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EditModelViewController.m; sourceTree = "<group>"; };
+		708D78D8231CFC8000B4EAA9 /* ModelCellModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ModelCellModel.h; sourceTree = "<group>"; };
+		708D78D9231CFC8000B4EAA9 /* ModelCellModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ModelCellModel.m; sourceTree = "<group>"; };
+		708D78DB231CFCF300B4EAA9 /* ModelViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ModelViewCell.h; sourceTree = "<group>"; };
+		708D78DC231CFCF300B4EAA9 /* ModelViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ModelViewCell.m; sourceTree = "<group>"; };
+		708D78DD231CFCF300B4EAA9 /* ModelViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ModelViewCell.xib; sourceTree = "<group>"; };
 		B9BA51AFA1CAC454B2ED6920 /* libPods-BaiduASRDemo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BaiduASRDemo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EFC7C8C095B6C8B85A81F76C /* Pods-BaiduASRDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BaiduASRDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-BaiduASRDemo/Pods-BaiduASRDemo.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -106,6 +117,9 @@
 				7017A399229554E700AB6F1B /* SettingViewCell.h */,
 				7017A397229554E700AB6F1B /* SettingViewCell.m */,
 				7017A398229554E700AB6F1B /* SettingViewCell.xib */,
+				708D78DB231CFCF300B4EAA9 /* ModelViewCell.h */,
+				708D78DC231CFCF300B4EAA9 /* ModelViewCell.m */,
+				708D78DD231CFCF300B4EAA9 /* ModelViewCell.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -115,6 +129,8 @@
 			children = (
 				7017A39D229555CA00AB6F1B /* SettingViewCellModel.h */,
 				7017A39E229555CA00AB6F1B /* SettingViewCellModel.m */,
+				708D78D8231CFC8000B4EAA9 /* ModelCellModel.h */,
+				708D78D9231CFC8000B4EAA9 /* ModelCellModel.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -151,6 +167,8 @@
 				708459FA2271AB5E00B16A4C /* SettingViewController.m */,
 				7011FBCD22845226000E8F33 /* LoginViewController.h */,
 				7011FBCE22845226000E8F33 /* LoginViewController.m */,
+				708D78D5231CFB0B00B4EAA9 /* EditModelViewController.h */,
+				708D78D6231CFB0B00B4EAA9 /* EditModelViewController.m */,
 				7011FBBC22841E41000E8F33 /* ASRConfig.h */,
 				7011FBBD22841E41000E8F33 /* ASRConfig.m */,
 				7017A39C229555AF00AB6F1B /* Models */,
@@ -273,6 +291,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				708459C02260995400B16A4C /* LaunchScreen.storyboard in Resources */,
+				708D78DF231CFCF300B4EAA9 /* ModelViewCell.xib in Resources */,
 				7017A39B229554E700AB6F1B /* SettingViewCell.xib in Resources */,
 				708459BD2260995400B16A4C /* Assets.xcassets in Resources */,
 				708459BB2260995200B16A4C /* Main.storyboard in Resources */,
@@ -321,9 +340,12 @@
 				708459B82260995200B16A4C /* ViewController.mm in Sources */,
 				7011FBBE22841E41000E8F33 /* ASRConfig.m in Sources */,
 				7011FBCF22845226000E8F33 /* LoginViewController.m in Sources */,
+				708D78DA231CFC8000B4EAA9 /* ModelCellModel.m in Sources */,
 				7017A39F229555CA00AB6F1B /* SettingViewCellModel.m in Sources */,
+				708D78DE231CFCF300B4EAA9 /* ModelViewCell.m in Sources */,
 				708459C32260995400B16A4C /* main.m in Sources */,
 				708459FB2271AB5E00B16A4C /* SettingViewController.m in Sources */,
+				708D78D7231CFB0B00B4EAA9 /* EditModelViewController.m in Sources */,
 				708459B52260995200B16A4C /* AppDelegate.m in Sources */,
 				7017A39A229554E700AB6F1B /* SettingViewCell.m in Sources */,
 			);
@@ -485,8 +507,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = "";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = C789GLWV85;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -510,8 +532,8 @@
 			baseConfigurationReference = EFC7C8C095B6C8B85A81F76C /* Pods-BaiduASRDemo.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = C789GLWV85;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -526,7 +548,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.baidu.rimdemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "Distribution_baidu rim sdk";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

@@ -28,7 +28,7 @@
     if (arr.count > 0) {
         return [arr objectAtIndex:0];
     }
-    return [[SettingViewCell alloc] init];
+    return [[SettingViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"SettingViewCell"];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

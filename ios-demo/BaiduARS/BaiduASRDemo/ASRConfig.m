@@ -9,6 +9,30 @@
 #import "ASRConfig.h"
 #import <BaiduASR/BDASRInstance.h>
 
+#define defIDdess [NSArray arrayWithObjects:@"客服模型1903", \
+                                @"客服模型-旅游领域1904", \
+                                @"客服模型-股票领域1905", \
+                                @"客服模型-金融领域1906", \
+                                @"客服模型-能源领域1907", \
+                                @"演讲模型1912", \
+                                @"输入法模型888", \
+                                @"远场模型1888", \
+                                @"远场模型-机器人领域1889", \
+                                @"远场模型-法院用1", \
+                                nil];
+
+#define defIDS [NSArray arrayWithObjects:@"1903", \
+                           @"1904", \
+                           @"1905", \
+                           @"1906", \
+                           @"1907", \
+                           @"1912", \
+                           @"888", \
+                           @"1888", \
+                           @"1889", \
+                           @"1", \
+                           nil];
+
 static ASRConfig *config = nil;
 @implementation ASRConfig
 
@@ -24,6 +48,7 @@ static ASRConfig *config = nil;
 {
     self = [super init];
     if (self) {
+        
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         NSString *userName = [defaults objectForKey:@"userName"] ?: @"";
         NSString *passWord = [defaults objectForKey:@"passWord"] ?: @"";
@@ -33,6 +58,9 @@ static ASRConfig *config = nil;
         NSString *sampleRate = [defaults objectForKey:@"sampleRate"] ?: @"8000";
         NSString *appName = [defaults objectForKey:@"appName"] ?: @"iosdemo";
         
+        NSArray *productIDArray = [defaults objectForKey:@"productIDArray"] ?: defIDS;
+        NSArray *productIDDataSource = [defaults objectForKey:@"productIDDataSource"] ?: defIDdess;
+        
         self.userName = userName;
         self.passWord = passWord;
         self.hostAddress = hostAddress;
@@ -40,30 +68,8 @@ static ASRConfig *config = nil;
         self.productId = productId;
         self.sampleRate = sampleRate;
         self.appName = appName;
-        
-        self.productIDDataSource = [NSArray arrayWithObjects:@"客服模型1903",
-                                    @"客服模型-旅游领域1904",
-                                    @"客服模型-股票领域1905",
-                                    @"客服模型-金融领域1906",
-                                    @"客服模型-能源领域1907",
-                                    @"演讲模型1912",
-                                    @"输入法模型888",
-                                    @"远场模型1888",
-                                    @"远场模型-机器人领域1889",
-                                    @"远场模型-法院用1",
-                                    nil];
-        
-        self.productIDArray = [NSArray arrayWithObjects:@"1903",
-                               @"1904",
-                               @"1905",
-                               @"1906",
-                               @"1907",
-                               @"1912",
-                               @"888",
-                               @"1888",
-                               @"1889",
-                               @"1",
-                               nil];
+        self.productIDArray = productIDArray;
+        self.productIDDataSource = productIDDataSource;
     }
     return self;
 }
@@ -90,6 +96,9 @@ static ASRConfig *config = nil;
     NSString *sampleRate = self.sampleRate ?: @"8000";
     NSString *appName = self.appName ?: @"iosdemo";
     
+    NSArray *productIDArray = self.productIDArray ?: @[];
+    NSArray *productIDDataSource = self.productIDDataSource ?: @[];
+    
     [defaults setObject:userName forKey:@"userName"];
     [defaults setObject:passWord forKey:@"passWord"];
     [defaults setObject:hostAddress forKey:@"hostAddress"];
@@ -97,6 +106,9 @@ static ASRConfig *config = nil;
     [defaults setObject:productId forKey:@"productId"];
     [defaults setObject:sampleRate forKey:@"sampleRate"];
     [defaults setObject:appName forKey:@"appName"];
+    
+    [defaults setObject:productIDArray forKey:@"productIDArray"];
+    [defaults setObject:productIDDataSource forKey:@"productIDDataSource"];
     
     [defaults synchronize];
     
@@ -116,6 +128,8 @@ static ASRConfig *config = nil;
     [defaults removeObjectForKey:@"productId"];
     [defaults removeObjectForKey:@"sampleRate"];
     [defaults removeObjectForKey:@"appName"];
+    [defaults removeObjectForKey:@"productIDArray"];
+    [defaults removeObjectForKey:@"productIDDataSource"];
     [defaults synchronize];
 }
 
