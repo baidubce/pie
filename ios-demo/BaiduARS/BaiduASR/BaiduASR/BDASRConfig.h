@@ -16,6 +16,7 @@ typedef enum : NSUInteger {
     CUSTOMERSERVICESTOCK = 1905,    //客服模型-股票领域    音频采样率8000
     CUSTOMERSERVICEFINANCE = 1906,    //客服模型-股票领域    音频采样率8000
     CUSTOMERSERVICEENERGY = 1907,    //客服模型-股票领域    音频采样率8000
+    SPEECK = 1912,    //客服模型-股票领域    音频采样率8000
     INPUT_METHOD = 888,    //输入法模型    音频采样率16000
     FAR_FIELD = 1888,    //远场模型    音频采样率16000
     FARFIELDROBOT = 1889    //远场模型-机器人领域    音频采样率16000
