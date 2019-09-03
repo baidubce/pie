@@ -35,6 +35,7 @@ public class JavaDemo {
 
     private AsrClient createAsrClient() {
         // asrConfig构造后就不可修改
+        // 当使用ssl client时，需要配置字段sslUseFlag以及sslPath
         AsrConfig asrConfig = AsrConfig.builder()
                 .serverIp("127.0.0.1")
                 .serverPort(80)
@@ -42,6 +43,8 @@ public class JavaDemo {
                 .product(AsrProduct.CUSTOMER_SERVICE_FINANCE)
                 .userName("user")
                 .password("password")
+//                .sslUseFlag(true)
+//                .sslPath("ca.crt")
                 .build();
 
         return AsrClientFactory.buildClient(asrConfig);

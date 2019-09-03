@@ -36,7 +36,7 @@ dependencies {
     compile("com.google.protobuf:protobuf-java:3.6.1")
     implementation("org.slf4j:slf4j-api:1.7.25")
     compile("joda-time:joda-time:2.10.1")
-
+    compile("io.netty:netty-tcnative-boringssl-static:2.0.17.Final")
     testImplementation("org.slf4j:slf4j-simple:1.7.25")
     testImplementation("junit:junit")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
