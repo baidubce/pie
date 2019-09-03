@@ -91,12 +91,6 @@ public class AudioAsrHandler implements Runnable {
         // asrConfig构造后就不可修改
         // TODO 后期优化，暂时写死
         AsrConfig asrConfig = AsrConfig.builder()
-                .serverIp("asr.baiduai.cloud")
-                .serverPort(8051)
-                .appName("zhenhua")
-                .product(AsrProduct.CUSTOMER_SERVICE_FINANCE)
-                .userName("ppdaitest")
-                .password("ppdai")
                 .build();
 
         return AsrClientFactory.buildClient(asrConfig);
