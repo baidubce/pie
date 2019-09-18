@@ -1,5 +1,3 @@
-// Copyright (C) 2019 Baidu Inc. All rights reserved.
-
 package com.baidu.acu.pie.config;
 
 import org.springframework.context.annotation.Bean;

@@ -1,6 +1,5 @@
 package com.baidu.acu.pie.model.response;
 
-import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import lombok.Data;
 
 /**
@@ -9,7 +8,6 @@ import lombok.Data;
 @Data
 public class ServerResponse<T> extends CommonResponse {
 
-    @JsonUnwrapped
     private T result;
 
     /**
