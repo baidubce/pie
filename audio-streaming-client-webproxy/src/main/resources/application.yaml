@@ -1,0 +1,7 @@
+server:
+   port: 8081
+   ssl:
+       key-alias: "search_server"
+       key-store: "classpath:keystore.p12"
+       key-store-password:
+       key-store-type:

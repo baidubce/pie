@@ -15,6 +15,9 @@ import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
+import io.grpc.netty.GrpcSslContexts;
+import io.grpc.netty.NegotiationType;
+import io.grpc.netty.NettyChannelBuilder;
 import org.joda.time.DateTime;
 
 import com.baidu.acu.pie.AsrServiceGrpc;
@@ -45,6 +48,8 @@ import io.grpc.stub.MetadataUtils;
 import io.grpc.stub.StreamObserver;
 import lombok.extern.slf4j.Slf4j;
 
+import javax.net.ssl.SSLException;
+
 /**
  * AsrClientGrpcImpl
  *
@@ -62,14 +67,12 @@ public class AsrClientGrpcImpl implements AsrClient {
 
     public AsrClientGrpcImpl(AsrConfig asrConfig, ChannelConfig channelConfig) {
         this.asrConfig = asrConfig;
-        managedChannel = ManagedChannelBuilder
-                .forAddress(asrConfig.getServerIp(), asrConfig.getServerPort())
-                .usePlaintext()
-                .keepAliveTime(channelConfig.getKeepAliveTime().getTime(),
-                        channelConfig.getKeepAliveTime().getTimeUnit())
-                .keepAliveTimeout(channelConfig.getKeepAliveTimeout().getTime(),
-                        channelConfig.getKeepAliveTimeout().getTimeUnit())
-                .build();
+
+        if (asrConfig.isSslUseFlag()) {
+            managedChannel = initSslManagedChannel(asrConfig, channelConfig);
+        } else {
+            managedChannel = initManagedChannel(asrConfig, channelConfig);
+        }
 
         asyncStub = AsrServiceGrpc.newStub(managedChannel);
     }
@@ -238,6 +241,35 @@ public class AsrClientGrpcImpl implements AsrClient {
                 .finishLatch(finishLatch)
                 .fragmentSize(getFragmentSize(requestMetaData))
                 .build();
+    }
+
+    private ManagedChannel initManagedChannel(AsrConfig asrConfig, ChannelConfig channelConfig) {
+
+        return ManagedChannelBuilder
+                .forAddress(asrConfig.getServerIp(), asrConfig.getServerPort())
+                .usePlaintext()
+                .keepAliveTime(channelConfig.getKeepAliveTime().getTime(),
+                        channelConfig.getKeepAliveTime().getTimeUnit())
+                .keepAliveTimeout(channelConfig.getKeepAliveTimeout().getTime(),
+                        channelConfig.getKeepAliveTimeout().getTimeUnit())
+                .build();
+    }
+
+    private ManagedChannel initSslManagedChannel(AsrConfig asrConfig, ChannelConfig channelConfig) {
+        try {
+            return NettyChannelBuilder
+                    .forAddress(asrConfig.getServerIp(), asrConfig.getServerPort())
+                    .keepAliveTime(channelConfig.getKeepAliveTime().getTime(),
+                            channelConfig.getKeepAliveTime().getTimeUnit())
+                    .keepAliveTimeout(channelConfig.getKeepAliveTimeout().getTime(),
+                            channelConfig.getKeepAliveTimeout().getTimeUnit())
+                    .negotiationType(NegotiationType.TLS)
+                    .sslContext(GrpcSslContexts.forClient()
+                            .trustManager(new File(asrConfig.getSslPath())).build())
+                    .build();
+        } catch (SSLException e) {
+            throw new AsrClientException("build ssl client failed");
+        }
     }
 
     private Metadata prepareMetadata(RequestMetaData requestMetaData) {

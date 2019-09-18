@@ -74,6 +74,17 @@ public class AsrConfig {
      */
     private String token;
 
+    /**
+     * ssl使用标志
+     */
+    @Builder.Default
+    private boolean sslUseFlag = false;
+
+    /**
+     * ssl客户端根证书路径
+     */
+    private String sslPath;
+
     @Deprecated
     public AsrConfig serverIp(String serverIp) {
         this.serverIp = serverIp;
