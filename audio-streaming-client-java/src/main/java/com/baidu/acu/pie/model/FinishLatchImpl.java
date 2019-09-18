@@ -1,11 +1,14 @@
 package com.baidu.acu.pie.model;
 
-import com.baidu.acu.pie.client.Consumer;
-import com.baidu.acu.pie.exception.AsrException;
-
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
+import com.baidu.acu.pie.client.Consumer;
+import com.baidu.acu.pie.exception.AsrException;
+
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class FinishLatchImpl implements FinishLatch {
     private CountDownLatch latch = new CountDownLatch(1);
     private transient AsrException throwable;
@@ -54,6 +57,6 @@ public class FinishLatchImpl implements FinishLatch {
     public void fail(AsrException throwable) {
         this.throwable = throwable;
         this.finish();
-        System.out.println("Failed and finish");
+        log.error("Failed and finish");
     }
 }
