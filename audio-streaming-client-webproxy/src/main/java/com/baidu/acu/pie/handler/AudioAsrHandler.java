@@ -3,19 +3,19 @@ package com.baidu.acu.pie.handler;
 import com.baidu.acu.pie.client.AsrClient;
 import com.baidu.acu.pie.client.AsrClientFactory;
 import com.baidu.acu.pie.model.AsrConfig;
-import com.baidu.acu.pie.model.AsrProduct;
 import com.baidu.acu.pie.model.RecognitionResult;
 import com.baidu.acu.pie.model.RequestMetaData;
 import com.baidu.acu.pie.model.StreamContext;
 import com.baidu.acu.pie.model.response.ServerResponse;
-import com.baidu.acu.pie.model.result.MediaResult;
+import com.baidu.acu.pie.model.result.AsrResult;
 import com.baidu.acu.pie.service.SessionManager;
 import lombok.extern.slf4j.Slf4j;
 import org.joda.time.DateTime;
 
 import javax.websocket.Session;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * asr解析处理
@@ -24,7 +24,7 @@ import java.util.ArrayList;
 public class AudioAsrHandler implements Runnable {
 
     private Session session;
-    private ArrayList<byte[]> queue;
+    private Queue<byte[]> queue;
     private SessionManager sessionManager;
 
 
@@ -32,8 +32,7 @@ public class AudioAsrHandler implements Runnable {
         this.session = session;
         this.sessionManager = sessionManager;
 
-        //TODO 暂时不考虑性能，先确保队列先进先处理，后期改成queue优化
-        queue = new ArrayList<>(10000);
+        queue = new ConcurrentLinkedQueue<>();
     }
 
     @Override
@@ -50,7 +49,6 @@ public class AudioAsrHandler implements Runnable {
 
         RequestMetaData requestMetaData = createRequestMeta();
 
-        // 发送asr数据
         StreamContext streamContext = asrClient.asyncRecognize(it -> {
             log.info(
                     DateTime.now().toString() + "\t" + Thread.currentThread().getId() +
@@ -64,8 +62,8 @@ public class AudioAsrHandler implements Runnable {
             int waitingCount = 0;
             while (waitingCount <= 100) {
 
-                if (queue.size() > 0) {
-                    byte[] data =  queue.remove(0);
+                if (!queue.isEmpty()) {
+                    byte[] data =  queue.poll();
                     waitingCount = 0;
                     streamContext.send(data);
                 } else {
@@ -110,11 +108,11 @@ public class AudioAsrHandler implements Runnable {
      * 处理识别结果
      */
     private void handlerRecognitionResult (RecognitionResult result) {
-        MediaResult mediaResult = new MediaResult();
-        mediaResult.setAsrResult(result.getResult());
-        mediaResult.setCompleted(result.isCompleted());
-        mediaResult.setFinished(false);
-        ServerResponse<MediaResult> response = ServerResponse.successResponse(mediaResult);
+        AsrResult asrResult = new AsrResult();
+        asrResult.setAsrResult(result.getResult());
+        asrResult.setCompleted(result.isCompleted());
+        asrResult.setFinished(false);
+        ServerResponse<AsrResult> response = ServerResponse.successResponse(asrResult);
 
         try {
             session.getBasicRemote().sendText(response.toString());
@@ -132,5 +130,4 @@ public class AudioAsrHandler implements Runnable {
         queue.add(copy);
 
     }
-
 }

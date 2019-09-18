@@ -5,22 +5,21 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import javax.websocket.CloseReason;
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
 import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
 /**
  *  webSocket message接收处理类
  */
 @Slf4j
 @Component
-@ServerEndpoint(value="/ws/v1/videoSearch")
+@ServerEndpoint(value="/ws/v1/asr")
+
 public class MessageHandler {
 
     private static SessionManager sessionManager;
@@ -33,12 +32,13 @@ public class MessageHandler {
 
     @OnOpen
     public void onOpen(Session session) {
-
+        log.info("开启连接：" + session.getId());
     }
 
     @OnClose
-    public void onClose() {
-        System.out.println("关闭连接");
+    public void onClose(Session session, CloseReason reason) {
+        log.info("关闭连接:" + session.getId());
+        sessionManager.unRegister(session);
     }
 
     @OnError
@@ -49,7 +49,7 @@ public class MessageHandler {
     }
 
     /**
-     * 接收字节数组
+     * 接收字节数组(默认是音频流)
      */
     @OnMessage
     public void onMessage(byte[] messages, Session session) {
@@ -63,19 +63,13 @@ public class MessageHandler {
     }
 
     /**
-     * 接收string
+     * 接收string（未作逻辑处理）
      */
     @OnMessage
     public void onMessage(String messages, Session session) {
         try {
 
-            String longAudioFilePath = "/Users/mazhenhua/Desktop/test.wav";
-            try (InputStream audioStream = Files.newInputStream(Paths.get(longAudioFilePath))) {
-                byte[] data = new byte[4096];
-                while (audioStream.read(data) != -1) {
-                    sessionManager.put(session, data);
-                }
-            }
+            session.getBasicRemote().sendText("接收到的信息："+ messages);
 
         } catch (Exception e) {
             // TODO Auto-generated catch block
