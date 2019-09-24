@@ -12,9 +12,9 @@ import lombok.NoArgsConstructor;
  */
 @Data
 public class CommonResponse {
-    private int code;
+    private boolean success;
     private Message message;
-    private String requestId;
+    private String type;
 
     @JsonSetter
     public void setMessage(Message message) {

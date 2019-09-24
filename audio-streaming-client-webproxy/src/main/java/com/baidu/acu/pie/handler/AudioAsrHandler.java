@@ -2,13 +2,16 @@ package com.baidu.acu.pie.handler;
 
 import com.baidu.acu.pie.client.AsrClient;
 import com.baidu.acu.pie.client.AsrClientFactory;
+import com.baidu.acu.pie.constant.RequestType;
 import com.baidu.acu.pie.model.AsrConfig;
 import com.baidu.acu.pie.model.RecognitionResult;
 import com.baidu.acu.pie.model.RequestMetaData;
 import com.baidu.acu.pie.model.StreamContext;
+import com.baidu.acu.pie.model.info.AudioData;
 import com.baidu.acu.pie.model.response.ServerResponse;
 import com.baidu.acu.pie.model.result.AsrResult;
-import com.baidu.acu.pie.service.SessionManager;
+import com.baidu.acu.pie.service.AudioHandlerService;
+import com.baidu.acu.pie.utils.WsUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.joda.time.DateTime;
 
@@ -24,13 +27,16 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public class AudioAsrHandler implements Runnable {
 
     private Session session;
-    private Queue<byte[]> queue;
-    private SessionManager sessionManager;
+    private Queue<AudioData> queue;
+    private AudioHandlerService audioHandlerService;
+    private StreamContext streamContext;
+    private AsrClient asrClient;
+    private String audioId = null;
 
 
-    public AudioAsrHandler(Session session, SessionManager sessionManager) {
+    public AudioAsrHandler(Session session, AudioHandlerService audioHandlerService) {
         this.session = session;
-        this.sessionManager = sessionManager;
+        this.audioHandlerService = audioHandlerService;
 
         queue = new ConcurrentLinkedQueue<>();
     }
@@ -44,28 +50,17 @@ public class AudioAsrHandler implements Runnable {
      * 开启识别过程
      */
     private void asyncRecognition() {
-
-        AsrClient asrClient = createAsrClient();
-
-        RequestMetaData requestMetaData = createRequestMeta();
-
-        StreamContext streamContext = asrClient.asyncRecognize(it -> {
-            log.info(
-                    DateTime.now().toString() + "\t" + Thread.currentThread().getId() +
-                            " receive fragment: " + it);
-            handlerRecognitionResult(it);
-        }, requestMetaData);
-
+        asrClient = createAsrClient();
+        initStreamContext();
         try {
-
             // 10秒等待时间
             int waitingCount = 0;
             while (waitingCount <= 100) {
 
                 if (!queue.isEmpty()) {
-                    byte[] data =  queue.poll();
+                    AudioData audioData = queue.poll();
                     waitingCount = 0;
-                    streamContext.send(data);
+                    send(audioData);
                 } else {
                     Thread.sleep(100);
                     waitingCount ++;
@@ -75,11 +70,22 @@ public class AudioAsrHandler implements Runnable {
             streamContext.getFinishLatch().await();
 
         } catch (Exception e) {
-            e.printStackTrace();
+            log.info("asr recognition occur exception:" + e.getMessage());
         } finally {
             asrClient.shutdown();
-            sessionManager.unRegister(session);
+            audioHandlerService.unRegisterClient(session);
         }
+    }
+
+    /**
+     * 初始化initStreamContext
+     */
+    private void initStreamContext() {
+        RequestMetaData requestMetaData = createRequestMeta();
+        streamContext = asrClient.asyncRecognize(it -> {
+            log.info(DateTime.now().toString() + Thread.currentThread().getId() + " receive fragment: " + it);
+            handlerRecognitionResult(it);
+        }, requestMetaData);
     }
 
     /**
@@ -99,7 +105,7 @@ public class AudioAsrHandler implements Runnable {
         requestMetaData.setSendPackageRatio(1);
         requestMetaData.setSleepRatio(1);
         requestMetaData.setTimeoutMinutes(120);
-        requestMetaData.setEnableFlushData(true);
+        requestMetaData.setEnableFlushData(false);
 
         return requestMetaData;
     }
@@ -111,23 +117,36 @@ public class AudioAsrHandler implements Runnable {
         AsrResult asrResult = new AsrResult();
         asrResult.setAsrResult(result.getResult());
         asrResult.setCompleted(result.isCompleted());
-        asrResult.setFinished(false);
-        ServerResponse<AsrResult> response = ServerResponse.successResponse(asrResult);
+        asrResult.setAudioId(audioId);
+        WsUtil.sendMsgToClient(session, ServerResponse.successStrResponse(asrResult, RequestType.ASR));
 
-        try {
-            session.getBasicRemote().sendText(response.toString());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     /**
      * 向队列中传送数据
      */
-    public synchronized void offer(byte[] data) {
-        byte[] copy = new byte[data.length];
-        System.arraycopy(data, 0, copy, 0, data.length);
-        queue.add(copy);
+    public synchronized void offer(AudioData audioData) {
+        queue.add(audioData);
 
+    }
+
+    /**
+     * 向asr发送数据逻辑，可能包含二进制数组和inputStream两种方式
+     * 若是音频id形式，那么每次处理完该音频后（），再处理下一条音频
+     */
+    private void send(AudioData audioData) throws IOException, InterruptedException {
+        if (audioData.getAudioId() != null) {
+            audioId = audioData.getAudioId();
+            byte[] data = new byte[320];
+            while (audioData.getInputStream().read(data) != -1) {
+                streamContext.send(data);
+            }
+            streamContext.complete();
+            streamContext.getFinishLatch().await();
+            audioId = null;
+            initStreamContext();
+            return;
+        }
+        streamContext.send(audioData.getAudioBytes());
     }
 }

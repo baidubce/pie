@@ -8,6 +8,6 @@ import lombok.Data;
 @Data
 public class AsrResult {
     private String asrResult;
+    private String audioId;
     private boolean isCompleted;
-    private boolean isFinished;
 }

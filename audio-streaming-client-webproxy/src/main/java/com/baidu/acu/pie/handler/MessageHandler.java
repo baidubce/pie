@@ -1,10 +1,12 @@
 package com.baidu.acu.pie.handler;
 
-import com.baidu.acu.pie.service.SessionManager;
+import com.baidu.acu.pie.service.AudioHandlerService;
+import com.baidu.acu.pie.service.LoginHandlerService;
+import com.baidu.acu.pie.service.MessageHandlerService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import javax.websocket.CloseReason;
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
@@ -22,13 +24,25 @@ import javax.websocket.server.ServerEndpoint;
 
 public class MessageHandler {
 
-    private static SessionManager sessionManager;
+    private static MessageHandlerService messageHandlerService;
+    private static LoginHandlerService loginHandlerService;
+    private static AudioHandlerService audioHandlerService;
 
-
-    @PostConstruct
-    public void init() {
-        sessionManager = new SessionManager();
+    @Autowired
+    public void setMessageHandlerService(MessageHandlerService messageHandlerService) {
+        MessageHandler.messageHandlerService = messageHandlerService;
     }
+
+    @Autowired
+    public void setLoginHandlerService(LoginHandlerService loginHandlerService) {
+        MessageHandler.loginHandlerService = loginHandlerService;
+    }
+
+    @Autowired
+    public void setAudioHandlerService(AudioHandlerService audioHandlerService) {
+        MessageHandler.audioHandlerService = audioHandlerService;
+    }
+
 
     @OnOpen
     public void onOpen(Session session) {
@@ -37,14 +51,14 @@ public class MessageHandler {
 
     @OnClose
     public void onClose(Session session, CloseReason reason) {
-        log.info("关闭连接:" + session.getId());
-        sessionManager.unRegister(session);
+        log.info("关闭连接:" + session.getId() +" closeReason:" + reason.toString());
+        loginHandlerService.cancelLogin(session);
     }
 
     @OnError
-    public void onError(Session session, Throwable error){
-        System.out.println("发生错误");
-        sessionManager.unRegister(session);
+    public void onError(Session session, Throwable error) {
+        log.error("发生错误" + error.getMessage());
+        loginHandlerService.cancelLogin(session);
         error.printStackTrace();
     }
 
@@ -52,32 +66,15 @@ public class MessageHandler {
      * 接收字节数组(默认是音频流)
      */
     @OnMessage
-    public void onMessage(byte[] messages, Session session) {
-        try {
-            sessionManager.put(session, messages);
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
+    public void onMessage(Session session, byte[] messages) {
+        audioHandlerService.Handler(messages, session);
     }
 
     /**
      * 接收string（未作逻辑处理）
      */
     @OnMessage
-    public void onMessage(String messages, Session session) {
-        try {
-
-            session.getBasicRemote().sendText("接收到的信息："+ messages);
-
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
+    public void onMessage(Session session, String messages) {
+        messageHandlerService.handler(session, messages);
     }
-
-
-
 }
