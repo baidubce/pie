@@ -4,7 +4,7 @@ import com.baidu.acu.pie.constant.Constant;
 import com.baidu.acu.pie.constant.RequestType;
 import com.baidu.acu.pie.model.response.ServerResponse;
 import com.baidu.acu.pie.utils.JsonUtil;
-import com.baidu.acu.pie.utils.WsUtil;
+import com.baidu.acu.pie.utils.WebSocketUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,10 +26,10 @@ public class MessageHandlerService {
     private final AudioHandlerService audioHandlerService;
     private final TicketHandlerService ticketHandlerService;
 
-    public void handler(Session session, String jsonMessage) {
+    public void handle(Session session, String jsonMessage) {
 
         if (!JsonUtil.keyExist(jsonMessage, Constant.REQUEST_TYPE)) {
-            WsUtil.sendMsgToClient(session, ServerResponse.failureStrResponse(
+            WebSocketUtil.sendMsgToClient(session, ServerResponse.failureStrResponse(
                     "post data does not meet the requirements", RequestType.UNKNOWN));
             return;
         }
@@ -42,15 +42,15 @@ public class MessageHandlerService {
         //按照type选择对应的处理器
         switch (requestType) {
             case CONFIG:
-                configHandlerService.handler(session,data); return;
+                configHandlerService.handle(session,data); return;
             case LOGIN :
-               loginHandlerService.handler(session, data); return;
+               loginHandlerService.handle(session, data); return;
             case ASR:
-                audioHandlerService.handler(session, data); return;
+                audioHandlerService.handle(session, data); return;
             case TICKET:
-                ticketHandlerService.handler(session); return;
+                ticketHandlerService.handle(session); return;
             default:
-                WsUtil.sendMsgToClient(session, ServerResponse.failureStrResponse(
+                WebSocketUtil.sendMsgToClient(session, ServerResponse.failureStrResponse(
                         "type:" + type + " can not handler", RequestType.UNKNOWN));
         }
 

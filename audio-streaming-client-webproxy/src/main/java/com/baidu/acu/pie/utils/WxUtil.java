@@ -17,11 +17,10 @@ public class WxUtil {
     private static volatile String accessToken = "";
     private static volatile String jsApiTicket = "";
     private static volatile long updateTime = 0;
-//    private static final String appId = "wx740e018024415c1e";
-//    private static final String secret = "3dd88a8dfd457f367d02285e0c1a2362";
 
-    private static final String appId = "wx740e018024415c1e";
-    private static final String secret = "3dd88a8dfd457f367d02285e0c1a2362";
+    // 按实际结果填写
+    private static final String appId = "";
+    private static final String secret = "";
 
 
     /**

@@ -11,7 +11,7 @@ import com.baidu.acu.pie.model.info.AudioData;
 import com.baidu.acu.pie.model.response.ServerResponse;
 import com.baidu.acu.pie.model.result.AsrResult;
 import com.baidu.acu.pie.service.AudioHandlerService;
-import com.baidu.acu.pie.utils.WsUtil;
+import com.baidu.acu.pie.utils.WebSocketUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.joda.time.DateTime;
 
@@ -84,7 +84,7 @@ public class AudioAsrHandler implements Runnable {
         RequestMetaData requestMetaData = createRequestMeta();
         streamContext = asrClient.asyncRecognize(it -> {
             log.info(DateTime.now().toString() + Thread.currentThread().getId() + " receive fragment: " + it);
-            handlerRecognitionResult(it);
+            handleRecognitionResult(it);
         }, requestMetaData);
     }
 
@@ -113,12 +113,12 @@ public class AudioAsrHandler implements Runnable {
     /**
      * 处理识别结果
      */
-    private void handlerRecognitionResult (RecognitionResult result) {
+    private void handleRecognitionResult (RecognitionResult result) {
         AsrResult asrResult = new AsrResult();
         asrResult.setAsrResult(result.getResult());
         asrResult.setCompleted(result.isCompleted());
         asrResult.setAudioId(audioId);
-        WsUtil.sendMsgToClient(session, ServerResponse.successStrResponse(asrResult, RequestType.ASR));
+        WebSocketUtil.sendMsgToClient(session, ServerResponse.successStrResponse(asrResult, RequestType.ASR));
 
     }
 

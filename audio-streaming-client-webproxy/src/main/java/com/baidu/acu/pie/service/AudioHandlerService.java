@@ -5,7 +5,7 @@ import com.baidu.acu.pie.constant.RequestType;
 import com.baidu.acu.pie.handler.AudioAsrHandler;
 import com.baidu.acu.pie.model.info.AudioData;
 import com.baidu.acu.pie.model.response.ServerResponse;
-import com.baidu.acu.pie.utils.WsUtil;
+import com.baidu.acu.pie.utils.WebSocketUtil;
 import com.baidu.acu.pie.utils.WxUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,10 +29,10 @@ public class AudioHandlerService {
     /**
      * 处理音频id类型的asr解析
      */
-    public void handler(Session session, String audioId) {
+    public void handle(Session session, String audioId) {
 
         if(!loginHandlerService.userExists(session)) {
-            WsUtil.sendMsgToClient(session,
+            WebSocketUtil.sendMsgToClient(session,
                     ServerResponse.failureStrResponse(Constant.MUST_LOGIN_BEFORE_USE, RequestType.ASR));
             return;
         }
@@ -50,9 +50,9 @@ public class AudioHandlerService {
     /**
      * 处理二进制数据解析
      */
-    public void Handler(byte[] audioBytes, Session session) {
+    public void Handle(byte[] audioBytes, Session session) {
         if(!loginHandlerService.userExists(session)) {
-            WsUtil.sendMsgToClient(session,
+            WebSocketUtil.sendMsgToClient(session,
                     ServerResponse.failureStrResponse(Constant.MUST_LOGIN_BEFORE_USE, RequestType.ASR));
             return;
         }

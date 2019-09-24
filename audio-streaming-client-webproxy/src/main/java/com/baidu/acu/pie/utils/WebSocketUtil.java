@@ -8,7 +8,7 @@ import javax.websocket.Session;
  * 针对webSocket相关的封装
  */
 @Slf4j
-public class WsUtil {
+public class WebSocketUtil {
 
     /**
      * 向客户端发送消息

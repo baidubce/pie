@@ -10,12 +10,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * 将http端口映射至https中处理（可不使用）
+ * 将http端口映射至https中处理（若无https需求，则不要使用）
  */
 @Configuration
 public class HttpsConfiguration {
 
-//     可以将http对外暴露的8080端口，转化为https的端口8081
+    //  可以将http对外暴露的8080端口，转化为https的端口8081
     @Bean
     public Connector connector(){
         Connector connector=new Connector("org.apache.coyote.http11.Http11NioProtocol");

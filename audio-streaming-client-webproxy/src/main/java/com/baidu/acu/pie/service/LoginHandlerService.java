@@ -4,7 +4,7 @@ import com.baidu.acu.pie.constant.RequestType;
 import com.baidu.acu.pie.model.info.LoginData;
 import com.baidu.acu.pie.model.response.ServerResponse;
 import com.baidu.acu.pie.utils.JsonUtil;
-import com.baidu.acu.pie.utils.WsUtil;
+import com.baidu.acu.pie.utils.WebSocketUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,13 +29,13 @@ public class LoginHandlerService {
 
     private Map<String, String> loginUsers = new ConcurrentHashMap<>();
 
-    public void handler(Session session, String data) {
+    public void handle(Session session, String data) {
 
         LoginData loginData = null;
         try {
             loginData = JsonUtil.objectMapper.readValue(data, LoginData.class);
         } catch (IOException e) {
-            WsUtil.sendMsgToClient(session, ServerResponse.failureStrResponse(e.getMessage(), RequestType.LOGIN));
+            WebSocketUtil.sendMsgToClient(session, ServerResponse.failureStrResponse(e.getMessage(), RequestType.LOGIN));
             return;
         }
         //TODO 现在只初始用户名与密码为 test test，后期需要与streaming server一致，或者单独密码
@@ -43,10 +43,10 @@ public class LoginHandlerService {
         String token =  sha256().hashString(rawToken, StandardCharsets.UTF_8).toString();
         if (token.equals(loginData.getToken())) {
             userLogin(session);
-            WsUtil.sendMsgToClient(session, ServerResponse.successStrResponse(RequestType.LOGIN));
+            WebSocketUtil.sendMsgToClient(session, ServerResponse.successStrResponse(RequestType.LOGIN));
             return;
         }
-        WsUtil.sendMsgToClient(session,
+        WebSocketUtil.sendMsgToClient(session,
                 ServerResponse.failureStrResponse("Error in username or password", RequestType.LOGIN));
     }
 
