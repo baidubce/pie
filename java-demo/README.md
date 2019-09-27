@@ -26,3 +26,17 @@
     SyncRecognizeWithStreamAndMetaData
     * 同步识别: 输入一个音频文件,线程会进入等待,直到识别完毕,一次性返回所有结果
     * 使用场景: 通常用于对实时性要求不高的场景,如离线语音分析
+    
+    
+        
+#### 打包方式
+```jshelllanguage
+mvn package assembly:single 
+``` 
+
+#### 运行方式
+类似如下，可以通过
+```shell script
+java -jar java-demo-1.0-SNAPSHOT-jar-with-dependencies.jar --ip=127.0.0.1 --port=8050 --pid=888 --username=admin --password=admin --audio-path=16k.wav --enable-flush-data=false
+# java -jar java-demo-1.0-SNAPSHOT-jar-with-dependencies.jar -h 查看帮助
+```
