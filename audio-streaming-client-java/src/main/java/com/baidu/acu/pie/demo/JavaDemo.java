@@ -2,16 +2,6 @@
 
 package com.baidu.acu.pie.demo;
 
-import java.io.File;
-import java.io.FileFilter;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.List;
-
-import org.joda.time.DateTime;
-import org.joda.time.Duration;
-
 import com.baidu.acu.pie.client.AsrClient;
 import com.baidu.acu.pie.client.AsrClientFactory;
 import com.baidu.acu.pie.client.Consumer;
@@ -20,6 +10,18 @@ import com.baidu.acu.pie.model.AsrProduct;
 import com.baidu.acu.pie.model.RecognitionResult;
 import com.baidu.acu.pie.model.RequestMetaData;
 import com.baidu.acu.pie.model.StreamContext;
+import com.baidu.acu.pie.util.JacksonUtil;
+import org.joda.time.DateTime;
+import org.joda.time.Duration;
+
+import java.io.File;
+import java.io.FileFilter;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * JavaDemo
@@ -56,6 +58,10 @@ public class JavaDemo {
         requestMetaData.setSleepRatio(1);
         requestMetaData.setTimeoutMinutes(120);
         requestMetaData.setEnableFlushData(false);
+        // 随路信息根据需要设置
+        Map<String, Object> extra_info = new HashMap<>();
+        extra_info.put("demo", "java");
+        requestMetaData.setExtraInfo(JacksonUtil.objectToString(extra_info));
 
         return requestMetaData;
     }

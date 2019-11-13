@@ -12,9 +12,10 @@ plugins {
 
 val kotlinVersion by extra("1.3.10")
 val grpcVersion by extra("1.16.1")
+val jacksonVersion by extra("2.9.7")
 
 group = "com.baidu.acu.pie"
-version = "1.1.1"
+version = "1.1.2"
 
 tasks.withType<JavaCompile> {
     sourceCompatibility = "1.7"
@@ -32,6 +33,13 @@ dependencies {
     implementation("org.projectlombok:lombok:1.18.4")
     implementation("io.grpc:grpc-netty:$grpcVersion")
     implementation("io.grpc:grpc-protobuf:$grpcVersion")
+
+    compile("com.fasterxml.jackson.datatype:jackson-datatype-joda:$jacksonVersion")
+    compile("com.fasterxml.jackson.datatype:jackson-datatype-jdk8:$jacksonVersion")
+    compile("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion")
+    compile("com.fasterxml.jackson.core:jackson-databind:$jacksonVersion")
+    compile("com.fasterxml.jackson.core:jackson-annotations:$jacksonVersion")
+
     compile("io.grpc:grpc-stub:$grpcVersion")
     compile("com.google.protobuf:protobuf-java:3.6.1")
     implementation("org.slf4j:slf4j-api:1.7.25")

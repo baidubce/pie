@@ -1,7 +1,6 @@
 package com.baidu.acu.pie.model;
 
 import com.baidu.acu.pie.exception.AsrClientException;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -46,6 +45,11 @@ public class RequestMetaData {
      * 识别单个文件的最大等待时间，默认10分，最长不能超过120分
      */
     private int timeoutMinutes = 10;
+
+    /**
+     * 随路信息
+     **/
+    private String extraInfo = "";
 
     public void setTimeoutMinutes(int timeoutMinutes) {
         if (timeoutMinutes > 120) {
