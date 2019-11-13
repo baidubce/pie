@@ -28,6 +28,8 @@ message InitRequest {
     string expire_time = 11;
     string token = 12;
     ProtoVersion version = 13;
+
+    string extra_info = 14;
 }
 
 message AudioFragmentRequest {

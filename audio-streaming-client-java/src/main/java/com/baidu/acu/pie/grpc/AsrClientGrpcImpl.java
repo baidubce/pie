@@ -2,24 +2,6 @@
 
 package com.baidu.acu.pie.grpc;
 
-import static com.google.common.hash.Hashing.sha256;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
-
-import io.grpc.netty.GrpcSslContexts;
-import io.grpc.netty.NegotiationType;
-import io.grpc.netty.NettyChannelBuilder;
-import org.joda.time.DateTime;
-
 import com.baidu.acu.pie.AsrServiceGrpc;
 import com.baidu.acu.pie.AsrServiceGrpc.AsrServiceStub;
 import com.baidu.acu.pie.AudioStreaming;
@@ -40,15 +22,30 @@ import com.baidu.acu.pie.util.Base64;
 import com.baidu.acu.pie.util.DateTimeParser;
 import com.google.common.base.Strings;
 import com.google.protobuf.ByteString;
-
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.Metadata;
+import io.grpc.netty.GrpcSslContexts;
+import io.grpc.netty.NegotiationType;
+import io.grpc.netty.NettyChannelBuilder;
 import io.grpc.stub.MetadataUtils;
 import io.grpc.stub.StreamObserver;
 import lombok.extern.slf4j.Slf4j;
+import org.joda.time.DateTime;
 
 import javax.net.ssl.SSLException;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+
+import static com.google.common.hash.Hashing.sha256;
 
 /**
  * AsrClientGrpcImpl
@@ -304,6 +301,7 @@ public class AsrClientGrpcImpl implements AsrClient {
                 .setSendPerSeconds(requestMetaData.getSendPerSeconds())
                 .setEnableFlushData(requestMetaData.isEnableFlushData())
                 .setSleepRatio(requestMetaData.getSleepRatio())
+                .setExtraInfo(requestMetaData.getExtraInfo())
                 .build();
 
         Metadata headers = new Metadata();
