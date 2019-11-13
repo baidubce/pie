@@ -31,7 +31,8 @@ class AsrClient(object):
                  app_name='python',
                  log_level=4,
                  user_name=None,
-                 password=None):
+                 password=None,
+                 extra_info=""):
         # asr流式服务器的地址，私有化版本请咨询供应商
         self.server_ip = server_ip
         # asr流式服务的端口，私有化版本请咨询供应商
@@ -51,6 +52,7 @@ class AsrClient(object):
         self.request.app_name = app_name
         # 服务端的日志输出级别
         self.request.log_level = log_level
+        self.request.extra_info = extra_info
         if user_name and password is not None:
             # 用户名
             self.request.user_name = user_name
