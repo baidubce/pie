@@ -20,7 +20,7 @@ def run():
                            user_name=user_name,
                            password=password)
 
-        responses = client.get_result("/Users/xiashuai01/Downloads/10s.wav")
+        responses = client.get_result("testaudio/1.wav")
         try:
             for response in responses:
                 if response.type == baidu_acu_asr.audio_streaming_pb2.FRAGMENT_DATA:
