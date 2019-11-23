@@ -18,7 +18,7 @@ import (
 )
 
 var (
-	serverAddr         = flag.String("server_addr", "10.190.115.11:8055", "The server address in the format of host:port")
+	serverAddr         = flag.String("server_addr", "127.0.0.1:8051", "The server address in the format of host:port")
 )
 
 type Product struct {
@@ -64,9 +64,9 @@ func generateInitRequest() pb.InitRequest {
 		SleepRatio:       1,
 		AppName:          "go",
 		LogLevel:         0,
-		UserName:         "testcommon00",
+		UserName:         "123",
 	}
-	password := "00nomnoctset"
+	password := "123"
 	nowTime := time.Now().Format("2006-01-02T15:04:05Z")
 	content.ExpireTime = nowTime
 	content.Token = hashToken(content.UserName, password, nowTime)
