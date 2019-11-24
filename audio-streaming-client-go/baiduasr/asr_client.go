@@ -5,6 +5,7 @@ import (
 	"bufio"
 	"context"
 	"crypto/sha256"
+	b64 "encoding/base64"
 	"encoding/hex"
 	"flag"
 	"github.com/golang/protobuf/proto"
@@ -14,27 +15,26 @@ import (
 	"log"
 	"os"
 	"time"
-	b64 "encoding/base64"
 )
 
 var (
-	serverAddr         = flag.String("server_addr", "127.0.0.1:8051", "The server address in the format of host:port")
+	serverAddr = flag.String("server_addr", "127.0.0.1:8051", "The server address in the format of host:port")
 )
 
 type Product struct {
-	name, productId	string
-	sampleRate	int
+	name, productId string
+	sampleRate      int
 }
 
-var	CUSTOMER_SERVICE = Product{name: "客服模型", productId: "1903", sampleRate: 8000}
-var	CUSTOMER_SERVICE_TOUR = Product{name: "客服模型：旅游领域", productId: "1904", sampleRate: 8000}
-var	CUSTOMER_SERVICE_STOCK = Product{name: "客服模型：股票领域", productId: "1905", sampleRate: 8000}
-var	CUSTOMER_SERVICE_FINANCE = Product{name: "客服模型：金融领域", productId: "1906", sampleRate: 8000}
-var	CUSTOMER_SERVICE_ENERGY = Product{name: "客服模型：能源领域", productId: "1907", sampleRate: 8000}
-var	INPUT_METHOD = Product{name: "输入法模型", productId: "888", sampleRate: 16000}
-var	FAR_FIELD = Product{name: "远场模型", productId: "1888", sampleRate: 16000}
-var	FAR_FIELD_ROBOT = Product{name: "远场模型：机器人领域", productId: "1889", sampleRate: 16000}
-var	SPEECH_SERVICE = Product{name: "演讲模型：听清", productId: "1912", sampleRate: 16000}
+var CUSTOMER_SERVICE = Product{name: "客服模型", productId: "1903", sampleRate: 8000}
+var CUSTOMER_SERVICE_TOUR = Product{name: "客服模型：旅游领域", productId: "1904", sampleRate: 8000}
+var CUSTOMER_SERVICE_STOCK = Product{name: "客服模型：股票领域", productId: "1905", sampleRate: 8000}
+var CUSTOMER_SERVICE_FINANCE = Product{name: "客服模型：金融领域", productId: "1906", sampleRate: 8000}
+var CUSTOMER_SERVICE_ENERGY = Product{name: "客服模型：能源领域", productId: "1907", sampleRate: 8000}
+var INPUT_METHOD = Product{name: "输入法模型", productId: "888", sampleRate: 16000}
+var FAR_FIELD = Product{name: "远场模型", productId: "1888", sampleRate: 16000}
+var FAR_FIELD_ROBOT = Product{name: "远场模型：机器人领域", productId: "1889", sampleRate: 16000}
+var SPEECH_SERVICE = Product{name: "演讲模型：听清", productId: "1912", sampleRate: 16000}
 
 var product = CUSTOMER_SERVICE_FINANCE
 
@@ -46,7 +46,7 @@ func check(e error) {
 
 func hashToken(username string, password string, time string) string {
 	hash := sha256.New()
-	hash.Write([]byte(username+password+time))
+	hash.Write([]byte(username + password + time))
 	bs := hash.Sum(nil)
 	hexBs := hex.EncodeToString(bs)
 	return hexBs
@@ -107,21 +107,21 @@ func main() {
 		}
 	}()
 
-	f, err := os.Open("testaudio/bj8k.wav")
-	bufferReader := bufio.NewReader(f)
+	audioFile, err := os.Open("testaudio/bj8k.wav")
+	bufferReader := bufio.NewReader(audioFile)
 
 	sendPackageSize := int(headers.SendPerSeconds * float64(product.sampleRate) * 2)
-	b1 := make([]byte, sendPackageSize)
+	audioBytes := make([]byte, sendPackageSize)
 
 	for {
-		numBytesRead, err := bufferReader.Read(b1)
+		numBytesRead, err := bufferReader.Read(audioBytes)
 		if err == io.EOF {
 			break
 		}
 		log.Printf("%d bytes", numBytesRead)
 
 		request := pb.AudioFragmentRequest{
-			AudioData:     b1,
+			AudioData: audioBytes,
 		}
 
 		if err := stream.Send(&request); err != nil {
