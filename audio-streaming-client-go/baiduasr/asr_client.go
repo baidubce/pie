@@ -107,6 +107,8 @@ func main() {
 	}()
 
 	audioFile, err := os.Open(audioFile)
+	check(err)
+	defer audioFile.Close()
 	bufferReader := bufio.NewReader(audioFile)
 
 	sendPackageSize := int(headers.SendPerSeconds * float64(sampleRate) * 2)

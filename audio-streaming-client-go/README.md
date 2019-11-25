@@ -5,7 +5,6 @@ go run baiduasr/asr_client.go -server_addr=127.0.0.1:8051 -username 123 -passwor
 ```
 
 # 依赖
-本部分省略`go.mod`文件的编写
 ```shell script
 github.com/golang/protobuf/proto v1.3.2
 google.golang.org/grpc 1.26.0-dev
