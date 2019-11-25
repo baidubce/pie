@@ -19,6 +19,8 @@ import (
 	"google.golang.org/grpc/metadata"
 )
 
+const TIME_FORMAT string = "2006-01-02T15:04:05Z"
+
 var (
 	serverAddr = flag.String("server_addr", "127.0.0.1:8051", "The server address in the format of host:port")
 )
@@ -64,7 +66,7 @@ func generateInitRequest() pb.InitRequest {
 		LogLevel:         0,
 		UserName:         username,
 	}
-	nowTime := time.Now().Format("2006-01-02T15:04:05Z")
+	nowTime := time.Now().Format(TIME_FORMAT)
 	content.ExpireTime = nowTime
 	content.Token = hashToken(nowTime)
 	return content
