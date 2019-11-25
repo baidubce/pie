@@ -21,22 +21,23 @@ var (
 	serverAddr = flag.String("server_addr", "127.0.0.1:8051", "The server address in the format of host:port")
 )
 
+var username, password, productId, audioFile string
+var sampleRate int
+var enableFlushData bool
+
+func init() {
+	flag.StringVar(&username, "username", "123", "The username to login streaming server")
+	flag.StringVar(&password, "password", "123", "The password to login streaming server")
+	flag.StringVar(&productId, "product_id", "1903", "The pid for ASR engine'")
+	flag.IntVar(&sampleRate, "sample_rate", 8000, "The sample rate for ASR engine")
+	flag.StringVar(&audioFile, "audio_file", "testaudio/bj8k.wav", "The audio file path")
+	flag.BoolVar(&enableFlushData, "enable_flush_data", true, "enable flush data")
+}
+
 type Product struct {
 	name, productId string
 	sampleRate      int
 }
-
-var CUSTOMER_SERVICE = Product{name: "客服模型", productId: "1903", sampleRate: 8000}
-var CUSTOMER_SERVICE_TOUR = Product{name: "客服模型：旅游领域", productId: "1904", sampleRate: 8000}
-var CUSTOMER_SERVICE_STOCK = Product{name: "客服模型：股票领域", productId: "1905", sampleRate: 8000}
-var CUSTOMER_SERVICE_FINANCE = Product{name: "客服模型：金融领域", productId: "1906", sampleRate: 8000}
-var CUSTOMER_SERVICE_ENERGY = Product{name: "客服模型：能源领域", productId: "1907", sampleRate: 8000}
-var INPUT_METHOD = Product{name: "输入法模型", productId: "888", sampleRate: 16000}
-var FAR_FIELD = Product{name: "远场模型", productId: "1888", sampleRate: 16000}
-var FAR_FIELD_ROBOT = Product{name: "远场模型：机器人领域", productId: "1889", sampleRate: 16000}
-var SPEECH_SERVICE = Product{name: "演讲模型：听清", productId: "1912", sampleRate: 16000}
-
-var product = CUSTOMER_SERVICE_FINANCE
 
 func check(e error) {
 	if e != nil {
@@ -44,7 +45,7 @@ func check(e error) {
 	}
 }
 
-func hashToken(username string, password string, time string) string {
+func hashToken(time string) string {
 	hash := sha256.New()
 	hash.Write([]byte(username + password + time))
 	bs := hash.Sum(nil)
@@ -57,23 +58,24 @@ func generateInitRequest() pb.InitRequest {
 	content := pb.InitRequest{
 		EnableLongSpeech: true,
 		EnableChunk:      true,
-		EnableFlushData:  true,
-		ProductId:        product.productId,
+		EnableFlushData:  enableFlushData,
+		ProductId:        productId,
 		SamplePointBytes: 1,
 		SendPerSeconds:   0.02,
 		SleepRatio:       1,
 		AppName:          "go",
 		LogLevel:         0,
-		UserName:         "123",
+		UserName:         username,
 	}
-	password := "123"
 	nowTime := time.Now().Format("2006-01-02T15:04:05Z")
 	content.ExpireTime = nowTime
-	content.Token = hashToken(content.UserName, password, nowTime)
+	content.Token = hashToken(nowTime)
 	return content
 }
 
 func main() {
+	flag.Parse()
+
 	conn, err := grpc.Dial(*serverAddr, grpc.WithInsecure(), grpc.WithBlock())
 	check(err)
 	defer conn.Close()
@@ -107,10 +109,10 @@ func main() {
 		}
 	}()
 
-	audioFile, err := os.Open("testaudio/bj8k.wav")
+	audioFile, err := os.Open(audioFile)
 	bufferReader := bufio.NewReader(audioFile)
 
-	sendPackageSize := int(headers.SendPerSeconds * float64(product.sampleRate) * 2)
+	sendPackageSize := int(headers.SendPerSeconds * float64(sampleRate) * 2)
 	audioBytes := make([]byte, sendPackageSize)
 
 	for {
