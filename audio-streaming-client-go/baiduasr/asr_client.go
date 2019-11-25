@@ -2,19 +2,21 @@ package main
 
 import (
 	pb "../protogen"
+
 	"bufio"
 	"context"
 	"crypto/sha256"
 	b64 "encoding/base64"
 	"encoding/hex"
 	"flag"
-	"github.com/golang/protobuf/proto"
-	"google.golang.org/grpc"
-	"google.golang.org/grpc/metadata"
 	"io"
 	"log"
 	"os"
 	"time"
+
+	"github.com/golang/protobuf/proto"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/metadata"
 )
 
 var (
@@ -32,11 +34,6 @@ func init() {
 	flag.IntVar(&sampleRate, "sample_rate", 8000, "The sample rate for ASR engine")
 	flag.StringVar(&audioFile, "audio_file", "testaudio/bj8k.wav", "The audio file path")
 	flag.BoolVar(&enableFlushData, "enable_flush_data", true, "enable flush data")
-}
-
-type Product struct {
-	name, productId string
-	sampleRate      int
 }
 
 func check(e error) {
