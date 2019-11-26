@@ -40,12 +40,12 @@ public class JavaDemo {
         // asrConfig构造后就不可修改
         // 当使用ssl client时，需要配置字段sslUseFlag以及sslPath
         AsrConfig asrConfig = AsrConfig.builder()
-                .serverIp("10.190.115.11")
+                .serverIp("127.0.0.1")
                 .serverPort(8051)
                 .appName("simpleDemo")
                 .product(AsrProduct.CUSTOMER_SERVICE_FINANCE)
-                .userName("testcommon00")
-                .password("00nomnoctset")
+                .userName("test")
+                .password("test")
 //                .sslUseFlag(true)
 //                .sslPath("ca.crt")
                 .build();
