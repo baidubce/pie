@@ -13,6 +13,7 @@ plugins {
 val kotlinVersion by extra("1.3.10")
 val grpcVersion by extra("1.16.1")
 val jacksonVersion by extra("2.9.7")
+var retrofitVersion by extra("2.5.0")
 
 group = "com.baidu.acu.pie"
 version = "1.1.2"
@@ -39,6 +40,10 @@ dependencies {
     compile("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion")
     compile("com.fasterxml.jackson.core:jackson-databind:$jacksonVersion")
     compile("com.fasterxml.jackson.core:jackson-annotations:$jacksonVersion")
+
+    compile("com.squareup.retrofit2:retrofit:$retrofitVersion")
+    compile("com.squareup.retrofit2:converter-scalars:$retrofitVersion")
+    compile("com.squareup.retrofit2:converter-jackson:$retrofitVersion")
 
     compile("io.grpc:grpc-stub:$grpcVersion")
     compile("com.google.protobuf:protobuf-java:3.6.1")
