@@ -16,7 +16,7 @@ val jacksonVersion by extra("2.9.7")
 var retrofitVersion by extra("2.5.0")
 
 group = "com.baidu.acu.pie"
-version = "1.1.2"
+version = "1.1.2.1"
 
 tasks.withType<JavaCompile> {
     sourceCompatibility = "1.7"
