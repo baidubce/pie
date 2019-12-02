@@ -10,7 +10,6 @@ import com.baidu.acu.pie.model.AsrProduct;
 import com.baidu.acu.pie.model.RecognitionResult;
 import com.baidu.acu.pie.model.RequestMetaData;
 import com.baidu.acu.pie.model.StreamContext;
-import com.baidu.acu.pie.retrofit.model.KafkaHttpConfig;
 import com.baidu.acu.pie.util.JacksonUtil;
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
@@ -40,24 +39,17 @@ public class JavaDemo {
         // asrConfig构造后就不可修改
         // 当使用ssl client时，需要配置字段sslUseFlag以及sslPath
         AsrConfig asrConfig = AsrConfig.builder()
-                .serverIp("127.0.0.1")
+                .serverIp("asr.baiduai.cloud")
                 .serverPort(8051)
                 .appName("simpleDemo")
                 .product(AsrProduct.CUSTOMER_SERVICE_FINANCE)
-                .userName("test")
-                .password("test")
+                .userName("testcommon00")
+                .password("00nomnoctset")
 //                .sslUseFlag(true)
 //                .sslPath("ca.crt")
                 .build();
 
-        KafkaHttpConfig kafkaHttpConfig = KafkaHttpConfig.builder()
-                .server("10.136.172.23")
-                .port(8995)
-                .build();
-
-
-
-        return AsrClientFactory.buildClient(asrConfig, kafkaHttpConfig);
+        return AsrClientFactory.buildClient(asrConfig);
     }
 
     private RequestMetaData createRequestMeta() {
@@ -79,7 +71,9 @@ public class JavaDemo {
      */
     public void recognizeFileWithRequestMeta() {
         File audioFile = new File("testaudio/10s.wav");
+
         AsrClient asrClient = createAsrClient();
+
         DateTime startTime = DateTime.now();
         List<RecognitionResult> results = asrClient.syncRecognize(audioFile, createRequestMeta());
         DateTime endTime = DateTime.now();
@@ -138,13 +132,6 @@ public class JavaDemo {
     public void asyncRecognition() {
         String longAudioFilePath = "testaudio/1.wav";
         AsrClient asrClient = createAsrClient();
-        asrClient.setSessionId("123123");
-
-        // 随路信息根据需要设置
-        Map<String, Object> extra_info = new HashMap<>();
-        extra_info.put("demo", "java");
-        asrClient.setIncludedInfo(extra_info);
-
 
         RequestMetaData requestMetaData = createRequestMeta();
 

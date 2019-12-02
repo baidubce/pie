@@ -2,14 +2,13 @@
 
 package com.baidu.acu.pie.client;
 
-import com.baidu.acu.pie.model.RecognitionResult;
-import com.baidu.acu.pie.model.RequestMetaData;
-import com.baidu.acu.pie.model.StreamContext;
-
 import java.io.File;
 import java.io.InputStream;
 import java.util.List;
-import java.util.Map;
+
+import com.baidu.acu.pie.model.RecognitionResult;
+import com.baidu.acu.pie.model.RequestMetaData;
+import com.baidu.acu.pie.model.StreamContext;
 
 /**
  * AsrClient
@@ -80,16 +79,6 @@ public interface AsrClient {
      * 在发送的时候，需要设置发包大小，该方法返回最佳发包大小。
      */
     int getFragmentSize(RequestMetaData requestMetaData);
-
-    /**
-     * 随路信息设置
-     **/
-    void setIncludedInfo(Map<String, Object> info);
-
-    /**
-     * 为了接入kafka的http，单独传入session id
-     **/
-    void setSessionId(String sessionId);
 
     void shutdown();
 }

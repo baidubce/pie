@@ -18,9 +18,6 @@ import com.baidu.acu.pie.model.FinishLatchImpl;
 import com.baidu.acu.pie.model.RecognitionResult;
 import com.baidu.acu.pie.model.RequestMetaData;
 import com.baidu.acu.pie.model.StreamContext;
-import com.baidu.acu.pie.retrofit.KafkaHttpClient;
-import com.baidu.acu.pie.retrofit.model.KafkaHttpConfig;
-import com.baidu.acu.pie.retrofit.model.KafkaHttpRequestBody;
 import com.baidu.acu.pie.util.Base64;
 import com.baidu.acu.pie.util.DateTimeParser;
 import com.google.common.base.Strings;
@@ -35,7 +32,6 @@ import io.grpc.stub.MetadataUtils;
 import io.grpc.stub.StreamObserver;
 import lombok.extern.slf4j.Slf4j;
 import org.joda.time.DateTime;
-import org.joda.time.LocalTime;
 
 import javax.net.ssl.SSLException;
 import java.io.File;
@@ -46,7 +42,6 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
@@ -63,10 +58,6 @@ public class AsrClientGrpcImpl implements AsrClient {
     private final AsrServiceStub asyncStub;
     private AsrConfig asrConfig;
 
-    private Map<String, Object> includedInfo;
-    private KafkaHttpConfig kafkaHttpConfig;
-    private String sessionId;
-
     public AsrClientGrpcImpl(AsrConfig asrConfig) {
         this(asrConfig, ChannelConfig.builder().build());
     }
@@ -81,23 +72,6 @@ public class AsrClientGrpcImpl implements AsrClient {
         }
 
         asyncStub = AsrServiceGrpc.newStub(managedChannel);
-    }
-
-    public AsrClientGrpcImpl(AsrConfig asrConfig, KafkaHttpConfig kafkaHttpConfig) {
-        this(asrConfig, ChannelConfig.builder().build(), kafkaHttpConfig);
-    }
-
-    public AsrClientGrpcImpl(AsrConfig asrConfig, ChannelConfig channelConfig, KafkaHttpConfig kafkaHttpConfig) {
-        this.asrConfig = asrConfig;
-
-        if (asrConfig.isSslUseFlag()) {
-            managedChannel = initSslManagedChannel(asrConfig, channelConfig);
-        } else {
-            managedChannel = initManagedChannel(asrConfig, channelConfig);
-        }
-
-        asyncStub = AsrServiceGrpc.newStub(managedChannel);
-        this.kafkaHttpConfig = kafkaHttpConfig;
     }
 
     @Override
@@ -117,9 +91,9 @@ public class AsrClientGrpcImpl implements AsrClient {
     @Override
     public int getFragmentSize(RequestMetaData requestMetaData) {
         return (int) (asrConfig.getProduct().getSampleRate()
-                * requestMetaData.getSendPackageRatio()
-                * requestMetaData.getSendPerSeconds()
-                * Constants.DEFAULT_BIT_DEPTH); // bit-depth
+                              * requestMetaData.getSendPackageRatio()
+                              * requestMetaData.getSendPerSeconds()
+                              * Constants.DEFAULT_BIT_DEPTH); // bit-depth
     }
 
     @Override
@@ -167,7 +141,7 @@ public class AsrClientGrpcImpl implements AsrClient {
     }
 
     private CountDownLatch sendRequests(InputStream inputStream, RequestMetaData requestMetaData,
-                                        final List<RecognitionResult> results) {
+            final List<RecognitionResult> results) {
 
         List<AudioFragmentRequest> requests = new ArrayList<>();
         byte[] data = new byte[this.getFragmentSize(requestMetaData)];
@@ -189,16 +163,10 @@ public class AsrClientGrpcImpl implements AsrClient {
 
         StreamObserver<AudioFragmentRequest> requestStreamObserver = stubWithMetadata.send(
                 new StreamObserver<AudioFragmentResponse>() {
-
                     @Override
                     public void onNext(AudioFragmentResponse response) {
                         if (response.getErrorCode() == 0) {
-
-                            RecognitionResult result = fromAudioFragmentResponse(response.getAudioFragment());
-                            if (result.isCompleted()) {
-                                sendToServer(result);
-                            }
-                            results.add(result);
+                            results.add(fromAudioFragmentResponse(response.getAudioFragment()));
                         } else {
                             log.error("response with error: {}, {}",
                                     response.getErrorCode(), response.getErrorMessage());
@@ -239,7 +207,7 @@ public class AsrClientGrpcImpl implements AsrClient {
 
     @Override
     public StreamContext asyncRecognize(final Consumer<RecognitionResult> resultConsumer,
-                                        RequestMetaData requestMetaData) {
+            RequestMetaData requestMetaData) {
         final FinishLatchImpl finishLatch = new FinishLatchImpl();
         AsrServiceStub stubWithMetadata = MetadataUtils.attachHeaders(asyncStub, prepareMetadata(requestMetaData));
 
@@ -247,13 +215,7 @@ public class AsrClientGrpcImpl implements AsrClient {
                 .sender(stubWithMetadata.send(new StreamObserver<AudioFragmentResponse>() {
                     @Override
                     public void onNext(AudioFragmentResponse response) {
-
-                        RecognitionResult result = fromAudioFragmentResponse(response.getAudioFragment());
                         if (response.getErrorCode() == 0) {
-                            if (result.isCompleted()) {
-                                sendToServer(result);
-                            }
-
                             resultConsumer.accept(fromAudioFragmentResponse(response.getAudioFragment()));
                         } else {
                             finishLatch.fail(new AsrException(response.getErrorCode(), response.getErrorMessage()));
@@ -358,40 +320,4 @@ public class AsrClientGrpcImpl implements AsrClient {
                 .build();
     }
 
-    @Override
-    public void setIncludedInfo(Map<String, Object> info) {
-        this.includedInfo = info;
-    }
-
-    @Override
-    public void setSessionId(String sessionId) {
-        this.sessionId = sessionId;
-    }
-
-    private long timeToMillions(LocalTime time) {
-        log.trace("howr: {}, minute: {}, seconde: {}, millis: {}",
-                time.getHourOfDay(),
-                time.getMinuteOfHour(),
-                time.getSecondOfMinute(),
-                time.getMillisOfSecond());
-        return (time.getHourOfDay() * 3600 +
-                time.getMinuteOfHour() * 60 +
-                time.getSecondOfMinute()) * 1000 +
-                time.getMillisOfSecond();
-    }
-
-    private void sendToServer(RecognitionResult result) {
-        KafkaHttpRequestBody requestBody = new KafkaHttpRequestBody();
-        KafkaHttpClient client = new KafkaHttpClient(kafkaHttpConfig.getServer(), kafkaHttpConfig.getPort());
-
-        requestBody.setRecog_result(result.getResult());
-        requestBody.setBegin_time("" + timeToMillions(result.getStartTime()));
-        requestBody.setEnd_time("" + timeToMillions(result.getEndTime()));
-        requestBody.setRecog_type(1);
-
-        requestBody.setSession_param(includedInfo);
-        requestBody.setSession_id(sessionId);
-
-        client.sendRequest(requestBody);
-    }
 }
