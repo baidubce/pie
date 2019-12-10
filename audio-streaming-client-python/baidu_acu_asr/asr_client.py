@@ -26,7 +26,7 @@ class AsrClient(object):
                  enable_chunk=True,
                  enable_long_speech=True,
                  sample_point_bytes=2,
-                 send_per_seconds=0.02,
+                 send_per_seconds=0.16,
                  sleep_ratio=1,
                  app_name='python',
                  log_level=4,

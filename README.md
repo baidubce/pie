@@ -5,7 +5,7 @@
 
 - [audio-streaming-server-java](https://github.com/baidubce/pie/tree/master/audio-streaming-client-java)：java版本client sdk
 
-- [audio-streaming-server-python](https://github.com/baidubce/pie/tree/master/audio-streaming-client-python)：python版本client sdk
+- [audio-streaming-server-python](https://github.com/baidubce/pie/blob/master/audio-streaming-client-python/client_demo_simple.py)：python版本client sdk
 
 - [audio-streaming-server-c#](https://github.com/baidubce/pie/tree/master/audio-streaming-client-c%23)：c#版本client sdk, beta version 
 
