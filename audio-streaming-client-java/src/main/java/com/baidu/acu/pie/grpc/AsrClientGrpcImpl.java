@@ -2,10 +2,25 @@
 
 package com.baidu.acu.pie.grpc;
 
+import static com.google.common.hash.Hashing.sha256;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import javax.net.ssl.SSLException;
+
+import org.joda.time.DateTime;
+
 import com.baidu.acu.pie.AsrServiceGrpc;
 import com.baidu.acu.pie.AsrServiceGrpc.AsrServiceStub;
 import com.baidu.acu.pie.AudioStreaming;
-import com.baidu.acu.pie.AudioStreaming.AudioFragmentRequest;
 import com.baidu.acu.pie.AudioStreaming.AudioFragmentResponse;
 import com.baidu.acu.pie.client.AsrClient;
 import com.baidu.acu.pie.client.Consumer;
@@ -21,7 +36,7 @@ import com.baidu.acu.pie.model.StreamContext;
 import com.baidu.acu.pie.util.Base64;
 import com.baidu.acu.pie.util.DateTimeParser;
 import com.google.common.base.Strings;
-import com.google.protobuf.ByteString;
+
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.Metadata;
@@ -30,22 +45,8 @@ import io.grpc.netty.NegotiationType;
 import io.grpc.netty.NettyChannelBuilder;
 import io.grpc.stub.MetadataUtils;
 import io.grpc.stub.StreamObserver;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.joda.time.DateTime;
-
-import javax.net.ssl.SSLException;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
-
-import static com.google.common.hash.Hashing.sha256;
 
 /**
  * AsrClientGrpcImpl
@@ -122,82 +123,44 @@ public class AsrClientGrpcImpl implements AsrClient {
     }
 
     @Override
+    @SneakyThrows({InterruptedException.class})
     public List<RecognitionResult> syncRecognize(InputStream inputStream, RequestMetaData requestMetaData) {
+        // prepare streamContext
         final List<RecognitionResult> results = new ArrayList<>();
-
-        CountDownLatch finishLatch = this.sendRequests(inputStream, requestMetaData, results);
-
-        try {
-            if (!finishLatch.await(requestMetaData.getTimeoutMinutes(), TimeUnit.MINUTES)) {
-                log.error("Recognition request not finish within {} minutes, maybe the audio is too large",
-                        requestMetaData.getTimeoutMinutes());
+        StreamContext streamContext = this.asyncRecognize(new Consumer<RecognitionResult>() {
+            @Override
+            public void accept(RecognitionResult recognitionResult) {
+                results.add(recognitionResult);
             }
-        } catch (InterruptedException e) {
-            log.error("error when wait for CountDownLatch: ", e);
+        }, requestMetaData);
+
+        // read input stream and send data
+        byte[] data = new byte[this.getFragmentSize(requestMetaData)];
+        try {
+            // TODO 这里一次性将所有数据都发送了出去，如果音频过长，后端asr队列溢出，本次识别就会失败，后续需要进行优化，在发送的时候进行速率控制
+            try {
+                while (inputStream.read(data) != -1) {
+                    streamContext.send(data);
+                }
+            } catch (IOException e) {
+                log.error("Read audio failed: ", e);
+                streamContext.complete();
+                throw new AsrClientException("Read audio failed");
+            }
+        } catch (RuntimeException e) {
+            log.error("send data failed: ", e);
+        } finally {
+            streamContext.complete();
+        }
+
+        // wait for recognition finish
+        if (!streamContext.await(requestMetaData.getTimeoutMinutes(), TimeUnit.MINUTES)) {
+            log.error("Recognition request not finish within {} minutes, maybe the audio is too large",
+                    requestMetaData.getTimeoutMinutes());
         }
 
         log.info("finish recognition request");
         return results;
-    }
-
-    private CountDownLatch sendRequests(InputStream inputStream, RequestMetaData requestMetaData,
-            final List<RecognitionResult> results) {
-
-        List<AudioFragmentRequest> requests = new ArrayList<>();
-        byte[] data = new byte[this.getFragmentSize(requestMetaData)];
-
-        try {
-            while (inputStream.read(data) != -1) {
-                requests.add(AudioFragmentRequest.newBuilder()
-                        .setAudioData(ByteString.copyFrom(data))
-                        .build()
-                );
-            }
-        } catch (IOException e) {
-            log.error("Read audio failed: ", e);
-            throw new AsrClientException("Read audio failed");
-        }
-
-        final CountDownLatch finishLatch = new CountDownLatch(1);
-        AsrServiceStub stubWithMetadata = MetadataUtils.attachHeaders(asyncStub, prepareMetadata(requestMetaData));
-
-        StreamObserver<AudioFragmentRequest> requestStreamObserver = stubWithMetadata.send(
-                new StreamObserver<AudioFragmentResponse>() {
-                    @Override
-                    public void onNext(AudioFragmentResponse response) {
-                        if (response.getErrorCode() == 0) {
-                            results.add(fromAudioFragmentResponse(response.getAudioFragment()));
-                        } else {
-                            log.error("response with error: {}, {}",
-                                    response.getErrorCode(), response.getErrorMessage());
-                        }
-                    }
-
-                    @Override
-                    public void onError(Throwable t) {
-                        log.error("receive response error: ", t);
-                        finishLatch.countDown();
-                    }
-
-                    @Override
-                    public void onCompleted() {
-                        log.info("StreamObserver completed");
-                        finishLatch.countDown();
-                    }
-                });
-
-        try {
-            for (AudioFragmentRequest message : requests) {
-                requestStreamObserver.onNext(message);
-            }
-        } catch (RuntimeException e) {
-            requestStreamObserver.onError(e);
-            log.error("send request failed: ", e);
-        } finally {
-            requestStreamObserver.onCompleted();
-        }
-
-        return finishLatch;
     }
 
     @Override

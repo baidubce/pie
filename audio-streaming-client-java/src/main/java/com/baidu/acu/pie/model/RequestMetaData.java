@@ -1,6 +1,7 @@
 package com.baidu.acu.pie.model;
 
 import com.baidu.acu.pie.exception.AsrClientException;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,6 +18,15 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RequestMetaData {
+    public static final RequestMetaData requestMetaDataForShortRecognize = new RequestMetaData();
+
+    static {
+        requestMetaDataForShortRecognize.setSendPackageRatio(1);
+        requestMetaDataForShortRecognize.setSleepRatio(0);
+        requestMetaDataForShortRecognize.setTimeoutMinutes(2); // 短音频不能超过60s，因此2分钟之内必然返回
+        requestMetaDataForShortRecognize.setEnableFlushData(false);
+    }
+
     /**
      * 是否返回中间翻译结果
      */
