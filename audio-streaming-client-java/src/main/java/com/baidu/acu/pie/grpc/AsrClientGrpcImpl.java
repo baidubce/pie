@@ -5,11 +5,10 @@ package com.baidu.acu.pie.grpc;
 import static com.google.common.hash.Hashing.sha256;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -40,6 +39,7 @@ import com.google.common.base.Strings;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.Metadata;
+import io.grpc.internal.IoUtils;
 import io.grpc.netty.GrpcSslContexts;
 import io.grpc.netty.NegotiationType;
 import io.grpc.netty.NettyChannelBuilder;
@@ -104,17 +104,15 @@ public class AsrClientGrpcImpl implements AsrClient {
 
     @Override
     public List<RecognitionResult> syncRecognize(File audioFile, RequestMetaData requestMetaData) {
-        log.info("start to recognition, file: {}", audioFile);
+        log.info("start to recognition, file: {}", audioFile.getAbsoluteFile().getName());
 
-        InputStream inputStream;
         try {
-            inputStream = new FileInputStream(audioFile);
-        } catch (FileNotFoundException e) {
-            log.error("AudioFile not exists: ", e);
-            throw new AsrClientException("AudioFile not exists");
+            byte[] data = Files.readAllBytes(audioFile.toPath());
+            return this.syncRecognize(data, requestMetaData);
+        } catch (IOException e) {
+            log.error("fail to read file", e);
+            throw new AsrClientException("fail to read file");
         }
-
-        return this.syncRecognize(inputStream, requestMetaData);
     }
 
     @Override
@@ -123,8 +121,19 @@ public class AsrClientGrpcImpl implements AsrClient {
     }
 
     @Override
-    @SneakyThrows({InterruptedException.class})
     public List<RecognitionResult> syncRecognize(InputStream inputStream, RequestMetaData requestMetaData) {
+        try {
+            byte[] data = IoUtils.toByteArray(inputStream);
+            return this.syncRecognize(data, requestMetaData);
+        } catch (IOException e) {
+            log.error("fail to read input stream", e);
+            throw new AsrClientException("fail to read input stream");
+        }
+    }
+
+    @Override
+    @SneakyThrows({InterruptedException.class})
+    public List<RecognitionResult> syncRecognize(byte[] data, RequestMetaData requestMetaData) {
         // prepare streamContext
         final List<RecognitionResult> results = new ArrayList<>();
         StreamContext streamContext = this.asyncRecognize(new Consumer<RecognitionResult>() {
@@ -135,18 +144,9 @@ public class AsrClientGrpcImpl implements AsrClient {
         }, requestMetaData);
 
         // read input stream and send data
-        byte[] data = new byte[this.getFragmentSize(requestMetaData)];
         try {
             // TODO 这里一次性将所有数据都发送了出去，如果音频过长，后端asr队列溢出，本次识别就会失败，后续需要进行优化，在发送的时候进行速率控制
-            try {
-                while (inputStream.read(data) != -1) {
-                    streamContext.send(data);
-                }
-            } catch (IOException e) {
-                log.error("Read audio failed: ", e);
-                streamContext.complete();
-                throw new AsrClientException("Read audio failed");
-            }
+            streamContext.send(data);
         } catch (RuntimeException e) {
             log.error("send data failed: ", e);
         } finally {
