@@ -49,6 +49,14 @@ public interface AsrClient {
     List<RecognitionResult> syncRecognize(InputStream inputStream, RequestMetaData requestMetaData);
 
     /**
+     * 同步识别，输入一个音频文件的 byte[]，线程会进入等待，直到识别完毕，返回结果
+     * 通常用于对实时性要求不高的场景，如离线语音分析
+     *
+     * @param data
+     */
+    List<RecognitionResult> syncRecognize(byte[] data, RequestMetaData requestMetaData);
+
+    /**
      * 异步识别，输入一个语音流，会准实时返回每个句子的结果
      * 用于对实时性要求较高的场景，如会议记录
      *
