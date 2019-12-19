@@ -10,8 +10,13 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.net.ssl.SSLException;
 
@@ -133,10 +138,10 @@ public class AsrClientGrpcImpl implements AsrClient {
 
     @Override
     @SneakyThrows({InterruptedException.class})
-    public List<RecognitionResult> syncRecognize(byte[] data, RequestMetaData requestMetaData) {
+    public List<RecognitionResult> syncRecognize(final byte[] data, final RequestMetaData requestMetaData) {
         // prepare streamContext
         final List<RecognitionResult> results = new ArrayList<>();
-        StreamContext streamContext = this.asyncRecognize(new Consumer<RecognitionResult>() {
+        final StreamContext streamContext = this.asyncRecognize(new Consumer<RecognitionResult>() {
             @Override
             public void accept(RecognitionResult recognitionResult) {
                 results.add(recognitionResult);
@@ -144,14 +149,32 @@ public class AsrClientGrpcImpl implements AsrClient {
         }, requestMetaData);
 
         // read input stream and send data
-        try {
-            // TODO 这里一次性将所有数据都发送了出去，如果音频过长，后端asr队列溢出，本次识别就会失败，后续需要进行优化，在发送的时候进行速率控制
+        double sleepRatio = requestMetaData.getSleepRatio();
+        if (sleepRatio == 0) {
             streamContext.send(data);
-        } catch (RuntimeException e) {
-            log.error("send data failed: ", e);
-        } finally {
-            streamContext.complete();
+        } else {
+            final CountDownLatch sendFinishLatch = new CountDownLatch(1);
+            final AtomicInteger offset = new AtomicInteger(0);
+            final int fragmentSize = streamContext.getFragmentSize();
+            Timer timer = new Timer();
+            timer.scheduleAtFixedRate(new TimerTask() {
+                @Override
+                public void run() {
+                    if (offset.get() < data.length && !streamContext.getFinishLatch().finished()) {
+                        streamContext.send(Arrays.copyOfRange(
+                                data,
+                                offset.get(),
+                                Math.min(offset.addAndGet(fragmentSize), data.length)));
+                    } else {
+                        sendFinishLatch.countDown();
+                    }
+                }
+            }, 0L, (long) (sleepRatio * requestMetaData.getSendPerSeconds() * 1000));
+
+            sendFinishLatch.await(); // blocking wait for all data is send to server
+            timer.cancel();
         }
+        streamContext.complete();
 
         // wait for recognition finish
         if (!streamContext.await(requestMetaData.getTimeoutMinutes(), TimeUnit.MINUTES)) {
