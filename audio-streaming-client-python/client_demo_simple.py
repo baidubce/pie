@@ -30,7 +30,8 @@ def run():
                                  response.audio_fragment.result,
                                  response.audio_fragment.serial_num)
                 else:
-                    logging.warning("type is: %d", response.type)
+                    logging.warning("type is: %d, error code: %d, error message: %d",
+                                    response.type, response.error_code, response.error_message)
 
             break
         except Exception as ex:
