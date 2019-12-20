@@ -1,6 +1,8 @@
 package com.baidu.acu.asr.sync;
 
-import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 
 import com.baidu.acu.pie.client.AsrClient;
@@ -27,11 +29,11 @@ public class SyncRecognizeWithFileAndMetaData {
     private static String passWord = "";    // 密码, 请联系百度相关人员进行申请
     private static String audioPath = ""; // 音频文件路径
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         syncRecognizeWithFileAndMetaData();
     }
 
-    private static void syncRecognizeWithFileAndMetaData() {
+    private static void syncRecognizeWithFileAndMetaData() throws IOException {
         // 创建调用asr服务的客户端
         // asrConfig构造后就不可修改
         AsrConfig asrConfig = AsrConfig.builder()
@@ -46,7 +48,7 @@ public class SyncRecognizeWithFileAndMetaData {
         // 创建RequestMetaData
         RequestMetaData requestMetaData = new RequestMetaData();
         requestMetaData.setEnableFlushData(false);// 是否返回中间翻译结果
-        List<RecognitionResult> results = asrClient.syncRecognize(new File(audioPath), requestMetaData);
+        List<RecognitionResult> results = asrClient.syncRecognize(Files.readAllBytes(Paths.get(audioPath)), requestMetaData);
         // don't forget to shutdown !!!
         asrClient.shutdown();
         printResult(results);
