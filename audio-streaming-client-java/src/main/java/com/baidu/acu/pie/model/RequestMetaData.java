@@ -35,7 +35,6 @@ public class RequestMetaData {
     /**
      * 每一帧发送0.02秒的音频数据，本参数 99% 情况下不用修改。
      * 只有在异步准实时场景下，和一些上游系统做对接的时候，可能需要修改。
-     * 比如上游的数据是每隔 10ms 发送过来，那么此时就可以将改参数改成 0.01
      */
     private double sendPerSeconds = 0.02;
 
