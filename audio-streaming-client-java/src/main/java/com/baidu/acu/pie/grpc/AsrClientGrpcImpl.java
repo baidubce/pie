@@ -278,7 +278,6 @@ public class AsrClientGrpcImpl implements AsrClient {
                 .setEnableLongSpeech(true)
                 .setEnableChunk(true)
                 .setEnableFlushData(requestMetaData.isEnableFlushData())
-                .setEnableFlushData(requestMetaData.isEnableFlushData())
                 .setProductId(asrConfig.getProduct().getCode())
                 .setSamplePointBytes(2)
                 .setSendPerSeconds(requestMetaData.getSendPerSeconds())
@@ -295,7 +294,7 @@ public class AsrClientGrpcImpl implements AsrClient {
         Metadata headers = new Metadata();
         String meta_string = Base64.encode(initRequest.toByteArray());
         headers.put(Metadata.Key.of("audio_meta", Metadata.ASCII_STRING_MARSHALLER), meta_string);
-        log.info("meta_string: {}", meta_string);
+        log.info("init request: \n{}meta_string: {}", initRequest.toString(), meta_string);
         return headers;
     }
 

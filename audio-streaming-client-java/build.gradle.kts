@@ -15,7 +15,7 @@ val grpcVersion by extra("1.16.1")
 val jacksonVersion by extra("2.9.7")
 
 group = "com.baidu.acu.pie"
-version = "1.1.5"
+version = "1.1.6"
 
 tasks.withType<JavaCompile> {
     sourceCompatibility = "1.7"
@@ -31,20 +31,22 @@ repositories {
 dependencies {
     annotationProcessor("org.projectlombok:lombok:1.18.4")
     implementation("org.projectlombok:lombok:1.18.4")
-    implementation("io.grpc:grpc-netty:$grpcVersion")
-    implementation("io.grpc:grpc-protobuf:$grpcVersion")
 
-    compile("com.fasterxml.jackson.datatype:jackson-datatype-joda:$jacksonVersion")
-    compile("com.fasterxml.jackson.datatype:jackson-datatype-jdk8:$jacksonVersion")
-    compile("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion")
-    compile("com.fasterxml.jackson.core:jackson-databind:$jacksonVersion")
-    compile("com.fasterxml.jackson.core:jackson-annotations:$jacksonVersion")
-
+    compile("io.grpc:grpc-netty:$grpcVersion")
+    compile("io.grpc:grpc-protobuf:$grpcVersion")
     compile("io.grpc:grpc-stub:$grpcVersion")
     compile("com.google.protobuf:protobuf-java:3.6.1")
-    implementation("org.slf4j:slf4j-api:1.7.25")
+    compile("com.squareup.okhttp3:okhttp:3.12.0") // grpc in android needs this
     compile("joda-time:joda-time:2.10.1")
-    compile("io.netty:netty-tcnative-boringssl-static:2.0.17.Final")
+
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-joda:$jacksonVersion")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jdk8:$jacksonVersion")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion")
+    implementation("com.fasterxml.jackson.core:jackson-databind:$jacksonVersion")
+    implementation("com.fasterxml.jackson.core:jackson-annotations:$jacksonVersion")
+
+    implementation("org.slf4j:slf4j-api:1.7.25")
+    implementation("io.netty:netty-tcnative-boringssl-static:2.0.17.Final")
     testImplementation("org.slf4j:slf4j-simple:1.7.25")
     testImplementation("junit:junit")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
