@@ -27,7 +27,7 @@
         <dependency>
             <groupId>com.baidu.acu.pie</groupId>
             <artifactId>audio-streaming-client-java</artifactId>
-            <version>1.1.4</version>
+            <version>1.1.6</version>
 
             <exclusions>
                 <exclusion>
