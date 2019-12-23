@@ -277,22 +277,25 @@ public class AsrClientGrpcImpl implements AsrClient {
         AudioStreaming.InitRequest initRequest = AudioStreaming.InitRequest.newBuilder()
                 .setEnableLongSpeech(true)
                 .setEnableChunk(true)
+                .setEnableFlushData(requestMetaData.isEnableFlushData())
+                .setEnableFlushData(requestMetaData.isEnableFlushData())
                 .setProductId(asrConfig.getProduct().getCode())
                 .setSamplePointBytes(2)
+                .setSendPerSeconds(requestMetaData.getSendPerSeconds())
+                .setSleepRatio(requestMetaData.getSleepRatio())
                 .setAppName(asrConfig.getAppName())
                 .setLogLevel(asrConfig.getLogLevel().getCode())
                 .setUserName(asrConfig.getUserName())
                 .setExpireTime(expireDateTime)
                 .setToken(digestedToken)
-                .setSendPerSeconds(requestMetaData.getSendPerSeconds())
-                .setEnableFlushData(requestMetaData.isEnableFlushData())
-                .setSleepRatio(requestMetaData.getSleepRatio())
+                .setVersion(AudioStreaming.ProtoVersion.VERSION_1)
                 .setExtraInfo(requestMetaData.getExtraInfo())
                 .build();
 
         Metadata headers = new Metadata();
-        headers.put(Metadata.Key.of("audio_meta", Metadata.ASCII_STRING_MARSHALLER),
-                Base64.encode(initRequest.toByteArray()));
+        String meta_string = Base64.encode(initRequest.toByteArray());
+        headers.put(Metadata.Key.of("audio_meta", Metadata.ASCII_STRING_MARSHALLER), meta_string);
+        log.info("meta_string: {}", meta_string);
         return headers;
     }
 
