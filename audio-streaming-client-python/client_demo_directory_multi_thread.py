@@ -69,7 +69,7 @@ if __name__ == '__main__':
     start_time = time.time()
     handler = AudioHandler()
 
-    audio_path = "/Users/xiashuai01/Downloads/tem"
+    audio_path = "./testaudio"
     audio_files = handler.get_audio_files(audio_path)
     pool = threadpool.ThreadPool(10)
     requests = threadpool.makeRequests(handler.run, audio_files)
