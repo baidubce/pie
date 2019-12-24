@@ -15,10 +15,12 @@ class AudioHandler:
         pass
 
     logging.basicConfig(filename="asr_result.log")
-    url = "180.76.107.131"
+    url = "127.0.0.1"
     port = "8050"
     log_level = 0
-    product_id = AsrProduct.CUSTOMER_SERVICE_FINANCE
+    product_id = "888"
+    sample_rate = 16000
+    product = AsrProduct.CUSTOMER_SERVICE_FINANCE
     enable_flush_data = False
     user_name = "abc"
     password = "123"
@@ -38,7 +40,9 @@ class AudioHandler:
 
     def run(self, file_path):
         while True:
-            client = AsrClient(self.url, self.port, self.product_id, self.enable_flush_data,
+            client = AsrClient(self.url, self.port, None, self.enable_flush_data,
+                               product_id=self.product_id,
+                               sample_rate=self.sample_rate,
                                log_level=self.log_level,
                                send_per_seconds=0.02,
                                user_name=self.user_name,
