@@ -14,13 +14,15 @@ def run():
     :return:
     """
     for i in range(1):
-        client = AsrClient(url, port, product_id, enable_flush_data,
+        client = AsrClient(url, port, None, enable_flush_data,
+                           product_id=product_id,
+                           sample_rate=sample_rate,
                            log_level=log_level,
                            send_per_seconds=0.01,
                            user_name=user_name,
                            password=password)
 
-        responses = client.get_result("testaudio/1.wav")
+        responses = client.get_result("testaudio/xeq16k.wav")
         try:
             for response in responses:
                 if response.type == baidu_acu_asr.audio_streaming_pb2.FRAGMENT_DATA:
@@ -47,7 +49,9 @@ if __name__ == '__main__':
 
     url = "127.0.0.1"
     port = "8050"
-    product_id = AsrProduct.CUSTOMER_SERVICE_TOUR
+    # product_id = AsrProduct.INPUT_METHOD
+    product_id = "888"
+    sample_rate = 16000
     enable_flush_data = True
     user_name = "abc"
     password = "123"

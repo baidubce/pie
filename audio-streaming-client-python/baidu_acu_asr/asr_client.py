@@ -32,7 +32,9 @@ class AsrClient(object):
                  log_level=4,
                  user_name=None,
                  password=None,
-                 extra_info=""):
+                 extra_info="",
+                 product_id="",
+                 sample_rate=0):
         # asr流式服务器的地址，私有化版本请咨询供应商
         self.server_ip = server_ip
         # asr流式服务的端口，私有化版本请咨询供应商
@@ -43,7 +45,16 @@ class AsrClient(object):
         self.request.enable_long_speech = enable_long_speech
         # 是否返回中间翻译结果
         self.request.enable_flush_data = enable_flush_data
-        self.request.product_id = product.value[1]
+        if product is not None:
+            # 兼容使用product的老版本
+            self.request.product_id = product.value[1]
+            # 每次发送的音频字节数
+            self.send_package_size = int(send_per_seconds * product.value[2] * sample_point_bytes)
+        elif product_id == "" or sample_rate == 0:
+            raise RuntimeError('product id and sample rate must be set in AsrClient')
+        else:
+            self.request.product_id = product_id
+            self.send_package_size = int(send_per_seconds * sample_rate * sample_point_bytes)
         self.request.sample_point_bytes = sample_point_bytes
         # 指定每次发送的音频数据包大小，通常不需要修改
         self.request.send_per_seconds = send_per_seconds
@@ -61,8 +72,6 @@ class AsrClient(object):
             self.request.expire_time = expire_time
             # user_name password expire_time 生成的token
             self.request.token = hashlib.sha256((user_name + password + expire_time).encode("utf-8")).hexdigest()
-        # 每次发送的音频字节数
-        self.send_package_size = int(send_per_seconds * product.value[2] * sample_point_bytes)
 
     def generate_file_stream(self, file_path):
         """
