@@ -18,7 +18,6 @@ def run():
                            product_id=product_id,
                            sample_rate=sample_rate,
                            log_level=log_level,
-                           send_per_seconds=0.01,
                            user_name=user_name,
                            password=password)
 

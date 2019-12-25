@@ -20,7 +20,10 @@ class demo:
         log_level = 0
         user_name = "abc"
         password = "123"
-        client = AsrClient(url, port, product_id, enable_flush_data, log_level=log_level, user_name=user_name, password=password)
+        client = AsrClient(url, port, product_id, enable_flush_data,
+                           log_level=log_level,
+                           user_name=user_name,
+                           password=password)
         name = threading.currentThread().getName()
         audio_path = "/Users/lijialong02/code/client/data/10s.wav"
         while i < repeat_num:

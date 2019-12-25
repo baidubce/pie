@@ -69,7 +69,6 @@ def general_fifo_stream():
     """
     client = AsrClient(url, port, product_id, enable_flush_data,
                        log_level=log_level,
-                       send_per_seconds=0.16,
                        user_name=user_name,
                        password=password)
     rf = os.open("/Users/xiashuai01/TranFile/tem/pipe.wav", os.O_RDONLY)
@@ -97,7 +96,6 @@ def run():
     for i in range(5):
         client = AsrClient(url, port, product_id, enable_flush_data,
                            log_level=log_level,
-                           send_per_seconds=0.01,
                            user_name=user_name,
                            password=password)
         responses = client.get_result("/path/of/audio.wav")
@@ -124,7 +122,6 @@ def run():
 def run_stream():
     client = AsrClient(url, port, product_id, enable_flush_data,
                        log_level=log_level,
-                       send_per_seconds=0.01,
                        user_name=user_name,
                        password=password)
     responses = client.get_result_by_stream(record_micro())

@@ -44,7 +44,6 @@ class AudioHandler:
                                product_id=self.product_id,
                                sample_rate=self.sample_rate,
                                log_level=self.log_level,
-                               send_per_seconds=0.02,
                                user_name=self.user_name,
                                password=self.password)
             responses = client.get_result(file_path)
