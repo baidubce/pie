@@ -15,8 +15,10 @@ def record_micro():
     产生流（mac上麦克风读取音频流，需要先brew install portaudio）
     :return:
     """
-    client = AsrClient(url, port, product_id, enable_flush_data,
+    client = AsrClient(url, port, None, enable_flush_data,
                        log_level=log_level,
+                       product_id=product_id,
+                       sample_rate=sample_rate,
                        user_name=user_name,
                        password=password)
     NUM_SAMPLES = 2560  # pyaudio内置缓冲大小
@@ -33,9 +35,10 @@ def generate_file_stream():
     产生流（本地音频流）
     :return:
     """
-    client = AsrClient(url, port, product_id, enable_flush_data,
+    client = AsrClient(url, port, None, enable_flush_data,
                        log_level=log_level,
-                       send_per_seconds=0.16,
+                       product_id=product_id,
+                       sample_rate=sample_rate,
                        user_name=user_name,
                        password=password)
     file_path = "/Users/xiashuai01/TranFile/tem/3.wav"
@@ -50,8 +53,10 @@ def generate_file_stream():
 
 
 def run_file_stream():
-    client = AsrClient(url, port, product_id, enable_flush_data,
+    client = AsrClient(url, port, None, enable_flush_data,
                        log_level=log_level,
+                       product_id=product_id,
+                       sample_rate=sample_rate,
                        user_name=user_name,
                        password=password)
     responses = client.get_result_by_stream(generate_file_stream())
@@ -67,9 +72,10 @@ def general_fifo_stream():
     2.获取流存入管道：ffmpeg -i "http://path/of/video/stream" -vn -acodec pcm_s16le -ac 1 -ar 8000 -f wav pipe:1 > pipe.wav
     :return:
     """
-    client = AsrClient(url, port, product_id, enable_flush_data,
+    client = AsrClient(url, port, None, enable_flush_data,
                        log_level=log_level,
-                       send_per_seconds=0.16,
+                       product_id=product_id,
+                       sample_rate=sample_rate,
                        user_name=user_name,
                        password=password)
     rf = os.open("/Users/xiashuai01/TranFile/tem/pipe.wav", os.O_RDONLY)
@@ -79,8 +85,10 @@ def general_fifo_stream():
 
 
 def run_fifo_stream():
-    client = AsrClient(url, port, product_id, enable_flush_data,
+    client = AsrClient(url, port, None, enable_flush_data,
                        log_level=log_level,
+                       product_id=product_id,
+                       sample_rate=sample_rate,
                        user_name=user_name,
                        password=password)
     responses = client.get_result_by_stream(general_fifo_stream())
@@ -95,9 +103,10 @@ def run():
     :return:
     """
     for i in range(5):
-        client = AsrClient(url, port, product_id, enable_flush_data,
+        client = AsrClient(url, port, None, enable_flush_data,
                            log_level=log_level,
-                           send_per_seconds=0.01,
+                           product_id=product_id,
+                           sample_rate=sample_rate,
                            user_name=user_name,
                            password=password)
         responses = client.get_result("/path/of/audio.wav")
@@ -122,9 +131,10 @@ def run():
 
 
 def run_stream():
-    client = AsrClient(url, port, product_id, enable_flush_data,
+    client = AsrClient(url, port, None, enable_flush_data,
                        log_level=log_level,
-                       send_per_seconds=0.01,
+                       product_id=product_id,
+                       sample_rate=sample_rate,
                        user_name=user_name,
                        password=password)
     responses = client.get_result_by_stream(record_micro())
@@ -144,8 +154,10 @@ def read_streaming_from_url():
     读取url上的流
     :return:
     """
-    client = AsrClient(url, port, product_id, enable_flush_data,
+    client = AsrClient(url, port, None, enable_flush_data,
                        log_level=log_level,
+                       product_id=product_id,
+                       sample_rate=sample_rate,
                        user_name=user_name,
                        password=password)
     data = urllib.request.urlopen(audio_url)
@@ -154,8 +166,10 @@ def read_streaming_from_url():
 
 
 def run_url_streaming():
-    client = AsrClient(url, port, product_id, enable_flush_data,
+    client = AsrClient(url, port, None, enable_flush_data,
                        log_level=log_level,
+                       product_id=product_id,
+                       sample_rate=sample_rate,
                        user_name=user_name,
                        password=password)
     responses = client.get_result_by_stream(read_streaming_from_url())
@@ -170,8 +184,10 @@ if __name__ == '__main__':
 
     url = "127.0.0.1"
     port = "8050"
-    product_id = AsrProduct.CUSTOMER_SERVICE_FINANCE
+    product = AsrProduct.CUSTOMER_SERVICE_FINANCE
     enable_flush_data = True
+    product_id = "888"
+    sample_rate = 16000
     user_name = "abc"
     password = "123"
 

@@ -16,100 +16,30 @@ cd [os]-install
 for file in `ls`;do pip install --no-deps $file;done
 ```
 
-### 读取本地文件
-```python
-# -*-coding:utf-8-*-
-def run():
-    """
-    添加失败重传
-    :return:
-    """
-    for i in range(30):
-        client = AsrClient(url, port, product_id, enable_flush_data, log_level=log_level, user_name=user_name, password=password)
-        responses = client.get_result("/Users/xiashuai01/Downloads/300s.wav")
+### 文件说明
+- client-demo-simple.py
 
-        try:
-            for response in responses:
-                logging.info("%s\t%s\t%s\t%s", response.start_time, response.end_time, response.result, response.serial_num)
-            break
-        except:
-            # 如果出现异常，此处需要重试当前音频
-            logging.error("connect to server error, will create a new channel and retry audio! times : %d", i + 1)
-            time.sleep(0.5)
-```
+仅用于测试离线音频识别
 
-### 读取流文件
-```python
-def generate_file_stream():
-    """
-    产生流（本地音频流）
-    :return:
-    """
-    client = AsrClient(url, port, product_id, enable_flush_data, log_level=log_level, send_per_seconds=0.16, user_name=user_name, password=password)
-    file_path = "/Users/xiashuai01/Downloads/300s.wav"
-    if not os.path.exists(file_path):
-        logging.info("%s file is not exist, please check it!", file_path)
-        os._exit(-1)
-    file = open(file_path, "r")
-    content = file.read(320)
-    while len(content) > 0:
-        yield client.generate_stream_request(content)
-        content = file.read(320)
-        
+- client_demo_directory_multi_process.py
 
-def run_stream():
-    client = AsrClient(url, port, product_id, enable_flush_data, log_level=log_level, user_name=user_name, password=password)
-    responses = client.get_result_by_stream(generate_file_stream())
-    for response in responses:
-        # for res in responses:
-        logging.info("%s\t%s\t%s\t%s", response.start_time, response.end_time, response.result, response.serial_num)
-``` 
-读取mac上麦克风的音频流数据
-```python
-def record_micro():
-    """
-    产生流（mac上麦克风读取音频流，需要先brew install portaudio）
-    :return:
-    """
-    client = AsrClient(url, port, product_id, enable_flush_data, log_level=log_level)
-    NUM_SAMPLES = 2560  # pyaudio内置缓冲大小
-    SAMPLING_RATE = 8000  # 取样频率
-    pa = PyAudio()
-    stream = pa.open(format=paInt16, channels=1, rate=SAMPLING_RATE, input=True, frames_per_buffer=NUM_SAMPLES)
-    # yield stream
-    while True:
-        yield client.generate_stream_request(stream.read(NUM_SAMPLES))
+多进程识别文件夹中的音频文件，识别结果保存在每个音频文件名加.txt的文件中
 
+- client_demo_directory_multi_thread.py
 
-def run_stream():
-    client = AsrClient(url, port, product_id, enable_flush_data, log_level=log_level)
-    responses = client.get_result_by_stream(record_micro())
-    for response in responses:
-        # for res in responses:
-        logging.info("%s\t%s\t%s\t%s", response.start_time, response.end_time, response.result, response.serial_num)
-```
+多线程识别文件夹中的音频文件，识别结果保存在每个音频文件名加.txt的文件中
 
-### 读取URL上的流
-```python
-def read_streaming_from_url():
-    print("streaming reading")
-    client = AsrClient(url, port, product_id, enable_flush_data, log_level=log_level, user_name=user_name, password=password)
-    data = urllib2.urlopen(audio_url)
-    while True:
-        yield client.generate_stream_request(data.read(size=2560))
+- client_demo_multi_thread.py
 
+多线程识别同一个音频，用于测试用
 
-def run_url_streaming():
-    client = AsrClient(url, port, product_id, enable_flush_data, log_level=log_level, user_name=user_name, password=password)
-    responses = client.get_result_by_stream(read_streaming_from_url())
-    for response in responses:
-        # for res in responses:
-        logging.info("%s\t%s\t%s\t%s", response.start_time, response.end_time, response.result, response.serial_num)
-```
+- client-demo.py
+
+包含了mac麦克风音频流识别、url流识别、fifo流识别、离线音频识别多个识别方法
 
 ### 参数说明
 
-`client = AsrClient("172.18.53.17", "31051", enable_flush_data=False)`初始化时可选传入的参数列表如下：
+`client = AsrClient("127.0.0.1", "8051", enable_flush_data=False)`初始化时可选传入的参数列表如下：
 
 |参数| 类型 | 默认值 | 描述 |
 |---|---|---|---|

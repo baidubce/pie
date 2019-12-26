@@ -1,12 +1,11 @@
 # -*-coding:utf-8-*-
-import threading
 from baidu_acu_asr.asr_client import AsrClient
 import os
 import time
 import logging
-import threadpool
 import baidu_acu_asr.audio_streaming_pb2
 from baidu_acu_asr.asr_product import AsrProduct
+from multiprocessing import Pool
 
 
 class AudioHandler:
@@ -15,13 +14,15 @@ class AudioHandler:
         pass
 
     logging.basicConfig(filename="asr_result.log")
-    url = "180.76.107.131"
+    url = "127.0.0.1"
     port = "8050"
     log_level = 0
-    product_id = AsrProduct.CUSTOMER_SERVICE_FINANCE
+    product_id = "888"
+    sample_rate = 16000
+    product = AsrProduct.CUSTOMER_SERVICE_FINANCE
     enable_flush_data = False
-    user_name = "abc"
-    password = "123"
+    user_name = "123"
+    password = "abc"
 
     def write_file(self, file_path, file_content):
         with open(file_path, "w") as file:
@@ -37,10 +38,11 @@ class AudioHandler:
         return audio_paths
 
     def run(self, file_path):
-        while True:
-            client = AsrClient(self.url, self.port, self.product_id, self.enable_flush_data,
+        for i in range(5):
+            client = AsrClient(self.url, self.port, None, self.enable_flush_data,
                                log_level=self.log_level,
-                               send_per_seconds=0.02,
+                               product_id=self.product_id,
+                               sample_rate=self.sample_rate,
                                user_name=self.user_name,
                                password=self.password)
             responses = client.get_result(file_path)
@@ -61,15 +63,24 @@ class AudioHandler:
                 time.sleep(0.5)
 
 
+def go(audio_path):
+    """
+    一个呗pickle的函数，作为代理，防止贼python2.7版本下出现pickle异常
+    """
+    handler.run(audio_path)
+
+
 if __name__ == '__main__':
     start_time = time.time()
-    handler = AudioHandler()
 
-    audio_path = "/Users/xiashuai01/Downloads/tem"
+    handler = AudioHandler()
+    audio_path = "./testaudio"
     audio_files = handler.get_audio_files(audio_path)
-    pool = threadpool.ThreadPool(10)
-    requests = threadpool.makeRequests(handler.run, audio_files)
-    [pool.putRequest(req) for req in requests]
-    pool.wait()
+
+    pool = Pool(5)
+    pool.map(go, audio_files)
+    pool.close()
+    pool.join()
     logging.info("complete! use time: %s", str(time.time() - start_time))
+
 
