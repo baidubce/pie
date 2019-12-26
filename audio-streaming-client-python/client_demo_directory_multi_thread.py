@@ -39,11 +39,11 @@ class AudioHandler:
         return audio_paths
 
     def run(self, file_path):
-        while True:
+        for i in range(5):
             client = AsrClient(self.url, self.port, None, self.enable_flush_data,
+                               log_level=self.log_level,
                                product_id=self.product_id,
                                sample_rate=self.sample_rate,
-                               log_level=self.log_level,
                                user_name=self.user_name,
                                password=self.password)
             responses = client.get_result(file_path)

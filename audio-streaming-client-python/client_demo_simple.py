@@ -13,7 +13,7 @@ def run():
     添加失败重传
     :return:
     """
-    for i in range(1):
+    for i in range(5):
         client = AsrClient(url, port, None, enable_flush_data,
                            product_id=product_id,
                            sample_rate=sample_rate,

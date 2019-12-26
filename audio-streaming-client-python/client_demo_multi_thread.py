@@ -18,10 +18,14 @@ class demo:
         product_id = AsrProduct.CUSTOMER_SERVICE_FINANCE
         enable_flush_data = True
         log_level = 0
+        product_id = "888"
+        sample_rate = 16000
         user_name = "abc"
         password = "123"
-        client = AsrClient(url, port, product_id, enable_flush_data,
+        client = AsrClient(url, port, None, enable_flush_data,
                            log_level=log_level,
+                           product_id=product_id,
+                           sample_rate=sample_rate,
                            user_name=user_name,
                            password=password)
         name = threading.currentThread().getName()

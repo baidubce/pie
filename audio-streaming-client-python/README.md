@@ -39,7 +39,7 @@ for file in `ls`;do pip install --no-deps $file;done
 
 ### 参数说明
 
-`client = AsrClient("172.18.53.17", "31051", enable_flush_data=False)`初始化时可选传入的参数列表如下：
+`client = AsrClient("127.0.0.1", "8051", enable_flush_data=False)`初始化时可选传入的参数列表如下：
 
 |参数| 类型 | 默认值 | 描述 |
 |---|---|---|---|
