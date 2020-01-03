@@ -1,3 +1,13 @@
+# version 2.0.2
+
+### improvement 
+- 新增了相关字段
+
+### feature
+- 修改用户调用方式
+
+### bug fix
+
 # version 2.0.0
 
 ### improvement 
