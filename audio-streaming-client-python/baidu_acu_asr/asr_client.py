@@ -11,6 +11,7 @@ import os
 import logging
 import hashlib
 import datetime
+import time
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(filename)s[line:%(lineno)d] - %(levelname)s: %(message)s')
 
@@ -87,6 +88,8 @@ class AsrClient(object):
         while len(content) > 0:
             yield audio_streaming_pb2.AudioFragmentRequest(audio_data=content)
             content = file.read(self.send_package_size)
+            # 客户端限流，防止发送过快，0.01为经验值
+            time.sleep(0.01)
         file.close()
 
     def generate_stream_request(self, file_stream):
