@@ -202,7 +202,8 @@ public class AsrClientGrpcImpl implements AsrClient {
                     @Override
                     public void onNext(AudioFragmentResponse response) {
                         if (response.getErrorCode() == 0) {
-                            resultConsumer.accept(fromAudioFragmentResponse(response.getAudioFragment()));
+                            resultConsumer.accept(fromAudioFragmentResponse(
+                                    response.getErrorMessage(), response.getAudioFragment()));
                         } else {
                             finishLatch.fail(new AsrException(response.getErrorCode(), response.getErrorMessage()));
                         }
@@ -298,8 +299,9 @@ public class AsrClientGrpcImpl implements AsrClient {
         return headers;
     }
 
-    private RecognitionResult fromAudioFragmentResponse(AudioStreaming.AudioFragmentResult response) {
+    private RecognitionResult fromAudioFragmentResponse(String traceId, AudioStreaming.AudioFragmentResult response) {
         return RecognitionResult.builder()
+                .traceId(traceId)
                 .serialNum(response.getSerialNum())
                 .startTime(DateTimeParser.parseLocalTime(response.getStartTime()))
                 .endTime(DateTimeParser.parseLocalTime(response.getEndTime()))

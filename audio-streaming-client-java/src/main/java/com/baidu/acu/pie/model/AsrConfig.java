@@ -24,7 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AsrConfig {
-    public static final String TITLE_FORMAT = "%-40s\t%-36s\t%-14s\t%-13s\t%s";
+    public static final String TITLE_FORMAT = "%-40s\t%-36s\t%-36s\t%-14s\t%-13s\t%s";
 
     /**
      * asr流式服务器的地址，私有化版本请咨询供应商

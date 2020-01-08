@@ -17,7 +17,7 @@ repositories {
     jcenter()
 }
 dependencies {
-	compile "com.baidu.acu.pie:audio-streaming-client-java:1.1.0.SNAPSHOT"
+	compile "com.baidu.acu.pie:audio-streaming-client-java:1.1.7"
 }
 ```
 
@@ -37,10 +37,12 @@ dependencies {
 	<dependency>
 	  <groupId>com.baidu.acu.pie</groupId>
 	  <artifactId>audio-streaming-client-java</artifactId>
-	  <version>1.1.0.SNAPSHOT</version>
+	  <version>1.1.7</version>
 	</dependency>
 </dependencies>
 ```
+
+**更多使用样例，请参考 https://github.com/baidubce/pie/tree/master/java-demo** 
 
 ## 快速开始
 ### 构建（会自动生成 grpc 代码）

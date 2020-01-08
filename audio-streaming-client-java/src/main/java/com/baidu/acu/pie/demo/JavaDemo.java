@@ -87,12 +87,14 @@ public class JavaDemo {
         for (RecognitionResult result : results) {
             System.out.println(String.format(AsrConfig.TITLE_FORMAT,
                     "file_name",
+                    "trace_id",
                     "serial_num",
                     "start_time",
                     "end_time",
                     "result"));
             System.out.println(String.format(AsrConfig.TITLE_FORMAT,
                     audioFile.getName(),
+                    result.getTraceId(),
                     result.getSerialNum(),
                     result.getStartTime(),
                     result.getEndTime(),
