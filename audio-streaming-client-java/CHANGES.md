@@ -1,3 +1,22 @@
+# 1.1.7
+## improvement
+- 在 RecognitionResult 中加入 traceId 字段，traceId 是一次 asr 识别请求的唯一标识。强烈建议在业务日志中，将 traceId 打印下来。
+
+# 1.1.6
+## improvement
+- 在发起请求前，sdk 会将请求的 metadata 打印出来，便于追溯
+
+# 1.1.4
+## improvement
+- 在识别文件的时候，sdk 内部会根据 sleepRatio 控制数据发送速率，避免后端溢出
+
+# 1.1.3 
+## feature
+- 提供一个新的 syncRecognition 重载方法，可以接受 byte[] 作为输入
+
+## improvement
+- 优化了内部逻辑，在 syncRecognition 的时候，更高效稳定。
+
 # 1.1.0
 ## feature
 在构建 AsrClient 的时候，可以传入一个 ChannelConfig 实例，用来控制 keepalive 超时相关参数。
