@@ -9,15 +9,37 @@ import lombok.Getter;
  */
 @Getter
 public class AsrException extends RuntimeException {
+    private String traceId;
     private int errorCode;
 
-    public AsrException(int errorCode, String message) {
-        super(message);
+    @Deprecated
+    public AsrException(int errorCode, String errorMessage) {
+        super(errorMessage);
         this.errorCode = errorCode;
     }
 
+    public AsrException(String traceId, int errorCode, String errorMessage) {
+        super(errorMessage);
+        this.traceId = traceId;
+        this.errorCode = errorCode;
+    }
+
+    @Deprecated
     public AsrException(int errorCode, Throwable t) {
         super(t);
         this.errorCode = errorCode;
+    }
+
+    public AsrException(int errorCode, String errorMessage, Throwable t) {
+        super(errorMessage, t);
+        this.errorCode = errorCode;
+    }
+
+    @Override
+    public String getMessage() {
+        return String.format("\ntraceId = %s\nerrorCode = %d\nerrorMessage = %s",
+                traceId,
+                errorCode,
+                super.getMessage());
     }
 }
