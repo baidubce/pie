@@ -205,15 +205,17 @@ public class AsrClientGrpcImpl implements AsrClient {
                             resultConsumer.accept(fromAudioFragmentResponse(
                                     response.getErrorMessage(), response.getAudioFragment()));
                         } else {
-                            finishLatch.fail(new AsrException(response.getErrorCode(), response.getErrorMessage()));
+                            finishLatch.fail(new AsrException(
+                                    response.getTraceId(),
+                                    response.getErrorCode(),
+                                    response.getErrorMessage()));
                         }
                     }
 
                     @Override
                     public void onError(Throwable t) {
-                        log.error("error in response observer: ", t);
                         // TODO: 2019-04-28 错误码需要规范一下
-                        finishLatch.fail(new AsrException(-2000, t));
+                        finishLatch.fail(new AsrException(-2000, "error in grpc response observer", t));
                     }
 
                     @Override

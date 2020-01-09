@@ -56,6 +56,7 @@ message AudioFragmentResponse {
     string error_message = 2;
     ResponseType type = 3;
     AudioFragmentResult audio_fragment = 4;
+    string trace_id = 5;
 }
 
 service AsrService {
