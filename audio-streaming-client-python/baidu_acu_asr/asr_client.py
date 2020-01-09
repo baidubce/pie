@@ -52,6 +52,8 @@ class AsrClient(object):
             self.send_package_size = int(send_per_seconds * product.value[2] * sample_point_bytes)
         elif product_id == "" or sample_rate == 0:
             raise RuntimeError('product id and sample rate must be set in AsrClient')
+        elif sample_rate != 8000 and sample_rate != 16000:
+            raise RuntimeError('sample rate must be 8000 or 16000')
         else:
             self.request.product_id = product_id
             self.send_package_size = int(send_per_seconds * sample_rate * sample_point_bytes)
