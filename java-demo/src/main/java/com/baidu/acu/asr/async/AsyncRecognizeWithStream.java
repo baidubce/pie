@@ -100,7 +100,7 @@ public class AsyncRecognizeWithStream {
                             // 音频处理完成，置0标记，结束所有线程任务
                             sendFinish.countDown();
                         }
-                    } catch (IOException e) {
+                    } catch (AsrException | IOException e) {
                         e.printStackTrace();
                         // 异常时，置0标记，结束所有线程任务
                         sendFinish.countDown();

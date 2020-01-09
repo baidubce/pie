@@ -73,11 +73,15 @@ public class AsyncRecognize {
             int readSize;
             System.out.println(new DateTime().toString() + "\t" + Thread.currentThread().getId() + " start to send");
             // 使用 send 方法，将 InputStream 中的数据不断地发送到 asr 后端，发送的最小单位是 AudioFragment
-            while ((readSize = audioStream.read(data)) != -1 && !streamContext.getFinishLatch().finished()) {
-                streamContext.send(data);
-                // 主动休眠一段时间，来模拟人说话场景下的音频产生速率
-                // 在对接麦克风等设备的时候，可以去掉这个 sleep
-                Thread.sleep(20);
+            try {
+                while ((readSize = audioStream.read(data)) != -1 && !streamContext.getFinishLatch().finished()) {
+                    streamContext.send(data);
+                    // 主动休眠一段时间，来模拟人说话场景下的音频产生速率
+                    // 在对接麦克风等设备的时候，可以去掉这个 sleep
+                    Thread.sleep(20);
+                }
+            } catch (AsrException e) {
+                e.printStackTrace();
             }
             streamContext.complete();
             System.out.println(new DateTime().toString() + "\t" + Thread.currentThread().getId() + " send finish");

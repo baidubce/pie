@@ -1,5 +1,20 @@
 package com.baidu.acu.asr.async;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
+
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.Options;
+import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.baidu.acu.pie.client.AsrClient;
 import com.baidu.acu.pie.client.AsrClientFactory;
@@ -10,21 +25,6 @@ import com.baidu.acu.pie.model.AsrProduct;
 import com.baidu.acu.pie.model.RecognitionResult;
 import com.baidu.acu.pie.model.RequestMetaData;
 import com.baidu.acu.pie.model.StreamContext;
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.CommandLineParser;
-import org.apache.commons.cli.DefaultParser;
-import org.apache.commons.cli.HelpFormatter;
-import org.apache.commons.cli.Options;
-import org.joda.time.DateTime;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * 异步识别: 会准实时返回每个句子的结果.输入一个语音流以及自定义RequestMetaData对象,用来控制请求时候的数据发送速度等参数
@@ -73,7 +73,6 @@ public class AsyncRecognizeWithStreamAndMetaData {
             formatter.printHelp("RandomGenerator", options, true);
             System.exit(0);
         }
-
 
         if (cmd.hasOption('h') || cmd.hasOption("help")) {
             formatter.printHelp("RandomGenerator", options, true);
@@ -213,12 +212,11 @@ public class AsyncRecognizeWithStreamAndMetaData {
                             // 音频处理完成，置0标记，结束所有线程任务
                             sendFinish.countDown();
                         }
-                    } catch (IOException e) {
+                    } catch (AsrException | IOException e) {
                         e.printStackTrace();
                         // 异常时，置0标记，结束所有线程任务
                         sendFinish.countDown();
                     }
-
                 }
             }, 0, 20, TimeUnit.MILLISECONDS); // 0:第一次发包延时； 20:每次任务间隔时间; 单位：ms
             // 阻塞主线程，直到CountDownLatch的值为0时停止阻塞
