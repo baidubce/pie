@@ -1,3 +1,11 @@
+# version 2.0.3
+
+### improvement 
+- 新增了product_id和sample_rate字段
+
+### feature
+- 修改client初始化调用方式
+
 # version 2.0.2
 
 ### improvement 
