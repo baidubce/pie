@@ -31,9 +31,13 @@ public class RecognitionResult {
      */
     private String result;
     /**
-     * 请求唯一标识，用于查错
+     * 本句话的唯一标识
      */
     private String serialNum;
+    /**
+     * 本次 asr 请求的唯一标识，一次 asr 请求里面可以包含多句话
+     */
+    private String traceId;
     /**
      * 该值为 true 的时候，result 是一个完整的句子
      * 否则，result 只是中间结果
