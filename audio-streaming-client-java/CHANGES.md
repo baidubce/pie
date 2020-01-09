@@ -1,3 +1,7 @@
+# 1.1.8
+## improvement
+- 优化了 AsrException 及其相关处理逻辑，在 AsrException 中加入 traceId 字段。
+
 # 1.1.7
 ## improvement
 - 在 RecognitionResult 中加入 traceId 字段，traceId 是一次 asr 识别请求的唯一标识。强烈建议在业务日志中，将 traceId 打印下来。
