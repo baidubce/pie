@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.util.List;
 
+import com.baidu.acu.pie.exception.AsrException;
 import com.baidu.acu.pie.model.RecognitionResult;
 import com.baidu.acu.pie.model.RequestMetaData;
 import com.baidu.acu.pie.model.StreamContext;
@@ -22,7 +23,7 @@ public interface AsrClient {
      *
      * @param file 音频文件本身
      */
-    List<RecognitionResult> syncRecognize(File file);
+    List<RecognitionResult> syncRecognize(File file) throws AsrException;
 
     /**
      * 同步识别，输入一个音频文件的 inputstream，线程会进入等待，直到识别完毕，返回结果
@@ -30,7 +31,7 @@ public interface AsrClient {
      *
      * @param inputStream
      */
-    List<RecognitionResult> syncRecognize(InputStream inputStream);
+    List<RecognitionResult> syncRecognize(InputStream inputStream) throws AsrException;
 
     /**
      * 同步识别，输入一个音频文件，线程会进入等待，直到识别完毕，返回结果
@@ -38,7 +39,7 @@ public interface AsrClient {
      *
      * @param file 音频文件本身
      */
-    List<RecognitionResult> syncRecognize(File file, RequestMetaData requestMetaData);
+    List<RecognitionResult> syncRecognize(File file, RequestMetaData requestMetaData) throws AsrException;
 
     /**
      * 同步识别，输入一个音频文件的 inputstream，线程会进入等待，直到识别完毕，返回结果
@@ -46,7 +47,7 @@ public interface AsrClient {
      *
      * @param inputStream
      */
-    List<RecognitionResult> syncRecognize(InputStream inputStream, RequestMetaData requestMetaData);
+    List<RecognitionResult> syncRecognize(InputStream inputStream, RequestMetaData requestMetaData) throws AsrException;
 
     /**
      * 同步识别，输入一个音频文件的 byte[]，线程会进入等待，直到识别完毕，返回结果
@@ -54,7 +55,7 @@ public interface AsrClient {
      *
      * @param data
      */
-    List<RecognitionResult> syncRecognize(byte[] data, RequestMetaData requestMetaData);
+    List<RecognitionResult> syncRecognize(byte[] data, RequestMetaData requestMetaData) throws AsrException;
 
     /**
      * 异步识别，输入一个语音流，会准实时返回每个句子的结果
