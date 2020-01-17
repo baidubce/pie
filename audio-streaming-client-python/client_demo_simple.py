@@ -14,9 +14,7 @@ def run():
     :return:
     """
     for i in range(5):
-        client = AsrClient(url, port, None, enable_flush_data,
-                           product_id=product_id,
-                           sample_rate=sample_rate,
+        client = AsrClient(url, port, product, enable_flush_data,
                            log_level=log_level,
                            user_name=user_name,
                            password=password)
