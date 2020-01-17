@@ -15,7 +15,7 @@ val grpcVersion by extra("1.16.1")
 val jacksonVersion by extra("2.9.7")
 
 group = "com.baidu.acu.pie"
-version = "1.1.8"
+version = "1.1.9"
 
 tasks.withType<JavaCompile> {
     sourceCompatibility = "1.7"
