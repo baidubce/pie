@@ -160,14 +160,20 @@ public class AsrClientGrpcImpl implements AsrClient {
             timer.scheduleAtFixedRate(new TimerTask() {
                 @Override
                 public void run() {
-                    if (offset.get() < data.length && !streamContext.getFinishLatch().finished()) {
-                        streamContext.send(Arrays.copyOfRange(
-                                data,
-                                offset.get(),
-                                Math.min(offset.addAndGet(fragmentSize), data.length)));
-                    } else {
+                    try {
+                        if (offset.get() < data.length && !streamContext.getFinishLatch().finished()) {
+                            streamContext.send(Arrays.copyOfRange(
+                                    data,
+                                    offset.get(),
+                                    Math.min(offset.addAndGet(fragmentSize), data.length)));
+                        } else {
+                            sendFinishLatch.countDown();
+                        }
+                    } catch (AsrException e) {
+                        log.error("Recognition request error", e);
                         sendFinishLatch.countDown();
                     }
+
                 }
             }, 0L, (long) (sleepRatio * requestMetaData.getSendPerSeconds() * 1000));
 
