@@ -25,6 +25,7 @@ import com.pie.demo.utils.SpUtils;
 import com.pie.demo.view.weiget.VoiceImgView;
 import com.warkiz.widget.IndicatorSeekBar;
 
+
 import java.io.FileOutputStream;
 import java.io.InputStream;
 
@@ -40,6 +41,7 @@ public class TtsFragment extends BaseFragment {
     private EditText mEtPortIpTTS;
     private IndicatorSeekBar mSeekBarOne, mSeekBarTwo, mSeekBarThree;
     private int mSpd, mPit, mVol;
+    private EditText mWhoIsSpeaking;
 
 
     @Nullable
@@ -156,6 +158,8 @@ public class TtsFragment extends BaseFragment {
                 MediaPlayerManeger.getInstance().mDestory();
             }
         });
+
+        mWhoIsSpeaking = paramView.findViewById(R.id.whoIsSpeaking);
     }
 
     private void getAudio() {
@@ -185,7 +189,8 @@ public class TtsFragment extends BaseFragment {
                     mSpd,
                     mPit,
                     mVol,
-                    100);
+                    (mWhoIsSpeaking != null && !TextUtils.isEmpty(mWhoIsSpeaking.getText().toString())) ?
+                            Integer.valueOf(mWhoIsSpeaking.getText().toString()) : 100);
             call.enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
