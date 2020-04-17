@@ -7,12 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SettingViewCellModel.h"
 
 @class SettingViewCell;
 @protocol SettingViewCellDelegate <NSObject>
 
 @optional
 - (void)settingViewCellBeginEdit:(SettingViewCell *_Nullable)cell indexPath:(NSIndexPath *_Nullable)indexPath;
+
+- (void)settingViewCell:(SettingViewCell *_Nullable)cell indexPath:(NSIndexPath *_Nullable)indexPath slierValueChanged:(CGFloat)value;
 
 @end
 
@@ -22,8 +25,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, weak) IBOutlet UILabel *title;
 @property (nonatomic, weak) IBOutlet UITextField *textField;
+@property (nonatomic, weak) IBOutlet UISlider *slider;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *sliderWidth;
 @property (nonatomic, strong) NSIndexPath *indexPath;
+
 @property (nonatomic, weak) id<SettingViewCellDelegate>cellDelegate;
+
+@property (nonatomic, strong) SettingViewCellModel *cellModel;
 
 + (instancetype)cellWithNib;
 

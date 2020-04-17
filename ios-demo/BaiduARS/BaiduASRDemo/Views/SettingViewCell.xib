@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina6_1" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -16,7 +14,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="94"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="93.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="94"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ziO-Bw-ojA">
@@ -29,27 +27,40 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="rFU-qR-don">
-                        <rect key="frame" x="16" y="49" width="288" height="30"/>
+                        <rect key="frame" x="16" y="49" width="276" height="30"/>
                         <color key="backgroundColor" red="0.98352591919999999" green="1" blue="0.81853300770000004" alpha="0.84705882349999995" colorSpace="custom" customColorSpace="displayP3"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="30" id="T4T-R8-boW"/>
                         </constraints>
-                        <nil key="textColor"/>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <textInputTraits key="textInputTraits"/>
                     </textField>
+                    <slider hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="2" translatesAutoresizingMaskIntoConstraints="NO" id="PCo-mS-cgn">
+                        <rect key="frame" x="300" y="49" width="4" height="30"/>
+                        <constraints>
+                            <constraint firstAttribute="width" id="2dh-rZ-m5p"/>
+                            <constraint firstAttribute="height" constant="29" id="G51-bf-uR5"/>
+                        </constraints>
+                        <connections>
+                            <action selector="sliderValueChange:" destination="KGk-i7-Jjw" eventType="valueChanged" id="Ntb-2P-3X6"/>
+                        </connections>
+                    </slider>
                 </subviews>
                 <constraints>
                     <constraint firstItem="rFU-qR-don" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="6rD-9E-WTq"/>
                     <constraint firstAttribute="trailing" secondItem="ziO-Bw-ojA" secondAttribute="trailing" constant="16" id="A2m-GD-tVN"/>
                     <constraint firstItem="ziO-Bw-ojA" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="BZH-yA-H9M"/>
+                    <constraint firstAttribute="trailing" secondItem="PCo-mS-cgn" secondAttribute="trailing" constant="18" id="Pua-Mb-jRO"/>
                     <constraint firstItem="ziO-Bw-ojA" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="15" id="TgV-hI-EKQ"/>
                     <constraint firstItem="rFU-qR-don" firstAttribute="top" secondItem="ziO-Bw-ojA" secondAttribute="bottom" constant="8" id="chb-td-6mk"/>
-                    <constraint firstAttribute="trailing" secondItem="rFU-qR-don" secondAttribute="trailing" constant="16" id="kHP-hQ-dw1"/>
+                    <constraint firstAttribute="bottom" secondItem="PCo-mS-cgn" secondAttribute="bottom" constant="16" id="cmt-c9-cAP"/>
+                    <constraint firstItem="PCo-mS-cgn" firstAttribute="leading" secondItem="rFU-qR-don" secondAttribute="trailing" constant="10" id="xAm-8q-ZEu"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="aW0-zy-SZf"/>
             <connections>
+                <outlet property="slider" destination="PCo-mS-cgn" id="17P-OB-ICq"/>
+                <outlet property="sliderWidth" destination="2dh-rZ-m5p" id="iA5-ZN-ejC"/>
                 <outlet property="textField" destination="rFU-qR-don" id="L8U-1j-6S0"/>
                 <outlet property="title" destination="ziO-Bw-ojA" id="6my-yc-Pi3"/>
             </connections>

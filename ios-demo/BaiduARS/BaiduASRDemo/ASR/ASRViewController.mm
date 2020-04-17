@@ -6,7 +6,7 @@
 //  Copyright © 2019 Cloud. All rights reserved.
 //
 
-#import "ViewController.h"
+#import "ASRViewController.h"
 #import "SettingViewController.h"
 #import "ASRConfig.h"
 
@@ -14,7 +14,7 @@
 
 UIColor *bgColor = [UIColor colorWithRed:0.0 green:122/255.0 blue:1.0 alpha:1.0];
 
-@interface ViewController ()<BDASRDelegate>
+@interface ASRViewController ()<BDASRDelegate>
 
 @property (nonatomic, weak) IBOutlet UITextView *resultTextView;
 @property (nonatomic, weak) IBOutlet UIButton *recordBtn;
@@ -27,12 +27,14 @@ UIColor *bgColor = [UIColor colorWithRed:0.0 green:122/255.0 blue:1.0 alpha:1.0]
 
 @end
 
-@implementation ViewController
+@implementation ASRViewController
+- (void)dealloc {
+    [self.asrInstance cancel];
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    
     self.resultTextView.layoutManager.allowsNonContiguousLayout = NO;
     
     self.resultString = [NSMutableString string];

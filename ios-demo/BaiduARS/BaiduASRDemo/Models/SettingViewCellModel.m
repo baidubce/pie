@@ -15,6 +15,7 @@
     if (self != nil) {
         self.isShowTextField = YES;
         self.isTextFieldEditEnable = YES;
+        self.isShowSlider = NO;
     }
     return self;
 }

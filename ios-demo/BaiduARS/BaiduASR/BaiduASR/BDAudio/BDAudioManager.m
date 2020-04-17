@@ -26,13 +26,18 @@ static BDAudioManager *_recorder = nil;
             _recorder = [[BDAudioManager alloc] init];
         }
     });
+    
+    if ([AVAudioSession sharedInstance].category != AVAudioSessionCategoryPlayAndRecord) {
+        [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayAndRecord error: nil];
+    }
+
     return _recorder;
 }
 
 - (instancetype)init {
     self = [super init];
     if (self != nil) {
-        [[AVAudioSession sharedInstance] setCategory: AVAudioSessionCategoryPlayAndRecord error: nil];
+        
     }
     return self;
 }

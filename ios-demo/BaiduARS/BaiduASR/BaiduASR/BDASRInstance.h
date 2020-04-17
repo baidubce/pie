@@ -83,6 +83,11 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)stopRecord;
 
+/**
+ * 取消目前所有的ASR请求
+ */
+- (void)cancel;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -13,10 +13,8 @@
 		7017A39A229554E700AB6F1B /* SettingViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7017A397229554E700AB6F1B /* SettingViewCell.m */; };
 		7017A39B229554E700AB6F1B /* SettingViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7017A398229554E700AB6F1B /* SettingViewCell.xib */; };
 		7017A39F229555CA00AB6F1B /* SettingViewCellModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7017A39E229555CA00AB6F1B /* SettingViewCellModel.m */; };
-		7031815B228923990019F915 /* BaiduASR.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7031815A228923990019F915 /* BaiduASR.framework */; };
-		7031815C228923990019F915 /* BaiduASR.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 7031815A228923990019F915 /* BaiduASR.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		708459B52260995200B16A4C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 708459B42260995200B16A4C /* AppDelegate.m */; };
-		708459B82260995200B16A4C /* ViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 708459B72260995200B16A4C /* ViewController.mm */; };
+		708459B82260995200B16A4C /* ASRViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 708459B72260995200B16A4C /* ASRViewController.mm */; };
 		708459BB2260995200B16A4C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 708459B92260995200B16A4C /* Main.storyboard */; };
 		708459BD2260995400B16A4C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 708459BC2260995400B16A4C /* Assets.xcassets */; };
 		708459C02260995400B16A4C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 708459BE2260995400B16A4C /* LaunchScreen.storyboard */; };
@@ -27,6 +25,14 @@
 		708D78DA231CFC8000B4EAA9 /* ModelCellModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 708D78D9231CFC8000B4EAA9 /* ModelCellModel.m */; };
 		708D78DE231CFCF300B4EAA9 /* ModelViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 708D78DC231CFCF300B4EAA9 /* ModelViewCell.m */; };
 		708D78DF231CFCF300B4EAA9 /* ModelViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 708D78DD231CFCF300B4EAA9 /* ModelViewCell.xib */; };
+		70BBBADC243C7EEE000D7B52 /* BaiduTTS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 70BBBADB243C7EEE000D7B52 /* BaiduTTS.framework */; };
+		70BBBADD243C7EEE000D7B52 /* BaiduTTS.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 70BBBADB243C7EEE000D7B52 /* BaiduTTS.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		70BBBADF243C7FA5000D7B52 /* BaiduASR.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 70BBBADE243C7FA5000D7B52 /* BaiduASR.framework */; };
+		70BBBAE0243C7FA5000D7B52 /* BaiduASR.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 70BBBADE243C7FA5000D7B52 /* BaiduASR.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		70BBBAE82446FED5000D7B52 /* TTSViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 70BBBAE72446FED5000D7B52 /* TTSViewController.m */; };
+		70BBBAEB2446FF59000D7B52 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 70BBBAEA2446FF59000D7B52 /* HomeViewController.m */; };
+		70BBBAF9244854F8000D7B52 /* TTSConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 70BBBAF8244854F8000D7B52 /* TTSConfig.m */; };
+		70BBBAFC244865A3000D7B52 /* TTSSetingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 70BBBAFB244865A3000D7B52 /* TTSSetingViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,7 +52,8 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				7031815C228923990019F915 /* BaiduASR.framework in Embed Frameworks */,
+				70BBBADD243C7EEE000D7B52 /* BaiduTTS.framework in Embed Frameworks */,
+				70BBBAE0243C7FA5000D7B52 /* BaiduASR.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -64,12 +71,11 @@
 		7017A399229554E700AB6F1B /* SettingViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingViewCell.h; sourceTree = "<group>"; };
 		7017A39D229555CA00AB6F1B /* SettingViewCellModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SettingViewCellModel.h; sourceTree = "<group>"; };
 		7017A39E229555CA00AB6F1B /* SettingViewCellModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SettingViewCellModel.m; sourceTree = "<group>"; };
-		7031815A228923990019F915 /* BaiduASR.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BaiduASR.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		708459B02260995200B16A4C /* BaiduASRDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BaiduASRDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		708459B32260995200B16A4C /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		708459B42260995200B16A4C /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		708459B62260995200B16A4C /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		708459B72260995200B16A4C /* ViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ViewController.mm; sourceTree = "<group>"; };
+		708459B62260995200B16A4C /* ASRViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ASRViewController.h; sourceTree = "<group>"; };
+		708459B72260995200B16A4C /* ASRViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ASRViewController.mm; sourceTree = "<group>"; };
 		708459BA2260995200B16A4C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		708459BC2260995400B16A4C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		708459BF2260995400B16A4C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -87,6 +93,16 @@
 		708D78DB231CFCF300B4EAA9 /* ModelViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ModelViewCell.h; sourceTree = "<group>"; };
 		708D78DC231CFCF300B4EAA9 /* ModelViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ModelViewCell.m; sourceTree = "<group>"; };
 		708D78DD231CFCF300B4EAA9 /* ModelViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ModelViewCell.xib; sourceTree = "<group>"; };
+		70BBBADB243C7EEE000D7B52 /* BaiduTTS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BaiduTTS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		70BBBADE243C7FA5000D7B52 /* BaiduASR.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BaiduASR.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		70BBBAE62446FED5000D7B52 /* TTSViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TTSViewController.h; sourceTree = "<group>"; };
+		70BBBAE72446FED5000D7B52 /* TTSViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TTSViewController.m; sourceTree = "<group>"; };
+		70BBBAE92446FF59000D7B52 /* HomeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
+		70BBBAEA2446FF59000D7B52 /* HomeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
+		70BBBAF7244854F8000D7B52 /* TTSConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TTSConfig.h; sourceTree = "<group>"; };
+		70BBBAF8244854F8000D7B52 /* TTSConfig.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TTSConfig.m; sourceTree = "<group>"; };
+		70BBBAFA244865A3000D7B52 /* TTSSetingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TTSSetingViewController.h; sourceTree = "<group>"; };
+		70BBBAFB244865A3000D7B52 /* TTSSetingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TTSSetingViewController.m; sourceTree = "<group>"; };
 		B9BA51AFA1CAC454B2ED6920 /* libPods-BaiduASRDemo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BaiduASRDemo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EFC7C8C095B6C8B85A81F76C /* Pods-BaiduASRDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BaiduASRDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-BaiduASRDemo/Pods-BaiduASRDemo.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -96,8 +112,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				70BBBADF243C7FA5000D7B52 /* BaiduASR.framework in Frameworks */,
 				3673C3F62970DFBC181AFF21 /* libPods-BaiduASRDemo.a in Frameworks */,
-				7031815B228923990019F915 /* BaiduASR.framework in Frameworks */,
+				70BBBADC243C7EEE000D7B52 /* BaiduTTS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -138,7 +155,6 @@
 		708459A72260995200B16A4C = {
 			isa = PBXGroup;
 			children = (
-				7031815A228923990019F915 /* BaiduASR.framework */,
 				708459B22260995200B16A4C /* BaiduASRDemo */,
 				708459CB2260995400B16A4C /* BaiduASRDemoUITests */,
 				708459B12260995200B16A4C /* Products */,
@@ -161,16 +177,10 @@
 			children = (
 				708459B32260995200B16A4C /* AppDelegate.h */,
 				708459B42260995200B16A4C /* AppDelegate.m */,
-				708459B62260995200B16A4C /* ViewController.h */,
-				708459B72260995200B16A4C /* ViewController.mm */,
-				708459F92271AB5E00B16A4C /* SettingViewController.h */,
-				708459FA2271AB5E00B16A4C /* SettingViewController.m */,
-				7011FBCD22845226000E8F33 /* LoginViewController.h */,
-				7011FBCE22845226000E8F33 /* LoginViewController.m */,
-				708D78D5231CFB0B00B4EAA9 /* EditModelViewController.h */,
-				708D78D6231CFB0B00B4EAA9 /* EditModelViewController.m */,
-				7011FBBC22841E41000E8F33 /* ASRConfig.h */,
-				7011FBBD22841E41000E8F33 /* ASRConfig.m */,
+				70BBBAE92446FF59000D7B52 /* HomeViewController.h */,
+				70BBBAEA2446FF59000D7B52 /* HomeViewController.m */,
+				70BBBAFD244865F7000D7B52 /* ASR */,
+				70BBBAFE244865F7000D7B52 /* TTS */,
 				7017A39C229555AF00AB6F1B /* Models */,
 				7017A396229554E700AB6F1B /* Views */,
 				708459B92260995200B16A4C /* Main.storyboard */,
@@ -191,9 +201,41 @@
 			path = BaiduASRDemoUITests;
 			sourceTree = "<group>";
 		};
+		70BBBAFD244865F7000D7B52 /* ASR */ = {
+			isa = PBXGroup;
+			children = (
+				708459B62260995200B16A4C /* ASRViewController.h */,
+				708459B72260995200B16A4C /* ASRViewController.mm */,
+				708459F92271AB5E00B16A4C /* SettingViewController.h */,
+				708459FA2271AB5E00B16A4C /* SettingViewController.m */,
+				7011FBCD22845226000E8F33 /* LoginViewController.h */,
+				7011FBCE22845226000E8F33 /* LoginViewController.m */,
+				708D78D5231CFB0B00B4EAA9 /* EditModelViewController.h */,
+				708D78D6231CFB0B00B4EAA9 /* EditModelViewController.m */,
+				7011FBBC22841E41000E8F33 /* ASRConfig.h */,
+				7011FBBD22841E41000E8F33 /* ASRConfig.m */,
+			);
+			path = ASR;
+			sourceTree = "<group>";
+		};
+		70BBBAFE244865F7000D7B52 /* TTS */ = {
+			isa = PBXGroup;
+			children = (
+				70BBBAE62446FED5000D7B52 /* TTSViewController.h */,
+				70BBBAE72446FED5000D7B52 /* TTSViewController.m */,
+				70BBBAFA244865A3000D7B52 /* TTSSetingViewController.h */,
+				70BBBAFB244865A3000D7B52 /* TTSSetingViewController.m */,
+				70BBBAF7244854F8000D7B52 /* TTSConfig.h */,
+				70BBBAF8244854F8000D7B52 /* TTSConfig.m */,
+			);
+			path = TTS;
+			sourceTree = "<group>";
+		};
 		BCC1FAE24D49852A8FFB8ADC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				70BBBADE243C7FA5000D7B52 /* BaiduASR.framework */,
+				70BBBADB243C7EEE000D7B52 /* BaiduTTS.framework */,
 				B9BA51AFA1CAC454B2ED6920 /* libPods-BaiduASRDemo.a */,
 			);
 			name = Frameworks;
@@ -337,17 +379,21 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				708459B82260995200B16A4C /* ViewController.mm in Sources */,
+				708459B82260995200B16A4C /* ASRViewController.mm in Sources */,
 				7011FBBE22841E41000E8F33 /* ASRConfig.m in Sources */,
 				7011FBCF22845226000E8F33 /* LoginViewController.m in Sources */,
 				708D78DA231CFC8000B4EAA9 /* ModelCellModel.m in Sources */,
+				70BBBAFC244865A3000D7B52 /* TTSSetingViewController.m in Sources */,
 				7017A39F229555CA00AB6F1B /* SettingViewCellModel.m in Sources */,
 				708D78DE231CFCF300B4EAA9 /* ModelViewCell.m in Sources */,
 				708459C32260995400B16A4C /* main.m in Sources */,
 				708459FB2271AB5E00B16A4C /* SettingViewController.m in Sources */,
+				70BBBAE82446FED5000D7B52 /* TTSViewController.m in Sources */,
 				708D78D7231CFB0B00B4EAA9 /* EditModelViewController.m in Sources */,
 				708459B52260995200B16A4C /* AppDelegate.m in Sources */,
+				70BBBAF9244854F8000D7B52 /* TTSConfig.m in Sources */,
 				7017A39A229554E700AB6F1B /* SettingViewCell.m in Sources */,
+				70BBBAEB2446FF59000D7B52 /* HomeViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
