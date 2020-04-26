@@ -26,6 +26,16 @@
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
 		<string>YES</string>
+		<key>NSExceptionDomains</key>
+		<dict>
+			<key>127.0.0.1:8088</key>
+			<dict>
+				<key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
+                <key>NSIncludesSubdomains</key>
+                <true/>
+			</dict>
+		</dict>
 	</dict>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>访问麦克风</string>

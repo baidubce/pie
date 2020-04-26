@@ -31,6 +31,31 @@
     return [[SettingViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"SettingViewCell"];
 }
 
+- (void)setCellModel:(SettingViewCellModel *)cellModel {
+    if (_cellModel != cellModel) {
+        _cellModel = cellModel;
+        
+        self.title.text = cellModel.title;
+        self.textField.text = cellModel.descrptionString;
+        self.title.textColor = cellModel.titleColor;
+        self.textField.hidden = !cellModel.isShowTextField;
+        self.textField.userInteractionEnabled = cellModel.isTextFieldEditEnable;
+        self.slider.hidden = !cellModel.isShowSlider;
+        
+        if (cellModel.isShowSlider) {
+            CGFloat width = self.frame.size.width - 60;
+            
+            self.sliderWidth.constant = width;
+            
+            self.slider.minimumValue = cellModel.sliderMin;
+            self.slider.maximumValue = cellModel.sliderMax;
+            self.slider.value = [cellModel.descrptionString floatValue];
+        }else {
+            self.sliderWidth.constant = 0;
+        }        
+    }
+}
+
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
 
@@ -46,4 +71,12 @@
 - (void)textFieldDidEndEditing:(UITextField *)textField {
     
 }
+
+- (IBAction)sliderValueChange:(UISlider *)slider {
+    if ([self.cellDelegate respondsToSelector:@selector(settingViewCell:indexPath:slierValueChanged:)]) {
+        [self.cellDelegate settingViewCell:self indexPath:self.indexPath slierValueChanged:slider.value];
+    }
+}
+
+
 @end

@@ -28,6 +28,7 @@ static BDASRInstance *asrInstance = nil;
 @property (nonatomic, strong) GRPCProtoCall *call;
 @property (nonatomic, strong) BDAudioManager *recorder;
 @property (nonatomic, strong) BDASRConfig *asrConfig;
+@property (nonatomic, strong) GRPCProtoCall *grpcCall;
 
 @property (nonatomic, assign) BOOL canRepChange;
 @property (nonatomic, assign) BOOL canRepResult;
@@ -126,6 +127,13 @@ static BDASRInstance *asrInstance = nil;
     [self startAnalize];
 }
 
+- (void)cancel {
+    self.currentStatus = NORMAL;
+    [self.grpcCall cancel];
+    if (self.canRepChange) [self.delegate bdasrStatusDidChanged:NORMAL];
+    if (self.canRepResult) [self.delegate bdasrAnalizeDone:NO result:@"REQUEST CANCELED" error:nil];
+}
+
 - (void)startAnalize {
     NSString *userName = self.asrConfig.userName;
     NSString *passWord = self.asrConfig.passWord;
@@ -203,6 +211,8 @@ static BDASRInstance *asrInstance = nil;
     if (call.state == GRXWriterStateNotStarted) {
         [call start];
     }
+    
+    self.grpcCall = call;
 }
 
 - (NSArray *)getAudioScreamWithData:(NSData *)data {

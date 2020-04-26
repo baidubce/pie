@@ -9,6 +9,18 @@
 /* Begin PBXBuildFile section */
 		25715FE85C2AD2FA4796043B /* libPods-BaiduTTS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FB08D45E5F8BD56903D8E895 /* libPods-BaiduTTS.a */; };
 		70BBBAAF24349E9D000D7B52 /* BaiduTTS.h in Headers */ = {isa = PBXBuildFile; fileRef = 70BBBAAD24349E9D000D7B52 /* BaiduTTS.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		70BBBAD3243C6B08000D7B52 /* BDTTSRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = 70BBBAD1243C6B08000D7B52 /* BDTTSRequest.h */; };
+		70BBBAD4243C6B08000D7B52 /* BDTTSRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 70BBBAD2243C6B08000D7B52 /* BDTTSRequest.m */; };
+		70BBBAD7243C6B41000D7B52 /* BDTTSSessionManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 70BBBAD5243C6B41000D7B52 /* BDTTSSessionManager.h */; };
+		70BBBAD8243C6B41000D7B52 /* BDTTSSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 70BBBAD6243C6B41000D7B52 /* BDTTSSessionManager.m */; };
+		70BBBADA243C6CE9000D7B52 /* BDTTSMacro.h in Headers */ = {isa = PBXBuildFile; fileRef = 70BBBAD9243C6CE9000D7B52 /* BDTTSMacro.h */; };
+		70BBBAE3243F0B36000D7B52 /* BDTTSInstance.h in Headers */ = {isa = PBXBuildFile; fileRef = 70BBBAE1243F0B36000D7B52 /* BDTTSInstance.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		70BBBAE4243F0B36000D7B52 /* BDTTSInstance.m in Sources */ = {isa = PBXBuildFile; fileRef = 70BBBAE2243F0B36000D7B52 /* BDTTSInstance.m */; };
+		70BBBAEF2448399E000D7B52 /* BDAudioPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 70BBBAED2448399E000D7B52 /* BDAudioPlayer.h */; };
+		70BBBAF02448399E000D7B52 /* BDAudioPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 70BBBAEE2448399E000D7B52 /* BDAudioPlayer.m */; };
+		70BBBAF324484912000D7B52 /* BDTTSConfig.h in Headers */ = {isa = PBXBuildFile; fileRef = 70BBBAF124484912000D7B52 /* BDTTSConfig.h */; };
+		70BBBAF424484912000D7B52 /* BDTTSConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 70BBBAF224484912000D7B52 /* BDTTSConfig.m */; };
+		70BBBAF624484A1A000D7B52 /* libresolv.9.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 70BBBAF524484A1A000D7B52 /* libresolv.9.tbd */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -17,6 +29,18 @@
 		70BBBAAA24349E9D000D7B52 /* BaiduTTS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BaiduTTS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		70BBBAAD24349E9D000D7B52 /* BaiduTTS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BaiduTTS.h; sourceTree = "<group>"; };
 		70BBBAAE24349E9D000D7B52 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		70BBBAD1243C6B08000D7B52 /* BDTTSRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BDTTSRequest.h; sourceTree = "<group>"; };
+		70BBBAD2243C6B08000D7B52 /* BDTTSRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BDTTSRequest.m; sourceTree = "<group>"; };
+		70BBBAD5243C6B41000D7B52 /* BDTTSSessionManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BDTTSSessionManager.h; sourceTree = "<group>"; };
+		70BBBAD6243C6B41000D7B52 /* BDTTSSessionManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BDTTSSessionManager.m; sourceTree = "<group>"; };
+		70BBBAD9243C6CE9000D7B52 /* BDTTSMacro.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BDTTSMacro.h; sourceTree = "<group>"; };
+		70BBBAE1243F0B36000D7B52 /* BDTTSInstance.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BDTTSInstance.h; sourceTree = "<group>"; };
+		70BBBAE2243F0B36000D7B52 /* BDTTSInstance.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BDTTSInstance.m; sourceTree = "<group>"; };
+		70BBBAED2448399E000D7B52 /* BDAudioPlayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BDAudioPlayer.h; sourceTree = "<group>"; };
+		70BBBAEE2448399E000D7B52 /* BDAudioPlayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BDAudioPlayer.m; sourceTree = "<group>"; };
+		70BBBAF124484912000D7B52 /* BDTTSConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BDTTSConfig.h; sourceTree = "<group>"; };
+		70BBBAF224484912000D7B52 /* BDTTSConfig.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BDTTSConfig.m; sourceTree = "<group>"; };
+		70BBBAF524484A1A000D7B52 /* libresolv.9.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.9.tbd; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/usr/lib/libresolv.9.tbd; sourceTree = DEVELOPER_DIR; };
 		FB08D45E5F8BD56903D8E895 /* libPods-BaiduTTS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BaiduTTS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -25,6 +49,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				70BBBAF624484A1A000D7B52 /* libresolv.9.tbd in Frameworks */,
 				25715FE85C2AD2FA4796043B /* libPods-BaiduTTS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -53,15 +78,43 @@
 		70BBBAAC24349E9D000D7B52 /* BaiduTTS */ = {
 			isa = PBXGroup;
 			children = (
+				70BBBAEC24483973000D7B52 /* BDAudioPlayer */,
+				70BBBAD0243C6B08000D7B52 /* BDTTSNetwork */,
+				70BBBAD9243C6CE9000D7B52 /* BDTTSMacro.h */,
 				70BBBAAD24349E9D000D7B52 /* BaiduTTS.h */,
+				70BBBAE1243F0B36000D7B52 /* BDTTSInstance.h */,
+				70BBBAE2243F0B36000D7B52 /* BDTTSInstance.m */,
+				70BBBAF124484912000D7B52 /* BDTTSConfig.h */,
+				70BBBAF224484912000D7B52 /* BDTTSConfig.m */,
 				70BBBAAE24349E9D000D7B52 /* Info.plist */,
 			);
 			path = BaiduTTS;
 			sourceTree = "<group>";
 		};
+		70BBBAD0243C6B08000D7B52 /* BDTTSNetwork */ = {
+			isa = PBXGroup;
+			children = (
+				70BBBAD1243C6B08000D7B52 /* BDTTSRequest.h */,
+				70BBBAD2243C6B08000D7B52 /* BDTTSRequest.m */,
+				70BBBAD5243C6B41000D7B52 /* BDTTSSessionManager.h */,
+				70BBBAD6243C6B41000D7B52 /* BDTTSSessionManager.m */,
+			);
+			path = BDTTSNetwork;
+			sourceTree = "<group>";
+		};
+		70BBBAEC24483973000D7B52 /* BDAudioPlayer */ = {
+			isa = PBXGroup;
+			children = (
+				70BBBAED2448399E000D7B52 /* BDAudioPlayer.h */,
+				70BBBAEE2448399E000D7B52 /* BDAudioPlayer.m */,
+			);
+			path = BDAudioPlayer;
+			sourceTree = "<group>";
+		};
 		9A449D1408F66017D5EE8F0B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				70BBBAF524484A1A000D7B52 /* libresolv.9.tbd */,
 				FB08D45E5F8BD56903D8E895 /* libPods-BaiduTTS.a */,
 			);
 			name = Frameworks;
@@ -84,7 +137,13 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				70BBBADA243C6CE9000D7B52 /* BDTTSMacro.h in Headers */,
+				70BBBAE3243F0B36000D7B52 /* BDTTSInstance.h in Headers */,
+				70BBBAF324484912000D7B52 /* BDTTSConfig.h in Headers */,
+				70BBBAD3243C6B08000D7B52 /* BDTTSRequest.h in Headers */,
 				70BBBAAF24349E9D000D7B52 /* BaiduTTS.h in Headers */,
+				70BBBAEF2448399E000D7B52 /* BDAudioPlayer.h in Headers */,
+				70BBBAD7243C6B41000D7B52 /* BDTTSSessionManager.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -182,6 +241,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				70BBBAD8243C6B41000D7B52 /* BDTTSSessionManager.m in Sources */,
+				70BBBAD4243C6B08000D7B52 /* BDTTSRequest.m in Sources */,
+				70BBBAE4243F0B36000D7B52 /* BDTTSInstance.m in Sources */,
+				70BBBAF02448399E000D7B52 /* BDAudioPlayer.m in Sources */,
+				70BBBAF424484912000D7B52 /* BDTTSConfig.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

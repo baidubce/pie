@@ -20,7 +20,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, assign) BOOL isShowTextField;
 @property (nonatomic, assign) BOOL isTextFieldEditEnable;
+@property (nonatomic, assign) BOOL isShowSlider;
 @property (nonatomic, assign) float cellHeight;
+
+@property (nonatomic, assign) float sliderMin;
+@property (nonatomic, assign) float sliderMax;
 
 @end
 
