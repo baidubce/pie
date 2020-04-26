@@ -36,9 +36,9 @@ import java.util.Map;
 public class JavaDemo {
     public static void main(String[] args) {
         JavaDemo javaDemo = new JavaDemo();
-        //        javaDemo.recognizeFile();
-//        javaDemo.asyncRecognition();
-        javaDemo.asyncRecognitionWithMicrophone();
+        // javaDemo.recognizeFile();
+        // javaDemo.asyncRecognitionWithMicrophone();
+        javaDemo.asyncRecognition();
     }
 
     private AsrConfig buildAsrConfig() {
