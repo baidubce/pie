@@ -3,7 +3,7 @@ import com.jfrog.bintray.gradle.BintrayExtension.PackageConfig
 
 plugins {
     id("java")
-    id("org.jetbrains.kotlin.jvm") version "1.3.10"
+    id("org.jetbrains.kotlin.jvm") version "1.3.11"
     id("idea")
     id("com.google.protobuf") version "0.8.8"
     id("maven-publish")
@@ -11,7 +11,7 @@ plugins {
 }
 
 val kotlinVersion by extra("1.3.10")
-val grpcVersion by extra("1.16.1")
+val grpcVersion by extra("1.19.0")
 val jacksonVersion by extra("2.9.7")
 
 group = "com.baidu.acu.pie"
@@ -38,6 +38,8 @@ dependencies {
     compile("com.google.protobuf:protobuf-java:3.6.1")
     compile("com.squareup.okhttp3:okhttp:3.12.0") // grpc in android needs this
     compile("joda-time:joda-time:2.10.1")
+
+    compile("io.netty:netty-all:4.1.32.Final")
 
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-joda:$jacksonVersion")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jdk8:$jacksonVersion")
