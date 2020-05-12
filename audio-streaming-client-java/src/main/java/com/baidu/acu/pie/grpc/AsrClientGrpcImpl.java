@@ -2,26 +2,6 @@
 
 package com.baidu.acu.pie.grpc;
 
-import static com.google.common.hash.Hashing.sha256;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
-
-import javax.net.ssl.SSLException;
-
-import org.joda.time.DateTime;
-
 import com.baidu.acu.pie.AsrServiceGrpc;
 import com.baidu.acu.pie.AsrServiceGrpc.AsrServiceStub;
 import com.baidu.acu.pie.AudioStreaming;
@@ -40,7 +20,6 @@ import com.baidu.acu.pie.model.StreamContext;
 import com.baidu.acu.pie.util.Base64;
 import com.baidu.acu.pie.util.DateTimeParser;
 import com.google.common.base.Strings;
-
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.Metadata;
@@ -52,6 +31,24 @@ import io.grpc.stub.MetadataUtils;
 import io.grpc.stub.StreamObserver;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.joda.time.DateTime;
+
+import javax.net.ssl.SSLException;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
+
+import static com.google.common.hash.Hashing.sha256;
 
 /**
  * AsrClientGrpcImpl
@@ -315,6 +312,7 @@ public class AsrClientGrpcImpl implements AsrClient {
                 .endTime(DateTimeParser.parseLocalTime(response.getEndTime()))
                 .result(response.getResult())
                 .completed(response.getCompleted())
+                .noiseLevel(response.getNoiseLevel())
                 .build();
     }
 

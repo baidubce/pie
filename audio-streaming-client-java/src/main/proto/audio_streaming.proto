@@ -49,6 +49,7 @@ message AudioFragmentResult {
     string result = 3;
     bool completed = 4;
     string serial_num = 5;
+    uint32 noise_level = 6;
 }
 
 message AudioFragmentResponse {

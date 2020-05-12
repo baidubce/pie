@@ -43,4 +43,9 @@ public class RecognitionResult {
      * 否则，result 只是中间结果
      */
     private boolean completed;
+
+    /**
+     * 噪音检测的结果值
+     */
+    private int noiseLevel;
 }
