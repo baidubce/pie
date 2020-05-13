@@ -47,6 +47,7 @@ UIColor *bgColor = [UIColor colorWithRed:0.0 green:122/255.0 blue:1.0 alpha:1.0]
     [self.asrInstance setServerPort:config.serverPort];
     [self.asrInstance setProductId:config.productId];
     [self.asrInstance setSampleRate:config.sampleRate];
+    [self.asrInstance setAccessKey:@"c4e9d74d-2d19-4e82-6bbe-c3652473633d" secrityKey:@"3264d372-466f-4a46-758b-048950a02315"];
     [self.asrInstance setDelegate:self];
 }
 

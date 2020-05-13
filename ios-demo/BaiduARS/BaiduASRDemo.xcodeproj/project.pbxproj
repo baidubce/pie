@@ -25,8 +25,8 @@
 		708D78DA231CFC8000B4EAA9 /* ModelCellModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 708D78D9231CFC8000B4EAA9 /* ModelCellModel.m */; };
 		708D78DE231CFCF300B4EAA9 /* ModelViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 708D78DC231CFCF300B4EAA9 /* ModelViewCell.m */; };
 		708D78DF231CFCF300B4EAA9 /* ModelViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 708D78DD231CFCF300B4EAA9 /* ModelViewCell.xib */; };
-		70BBBADC243C7EEE000D7B52 /* BaiduTTS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 70BBBADB243C7EEE000D7B52 /* BaiduTTS.framework */; };
-		70BBBADD243C7EEE000D7B52 /* BaiduTTS.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 70BBBADB243C7EEE000D7B52 /* BaiduTTS.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		70A3B27324669D0F00BE4EB4 /* BaiduTTS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 70BBBADB243C7EEE000D7B52 /* BaiduTTS.framework */; };
+		70A3B27424669D0F00BE4EB4 /* BaiduTTS.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 70BBBADB243C7EEE000D7B52 /* BaiduTTS.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		70BBBADF243C7FA5000D7B52 /* BaiduASR.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 70BBBADE243C7FA5000D7B52 /* BaiduASR.framework */; };
 		70BBBAE0243C7FA5000D7B52 /* BaiduASR.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 70BBBADE243C7FA5000D7B52 /* BaiduASR.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		70BBBAE82446FED5000D7B52 /* TTSViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 70BBBAE72446FED5000D7B52 /* TTSViewController.m */; };
@@ -52,7 +52,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				70BBBADD243C7EEE000D7B52 /* BaiduTTS.framework in Embed Frameworks */,
+				70A3B27424669D0F00BE4EB4 /* BaiduTTS.framework in Embed Frameworks */,
 				70BBBAE0243C7FA5000D7B52 /* BaiduASR.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -114,7 +114,7 @@
 			files = (
 				70BBBADF243C7FA5000D7B52 /* BaiduASR.framework in Frameworks */,
 				3673C3F62970DFBC181AFF21 /* libPods-BaiduASRDemo.a in Frameworks */,
-				70BBBADC243C7EEE000D7B52 /* BaiduTTS.framework in Frameworks */,
+				70A3B27324669D0F00BE4EB4 /* BaiduTTS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

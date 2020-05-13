@@ -31,6 +31,16 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)setVol:(NSString *)vol;
 
 
+/// 鉴权参数设置
+/// @param accessKey ak
+/// @param secrityKey sk
+- (void)setAccessKey:(NSString *)accessKey secrityKey:(NSString *)secrityKey;
+
+- (NSString *)accessKey;
+
+- (NSString *)secrityKey;
+
+
 /// TTS 服务接口
 /// @param text 需要转语音的文字
 /// @param isPlay 是否完成转换后播放语音

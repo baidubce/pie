@@ -8,6 +8,7 @@
 
 #import "BDTTSRequest.h"
 #import "BDTTSSessionManager.h"
+#import "BDTTSMacro.h"
 static BDTTSRequest *ttsRequset;
 
 @implementation BDTTSRequest
@@ -26,6 +27,24 @@ static BDTTSRequest *ttsRequset;
     }
     NSLog(@"invaild url, please check it !!!");
     return NO;
+}
+
++ (NSString *)requestURL {
+    NSMutableString *urlString = [NSMutableString stringWithString:BDTTSProtocol];
+    
+    if (BDTTSHost.length) {
+        [urlString appendFormat:@"://%@", BDTTSHost];
+    }
+    
+    if (BDTTSPort.length) {
+        [urlString appendFormat:@":%@", BDTTSPort];
+    }
+    
+    if (BDTTSPath.length) {
+        [urlString appendString:BDTTSPath];
+    }
+    
+    return urlString;
 }
 
 + (void)requestGet:(NSString *)urlSring

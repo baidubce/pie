@@ -9,6 +9,8 @@
 #import "BDTTSSessionManager.h"
 #import "AFNetworking.h"
 #import "BDTTSMacro.h"
+#import "BDTTSInstance.h"
+#import "BDTTSRequestAuthorization.h"
 
 static BDTTSSessionManager *ttsManager = nil;
 
@@ -22,6 +24,20 @@ static BDTTSSessionManager *ttsManager = nil;
 
 @implementation BDTTSSessionManager
 
+- (NSString *)getUTCTimeString
+{
+    NSDate *currentDate = [NSDate date]; //[NSDate dateWithTimeInterval:8*60*60 sinceDate:[NSDate date]];//获得当前一天后的UTC时间，设置为终止时间
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    //输入格式
+    NSTimeZone *timeZone = [NSTimeZone timeZoneWithName:@"UTC"];
+    [dateFormatter setTimeZone:timeZone];
+    //输出格式
+    [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss'Z'"];
+    NSString *dateString = [dateFormatter stringFromDate:currentDate];
+    return dateString;
+}
+
 + (instancetype)sharedManager {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -33,7 +49,7 @@ static BDTTSSessionManager *ttsManager = nil;
 
 #pragma mark session Manager
 - (void)loadSessionManager {
-    AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithBaseURL:[NSURL URLWithString:BDTTSHost]];
+    AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] init];
 
     manager.requestSerializer = [self setRequestSerializer];
     manager.responseSerializer = [self setResponseSerializer];
@@ -46,7 +62,6 @@ static BDTTSSessionManager *ttsManager = nil;
 - (AFHTTPRequestSerializer *)setRequestSerializer {
     AFHTTPRequestSerializer *serializer = [AFHTTPRequestSerializer serializer];
 //    [serializer setValue:@"" forHTTPHeaderField:@""]; //设置请求头
-
     return serializer;
 }
 
@@ -54,6 +69,24 @@ static BDTTSSessionManager *ttsManager = nil;
     AFHTTPResponseSerializer *responseSerializer = [AFHTTPResponseSerializer serializer];
     responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/plain",@"text/html", nil];
     return responseSerializer;
+}
+
+- (void)requestSetHeaders:(NSMutableURLRequest *)request {
+    NSString *utcTime = [self getUTCTimeString]; //@"2020-05-12T03:39:16Z";
+    
+    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [request setValue:BDTTSHost forHTTPHeaderField:@"Host"];
+    [request setValue:utcTime forHTTPHeaderField:@"x-bce-date"];
+    
+    [self request:request setAuthorizationWithTimeStamp:utcTime];
+}
+
+- (void)request:(NSMutableURLRequest *)request setAuthorizationWithTimeStamp:(NSString *)timeStamp {
+    NSString *ak = [[BDTTSInstance sharedInstance] accessKey];
+    NSString *sk = [[BDTTSInstance sharedInstance] secrityKey];
+    NSString *authorization = [BDTTSRequestAuthorization getAuthorizationWithUri:BDTTSPath ak:ak sk:sk timeStamp:timeStamp request:request];
+
+    [request setValue:authorization forHTTPHeaderField:@"Authorization"];
 }
 
 
@@ -71,7 +104,7 @@ static BDTTSSessionManager *ttsManager = nil;
 
 - (NSURLSessionTask *)Down:(NSString *)urlSring parameters:(NSDictionary *)parameters success:(void (^)(id _Nonnull, NSURL * _Nonnull))success failure:(void (^)(NSError * _Nonnull))failure {
     NSError *serializationError = nil;
-    NSMutableURLRequest *request = [self.sessionManager.requestSerializer requestWithMethod:@"GET" URLString:urlSring parameters:parameters error:&serializationError];
+    NSMutableURLRequest *request = [self.sessionManager.requestSerializer requestWithMethod:@"POST" URLString:urlSring parameters:parameters error:&serializationError];
     if (serializationError) {
         NSLog(@"invalid url request !!!");
         if (failure) {
@@ -79,6 +112,8 @@ static BDTTSSessionManager *ttsManager = nil;
         }
         return nil;
     }
+    
+    [self requestSetHeaders:request];
     
     NSURLSessionDownloadTask *task = [self.sessionManager downloadTaskWithRequest:request progress:^(NSProgress * _Nonnull downloadProgress) {
         NSLog(@"now loading process: %@",downloadProgress);

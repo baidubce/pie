@@ -29,12 +29,12 @@ typedef enum : NSUInteger {
 /**
  * asr流式服务Host地址，私有化版本请咨询供应商
  */
-@property (nonatomic, strong) NSString *hostAddress;
+@property (nonatomic, copy) NSString *hostAddress;
 
 /**
  * asr流式服务的端口，私有化版本请咨询供应商
  */
-@property (nonatomic, assign) int serverPort;
+@property (nonatomic, copy) NSString *serverPort;
 
 /**
  * asr识别服务的产品类型id，私有化版本请咨询供应商
@@ -93,12 +93,22 @@ typedef enum : NSUInteger {
 @property (nonatomic, copy) NSString *userName;
 @property (nonatomic, copy) NSString *passWord;
 
+/**
+ * ak & sk
+ */
+@property (nonatomic, copy) NSString *accessKey;
+@property (nonatomic, copy) NSString *secrityKey;
+
 
 - (NSString *)hostAddress_Port;
 
 - (NSString *)getUTCTimeString;
 
-- (NSString *)getToken:(NSString *)string;
+- (NSString *)getTokenWithTimeStamp:(NSString *)timeStamp;
+
+//- (NSString *)getSignKey;
+
+- (NSString *)getAuthorization;
 
 @end
 

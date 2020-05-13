@@ -9,6 +9,9 @@
 #import "ASRConfig.h"
 #import <BaiduASR/BDASRInstance.h>
 
+#define HOST @"10.161.115.27" //180.76.107.131
+#define PORT @"8089/com.baidu.acu.pie.AsrService/send"
+
 #define defIDdess [NSArray arrayWithObjects:@"客服模型1903", \
                                 @"客服模型-旅游领域1904", \
                                 @"客服模型-股票领域1905", \
@@ -52,8 +55,8 @@ static ASRConfig *config = nil;
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         NSString *userName = [defaults objectForKey:@"userName"] ?: @"";
         NSString *passWord = [defaults objectForKey:@"passWord"] ?: @"";
-        NSString *hostAddress = [defaults objectForKey:@"hostAddress"] ?: @"180.76.107.131";
-        NSString *serverPort = [defaults objectForKey:@"serverPort"] ?: @"8050";
+        NSString *hostAddress = [defaults objectForKey:@"hostAddress"] ?: HOST;
+        NSString *serverPort = [defaults objectForKey:@"serverPort"] ?: PORT;
         NSString *productId = [defaults objectForKey:@"productId"] ?: @"1906";
         NSString *sampleRate = [defaults objectForKey:@"sampleRate"] ?: @"8000";
         NSString *appName = [defaults objectForKey:@"appName"] ?: @"iosdemo";
@@ -90,8 +93,8 @@ static ASRConfig *config = nil;
     
     NSString *userName = self.userName ?: @"";
     NSString *passWord = self.passWord ?: @"";
-    NSString *hostAddress = self.hostAddress ?: @"180.76.107.131";
-    NSString *serverPort = self.serverPort ?: @"8050";
+    NSString *hostAddress = self.hostAddress ?: HOST;
+    NSString *serverPort = self.serverPort ?: PORT;
     NSString *productId = self.productId ?: @"1906";
     NSString *sampleRate = self.sampleRate ?: @"8000";
     NSString *appName = self.appName ?: @"iosdemo";

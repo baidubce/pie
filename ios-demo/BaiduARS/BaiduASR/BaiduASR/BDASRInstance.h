@@ -49,6 +49,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)setUserName:(NSString *)userName passWord:(NSString *)passWord;
 
 /**
+ * 设置用户AK, SK用于鉴权
+ */
+- (void)setAccessKey:(NSString *)accessKey secrityKey:(NSString *)secrityKey;
+
+/**
  * 设置hostAddress
  */
 - (void)setHostAddress:(NSString *)hostAddress;

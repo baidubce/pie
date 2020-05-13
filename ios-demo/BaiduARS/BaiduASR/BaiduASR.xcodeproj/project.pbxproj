@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -42,6 +42,7 @@
 		704F485A2281829D00FD6E90 /* AudioStreaming.pbobjc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioStreaming.pbobjc.h; sourceTree = "<group>"; };
 		704F486522818B5E00FD6E90 /* BDASRInstance.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BDASRInstance.h; sourceTree = "<group>"; };
 		704F486622818B5E00FD6E90 /* BDASRInstance.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = BDASRInstance.mm; sourceTree = "<group>"; };
+		70A3B2652464280D00BE4EB4 /* BaiduCommon.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BaiduCommon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,6 +60,7 @@
 		453FCE978200FB300E02764F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				70A3B2652464280D00BE4EB4 /* BaiduCommon.framework */,
 				551C9C8AC25B298A751E6841 /* libPods-BaiduASR.a */,
 			);
 			name = Frameworks;

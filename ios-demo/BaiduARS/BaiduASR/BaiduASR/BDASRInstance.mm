@@ -86,6 +86,12 @@ static BDASRInstance *asrInstance = nil;
     config.passWord = passWord;
 }
 
+- (void)setAccessKey:(NSString *)accessKey secrityKey:(NSString *)secrityKey {
+    BDASRConfig *config = [BDASRConfig config];
+    config.accessKey = accessKey;
+    config.secrityKey = secrityKey;
+}
+
 - (void)setHostAddress:(NSString *)hostAddress {
     BDASRConfig *config = [BDASRConfig config];
     config.hostAddress = hostAddress;
@@ -94,7 +100,7 @@ static BDASRInstance *asrInstance = nil;
 
 - (void)setServerPort:(NSString *)serverPort {
     BDASRConfig *config = [BDASRConfig config];
-    config.serverPort = [serverPort intValue];
+    config.serverPort = serverPort;
     [self configHost];
 }
 
@@ -142,9 +148,6 @@ static BDASRInstance *asrInstance = nil;
         NSLog(@"invalid username or password, please check them!");
         return;
     }
-    
-    NSString *expireTime = [self.asrConfig getUTCTimeString];
-    NSString *token = [self.asrConfig getToken:[NSString stringWithFormat:@"%@%@%@", userName, passWord, expireTime]];
 
     InitRequest *request = [[InitRequest alloc] init];
     request.enableLongSpeech = YES;
@@ -158,8 +161,10 @@ static BDASRInstance *asrInstance = nil;
     request.appName = self.asrConfig.appName;
     request.logLevel = self.asrConfig.logLevel;
     request.userName = userName;
-    request.expireTime = expireTime;
-    request.token = token;
+    
+    NSString *timeStamp = [self.asrConfig getUTCTimeString];
+    request.expireTime = timeStamp;
+    request.token = [self.asrConfig getTokenWithTimeStamp:timeStamp];
     
     NSLog(@"audio_meta : %@", request);
     
@@ -205,8 +210,13 @@ static BDASRInstance *asrInstance = nil;
     
     NSData *metaData = [request data];
     NSString *metaString = [metaData base64EncodedStringWithOptions:0];
+    NSString *authorization = [self.asrConfig getAuthorization];
     
     call.requestHeaders[@"audio_meta"] = metaString;
+    
+    if (authorization.length) {
+        call.requestHeaders[@"authorization"] = authorization;
+    }
     
     if (call.state == GRXWriterStateNotStarted) {
         [call start];

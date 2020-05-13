@@ -55,6 +55,19 @@ static BDTTSInstance *ttsInstance = nil;
     self.config.vol = vol;
 }
 
+- (void)setAccessKey:(NSString *)accessKey secrityKey:(NSString *)secrityKey {
+    self.config.accessKey = accessKey;
+    self.config.secrityKey = secrityKey;
+}
+
+- (NSString *)accessKey {
+    return self.config.accessKey;
+}
+
+- (NSString *)secrityKey {
+    return self.config.secrityKey;
+}
+
 - (void)ttsWithText:(NSString *)text
              isPlay:(BOOL)isPlay
            complete:(void (^ _Nullable )(NSURL * _Nonnull))complete
@@ -80,7 +93,7 @@ static BDTTSInstance *ttsInstance = nil;
     
     NSDictionary *parameters = @{@"tex" : tex, @"lan" : lan, @"pdt" : pdt, @"ctp" : ctp, @"cuid" : cuid, @"spd" : spd, @"pit" : pit, @"vol" : vol, @"aue" : aue, @"per" : per};
     
-    [BDTTSRequest requestDownload:BDTTSHost parameters:parameters success:^(NSURL * _Nonnull filePath) {
+    [BDTTSRequest requestDownload:[BDTTSRequest requestURL] parameters:parameters success:^(NSURL * _Nonnull filePath) {
         if (isPlay) {
             if (filePath) {
                 [self playAudioWithURL:filePath];
