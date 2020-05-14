@@ -9,8 +9,8 @@
 #import "ASRConfig.h"
 #import <BaiduASR/BDASRInstance.h>
 
-#define HOST @"10.161.115.27" //180.76.107.131
-#define PORT @"8089/com.baidu.acu.pie.AsrService/send"
+#define HOST @"asr.baiduai.cloud" //180.76.107.131
+#define PORT @"8051"
 
 #define defIDdess [NSArray arrayWithObjects:@"客服模型1903", \
                                 @"客服模型-旅游领域1904", \

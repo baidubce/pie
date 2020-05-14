@@ -9,8 +9,8 @@
 #import "BDASRConfig.h"
 #import <CommonCrypto/CommonDigest.h>
 
-NSString *kHostAddress = @"180.76.107.131";
-NSString *defServerPort = @"8050";//8212;
+NSString *kHostAddress = @"asr.baiduai.cloud";
+NSString *defServerPort = @"8051";//8212;
 NSString *defAppName = @"iosdemo";
 NSString *defProducID = @"1903";
 BOOL defEnableFlushData = YES;

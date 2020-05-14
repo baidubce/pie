@@ -41,8 +41,8 @@
     [[BDTTSInstance sharedInstance] setPit:config.pit];
     [[BDTTSInstance sharedInstance] setSpd:config.spd];
     [[BDTTSInstance sharedInstance] setVol:config.vol];
-    [[BDTTSInstance sharedInstance] setAccessKey:@"c4e9d74d-2d19-4e82-6bbe-c3652473633d"
-                                      secrityKey:@"3264d372-466f-4a46-758b-048950a02315"];
+//    [[BDTTSInstance sharedInstance] setAccessKey:@"c4e9d74d-2d19-4e82-6bbe-c3652473633d"
+//                                      secrityKey:@"3264d372-466f-4a46-758b-048950a02315"];
 }
 
 - (IBAction)startTTS:(id)sender {

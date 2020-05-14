@@ -113,7 +113,9 @@ static BDTTSSessionManager *ttsManager = nil;
         return nil;
     }
     
-    [self requestSetHeaders:request];
+    if ([[BDTTSInstance sharedInstance] accessKey].length && [[BDTTSInstance sharedInstance] secrityKey].length) {
+        [self requestSetHeaders:request];
+    }
     
     NSURLSessionDownloadTask *task = [self.sessionManager downloadTaskWithRequest:request progress:^(NSProgress * _Nonnull downloadProgress) {
         NSLog(@"now loading process: %@",downloadProgress);
