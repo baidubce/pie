@@ -28,12 +28,19 @@
 		<string>YES</string>
 		<key>NSExceptionDomains</key>
 		<dict>
+			<key>aizt.sichuanair.com</key>
+			<dict>
+				<key>NSIncludesSubdomains</key>
+				<true/>
+				<key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
+			</dict>
 			<key>127.0.0.1:8088</key>
 			<dict>
 				<key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
 				<true/>
-                <key>NSIncludesSubdomains</key>
-                <true/>
+				<key>NSIncludesSubdomains</key>
+				<true/>
 			</dict>
 		</dict>
 	</dict>

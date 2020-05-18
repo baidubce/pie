@@ -26,6 +26,11 @@ typedef enum : NSUInteger {
  */
 - (void)bdasrAnalizeDone:(BOOL)done result:(id _Nullable )result error:(NSError* _Nullable)error;
 
+/**
+ * ASR实时结果回调
+ */
+- (void)bdasrRealTimeAnalizeResult:(id _Nullable )result error:(NSError* _Nullable)error;
+
 @end
 
 NS_ASSUME_NONNULL_BEGIN
@@ -92,6 +97,16 @@ NS_ASSUME_NONNULL_BEGIN
  * 取消目前所有的ASR请求
  */
 - (void)cancel;
+
+/**
+ * 开始实时收音
+ */
+- (void)startRealTimeRecord;
+
+/**
+ * 结束实时收音
+ */
+- (void)stopRealTimeRecord;
 
 @end
 

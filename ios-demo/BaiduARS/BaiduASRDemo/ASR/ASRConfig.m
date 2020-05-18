@@ -12,6 +12,9 @@
 #define HOST @"asr.baiduai.cloud" //180.76.107.131
 #define PORT @"8051"
 
+//#define HOST @"10.161.115.27"
+//#define PORT @"8089"
+
 #define defIDdess [NSArray arrayWithObjects:@"客服模型1903", \
                                 @"客服模型-旅游领域1904", \
                                 @"客服模型-股票领域1905", \

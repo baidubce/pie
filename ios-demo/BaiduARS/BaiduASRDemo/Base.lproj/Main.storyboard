@@ -190,11 +190,29 @@
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bXP-7Y-3Is">
-                                <rect key="frame" x="167" y="732" width="80" height="80"/>
+                                <rect key="frame" x="80" y="732" width="80" height="80"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nsr-Os-K9a">
+                                        <rect key="frame" x="17.5" y="0.0" width="45" height="80"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="80" id="neD-bE-Ubs"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                        <state key="normal" title="录音">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="record:" destination="BYZ-38-t0r" eventType="touchUpInside" id="iF1-72-NoZ"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
                                 <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="80" id="AHm-qg-uMy"/>
                                     <constraint firstAttribute="width" constant="80" id="cif-M5-Sno"/>
+                                    <constraint firstItem="nsr-Os-K9a" firstAttribute="centerX" secondItem="bXP-7Y-3Is" secondAttribute="centerX" id="jAO-Sk-9r0"/>
+                                    <constraint firstItem="nsr-Os-K9a" firstAttribute="centerY" secondItem="bXP-7Y-3Is" secondAttribute="centerY" id="vCZ-s1-7Pe"/>
                                 </constraints>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
@@ -202,26 +220,43 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nsr-Os-K9a">
-                                <rect key="frame" x="184.5" y="732" width="45" height="80"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TVw-dD-BY1">
+                                <rect key="frame" x="254" y="732" width="80" height="80"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WOt-BP-hGK">
+                                        <rect key="frame" x="7" y="0.0" width="66" height="80"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="80" id="lht-pa-Vji"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                        <state key="normal" title="实时录音">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="stream:" destination="BYZ-38-t0r" eventType="touchUpInside" id="6HK-gO-tgU"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="80" id="LJQ-y1-vW0"/>
+                                    <constraint firstAttribute="height" constant="80" id="7dk-kj-sB5"/>
+                                    <constraint firstItem="WOt-BP-hGK" firstAttribute="centerX" secondItem="TVw-dD-BY1" secondAttribute="centerX" id="BqB-wo-YOb"/>
+                                    <constraint firstItem="WOt-BP-hGK" firstAttribute="centerY" secondItem="TVw-dD-BY1" secondAttribute="centerY" id="EgX-lz-2JP"/>
+                                    <constraint firstAttribute="width" constant="80" id="m4H-mc-nGs"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="22"/>
-                                <state key="normal" title="录音">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                </state>
-                                <connections>
-                                    <action selector="record:" destination="BYZ-38-t0r" eventType="touchUpInside" id="iF1-72-NoZ"/>
-                                </connections>
-                            </button>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="40"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="nsr-Os-K9a" secondAttribute="bottom" constant="50" id="0hG-d4-5P5"/>
-                            <constraint firstItem="nsr-Os-K9a" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="2AB-fW-C0D"/>
-                            <constraint firstItem="bXP-7Y-3Is" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="G8u-RM-4j9"/>
+                            <constraint firstItem="bXP-7Y-3Is" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="80" id="GtM-PS-bmc"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="TVw-dD-BY1" secondAttribute="bottom" constant="50" id="QZY-D9-Itx"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="TVw-dD-BY1" secondAttribute="trailing" constant="80" id="VNa-eI-BPj"/>
                             <constraint firstItem="bXP-7Y-3Is" firstAttribute="top" secondItem="WF8-Of-YC9" secondAttribute="bottom" constant="30" id="WHx-ar-Rel"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="bXP-7Y-3Is" secondAttribute="bottom" constant="50" id="dnX-4t-SnY"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="WF8-Of-YC9" secondAttribute="trailing" constant="20" id="fMC-g0-5DH"/>
@@ -236,9 +271,6 @@
                                 <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="UWN-Aa-IM5">
                                     <rect key="frame" x="334" y="4" width="60" height="36"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    <constraints>
-                                        <constraint firstAttribute="height" constant="30" id="NH0-2A-X2f"/>
-                                    </constraints>
                                     <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                     <state key="normal" title="设置"/>
                                     <connections>
@@ -270,6 +302,8 @@
                     </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
+                        <outlet property="realTimeBtn" destination="WOt-BP-hGK" id="B0c-P0-5X3"/>
+                        <outlet property="realTimeView" destination="TVw-dD-BY1" id="dAm-cv-52j"/>
                         <outlet property="recordBtn" destination="nsr-Os-K9a" id="4n4-57-a0R"/>
                         <outlet property="recordView" destination="bXP-7Y-3Is" id="IDe-e5-8zD"/>
                         <outlet property="resultTextView" destination="WF8-Of-YC9" id="EeQ-Ie-PH1"/>
@@ -277,7 +311,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-372" y="125"/>
+            <point key="canvasLocation" x="-372.46376811594206" y="124.55357142857142"/>
         </scene>
         <!--Setting View Controller-->
         <scene sceneID="i39-Ha-U0J">

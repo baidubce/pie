@@ -31,7 +31,6 @@
     
     [self requestStop];
     [self loadTTSConfig];
-    self.textView.text = @"你好";
 }
 
 - (void)loadTTSConfig {
