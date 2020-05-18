@@ -46,9 +46,9 @@ if __name__ == '__main__':
 
     url = "127.0.0.1"
     port = "8050"
-    # product_id = AsrProduct.INPUT_METHOD
-    product_id = "888"
-    sample_rate = 16000
+    product = AsrProduct.INPUT_METHOD
+    # product_id = "888"
+    # sample_rate = 16000
     enable_flush_data = True
     user_name = "abc"
     password = "123"
