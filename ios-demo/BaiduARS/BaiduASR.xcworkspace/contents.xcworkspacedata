@@ -2,10 +2,10 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:BaiduASR/BaiduASR.xcodeproj">
+      location = "group:BaiduTTS/BaiduTTS.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:BaiduTTS/BaiduTTS.xcodeproj">
+      location = "group:BaiduASR/BaiduASR.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:BaiduASRDemo.xcodeproj">

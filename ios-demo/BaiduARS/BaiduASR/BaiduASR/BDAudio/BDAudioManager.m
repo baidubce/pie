@@ -37,7 +37,7 @@ static BDAudioManager *_recorder = nil;
 - (instancetype)init {
     self = [super init];
     if (self != nil) {
-        
+        [self configRecorder];
     }
     return self;
 }

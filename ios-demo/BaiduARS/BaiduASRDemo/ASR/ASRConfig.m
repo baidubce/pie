@@ -9,11 +9,22 @@
 #import "ASRConfig.h"
 #import <BaiduASR/BDASRInstance.h>
 
-#define HOST @"asr.baiduai.cloud" //180.76.107.131
-#define PORT @"8051"
+// 云
+//#define HOST @"asr.baiduai.cloud" //180.76.107.131
+//#define PORT @"8051"
+//#define PID  @"1906"
 
+//ai中台
 //#define HOST @"10.161.115.27"
 //#define PORT @"8089"
+//#define PID  @"1906"
+
+#define HOST @"180.76.161.229"
+#define PORT @"8010"
+#define PID  @"888"
+#define SAMPLERATE  @"16000"
+#define USERNAME @"admin"
+#define PASSWORD @"1234567809"
 
 #define defIDdess [NSArray arrayWithObjects:@"客服模型1903", \
                                 @"客服模型-旅游领域1904", \
@@ -56,12 +67,12 @@ static ASRConfig *config = nil;
     if (self) {
         
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        NSString *userName = [defaults objectForKey:@"userName"] ?: @"";
-        NSString *passWord = [defaults objectForKey:@"passWord"] ?: @"";
+        NSString *userName = [defaults objectForKey:@"userName"] ?: USERNAME;
+        NSString *passWord = [defaults objectForKey:@"passWord"] ?: PASSWORD;
         NSString *hostAddress = [defaults objectForKey:@"hostAddress"] ?: HOST;
         NSString *serverPort = [defaults objectForKey:@"serverPort"] ?: PORT;
-        NSString *productId = [defaults objectForKey:@"productId"] ?: @"1906";
-        NSString *sampleRate = [defaults objectForKey:@"sampleRate"] ?: @"8000";
+        NSString *productId = [defaults objectForKey:@"productId"] ?: PID;
+        NSString *sampleRate = [defaults objectForKey:@"sampleRate"] ?: SAMPLERATE;
         NSString *appName = [defaults objectForKey:@"appName"] ?: @"iosdemo";
         
         NSArray *productIDArray = [defaults objectForKey:@"productIDArray"] ?: defIDS;
@@ -98,8 +109,8 @@ static ASRConfig *config = nil;
     NSString *passWord = self.passWord ?: @"";
     NSString *hostAddress = self.hostAddress ?: HOST;
     NSString *serverPort = self.serverPort ?: PORT;
-    NSString *productId = self.productId ?: @"1906";
-    NSString *sampleRate = self.sampleRate ?: @"8000";
+    NSString *productId = self.productId ?: PID;
+    NSString *sampleRate = self.sampleRate ?: SAMPLERATE;
     NSString *appName = self.appName ?: @"iosdemo";
     
     NSArray *productIDArray = self.productIDArray ?: @[];

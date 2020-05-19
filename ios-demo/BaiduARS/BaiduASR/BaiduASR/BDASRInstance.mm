@@ -120,6 +120,9 @@ static BDASRInstance *asrInstance = nil;
 - (void)setSampleRate:(NSString *)sampleRate {
     BDASRConfig *config = [BDASRConfig config];
     config.sampleRate = [sampleRate intValue];
+    
+    [self.normalRPCManager configRecorder];
+    [self.streamRPCManager configRecorder];
 }
 
 - (void)setAppName:(NSString *)appName {

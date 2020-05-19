@@ -22,7 +22,7 @@
 @implementation TTSViewController
 
 - (void)dealloc {
-    [[BDTTSInstance sharedInstance] cancel];
+//    [[BDTTSInstance sharedInstance] cancel];
 }
 
 - (void)viewDidLoad {

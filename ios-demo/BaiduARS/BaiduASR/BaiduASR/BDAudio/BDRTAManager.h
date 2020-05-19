@@ -20,6 +20,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic,strong) id<BDRTADelegate>delegate;
 
+- (void)configRecorder;
+
 - (void)startRecord;
 - (void)stopRecord;
 

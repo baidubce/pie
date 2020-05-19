@@ -9,6 +9,7 @@
 #import "BDRTAManager.h"
 #import <AudioToolbox/AudioToolbox.h>
 #import <AVFoundation/AVFoundation.h>
+#import "BDASRConfig.h"
 
 #define QUEUE_BUFFER_SIZE 3      //输出音频队列缓冲个数
 #define kDefaultBufferDurationSeconds 0.04      //调整这个值使得录音的缓冲区大小为640,实际会小于或等于640,需要处理小于640的情况
@@ -40,17 +41,6 @@
         _recordFormat.mBitsPerChannel = 16;
         _recordFormat.mBytesPerPacket = _recordFormat.mBytesPerFrame = (_recordFormat.mBitsPerChannel / 8) * _recordFormat.mChannelsPerFrame;
         _recordFormat.mFramesPerPacket = 1;
-        //初始化音频输入队列
-        AudioQueueNewInput(&_recordFormat, inputBufferHandler, (__bridge void *)(self), NULL, NULL, 0, &_audioQueue);
-        //计算估算的缓存区大小
-        int frames = (int)ceil(kDefaultBufferDurationSeconds * _recordFormat.mSampleRate);
-        int bufferByteSize = frames * _recordFormat.mBytesPerFrame;
-        //        NSLog(@"缓存区大小%d",bufferByteSize);
-        //创建缓冲器
-        for (int i = 0; i < QUEUE_BUFFER_SIZE; i++){
-            AudioQueueAllocateBuffer(_audioQueue, bufferByteSize, &_audioBuffers[i]);
-            AudioQueueEnqueueBuffer(_audioQueue, _audioBuffers[i], 0, NULL);
-        }
     }
     return self;
 }
@@ -81,8 +71,11 @@ void inputBufferHandler(void *inUserData, AudioQueueRef inAQ, AudioQueueBufferRe
     [self.delegate returnData:data];
 }
 
-- (void)startRecord
-{
+- (void)configRecorder {
+    _recordFormat.mSampleRate = [BDASRConfig config].sampleRate;
+}
+
+- (void)startRecord {
     //初始化音频输入队列
     AudioQueueNewInput(&_recordFormat, inputBufferHandler, (__bridge void *)(self), NULL, NULL, 0, &_audioQueue);
     //计算估算的缓存区大小
@@ -100,8 +93,7 @@ void inputBufferHandler(void *inUserData, AudioQueueRef inAQ, AudioQueueBufferRe
     _isRecording = YES;
 }
 
-- (void)stopRecord
-{
+- (void)stopRecord {
     if (_isRecording)
     {
         _isRecording = NO;

@@ -14,11 +14,11 @@
 #import <RxLibrary/GRXBufferedPipe.h>
 #import <ProtoRPC/ProtoRPC.h>
 
-
 #import "AudioStreaming.pbrpc.h"
 #import "AudioStreaming.pbobjc.h"
 #import "BDASRConfig.h"
 #import "BDRTAManager.h"
+
 
 static dispatch_queue_t rpc_stream_queue;
 
@@ -86,9 +86,13 @@ static dispatch_queue_t rpc_stream_queue;
 - (void)returnData:(NSMutableData *)data {
 //    NSLog(@"录音中 ----- ：%@", data);
     AudioFragmentRequest *dataRequest = [[AudioFragmentRequest alloc] init];
-    dataRequest.audioData = [data subdataWithRange:NSMakeRange(0, 640)];
-    
+    dataRequest.audioData = data;
+
     [self.call writeMessage:dataRequest];
+}
+
+- (void)configRecorder {
+    [self.rtaManager configRecorder];
 }
 
 - (void)startStream {
@@ -152,6 +156,9 @@ static dispatch_queue_t rpc_stream_queue;
     [options setPEMRootCertificates:nil];
     [options setTransportType:GRPCTransportTypeInsecure];
 
+    if (self.call) {
+        [self.call finish];
+    }
     
     GRPCStreamingProtoCall *call = [self.client sendWithResponseHandler:self callOptions:options];
     self.call = call;

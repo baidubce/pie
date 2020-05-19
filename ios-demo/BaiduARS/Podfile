@@ -3,7 +3,7 @@ platform :ios,'8.0'
 def commonPods
     pod '!ProtoCompiler'
     pod '!ProtoCompiler-gRPCPlugin'
-    pod 'BoringSSL-GRPC' , '~> 0.0.1'
+    pod 'BoringSSL-GRPC'
     pod 'Protobuf'
     pod 'gRPC'
     pod 'gRPC-Core'

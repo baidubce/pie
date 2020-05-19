@@ -50,8 +50,11 @@
     self.client = [[AsrService alloc] initWithHost:hostAddress];
 }
 
-- (void)startRecord {
+- (void)configRecorder {
     [self.recorder resetRecorder];
+}
+
+- (void)startRecord {
     [self.recorder startRecorder];
 }
 
