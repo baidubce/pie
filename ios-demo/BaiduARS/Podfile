@@ -1,22 +1,22 @@
 platform :ios,'8.0'
 
 def commonPods
-    pod '!ProtoCompiler'
-    pod '!ProtoCompiler-gRPCPlugin'
-    pod 'BoringSSL-GRPC'
-    pod 'Protobuf'
-    pod 'gRPC'
-    pod 'gRPC-Core'
-    pod 'gRPC-ProtoRPC'
-    pod 'gRPC-RxLibrary'
-    pod 'nanopb'
+    pod '!ProtoCompiler', '3.11.2'
+    pod '!ProtoCompiler-gRPCPlugin', '1.29.0'
+    pod 'BoringSSL-GRPC', '0.0.8'
+    pod 'Protobuf', '3.12.0'
+    pod 'gRPC', '1.29.0'
+    pod 'gRPC-Core', '1.29.0'
+    pod 'gRPC-ProtoRPC', '1.29.0'
+    pod 'gRPC-RxLibrary', '1.29.0'
+    pod 'nanopb', '1.30905.0'
 end
 
 workspace 'BaiduASR.xcworkspace'
 
 target 'BaiduTTS' do
     project 'BaiduTTS/BaiduTTS.xcodeproj'
-    pod 'AFNetworking'
+    pod 'AFNetworking', '3.2.1'
 end
 
 target 'BaiduASR' do
