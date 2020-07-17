@@ -1,6 +1,6 @@
 /*
  * Baidu ASR Client
  */
-package asr
+package main
 
 const Version = "1.0.0"

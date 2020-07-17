@@ -1,94 +1,36 @@
-package main
+package client
 
 import (
-	pb "../protogen"
+	"github.com/baidubce/pie/audio-streaming-client-go/protogen"
+	"github.com/baidubce/pie/audio-streaming-client-go/util"
 
 	"bufio"
 	"context"
-	"crypto/sha256"
 	b64 "encoding/base64"
-	"encoding/hex"
 	"flag"
-	"io"
-	"log"
-	"os"
-	"time"
-
 	"github.com/golang/protobuf/proto"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/metadata"
+	"io"
+	"log"
+	"os"
 )
 
-const TIME_FORMAT string = "2006-01-02T15:04:05Z"
-
-var (
-	serverAddr = flag.String("server_addr", "127.0.0.1:8051", "The server address in the format of host:port")
-)
-
-var username, password, productId, audioFile string
-var sampleRate int
-var enableFlushData bool
-
-func init() {
-	flag.StringVar(&username, "username", "123", "The username to login streaming server")
-	flag.StringVar(&password, "password", "123", "The password to login streaming server")
-	flag.StringVar(&productId, "product_id", "1903", "The pid for ASR engine'")
-	flag.IntVar(&sampleRate, "sample_rate", 8000, "The sample rate for ASR engine")
-	flag.StringVar(&audioFile, "audio_file", "testaudio/bj8k.wav", "The audio file path")
-	flag.BoolVar(&enableFlushData, "enable_flush_data", true, "enable flush data")
-}
-
-func check(e error) {
-	if e != nil {
-		log.Fatalf("encount an error: %v", e)
-	}
-}
-
-func hashToken(time string) string {
-	hash := sha256.New()
-	hash.Write([]byte(username + password + time))
-	bs := hash.Sum(nil)
-	hexBs := hex.EncodeToString(bs)
-	return hexBs
-}
-
-func generateInitRequest() pb.InitRequest {
-
-	content := pb.InitRequest{
-		EnableLongSpeech: true,
-		EnableChunk:      true,
-		EnableFlushData:  enableFlushData,
-		ProductId:        productId,
-		SamplePointBytes: 1,
-		SendPerSeconds:   0.02,
-		SleepRatio:       1,
-		AppName:          "go",
-		LogLevel:         0,
-		UserName:         username,
-	}
-	nowTime := time.Now().Format(TIME_FORMAT)
-	content.ExpireTime = nowTime
-	content.Token = hashToken(nowTime)
-	return content
-}
-
-func main() {
-	flag.Parse()
-
-	conn, err := grpc.Dial(*serverAddr, grpc.WithInsecure(), grpc.WithBlock())
-	check(err)
+// 处理音频文件音频流
+func ReadFile(serverAddr, audioFile string, sampleRate int, headers protogen.InitRequest) {
+	conn, err := grpc.Dial(serverAddr, grpc.WithInsecure(), grpc.WithBlock())
+	util.ErrorCheck(err)
 	defer conn.Close()
-	headers := generateInitRequest()
 
 	bytes, err := proto.Marshal(&headers)
 	// 传送metadata
 	md := metadata.Pairs("audio_meta", b64.StdEncoding.EncodeToString(bytes))
 
-	client := pb.NewAsrServiceClient(conn)
+	client := protogen.NewAsrServiceClient(conn)
 
 	ctx := metadata.NewOutgoingContext(context.Background(), md)
 	stream, err := client.Send(ctx)
-	check(err)
+	util.ErrorCheck(err)
 	waitc := make(chan struct{})
 
 	go func() {
@@ -99,7 +41,7 @@ func main() {
 				close(waitc)
 				return
 			}
-			check(err)
+			util.ErrorCheck(err)
 			if in != nil {
 				log.Printf("asr result can get: %s", in.AudioFragment.Result)
 			} else {
@@ -108,10 +50,10 @@ func main() {
 		}
 	}()
 
-	audioFile, err := os.Open(audioFile)
-	check(err)
-	defer audioFile.Close()
-	bufferReader := bufio.NewReader(audioFile)
+	audioFileStream, err := os.Open(audioFile)
+	util.ErrorCheck(err)
+	defer audioFileStream.Close()
+	bufferReader := bufio.NewReader(audioFileStream)
 
 	sendPackageSize := int(headers.SendPerSeconds * float64(sampleRate) * 2)
 	audioBytes := make([]byte, sendPackageSize)
@@ -123,7 +65,7 @@ func main() {
 		}
 		log.Printf("%d bytes", numBytesRead)
 
-		request := pb.AudioFragmentRequest{
+		request := protogen.AudioFragmentRequest{
 			AudioData: audioBytes,
 		}
 
@@ -134,4 +76,8 @@ func main() {
 
 	stream.CloseSend()
 	<-waitc
+}
+
+func main() {
+	flag.Parse()
 }
