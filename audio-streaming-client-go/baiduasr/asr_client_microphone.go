@@ -37,6 +37,7 @@ import (
 	"context"
 	b64 "encoding/base64"
 	"encoding/binary"
+	flagutil "github.com/baidubce/pie/audio-streaming-client-go/flag"
 	"github.com/baidubce/pie/audio-streaming-client-go/protogen"
 	"github.com/baidubce/pie/audio-streaming-client-go/util"
 	"github.com/golang/protobuf/proto"
@@ -49,8 +50,8 @@ import (
 )
 
 // 处理麦克风音频流
-func ReadMicrophone(serverAddr string, sampleRate int, headers protogen.InitRequest) {
-	conn, err := grpc.Dial(serverAddr, grpc.WithInsecure(), grpc.WithBlock())
+func ReadMicrophone(headers protogen.InitRequest) {
+	conn, err := grpc.Dial(flagutil.ServerAddr, grpc.WithInsecure(), grpc.WithBlock())
 	util.ErrorCheck(err)
 	defer conn.Close()
 
@@ -83,11 +84,11 @@ func ReadMicrophone(serverAddr string, sampleRate int, headers protogen.InitRequ
 
 	inputChannels := 1
 	outputChannels := 0
-	frames16PerBuffer := make([]int16, int(headers.SendPerSeconds*float64(sampleRate)))
+	frames16PerBuffer := make([]int16, int(headers.SendPerSeconds*float64(flagutil.SampleRate)))
 
 	portaudio.Initialize()
 
-	portStream, err := portaudio.OpenDefaultStream(inputChannels, outputChannels, float64(sampleRate), len(frames16PerBuffer), frames16PerBuffer)
+	portStream, err := portaudio.OpenDefaultStream(inputChannels, outputChannels, float64(flagutil.SampleRate), len(frames16PerBuffer), frames16PerBuffer)
 	if err != nil {
 		panic(err)
 	}
@@ -95,7 +96,7 @@ func ReadMicrophone(serverAddr string, sampleRate int, headers protogen.InitRequ
 	param := wave.WriterParam{
 		Out:           nil,
 		Channel:       inputChannels,
-		SampleRate:    sampleRate,
+		SampleRate:    flagutil.SampleRate,
 		BitsPerSample: 16,
 	}
 
@@ -111,7 +112,7 @@ func ReadMicrophone(serverAddr string, sampleRate int, headers protogen.InitRequ
 		if err != nil {
 			panic(err)
 		}
-		var content = make([][]byte, int(headers.SendPerSeconds*float64(sampleRate)*2))
+		var content = make([][]byte, int(headers.SendPerSeconds*float64(flagutil.SampleRate)*2))
 		for _, c := range frames16PerBuffer {
 			b := Int16ToBytes(c)
 			content = append(content, b)

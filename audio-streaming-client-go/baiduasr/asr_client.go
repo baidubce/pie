@@ -1,6 +1,7 @@
 package client
 
 import (
+	flagutil "github.com/baidubce/pie/audio-streaming-client-go/flag"
 	"github.com/baidubce/pie/audio-streaming-client-go/protogen"
 	"github.com/baidubce/pie/audio-streaming-client-go/util"
 
@@ -17,8 +18,8 @@ import (
 )
 
 // 处理音频文件音频流
-func ReadFile(serverAddr, audioFile string, sampleRate int, headers protogen.InitRequest) {
-	conn, err := grpc.Dial(serverAddr, grpc.WithInsecure(), grpc.WithBlock())
+func ReadFile(headers protogen.InitRequest) {
+	conn, err := grpc.Dial(flagutil.ServerAddr, grpc.WithInsecure(), grpc.WithBlock())
 	util.ErrorCheck(err)
 	defer conn.Close()
 
@@ -50,12 +51,12 @@ func ReadFile(serverAddr, audioFile string, sampleRate int, headers protogen.Ini
 		}
 	}()
 
-	audioFileStream, err := os.Open(audioFile)
+	audioFileStream, err := os.Open(flagutil.AudioFile)
 	util.ErrorCheck(err)
 	defer audioFileStream.Close()
 	bufferReader := bufio.NewReader(audioFileStream)
 
-	sendPackageSize := int(headers.SendPerSeconds * float64(sampleRate) * 2)
+	sendPackageSize := int(headers.SendPerSeconds * float64(flagutil.SampleRate) * 2)
 	audioBytes := make([]byte, sendPackageSize)
 
 	for {
