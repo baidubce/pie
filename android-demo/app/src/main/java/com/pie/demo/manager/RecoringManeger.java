@@ -221,6 +221,9 @@ public class RecoringManeger {
         }
     }
 
+    /**
+     * 设置常用的控制语音识别的参数
+     */
     private RequestMetaData createRequestMeta() {
         RequestMetaData requestMetaData = new RequestMetaData();
         requestMetaData.setSendPackageRatio(1);
