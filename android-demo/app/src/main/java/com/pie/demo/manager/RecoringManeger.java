@@ -226,7 +226,7 @@ public class RecoringManeger {
         requestMetaData.setSendPackageRatio(1);
         requestMetaData.setSleepRatio(0);
         requestMetaData.setTimeoutMinutes(120);
-        requestMetaData.setEnableFlushData(false);
+        requestMetaData.setEnableFlushData(true);
         // 随路信息根据需要设置
         Map<String, Object> extra_info = new HashMap<>();
         extra_info.put("demo", "java");
