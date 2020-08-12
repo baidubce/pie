@@ -7,17 +7,24 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.baidu.acu.pie.AudioStreaming;
+import com.baidu.acu.pie.client.AsrClientFactory;
 import com.baidu.acu.pie.client.Consumer;
 import com.baidu.acu.pie.grpc.AsrClientGrpcImpl;
 import com.baidu.acu.pie.model.AsrConfig;
 import com.baidu.acu.pie.model.AsrProduct;
+import com.baidu.acu.pie.model.ChannelConfig;
 import com.baidu.acu.pie.model.RecognitionResult;
+import com.baidu.acu.pie.model.RequestMetaData;
 import com.baidu.acu.pie.model.StreamContext;
+import com.baidu.acu.pie.util.JacksonUtil;
 import com.google.protobuf.ByteString;
 import com.pie.demo.Constants;
 import com.pie.demo.utils.SpUtils;
 
 import org.joda.time.DateTime;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class RecoringManeger {
 
@@ -147,7 +154,7 @@ public class RecoringManeger {
 //        String hz = SpUtils.getInstance().getString(Constants.SAMPLERATEINHZ);
         int oneAsr = SpUtils.getInstance().getInt(Constants.ONEASRPRODUCT);
         AsrProduct value = values[oneAsr];
-        if (value == AsrProduct.INPUT_METHOD || value == AsrProduct.FAR_FIELD || value == AsrProduct.FAR_FIELD_ROBOT || value ==AsrProduct.SPEECH_SERVICE) {
+        if (value == AsrProduct.INPUT_METHOD || value == AsrProduct.FAR_FIELD || value == AsrProduct.FAR_FIELD_ROBOT || value == AsrProduct.SPEECH_SERVICE) {
             SAMPLERATEINHZ = 16000;
         } else {
             SAMPLERATEINHZ = 8000;
@@ -214,6 +221,20 @@ public class RecoringManeger {
         }
     }
 
+    private RequestMetaData createRequestMeta() {
+        RequestMetaData requestMetaData = new RequestMetaData();
+        requestMetaData.setSendPackageRatio(1);
+        requestMetaData.setSleepRatio(0);
+        requestMetaData.setTimeoutMinutes(120);
+        requestMetaData.setEnableFlushData(false);
+        // 随路信息根据需要设置
+        Map<String, Object> extra_info = new HashMap<>();
+        extra_info.put("demo", "java");
+        requestMetaData.setExtraInfo(JacksonUtil.objectToString(extra_info));
+
+        return requestMetaData;
+    }
+
     private void initSp() {
         String oneAddress = SpUtils.getInstance().getString(Constants.ONEADDRESS);
         String onePort = SpUtils.getInstance().getString(Constants.ONEPORT);
@@ -261,7 +282,7 @@ public class RecoringManeger {
                         }
 
                     }
-                });
+                }, createRequestMeta());
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e("tag", "catch:");
@@ -316,7 +337,7 @@ public class RecoringManeger {
                             }
                         }
                     }
-                });
+                }, createRequestMeta());
             } catch (Exception e) {
                 if (recoringManaegerInterfaceTwo != null) {
                     recoringManaegerInterfaceTwo.onError(e.getMessage());
@@ -369,7 +390,7 @@ public class RecoringManeger {
                             }
                         }
                     }
-                });
+                }, createRequestMeta());
             } catch (Exception e) {
                 if (recoringManaegerInterfaceThree != null) {
                     recoringManaegerInterfaceThree.onError(e.getMessage());

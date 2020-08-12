@@ -1,11 +1,11 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 29
     defaultConfig {
         applicationId "com.pie.demo"
         minSdkVersion 21
-        targetSdkVersion 28
+        targetSdkVersion 29
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -29,6 +29,11 @@ android {
     lintOptions {
         abortOnError false
     }
+
+    compileOptions {
+        sourceCompatibility 1.8
+        targetCompatibility 1.8
+    }
 }
 
 dependencies {
@@ -50,6 +55,6 @@ dependencies {
     //
     implementation 'com.github.warkiz.widget:indicatorseekbar:2.1.2'
     //
-    implementation 'com.baidu.acu.pie:audio-streaming-client-java:1.1.6'
+    implementation 'com.baidu.acu.pie:audio-streaming-client-java:1.1.8'
 
 }
