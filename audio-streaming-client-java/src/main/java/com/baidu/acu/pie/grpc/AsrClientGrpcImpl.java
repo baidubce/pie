@@ -5,6 +5,7 @@ package com.baidu.acu.pie.grpc;
 import com.baidu.acu.pie.AsrServiceGrpc;
 import com.baidu.acu.pie.AsrServiceGrpc.AsrServiceStub;
 import com.baidu.acu.pie.AudioStreaming;
+import com.baidu.acu.pie.AudioStreaming.AudioFragmentRequest;
 import com.baidu.acu.pie.AudioStreaming.AudioFragmentResponse;
 import com.baidu.acu.pie.client.AsrClient;
 import com.baidu.acu.pie.client.Consumer;
@@ -20,6 +21,7 @@ import com.baidu.acu.pie.model.StreamContext;
 import com.baidu.acu.pie.util.Base64;
 import com.baidu.acu.pie.util.DateTimeParser;
 import com.google.common.base.Strings;
+import io.grpc.Context;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.Metadata;
@@ -47,6 +49,7 @@ import java.util.TimerTask;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static com.google.common.hash.Hashing.sha256;
 
@@ -196,12 +199,16 @@ public class AsrClientGrpcImpl implements AsrClient {
 
     @Override
     public StreamContext asyncRecognize(final Consumer<RecognitionResult> resultConsumer,
-            RequestMetaData requestMetaData) {
+            final RequestMetaData requestMetaData) {
         final FinishLatchImpl finishLatch = new FinishLatchImpl();
-        AsrServiceStub stubWithMetadata = MetadataUtils.attachHeaders(asyncStub, prepareMetadata(requestMetaData));
+        final AtomicReference<StreamObserver<AudioFragmentRequest>> observerWrapper = new AtomicReference<>();
 
-        return StreamContext.builder()
-                .sender(stubWithMetadata.send(new StreamObserver<AudioFragmentResponse>() {
+        Context.current().fork().run(new Runnable() {
+            @Override
+            public void run() {
+                AsrServiceStub stubWithMetadata = MetadataUtils.attachHeaders(asyncStub,
+                        prepareMetadata(requestMetaData));
+                observerWrapper.set(stubWithMetadata.send(new StreamObserver<AudioFragmentResponse>() {
                     @Override
                     public void onNext(AudioFragmentResponse response) {
                         if (response.getErrorCode() == 0) {
@@ -226,7 +233,12 @@ public class AsrClientGrpcImpl implements AsrClient {
                         log.info("response observer complete");
                         finishLatch.finish();
                     }
-                }))
+                }));
+            }
+        });
+
+        return StreamContext.builder()
+                .sender(observerWrapper.get())
                 .finishLatch(finishLatch)
                 .fragmentSize(getFragmentSize(requestMetaData))
                 .build();
