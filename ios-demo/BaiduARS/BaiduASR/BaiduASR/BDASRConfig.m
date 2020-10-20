@@ -68,26 +68,6 @@ static BDASRConfig *commonConfig = nil;
     return nil;
 }
 
-- (NSString *)getSignKeyWithtimeStamp:(NSString *)timeStamp {
-    
-    if (self.accessKey.length && self.secrityKey.length) {
-        return [self sha256:[NSString stringWithFormat:@"%@%@%@", self.accessKey, self.secrityKey, timeStamp]];
-    }
-    
-    return nil;
-}
-
-- (NSString *)getAuthorization {
-    NSString *timeStamp = [self getUTCTimeString];
-    NSString *signKey = [self getSignKeyWithtimeStamp:timeStamp];
-    
-    if (signKey.length) {
-        return [NSString stringWithFormat:@"bml-auth-v1/%@/%@/%@", self.accessKey, timeStamp, signKey];
-    }
-    
-    return nil;
-}
-
 - (NSString*) sha256:(NSString *)string {
     const char *cstr = [string cStringUsingEncoding:NSUTF8StringEncoding];
     NSData *data = [NSData dataWithBytes:cstr length:string.length];

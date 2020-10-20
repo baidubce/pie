@@ -69,20 +69,17 @@
 
 #pragma private motherd
 - (void)startAnalize {
-    NSString *authorization = [self.asrConfig getAuthorization];
     NSString *userName = self.asrConfig.userName;
     NSString *passWord = self.asrConfig.passWord;
     
-    if (!authorization.length) {
-        if (!(userName.length > 0 && passWord.length > 0)) {
-            NSString *errorDes = @"invalid username or password, please check them!";
+    if (!(userName.length > 0 && passWord.length > 0)) {
+        NSString *errorDes = @"invalid username or password, please check them!";
 
-            if ([self.delegate respondsToSelector:@selector(normalAnalizeDone:result:error:)]) {
-                NSError *error = [NSError errorWithDomain:errorDes code:-100 userInfo:nil];
-                [self.delegate normalAnalizeDone:NO result:nil error:error];
-            }
-            return;
+        if ([self.delegate respondsToSelector:@selector(normalAnalizeDone:result:error:)]) {
+            NSError *error = [NSError errorWithDomain:errorDes code:-100 userInfo:nil];
+            [self.delegate normalAnalizeDone:NO result:nil error:error];
         }
+        return;
     }
 
     InitRequest *request = [[InitRequest alloc] init];
@@ -127,12 +124,7 @@
     NSData *metaData = [request data];
     NSString *metaString = [metaData base64EncodedStringWithOptions:0];
     
-    
     call.requestHeaders[@"audio_meta"] = metaString;
-    
-    if (authorization.length) {
-        call.requestHeaders[@"authorization"] = authorization;
-    }
     
     if (call.state == GRXWriterStateNotStarted) {
         [call start];

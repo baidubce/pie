@@ -93,12 +93,6 @@ typedef enum : NSUInteger {
 @property (nonatomic, copy) NSString *userName;
 @property (nonatomic, copy) NSString *passWord;
 
-/**
- * ak & sk
- */
-@property (nonatomic, copy) NSString *accessKey;
-@property (nonatomic, copy) NSString *secrityKey;
-
 
 - (NSString *)hostAddress_Port;
 
@@ -106,9 +100,6 @@ typedef enum : NSUInteger {
 
 - (NSString *)getTokenWithTimeStamp:(NSString *)timeStamp;
 
-//- (NSString *)getSignKey;
-
-- (NSString *)getAuthorization;
 
 @end
 

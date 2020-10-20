@@ -10,7 +10,6 @@
 #import "AFNetworking.h"
 #import "BDTTSMacro.h"
 #import "BDTTSInstance.h"
-#import "BDTTSRequestAuthorization.h"
 
 static BDTTSSessionManager *ttsManager = nil;
 
@@ -77,16 +76,6 @@ static BDTTSSessionManager *ttsManager = nil;
     [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     [request setValue:BDTTSHost forHTTPHeaderField:@"Host"];
     [request setValue:utcTime forHTTPHeaderField:@"x-bce-date"];
-    
-    [self request:request setAuthorizationWithTimeStamp:utcTime];
-}
-
-- (void)request:(NSMutableURLRequest *)request setAuthorizationWithTimeStamp:(NSString *)timeStamp {
-    NSString *ak = [[BDTTSInstance sharedInstance] accessKey];
-    NSString *sk = [[BDTTSInstance sharedInstance] secrityKey];
-    NSString *authorization = [BDTTSRequestAuthorization getAuthorizationWithUri:BDTTSPath ak:ak sk:sk timeStamp:timeStamp request:request];
-
-    [request setValue:authorization forHTTPHeaderField:@"Authorization"];
 }
 
 
@@ -111,10 +100,6 @@ static BDTTSSessionManager *ttsManager = nil;
             failure(serializationError);
         }
         return nil;
-    }
-    
-    if ([[BDTTSInstance sharedInstance] accessKey].length && [[BDTTSInstance sharedInstance] secrityKey].length) {
-        [self requestSetHeaders:request];
     }
     
     NSURLSessionDownloadTask *task = [self.sessionManager downloadTaskWithRequest:request progress:^(NSProgress * _Nonnull downloadProgress) {

@@ -7,12 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3673C3F62970DFBC181AFF21 /* libPods-BaiduASRDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B9BA51AFA1CAC454B2ED6920 /* libPods-BaiduASRDemo.a */; };
 		7011FBBE22841E41000E8F33 /* ASRConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 7011FBBD22841E41000E8F33 /* ASRConfig.m */; };
 		7011FBCF22845226000E8F33 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7011FBCE22845226000E8F33 /* LoginViewController.m */; };
 		7017A39A229554E700AB6F1B /* SettingViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7017A397229554E700AB6F1B /* SettingViewCell.m */; };
 		7017A39B229554E700AB6F1B /* SettingViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7017A398229554E700AB6F1B /* SettingViewCell.xib */; };
 		7017A39F229555CA00AB6F1B /* SettingViewCellModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7017A39E229555CA00AB6F1B /* SettingViewCellModel.m */; };
+		708140F6253DB46B00073FFD /* libPods-BaiduASRDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B9BA51AFA1CAC454B2ED6920 /* libPods-BaiduASRDemo.a */; };
 		708459B52260995200B16A4C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 708459B42260995200B16A4C /* AppDelegate.m */; };
 		708459B82260995200B16A4C /* ASRViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 708459B72260995200B16A4C /* ASRViewController.mm */; };
 		708459BB2260995200B16A4C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 708459B92260995200B16A4C /* Main.storyboard */; };
@@ -113,7 +113,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				709FDB0E2473D4CE00F6AB53 /* BaiduASR.framework in Frameworks */,
-				3673C3F62970DFBC181AFF21 /* libPods-BaiduASRDemo.a in Frameworks */,
+				708140F6253DB46B00073FFD /* libPods-BaiduASRDemo.a in Frameworks */,
 				709FDB0B2473D4C400F6AB53 /* BaiduTTS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

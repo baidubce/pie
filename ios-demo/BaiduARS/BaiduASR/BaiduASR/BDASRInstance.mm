@@ -94,12 +94,6 @@ static BDASRInstance *asrInstance = nil;
     config.passWord = passWord;
 }
 
-- (void)setAccessKey:(NSString *)accessKey secrityKey:(NSString *)secrityKey {
-    BDASRConfig *config = [BDASRConfig config];
-    config.accessKey = accessKey;
-    config.secrityKey = secrityKey;
-}
-
 - (void)setHostAddress:(NSString *)hostAddress {
     BDASRConfig *config = [BDASRConfig config];
     config.hostAddress = hostAddress;

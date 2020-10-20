@@ -10,8 +10,6 @@
 		25715FE85C2AD2FA4796043B /* libPods-BaiduTTS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FB08D45E5F8BD56903D8E895 /* libPods-BaiduTTS.a */; };
 		709FDAFB247388CD00F6AB53 /* BDTTSInstance.m in Sources */ = {isa = PBXBuildFile; fileRef = 709FDAF9247388CC00F6AB53 /* BDTTSInstance.m */; };
 		709FDAFC247388CD00F6AB53 /* BDTTSInstance.h in Headers */ = {isa = PBXBuildFile; fileRef = 709FDAFA247388CC00F6AB53 /* BDTTSInstance.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		70A3B277246AA32100BE4EB4 /* BDTTSRequestAuthorization.h in Headers */ = {isa = PBXBuildFile; fileRef = 70A3B275246AA32100BE4EB4 /* BDTTSRequestAuthorization.h */; };
-		70A3B278246AA32100BE4EB4 /* BDTTSRequestAuthorization.m in Sources */ = {isa = PBXBuildFile; fileRef = 70A3B276246AA32100BE4EB4 /* BDTTSRequestAuthorization.m */; };
 		70BBBAAF24349E9D000D7B52 /* BaiduTTS.h in Headers */ = {isa = PBXBuildFile; fileRef = 70BBBAAD24349E9D000D7B52 /* BaiduTTS.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		70BBBAD3243C6B08000D7B52 /* BDTTSRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = 70BBBAD1243C6B08000D7B52 /* BDTTSRequest.h */; };
 		70BBBAD4243C6B08000D7B52 /* BDTTSRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 70BBBAD2243C6B08000D7B52 /* BDTTSRequest.m */; };
@@ -30,8 +28,6 @@
 		623AAB719DDE8244FCD89A53 /* Pods-BaiduTTS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BaiduTTS.debug.xcconfig"; path = "Target Support Files/Pods-BaiduTTS/Pods-BaiduTTS.debug.xcconfig"; sourceTree = "<group>"; };
 		709FDAF9247388CC00F6AB53 /* BDTTSInstance.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BDTTSInstance.m; sourceTree = "<group>"; };
 		709FDAFA247388CC00F6AB53 /* BDTTSInstance.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BDTTSInstance.h; sourceTree = "<group>"; };
-		70A3B275246AA32100BE4EB4 /* BDTTSRequestAuthorization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BDTTSRequestAuthorization.h; sourceTree = "<group>"; };
-		70A3B276246AA32100BE4EB4 /* BDTTSRequestAuthorization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BDTTSRequestAuthorization.m; sourceTree = "<group>"; };
 		70BBBAAA24349E9D000D7B52 /* BaiduTTS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BaiduTTS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		70BBBAAD24349E9D000D7B52 /* BaiduTTS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BaiduTTS.h; sourceTree = "<group>"; };
 		70BBBAAE24349E9D000D7B52 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -102,8 +98,6 @@
 				70BBBAD2243C6B08000D7B52 /* BDTTSRequest.m */,
 				70BBBAD5243C6B41000D7B52 /* BDTTSSessionManager.h */,
 				70BBBAD6243C6B41000D7B52 /* BDTTSSessionManager.m */,
-				70A3B275246AA32100BE4EB4 /* BDTTSRequestAuthorization.h */,
-				70A3B276246AA32100BE4EB4 /* BDTTSRequestAuthorization.m */,
 			);
 			path = BDTTSNetwork;
 			sourceTree = "<group>";
@@ -147,7 +141,6 @@
 				70BBBADA243C6CE9000D7B52 /* BDTTSMacro.h in Headers */,
 				70BBBAF324484912000D7B52 /* BDTTSConfig.h in Headers */,
 				70BBBAD3243C6B08000D7B52 /* BDTTSRequest.h in Headers */,
-				70A3B277246AA32100BE4EB4 /* BDTTSRequestAuthorization.h in Headers */,
 				70BBBAAF24349E9D000D7B52 /* BaiduTTS.h in Headers */,
 				70BBBAEF2448399E000D7B52 /* BDAudioPlayer.h in Headers */,
 				70BBBAD7243C6B41000D7B52 /* BDTTSSessionManager.h in Headers */,
@@ -251,7 +244,6 @@
 				70BBBAD8243C6B41000D7B52 /* BDTTSSessionManager.m in Sources */,
 				70BBBAD4243C6B08000D7B52 /* BDTTSRequest.m in Sources */,
 				709FDAFB247388CD00F6AB53 /* BDTTSInstance.m in Sources */,
-				70A3B278246AA32100BE4EB4 /* BDTTSRequestAuthorization.m in Sources */,
 				70BBBAF02448399E000D7B52 /* BDAudioPlayer.m in Sources */,
 				70BBBAF424484912000D7B52 /* BDTTSConfig.m in Sources */,
 			);
@@ -397,6 +389,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = Baidu.BaiduTTS;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -422,6 +415,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = Baidu.BaiduTTS;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

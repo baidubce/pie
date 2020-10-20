@@ -414,13 +414,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 0698A949D6B9EF31FD81C12C /* Pods-BaiduASR.debug.xcconfig */;
 			buildSettings = {
-				ARCHS = (
-					"$(ARCHS_STANDARD)",
-					arm64,
-					arm64e,
-					armv7,
-					armv7s,
-				);
+				ARCHS = "$(ARCHS_STANDARD)";
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = "";
@@ -442,6 +436,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = Baidu.BaiduASR;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -450,13 +445,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 4FF9E2B628BB0861914A314C /* Pods-BaiduASR.release.xcconfig */;
 			buildSettings = {
-				ARCHS = (
-					"$(ARCHS_STANDARD)",
-					arm64,
-					arm64e,
-					armv7,
-					armv7s,
-				);
+				ARCHS = "$(ARCHS_STANDARD)";
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = "";
@@ -478,6 +467,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = Baidu.BaiduASR;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

@@ -55,19 +55,6 @@ static BDTTSInstance *ttsInstance = nil;
     self.config.vol = vol;
 }
 
-- (void)setAccessKey:(NSString *)accessKey secrityKey:(NSString *)secrityKey {
-    self.config.accessKey = accessKey;
-    self.config.secrityKey = secrityKey;
-}
-
-- (NSString *)accessKey {
-    return self.config.accessKey;
-}
-
-- (NSString *)secrityKey {
-    return self.config.secrityKey;
-}
-
 - (void)ttsWithText:(NSString *)text
              isPlay:(BOOL)isPlay
            complete:(void (^ _Nullable )(NSURL * _Nonnull))complete

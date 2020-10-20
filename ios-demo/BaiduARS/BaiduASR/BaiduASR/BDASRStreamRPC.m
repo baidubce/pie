@@ -106,20 +106,17 @@ static dispatch_queue_t rpc_stream_queue;
 }
 
 - (void)startStreaming {
-    NSString *authorization = [self.asrConfig getAuthorization];
     NSString *userName = self.asrConfig.userName;
     NSString *passWord = self.asrConfig.passWord;
     
-    if (!authorization.length) {
-        if (!(userName.length > 0 && passWord.length > 0)) {
-            if ([self.delegate respondsToSelector:@selector(realTimeAnalizeResult:error:)]) {
-                NSString *errorDes = @"invalid username or password, please check them!";
-                
-                NSError *error = [NSError errorWithDomain:errorDes code:-100 userInfo:nil];
-                [self.delegate realTimeAnalizeResult:nil error:error];
-            }
-            return;
+    if (!(userName.length > 0 && passWord.length > 0)) {
+        if ([self.delegate respondsToSelector:@selector(realTimeAnalizeResult:error:)]) {
+            NSString *errorDes = @"invalid username or password, please check them!";
+            
+            NSError *error = [NSError errorWithDomain:errorDes code:-100 userInfo:nil];
+            [self.delegate realTimeAnalizeResult:nil error:error];
         }
+        return;
     }
 
     InitRequest *request = [[InitRequest alloc] init];
@@ -146,9 +143,6 @@ static dispatch_queue_t rpc_stream_queue;
     
     NSMutableDictionary *metaDic = [NSMutableDictionary dictionary];
     [metaDic setValue:metaString forKey:@"audio_meta"];
-    if (authorization.length) {
-        [metaDic setValue:authorization forKey:@"authorization"];
-    }
     
     GRPCMutableCallOptions *options = [[GRPCMutableCallOptions alloc] init];
     [options setInitialMetadata:metaDic];

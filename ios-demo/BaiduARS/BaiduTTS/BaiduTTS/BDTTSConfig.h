@@ -39,12 +39,6 @@ NS_ASSUME_NONNULL_BEGIN
 /// 说话人，请填写5117
 @property (nonatomic, copy) NSString *per;
 
-/**
- * ak & sk
- */
-@property (nonatomic, copy) NSString *accessKey;
-@property (nonatomic, copy) NSString *secrityKey;
-
 @end
 
 NS_ASSUME_NONNULL_END
