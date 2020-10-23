@@ -1,16 +1,16 @@
 package com.baidu.acu.pie.service;
 
-import com.baidu.acu.pie.constant.Constant;
-import com.baidu.acu.pie.constant.RequestType;
-import com.baidu.acu.pie.model.response.ServerResponse;
-import com.baidu.acu.pie.utils.JsonUtil;
-import com.baidu.acu.pie.utils.WebSocketUtil;
+import com.baidu.acu.pie.client.AsrClient;
+import com.baidu.acu.pie.client.AsrClientFactory;
+import com.baidu.acu.pie.config.WebProxyAsrConfig;
+import com.baidu.acu.pie.model.AsrConfig;
+import com.baidu.acu.pie.model.AsrProduct;
+import com.baidu.acu.pie.model.RequestMetaData;
+import com.baidu.acu.pie.model.request.AsrInitRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import javax.websocket.Session;
 
 /**
  * MessageHandlerService
@@ -21,38 +21,42 @@ import javax.websocket.Session;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class MessageHandlerService {
 
-    private final ConfigHandlerService configHandlerService;
-    private final LoginHandlerService loginHandlerService;
-    private final AudioHandlerService audioHandlerService;
-    private final TicketHandlerService ticketHandlerService;
+    private final WebProxyAsrConfig webProxyAsrConfig;
 
-    public void handle(Session session, String jsonMessage) {
+    private AsrConfig getAsrConfig(AsrInitRequest asrInitRequest) {
+        AsrConfig asrConfig = AsrConfig.builder()
+                .serverIp(webProxyAsrConfig.getServer())
+                .serverPort(webProxyAsrConfig.getPort())
+                .userName(asrInitRequest.getUserName())
+                .password(asrInitRequest.getPassword())
+                .appName(asrInitRequest.getAppName())
+                .product(getAsrProduct(asrInitRequest.getProductId()))
+                .build();
 
-        if (!JsonUtil.keyExist(jsonMessage, Constant.REQUEST_TYPE)) {
-            WebSocketUtil.sendMsgToClient(session, ServerResponse.failureStrResponse(
-                    "post data does not meet the requirements", RequestType.UNKNOWN));
-            return;
+        return asrConfig;
+    }
+
+    public AsrClient getAsrClient(AsrInitRequest asrInitRequest) {
+        return AsrClientFactory.buildClient(getAsrConfig(asrInitRequest));
+    }
+
+
+    public RequestMetaData getRequestMetaData(AsrInitRequest asrInitRequest) {
+        RequestMetaData requestMetaData = new RequestMetaData();
+        requestMetaData.setSendPackageRatio(asrInitRequest.getSendPerSeconds());
+        requestMetaData.setSleepRatio(asrInitRequest.getSleepRatio());
+        requestMetaData.setTimeoutMinutes(120);
+        requestMetaData.setEnableFlushData(asrInitRequest.isEnableFlushData());
+
+        return requestMetaData;
+    }
+
+    public AsrProduct getAsrProduct(String productId) {
+        for (AsrProduct asrProduct : AsrProduct.values()) {
+            if (productId.equals(asrProduct.getCode())) {
+                return asrProduct;
+            }
         }
-
-        String type = JsonUtil.parseJson(jsonMessage, Constant.REQUEST_TYPE);
-        String data = JsonUtil.parseJson(jsonMessage, Constant.REQUEST_DATA);
-
-        RequestType requestType = RequestType.getRequestType(type);
-
-        //按照type选择对应的处理器
-        switch (requestType) {
-            case CONFIG:
-                configHandlerService.handle(session,data); return;
-            case LOGIN :
-               loginHandlerService.handle(session, data); return;
-            case ASR:
-                audioHandlerService.handle(session, data); return;
-            case TICKET:
-                ticketHandlerService.handle(session); return;
-            default:
-                WebSocketUtil.sendMsgToClient(session, ServerResponse.failureStrResponse(
-                        "type:" + type + " can not handler", RequestType.UNKNOWN));
-        }
-
+        return null;
     }
 }

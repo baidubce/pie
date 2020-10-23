@@ -14,7 +14,6 @@ import lombok.NoArgsConstructor;
 public class CommonResponse {
     private boolean success;
     private Message message;
-    private String type;
 
     @JsonSetter
     public void setMessage(Message message) {

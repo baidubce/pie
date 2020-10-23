@@ -1,6 +1,10 @@
 server:
   port: 8081
-  ssl:
+
 
 http:
   port: 8080
+
+asr:
+   server: 127.0.0.1
+   port: 8051
