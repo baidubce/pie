@@ -80,6 +80,7 @@ public class MessageHandler {
         byte[] messages = new byte[byteBuffer.remaining()];
         byteBuffer.get(messages);
         byteBuffer.clear();
+        log.info("websocket get message len: {}", messages.length);
         try {
             streamContext.send(messages);
         } catch (Exception e) {
@@ -123,6 +124,7 @@ public class MessageHandler {
         this.streamContext = asrClient.asyncRecognize(new Consumer<RecognitionResult>() {
             @Override
             public void accept(RecognitionResult recognitionResult) {
+                log.info("get asr result: {}", recognitionResult);
                 WebSocketUtil.sendMsgToClient(session, JsonUtil.transObjectToStr(AsrResult.fromRecogniseResult(recognitionResult)));
             }
         }, requestMetaData);

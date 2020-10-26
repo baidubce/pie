@@ -44,6 +44,7 @@ public class MessageHandlerService {
     public RequestMetaData getRequestMetaData(AsrInitRequest asrInitRequest) {
         RequestMetaData requestMetaData = new RequestMetaData();
         requestMetaData.setSendPackageRatio(asrInitRequest.getSendPerSeconds());
+        requestMetaData.setSendPerSeconds(asrInitRequest.getSendPerSeconds());
         requestMetaData.setSleepRatio(asrInitRequest.getSleepRatio());
         requestMetaData.setTimeoutMinutes(120);
         requestMetaData.setEnableFlushData(asrInitRequest.isEnableFlushData());
