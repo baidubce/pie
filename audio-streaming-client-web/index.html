@@ -88,7 +88,7 @@
         const FFT_SIZE = 2048;
 
         const INTERVAL = 20;
-        const WS_URL ="ws://10.190.115.11:8081/api/v1/asr/stream";
+        const WS_URL = 'ws://14.215.177.147:80/api/v1/asr/stream';
         const DEFAULT_PARAMS = JSON.stringify({
             "enableFlushData": true,
             "productId": "1912",
@@ -163,7 +163,7 @@
         }
 
         function doSend(message) {
-            websocket.send(message);
+            websocket.readyState === 1 && websocket.send(message);
         }
 
         function handleAudioprocess(stream) {
