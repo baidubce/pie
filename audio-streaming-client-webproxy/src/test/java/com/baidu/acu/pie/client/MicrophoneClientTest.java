@@ -22,7 +22,7 @@ import java.nio.ByteBuffer;
  * @Create 2020/10/23 2:15 下午
  */
 @Slf4j
-public class ClientTest {
+public class MicrophoneClientTest {
     static Session session;
 
     public static void main(String[] args) {

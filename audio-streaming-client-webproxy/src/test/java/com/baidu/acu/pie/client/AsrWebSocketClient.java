@@ -18,7 +18,7 @@ public class AsrWebSocketClient {
     @OnOpen
     public void onOpen(Session session) {
         System.out.println("Connected to endpoint: " + session.getBasicRemote());
-        ClientTest.session = session;
+        MicrophoneClientTest.session = session;
     }
     @OnMessage
     public void processMessage(String message) {
