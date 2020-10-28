@@ -88,7 +88,7 @@
         const FFT_SIZE = 2048;
 
         const INTERVAL = 20;
-        const WS_URL = 'ws://14.215.177.147:80/api/v1/asr/stream';
+        const WS_URL = 'ws://1.1.1.1:8000/api/v1/asr';
         const DEFAULT_PARAMS = JSON.stringify({
             "enableFlushData": true,
             "productId": "1912",
@@ -96,8 +96,8 @@
             "sendPerSeconds": INTERVAL / 1000,
             "sleepRatio": 0,
             "appName": "webproxy",
-            "userName": "jstest1026",
-            "password": "jstest1026"
+            "userName": "yourUserName",
+            "password": "yourPassword"
         });
 
         let websocket;
