@@ -36,7 +36,7 @@ public class MicrophoneClientTest {
             asrInitRequest.setSleepRatio(0);
 
             WebSocketContainer container = ContainerProvider.getWebSocketContainer();
-            String uri = "ws://172.18.53.15:8085/api/v1/asr/stream";
+            String uri = "ws://127.0.0.1:8081/api/v1/asr/stream";
             container.connectToServer(AsrWebSocketClient.class, URI.create(uri));
             session.getBasicRemote().sendText(JsonUtil.transObjectToStr(asrInitRequest));
             TargetDataLine line = null;

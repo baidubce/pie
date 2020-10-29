@@ -25,7 +25,6 @@ import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
-import java.nio.ByteBuffer;
 
 /**
  * webSocket message接收处理类
@@ -70,17 +69,14 @@ public class MessageHandler {
      * 接收字节数组(默认是音频流)
      */
     @OnMessage
-    public void onMessage(Session session, ByteBuffer byteBuffer) {
+    public void onMessage(Session session, byte[] messages) {
         if ((asrClient == null) || (streamContext == null)) {
             log.warn("websocket asr client does not init!");
             WebSocketUtil.sendMsgToClient(session,
                     ServerResponse.failureStrResponse("请先传入配置参数"));
             return;
         }
-        byte[] messages = new byte[byteBuffer.remaining()];
-        byteBuffer.get(messages);
-        byteBuffer.clear();
-        log.info("websocket get message len: {}", messages.length);
+        log.debug("websocket get message len: {}", messages.length);
         try {
             streamContext.send(messages);
         } catch (Exception e) {
