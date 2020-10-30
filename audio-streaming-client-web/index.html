@@ -167,7 +167,8 @@
         }
 
         function handleAudioprocess(stream) {
-            const encodeBuffer = encodedPcmBuffer(stream.inputBuffer.getChannelData(0), SAMPLE_RATE);
+            const {inputBuffer} = stream;
+            const encodeBuffer = encodedPcmBuffer(inputBuffer.getChannelData(0), inputBuffer.sampleRate);
             // 过滤连续绝对静音的脏数据
             if (encodeBuffer.some(value => value !== 0)) {
                 doSend(encodeBuffer);
