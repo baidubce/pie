@@ -12,6 +12,12 @@ import java.io.InputStream;
 public class AudioData {
     //音频二进制流
     private byte[] audioBytes;
+    private boolean close;
     private String audioId;
     private InputStream inputStream;
+
+    public AudioData(byte[] audioBytes, boolean close) {
+        this.audioBytes = audioBytes;
+        this.close = close;
+    }
 }
