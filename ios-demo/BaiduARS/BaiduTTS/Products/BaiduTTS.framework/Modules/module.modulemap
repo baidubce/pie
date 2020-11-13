@@ -1,0 +1,6 @@
+framework module BaiduTTS {
+  umbrella header "BaiduTTS.h"
+
+  export *
+  module * { export * }
+}

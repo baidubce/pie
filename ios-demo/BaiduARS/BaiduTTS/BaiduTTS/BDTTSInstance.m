@@ -14,7 +14,7 @@
 
 static BDTTSInstance *ttsInstance = nil;
 
-@interface BDTTSInstance()
+@interface BDTTSInstance() <BDAudioPlayerDelegate>
 
 @property (nonatomic, strong) BDTTSConfig *config;
 
@@ -99,13 +99,38 @@ static BDTTSInstance *ttsInstance = nil;
     }];
 }
 
+- (void)stopPlay {
+    [[BDAudioPlayer player] stop];
+}
+
 - (void)cancel {
     [BDTTSRequest cancel];
 }
 
 - (void)playAudioWithURL:(NSURL *)url {
+    [BDAudioPlayer player].delegate = self;
+    
     if (![[BDAudioPlayer player] isPlaying]) {
         [[BDAudioPlayer player] playWithURL:url];
+    }
+}
+
+#pragma mark BDAudioPlayerDelegate
+- (void)onBDPlayerFinish {
+    if (self.delegate && [self.delegate respondsToSelector:@selector(onBDTTSPlayerFinish)]) {
+        [self.delegate onBDTTSPlayerFinish];
+    }
+}
+
+- (void)onBDPlayerStart {
+    if (self.delegate && [self.delegate respondsToSelector:@selector(onBDTTSPlayerStart)]) {
+        [self.delegate onBDTTSPlayerStart];
+    }
+}
+
+- (void)onBDPlayerStop {
+    if (self.delegate && [self.delegate respondsToSelector:@selector(onBDTTSPlayerStop)]) {
+        [self.delegate onBDTTSPlayerStop];
     }
 }
 

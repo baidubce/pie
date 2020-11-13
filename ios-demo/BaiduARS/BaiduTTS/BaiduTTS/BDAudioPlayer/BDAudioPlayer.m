@@ -11,8 +11,7 @@
 
 static BDAudioPlayer *player = nil;
 
-@interface BDAudioPlayer()
-
+@interface BDAudioPlayer()<AVAudioPlayerDelegate>
 @property (nonatomic, strong) AVAudioPlayer *avPlayer;
 
 @end
@@ -39,14 +38,33 @@ static BDAudioPlayer *player = nil;
 - (void)playWithURL:(NSURL *)url {    
     NSError *error = nil;
     self.avPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:&error];
-    
+    self.avPlayer.delegate = self;
     if (error) {
         NSLog(@"BDAudioPlayer initiate failed with invaild url !");
     }
     
     [self.avPlayer prepareToPlay];
     [self.avPlayer play];
+    
+    if (self.delegate && [self.delegate respondsToSelector:@selector(onBDPlayerStart)]) {
+        [self.delegate onBDPlayerStart];
+    }
 }
 
+- (void)stop {
+    if (self.avPlayer && self.avPlayer.isPlaying) {
+        [self.avPlayer stop];
+    }
+    if (self.delegate && [self.delegate respondsToSelector:@selector(onBDPlayerStop)]) {
+        [self.delegate onBDPlayerStop];
+    }
+}
+
+
+- (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag {
+    if (flag && self.delegate && [self.delegate respondsToSelector:@selector(onBDPlayerFinish)]) {
+        [self.delegate onBDPlayerFinish];
+    }
+}
     
 @end

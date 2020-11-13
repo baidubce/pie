@@ -10,7 +10,7 @@
 #import <BaiduTTS/BDTTSInstance.h>
 #import "TTSConfig.h"
 
-@interface TTSViewController ()
+@interface TTSViewController ()<BDTTSInstanceDelegate>
 
 @property (nonatomic, weak) IBOutlet UITextView *textView;
 @property (nonatomic, weak) IBOutlet UIButton *ttsBtn;
@@ -46,6 +46,7 @@
     NSString *text = self.textView.text;
     if (text && text.length) {
         [self requestStart];
+        [[BDTTSInstance sharedInstance] setDelegate:self];
         [[BDTTSInstance sharedInstance] ttsWithText:text isPlay:YES complete:^(NSURL * _Nonnull filePath) {
             [self requestStop];
         } failure:^(NSError * _Nonnull error) {
@@ -64,6 +65,23 @@
     self.ttsBtn.hidden = NO;
     self.loadingView.hidden = YES;
     [self.loadingView stopAnimating];
+}
+
+- (void)stopPlay {
+    [[BDTTSInstance sharedInstance] stopPlay];
+}
+
+#pragma mark BDTTSInstanceDelegate
+- (void)onBDTTSPlayerStop {
+    NSLog(@"onBDTTSPlayerStop");
+}
+
+- (void)onBDTTSPlayerStart {
+    NSLog(@"onBDTTSPlayerStart");
+}
+
+- (void)onBDTTSPlayerFinish {
+    NSLog(@"onBDTTSPlayerFinish");
 }
 
 /*

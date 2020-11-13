@@ -1,0 +1,6 @@
+framework module BaiduASR {
+  umbrella header "BaiduASR.h"
+
+  export *
+  module * { export * }
+}
