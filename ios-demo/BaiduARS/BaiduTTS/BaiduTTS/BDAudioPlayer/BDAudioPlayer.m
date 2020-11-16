@@ -23,10 +23,13 @@ static BDAudioPlayer *player = nil;
     dispatch_once(&onceToken, ^{
         player = [[BDAudioPlayer alloc] init];
     });
+    
+    [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayAndRecord withOptions:AVAudioSessionCategoryOptionDefaultToSpeaker error:nil];//PlayAndRecord
+    [[AVAudioSession sharedInstance] setActive:YES error:nil];
 
-    if ([AVAudioSession sharedInstance].category != AVAudioSessionCategoryPlayback) {
-        [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error: nil];
-    }
+//    if ([AVAudioSession sharedInstance].category != AVAudioSessionCategoryPlayback) {
+//        [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error: nil];
+//    }
     
     return player;
 }

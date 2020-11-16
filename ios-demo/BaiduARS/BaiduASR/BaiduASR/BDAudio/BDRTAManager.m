@@ -31,8 +31,7 @@
 {
     self = [super init];
     if (self) {
-        [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];//PlayAndRecord
-        [[AVAudioSession sharedInstance] setActive:YES error:nil];//如果录音时同时需要播放媒体，那么必须加上这两行代码
+        [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayAndRecord withOptions:AVAudioSessionCategoryOptionDefaultToSpeaker error:nil];//PlayAndRecord
         memset(&_recordFormat, 0, sizeof(_recordFormat));
         _recordFormat.mSampleRate = kDefaultSampleRate;
         _recordFormat.mChannelsPerFrame = 1;

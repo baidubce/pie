@@ -10,21 +10,24 @@
 #import <BaiduASR/BDASRInstance.h>
 
 // 云
-//#define HOST @"asr.baiduai.cloud" //180.76.107.131
-//#define PORT @"8051"
-//#define PID  @"1906"
+#define HOST @"asr.baiduai.cloud" //180.76.107.131
+#define PORT @"8051"
+#define PID  @"1906"
+#define SAMPLERATE  @"16000"
+#define USERNAME @"admin"
+#define PASSWORD @"Admin123!@#"
 
 //ai中台
 //#define HOST @"10.161.115.27"
 //#define PORT @"8089"
 //#define PID  @"1906"
 
-#define HOST @"180.76.161.229"
-#define PORT @"8010"
-#define PID  @"888"
-#define SAMPLERATE  @"16000"
-#define USERNAME @"admin"
-#define PASSWORD @"1234567809"
+//#define HOST @"180.76.161.229"
+//#define PORT @"8010"
+//#define PID  @"888"
+//#define SAMPLERATE  @"16000"
+//#define USERNAME @"admin"
+//#define PASSWORD @"1234567809"
 
 #define defIDdess [NSArray arrayWithObjects:@"客服模型1903", \
                                 @"客服模型-旅游领域1904", \
