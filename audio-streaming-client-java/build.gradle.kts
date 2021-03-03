@@ -1,5 +1,6 @@
 import com.google.protobuf.gradle.*
 import com.jfrog.bintray.gradle.BintrayExtension.PackageConfig
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 
 plugins {
     id("java")
@@ -8,6 +9,7 @@ plugins {
     id("com.google.protobuf") version "0.8.8"
     id("maven-publish")
     id("com.jfrog.bintray") version "1.8.4"
+    id("com.github.johnrengelman.shadow") version "5.1.0"
 }
 
 val kotlinVersion by extra("1.3.10")
