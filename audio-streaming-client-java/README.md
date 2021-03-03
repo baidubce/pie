@@ -51,6 +51,9 @@ dependencies {
 ### 生成grpc代码
 `./gradlew generateProto`
 
+### 生成可直接导入的jar包
+`./gradlew clean shadowJar`
+
 ## 如何贡献
 TODO
 
