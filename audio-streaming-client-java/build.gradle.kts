@@ -83,6 +83,16 @@ tasks.register<Jar>("sourceJar") {
     classifier = "sources"
 }
 
+tasks.register<Copy>("copyJars") {
+    from(configurations.runtimeClasspath)
+    into("$buildDir/libs/deps")
+}
+
+tasks.register<Copy>("copyToLib") {
+    from(configurations.runtimeClasspath)
+    into("$buildDir/libs/libs")
+}
+
 publishing {
     publications {
         register<MavenPublication>("mavenJava") {
