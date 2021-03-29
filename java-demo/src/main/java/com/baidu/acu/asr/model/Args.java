@@ -23,6 +23,8 @@ public class Args {
     private String username = "";
     @Option(name = "-password", required = true, usage = "password")
     private String password = "";
+    @Option(name = "-audio-path", usage = "audio save path")
+    private String audioPath = "";
 
     public static Args parse(String[] args) {
         Args iArgs = new Args();

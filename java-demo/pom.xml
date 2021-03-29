@@ -65,7 +65,6 @@
 
     <build>
         <plugins>
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
@@ -73,7 +72,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.baidu.acu.asr.async.AsyncRecognizeWithStreamAndMetaData</mainClass>
+                            <mainClass>com.baidu.acu.asr.async.AsyncRecogniseWithMicrophone</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>

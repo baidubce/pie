@@ -16,8 +16,15 @@ import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.DataLine;
 import javax.sound.sampled.TargetDataLine;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * AsyncRecogniseWithMicrophone
@@ -115,7 +122,14 @@ public class AsyncRecogniseWithMicrophone {
             return;
         }
 
+        FileOutputStream fop = null;
         try {
+            if (!args.getAudioPath().equals("")) {
+                File file = Paths.get(args.getAudioPath(), generateAudioName()).toFile();
+                if (file.exists() || file.createNewFile()) {
+                    fop = new FileOutputStream(file);
+                }
+            }
             line = (TargetDataLine) AudioSystem.getLine(info);
 
             line.open(audioFormat, line.getBufferSize());
@@ -127,6 +141,10 @@ public class AsyncRecogniseWithMicrophone {
             while ((line.read(data, 0, bufferLengthInBytes)) != -1L &&
                     !streamContext.getFinishLatch().finished()) {
                 streamContext.send(data);
+                if (fop != null) {
+                    fop.write(data);
+                    fop.flush();
+                }
             }
 
             System.out.println(new DateTime().toString() + "\t" + Thread.currentThread().getId() + " send finish");
@@ -140,8 +158,20 @@ public class AsyncRecogniseWithMicrophone {
         } finally {
             line.close();
             asrClient.shutdown();
+            if (fop != null) {
+                try {
+                    fop.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
         System.out.println("all task finished");
     }
 
+    private static String generateAudioName() {
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+        String time = dateTimeFormatter.format(LocalDateTime.now());
+        return time + UUID.randomUUID() + ".pcm";
+    }
 }
