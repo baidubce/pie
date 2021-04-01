@@ -3,7 +3,6 @@ package client
 import (
 	"context"
 	b64 "encoding/base64"
-	"flag"
 	flagUtil "github.com/baidubce/pie/audio-streaming-client-go/flag"
 	"github.com/baidubce/pie/audio-streaming-client-go/protogen"
 	"github.com/baidubce/pie/audio-streaming-client-go/util"
@@ -13,6 +12,7 @@ import (
 	"io"
 	"log"
 	"os"
+	"time"
 )
 
 // 处理音频文件音频流
@@ -30,14 +30,14 @@ func ReadFile(headers protogen.InitRequest) {
 	ctx := metadata.NewOutgoingContext(context.Background(), md)
 	stream, err := client.Send(ctx)
 	util.ErrorCheck(err)
-	waitc := make(chan struct{})
+	waitC := make(chan struct{})
 
 	go func() {
 		for {
 			in, err := stream.Recv()
 			if err == io.EOF {
 				// read done.
-				close(waitc)
+				close(waitC)
 				return
 			}
 			util.ErrorCheck(err)
@@ -69,12 +69,12 @@ func ReadFile(headers protogen.InitRequest) {
 		if err := stream.Send(&request); err != nil {
 			log.Fatalf("Failed to send a audio stream: %v", err)
 		}
+
+		if flagUtil.SleepRatio != 0 {
+			time.Sleep(time.Duration(20/flagUtil.SleepRatio) * time.Millisecond)
+		}
 	}
 
 	stream.CloseSend()
-	<-waitc
-}
-
-func main() {
-	flag.Parse()
+	<-waitC
 }
