@@ -28,7 +28,7 @@ public class JavaBase64Demo {
     public static void main(String[] args) throws IOException {
         JavaBase64Demo javaDemo = new JavaBase64Demo();
         BASE64Encoder e = new BASE64Encoder();
-        byte[] bytes = Files.readAllBytes(Paths.get("/Users/xiashuai01/Downloads/audio/16k.wav"));
+        byte[] bytes = Files.readAllBytes(Paths.get("testaudio/16k.wav"));
         String encode = e.encode(bytes);
         String result = javaDemo.syncRecognition(encode);
         System.out.println(result);

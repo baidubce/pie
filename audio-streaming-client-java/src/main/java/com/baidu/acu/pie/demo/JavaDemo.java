@@ -48,7 +48,8 @@ public class JavaDemo {
                 .serverIp("127.0.0.1")
                 .serverPort(80)
                 .appName("simpleDemo")
-                .product(AsrProduct.CUSTOMER_SERVICE_FINANCE)
+                .product(AsrProduct.SPEECH_SERVICE)
+//                .product(new AsrProduct("1913", 16000))
                 .userName("user")
                 .password("123")
 //                .sslUseFlag(true)
@@ -78,7 +79,7 @@ public class JavaDemo {
      * 用户可以自己创建一个 RequestMeta 对象，用来控制请求时候的数据发送速度等参数
      */
     public void recognizeFileWithRequestMeta() {
-        File audioFile = new File("testaudio/10s.wav");
+        File audioFile = new File("testaudio/xeq16k.wav");
 
         AsrClient asrClient = createAsrClient();
 
@@ -140,7 +141,7 @@ public class JavaDemo {
      * 使用长音频来模拟人对着麦克风不断说话的情况
      */
     public void asyncRecognition() {
-        String longAudioFilePath = "testaudio/1.wav";
+        String longAudioFilePath = "testaudio/xeq16k.wav";
         AsrClient asrClient = createAsrClient();
 
         RequestMetaData requestMetaData = createRequestMeta();
