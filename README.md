@@ -46,6 +46,8 @@
 
 - [c#](https://github.com/baidubce/pie/tree/master/audio-streaming-client-c%23)
 
+- [go](https://github.com/baidubce/pie/blob/master/audio-streaming-client-go/main.go)
+
 - [android]()
 
 ### Issues
