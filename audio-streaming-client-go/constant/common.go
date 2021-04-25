@@ -10,4 +10,4 @@ modification history
 
 package constant
 
-const TIME_FORMAT string = "2006-01-02T15:04:05Z"
+const TimeFormat string = "2006-01-02T15:04:05Z"

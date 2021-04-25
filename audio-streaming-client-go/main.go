@@ -17,6 +17,7 @@ import (
 	flagUtil "github.com/baidubce/pie/audio-streaming-client-go/flag"
 	"github.com/baidubce/pie/audio-streaming-client-go/protogen"
 	"github.com/baidubce/pie/audio-streaming-client-go/util"
+	"strings"
 	"time"
 )
 
@@ -34,17 +35,24 @@ func generateInitRequest() protogen.InitRequest {
 		LogLevel:         0,
 		UserName:         flagUtil.UserName,
 	}
-	nowTime := time.Now().Format(constant.TIME_FORMAT)
+	nowTime := time.Now().Format(constant.TimeFormat)
 	content.ExpireTime = nowTime
 	content.Token = util.HashToken(flagUtil.UserName, flagUtil.Password, nowTime)
 	return content
 }
 
 func main() {
-	flag.Parse()
-	// 处理音频文件
 	// go run main.go --server_addr 127.0.0.1:8051 --username username --password password --audio_file /path/of/audio.wav
-	client.ReadFile(generateInitRequest())
-	// 处理麦克风音频流
-	//client.ReadMicrophone(generateInitRequest())
+	flag.Parse()
+	runType := strings.ToLower(flagUtil.RunType)
+
+	if runType == "file" {
+		// 处理音频文件
+		client.ReadFile(generateInitRequest())
+	}
+
+	if runType == "microphone" {
+		// 处理麦克风音频流
+		client.ReadMicrophone(generateInitRequest())
+	}
 }

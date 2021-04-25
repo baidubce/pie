@@ -72,7 +72,7 @@ func ReadFile(headers protogen.InitRequest) {
 		}
 
 		if flagUtil.SleepRatio != 0 {
-			time.Sleep(time.Duration(20/flagUtil.SleepRatio) * time.Millisecond)
+			time.Sleep(time.Duration(20*flagUtil.SleepRatio) * time.Millisecond)
 		}
 	}
 
