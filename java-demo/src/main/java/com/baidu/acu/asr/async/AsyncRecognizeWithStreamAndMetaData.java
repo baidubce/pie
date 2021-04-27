@@ -1,21 +1,5 @@
 package com.baidu.acu.asr.async;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicReference;
-
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.CommandLineParser;
-import org.apache.commons.cli.DefaultParser;
-import org.apache.commons.cli.HelpFormatter;
-import org.apache.commons.cli.Options;
-import org.joda.time.DateTime;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.baidu.acu.pie.client.AsrClient;
 import com.baidu.acu.pie.client.AsrClientFactory;
 import com.baidu.acu.pie.client.Consumer;
@@ -25,6 +9,21 @@ import com.baidu.acu.pie.model.AsrProduct;
 import com.baidu.acu.pie.model.RecognitionResult;
 import com.baidu.acu.pie.model.RequestMetaData;
 import com.baidu.acu.pie.model.StreamContext;
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.Options;
+import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * 异步识别: 会准实时返回每个句子的结果.输入一个语音流以及自定义RequestMetaData对象,用来控制请求时候的数据发送速度等参数
@@ -137,12 +136,13 @@ public class AsyncRecognizeWithStreamAndMetaData {
     }
 
     private static AsrProduct getAsrProduct(String pid) {
-        for (AsrProduct asrProduct : AsrProduct.values()) {
-            if (asrProduct.getCode().equals(pid)) {
-                return asrProduct;
-            }
-        }
-        return null;
+        // 默认采样率为16000
+        return new AsrProduct(pid, 16000);
+    }
+
+    private static AsrProduct getAsrProduct(String pid, int sampleRate) {
+
+        return new AsrProduct(pid, sampleRate);
     }
 
     private static AsrClient createAsrClient() {
