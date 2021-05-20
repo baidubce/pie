@@ -13,6 +13,10 @@ import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Mixer;
 import javax.sound.sampled.TargetDataLine;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -135,10 +139,16 @@ public class AsyncRecogniseWithMultiMicrophone {
             }
         });
 
+        FileOutputStream fop = null;
         try {
-            targetDataLine.open();
+            if (!args.getAudioPath().equals("")) {
+                File file = Paths.get(args.getAudioPath(), generateAudioName(mixerInfo.getName())).toFile();
+                if (file.exists() || file.createNewFile()) {
+                    fop = new FileOutputStream(file);
+                }
+            }
 
-//            this.line.open(audioFormat, line.getBufferSize());
+            targetDataLine.open();
             targetDataLine.start();
 
             int bufferLengthInBytes = asrClient.getFragmentSize();
@@ -147,6 +157,10 @@ public class AsyncRecogniseWithMultiMicrophone {
             while ((targetDataLine.read(data, 0, bufferLengthInBytes)) != -1L &&
                     !streamContext.getFinishLatch().finished()) {
                 streamContext.send(data);
+                if (fop != null) {
+                    fop.write(data);
+                    fop.flush();
+                }
             }
 
             System.out.println(new DateTime() + "\t" + Thread.currentThread().getId() + " send finish");
@@ -160,13 +174,21 @@ public class AsyncRecogniseWithMultiMicrophone {
         } finally {
             targetDataLine.close();
             asrClient.shutdown();
+
+            if (fop != null) {
+                try {
+                    fop.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
         System.out.println("all task finished");
     }
 
-    private static String generateAudioName() {
+    private static String generateAudioName(String mixerInfo) {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
         String time = dateTimeFormatter.format(LocalDateTime.now());
-        return time + UUID.randomUUID() + ".pcm";
+        return String.format("%s%s(%s).pcm", time, UUID.randomUUID(), mixerInfo);
     }
 }

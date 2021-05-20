@@ -3,10 +3,7 @@ package com.baidu.acu.asr.async;
 import com.baidu.acu.asr.model.Args;
 import com.baidu.acu.pie.client.AsrClient;
 import com.baidu.acu.pie.client.AsrClientFactory;
-import com.baidu.acu.pie.client.Consumer;
-import com.baidu.acu.pie.exception.AsrException;
 import com.baidu.acu.pie.model.AsrConfig;
-import com.baidu.acu.pie.model.RecognitionResult;
 import com.baidu.acu.pie.model.RequestMetaData;
 import com.baidu.acu.pie.model.StreamContext;
 import com.baidu.acu.pie.util.JacksonUtil;
@@ -29,8 +26,8 @@ import java.util.UUID;
 /**
  * AsyncRecogniseWithMicrophone
  *
- * @Author Xia Shuai(xiashuai01@baidu.com)
- * @Create 2021/3/3 2:32 下午
+ * @author Xia Shuai(xiashuai01@baidu.com)
+ * @literal create at 2021/3/3 2:32 下午
  */
 public class AsyncRecogniseWithMicrophone {
     private static Args args;
@@ -55,7 +52,7 @@ public class AsyncRecogniseWithMicrophone {
                 .appName(appName)
                 .serverIp(args.getIp())
                 .serverPort(args.getPort())
-                .product(args.parseProduct(args.getProductId()))
+                .product(Args.parseProduct(args.getProductId()))
                 .userName(args.getUsername())
                 .password(args.getPassword())
                 .build();
@@ -83,21 +80,13 @@ public class AsyncRecogniseWithMicrophone {
 
         RequestMetaData requestMetaData = createRequestMeta();
 
-        StreamContext streamContext = asrClient.asyncRecognize(new Consumer<RecognitionResult>() {
-            @Override
-            public void accept(RecognitionResult it) {
-                System.out.println(
-                        DateTime.now().toString() + "\t" + Thread.currentThread().getId() +
-                                " receive fragment: " + it);
-            }
-        }, requestMetaData);
+        StreamContext streamContext = asrClient.asyncRecognize(it -> System.out.println(
+                DateTime.now() + "\t" + Thread.currentThread().getId() +
+                        " receive fragment: " + it), requestMetaData);
 
-        streamContext.enableCallback(new Consumer<AsrException>() {
-            @Override
-            public void accept(AsrException e) {
-                if (e != null) {
-                    System.out.println(e);
-                }
+        streamContext.enableCallback(e -> {
+            if (e != null) {
+                e.printStackTrace();
             }
         });
 
@@ -147,7 +136,7 @@ public class AsyncRecogniseWithMicrophone {
                 }
             }
 
-            System.out.println(new DateTime().toString() + "\t" + Thread.currentThread().getId() + " send finish");
+            System.out.println(new DateTime() + "\t" + Thread.currentThread().getId() + " send finish");
             streamContext.complete();
 
             // wait to ensure to receive the last response
@@ -156,7 +145,9 @@ public class AsyncRecogniseWithMicrophone {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            line.close();
+            if (line != null) {
+                line.close();
+            }
             asrClient.shutdown();
             if (fop != null) {
                 try {
