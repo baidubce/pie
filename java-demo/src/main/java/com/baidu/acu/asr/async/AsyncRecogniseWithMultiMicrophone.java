@@ -3,10 +3,7 @@ package com.baidu.acu.asr.async;
 import com.baidu.acu.asr.model.Args;
 import com.baidu.acu.pie.client.AsrClient;
 import com.baidu.acu.pie.client.AsrClientFactory;
-import com.baidu.acu.pie.client.Consumer;
-import com.baidu.acu.pie.exception.AsrException;
 import com.baidu.acu.pie.model.AsrConfig;
-import com.baidu.acu.pie.model.RecognitionResult;
 import com.baidu.acu.pie.model.RequestMetaData;
 import com.baidu.acu.pie.model.StreamContext;
 import com.baidu.acu.pie.util.JacksonUtil;
@@ -25,10 +22,10 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
- * AsyncRecogniseWithMicrophone
+ * AsyncRecogniseWithMultiMicrophone
  *
- * @Author Xia Shuai(xiashuai01@baidu.com)
- * @Create 2021/3/3 2:32 下午
+ * @author Xia Shuai(xiashuai01@baidu.com)
+ * @literal create at 2021/3/3 2:32 下午
  */
 public class AsyncRecogniseWithMultiMicrophone {
     private static Args args;
@@ -64,7 +61,7 @@ public class AsyncRecogniseWithMultiMicrophone {
                 .appName(appName)
                 .serverIp(args.getIp())
                 .serverPort(args.getPort())
-                .product(args.parseProduct(args.getProductId()))
+                .product(Args.parseProduct(args.getProductId()))
                 .userName(args.getUsername())
                 .password(args.getPassword())
                 .build();
@@ -86,7 +83,7 @@ public class AsyncRecogniseWithMultiMicrophone {
 
     private static AudioFormat createAudioFormat() {
         AsrConfig asrConfig = buildAsrConfig();
-        AudioFormat audioFormat = new AudioFormat(
+        return new AudioFormat(
                 AudioFormat.Encoding.PCM_SIGNED,
                 asrConfig.getProduct().getSampleRate(),
                 16,
@@ -94,15 +91,12 @@ public class AsyncRecogniseWithMultiMicrophone {
                 2,    // (sampleSizeBits / 8) * channels
                 asrConfig.getProduct().getSampleRate(),
                 false);
-        return audioFormat;
     }
 
     public static List<Mixer.Info> readMicrophoneDevice() {
         Mixer.Info[] mixerInfos = AudioSystem.getMixerInfo();
         List<Mixer.Info> MixerInfoList = new ArrayList<>();
         for (Mixer.Info info : mixerInfos) {
-            String mixerInfo = info.getName();
-            TargetDataLine targetDataLine;
             try {
                 AudioSystem.getTargetDataLine(createAudioFormat(), info);
             } catch (Exception e) {
@@ -130,36 +124,16 @@ public class AsyncRecogniseWithMultiMicrophone {
 
         RequestMetaData requestMetaData = createRequestMeta();
 
-        StreamContext streamContext = asrClient.asyncRecognize(new Consumer<RecognitionResult>() {
-            @Override
-            public void accept(RecognitionResult it) {
-                System.out.println(mixerInfo.getName() + "\t" +
-                        DateTime.now().toString() + "\t" +
-                        Thread.currentThread().getId() +
-                        " receive fragment: " + it);
-            }
-        }, requestMetaData);
+        StreamContext streamContext = asrClient.asyncRecognize(it -> System.out.println(mixerInfo.getName() + "\t" +
+                DateTime.now() + "\t" +
+                Thread.currentThread().getId() +
+                " receive fragment: " + it), requestMetaData);
 
-        streamContext.enableCallback(new Consumer<AsrException>() {
-            @Override
-            public void accept(AsrException e) {
-                if (e != null) {
-                    System.out.println(e);
-                }
+        streamContext.enableCallback(e -> {
+            if (e != null) {
+                e.printStackTrace();
             }
         });
-
-        AsrConfig asrConfig = buildAsrConfig();
-
-//        TargetDataLine line = null;
-        AudioFormat audioFormat = new AudioFormat(
-                AudioFormat.Encoding.PCM_SIGNED,
-                asrConfig.getProduct().getSampleRate(),
-                16,
-                1,
-                2,    // (sampleSizeBits / 8) * channels
-                asrConfig.getProduct().getSampleRate(),
-                false);
 
         try {
             targetDataLine.open();
@@ -175,7 +149,7 @@ public class AsyncRecogniseWithMultiMicrophone {
                 streamContext.send(data);
             }
 
-            System.out.println(new DateTime().toString() + "\t" + Thread.currentThread().getId() + " send finish");
+            System.out.println(new DateTime() + "\t" + Thread.currentThread().getId() + " send finish");
             streamContext.complete();
 
             // wait to ensure to receive the last response
