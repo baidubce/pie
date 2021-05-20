@@ -15,14 +15,14 @@ import org.kohsuke.args4j.Option;
 public class Args {
     @Option(name = "-ip", required = true, usage = "asr server ip")
     private String ip = "127.0.0.1";
-    @Option(name = "-port", required = true, usage = "asr server port")
+    @Option(name = "-port", usage = "asr server port")
     private int port = 8051;
-    @Option(name = "-pid", required = true, usage = "asr product id")
+    @Option(name = "-pid", usage = "asr product id")
     private String productId = "1912";
-    @Option(name = "-username", required = true, usage = "username")
-    private String username = "";
-    @Option(name = "-password", required = true, usage = "password")
-    private String password = "";
+    @Option(name = "-username", usage = "username")
+    private String username = "admin";
+    @Option(name = "-password", usage = "password")
+    private String password = "1234567809";
     @Option(name = "-audio-path", usage = "audio save path")
     private String audioPath = "";
 
