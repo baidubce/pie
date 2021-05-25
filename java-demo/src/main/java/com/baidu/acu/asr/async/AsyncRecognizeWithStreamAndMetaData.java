@@ -2,11 +2,9 @@ package com.baidu.acu.asr.async;
 
 import com.baidu.acu.pie.client.AsrClient;
 import com.baidu.acu.pie.client.AsrClientFactory;
-import com.baidu.acu.pie.client.Consumer;
 import com.baidu.acu.pie.exception.AsrException;
 import com.baidu.acu.pie.model.AsrConfig;
 import com.baidu.acu.pie.model.AsrProduct;
-import com.baidu.acu.pie.model.RecognitionResult;
 import com.baidu.acu.pie.model.RequestMetaData;
 import com.baidu.acu.pie.model.StreamContext;
 import org.apache.commons.cli.CommandLine;
@@ -30,7 +28,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * 使用场景: 用于对实时性要求较高的场景,如会议记录
  *
  * @author xutengchao
- * @create 2019-05-06 16:59
+ * @literal create 2019-05-06 16:59
  */
 public class AsyncRecognizeWithStreamAndMetaData {
 
@@ -44,7 +42,7 @@ public class AsyncRecognizeWithStreamAndMetaData {
     private static boolean enableFlushData = false;
     private static Logger logger = LoggerFactory.getLogger(AsyncRecognizeWithStream.class);
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         parseArgs(args);
         asyncRecognizeWithStreamAndMetaData(createAsrClient());
     }
@@ -169,19 +167,17 @@ public class AsyncRecognizeWithStreamAndMetaData {
         requestMetaData.setTimeoutMinutes(120);  // 识别单个文件的最大等待时间，默认10分，最长不能超过120分
         requestMetaData.setEnableFlushData(enableFlushData);// 是否返回中间翻译结果
 
-        final AtomicReference<DateTime> beginSend = new AtomicReference<DateTime>();
-        final StreamContext streamContext = asrClient.asyncRecognize(new Consumer<RecognitionResult>() {
-            public void accept(RecognitionResult recognitionResult) {
-                DateTime now = DateTime.now();
-                System.out.println(now.toString() +
-                        "\ttime_used=" + (now.getMillis() - beginSend.get().getMillis()) + "ms" +
-                        "\tfragment=" + recognitionResult +
-                        "\tthread_id=" + Thread.currentThread().getId());
-            }
+        final AtomicReference<DateTime> beginSend = new AtomicReference<>();
+        final StreamContext streamContext = asrClient.asyncRecognize(recognitionResult -> {
+            DateTime now = DateTime.now();
+            System.out.println(now +
+                    "\ttime_used=" + (now.getMillis() - beginSend.get().getMillis()) + "ms" +
+                    "\tfragment=" + recognitionResult +
+                    "\tthread_id=" + Thread.currentThread().getId());
         }, requestMetaData);
         // 异常回调
-        streamContext.enableCallback(new Consumer<AsrException>() {
-            public void accept(AsrException e) {
+        streamContext.enableCallback(e -> {
+            if (e != null) {
                 logger.error("Exception recognition for asr ： ", e);
             }
         });
@@ -195,33 +191,31 @@ public class AsyncRecognizeWithStreamAndMetaData {
             ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(5);
             final CountDownLatch sendFinish = new CountDownLatch(1);
             // 控制台打印每次发包大小
-            System.out.println(new DateTime().toString() + "\t" + Thread.currentThread().getId() +
+            System.out.println(new DateTime() + "\t" + Thread.currentThread().getId() +
                     " start to send with package size=" + asrClient.getFragmentSize(requestMetaData));
             // 设置发送开始时间
             beginSend.set(DateTime.now());
             // 开始执行定时任务
-            executor.scheduleAtFixedRate(new Runnable() {
-                public void run() {
-                    try {
-                        int count = 0;
-                        // 判断音频有没有发送和处理完成
-                        if ((count = audioStream.read(data)) != -1 && !streamContext.getFinishLatch().finished()) {
-                            // 发送音频数据包
-                            streamContext.send(data);
-                        } else {
-                            // 音频处理完成，置0标记，结束所有线程任务
-                            sendFinish.countDown();
-                        }
-                    } catch (AsrException | IOException e) {
-                        e.printStackTrace();
-                        // 异常时，置0标记，结束所有线程任务
+            executor.scheduleAtFixedRate(() -> {
+                try {
+                    int count = 0;
+                    // 判断音频有没有发送和处理完成
+                    if (audioStream.read(data) != -1 && !streamContext.getFinishLatch().finished()) {
+                        // 发送音频数据包
+                        streamContext.send(data);
+                    } else {
+                        // 音频处理完成，置0标记，结束所有线程任务
                         sendFinish.countDown();
                     }
+                } catch (AsrException | IOException e) {
+                    e.printStackTrace();
+                    // 异常时，置0标记，结束所有线程任务
+                    sendFinish.countDown();
                 }
             }, 0, 20, TimeUnit.MILLISECONDS); // 0:第一次发包延时； 20:每次任务间隔时间; 单位：ms
             // 阻塞主线程，直到CountDownLatch的值为0时停止阻塞
             sendFinish.await();
-            System.out.println(new DateTime().toString() + "\t" + Thread.currentThread().getId() + " send finish");
+            System.out.println(new DateTime() + "\t" + Thread.currentThread().getId() + " send finish");
 
             // 结束定时任务
             executor.shutdown();
