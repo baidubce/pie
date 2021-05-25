@@ -43,6 +43,7 @@ public class AsyncRecognizeWithStreamAndMetaData {
     private static Logger logger = LoggerFactory.getLogger(AsyncRecognizeWithStream.class);
 
     public static void main(String[] args) {
+        // java -jar java-demo-1.0-SNAPSHOT-jar-with-dependencies.jar -app-name hello -ip 127.0.0.1 -port 8051 -pid 1912 -username username -password password -enable-flush-data true -audio-path /path/of/audio.wav
         parseArgs(args);
         asyncRecognizeWithStreamAndMetaData(createAsrClient());
     }
