@@ -92,10 +92,10 @@ public class AsyncRecognizeWithStreamAndMetaData {
         }
 
         if (cmd.hasOption('p')) {
-            passWord = cmd.getOptionValue("p");
+            port = Integer.parseInt(cmd.getOptionValue("p"));
         }
         if (cmd.hasOption("port")) {
-            passWord = cmd.getOptionValue("port");
+            port = Integer.parseInt(cmd.getOptionValue("p"));
         }
 
         if (cmd.hasOption('d')) {
