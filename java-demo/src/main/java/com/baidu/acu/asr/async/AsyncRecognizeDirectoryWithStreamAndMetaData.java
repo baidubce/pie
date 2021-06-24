@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * 识别文件夹内的所有wav音频数据
+ * 识别文件夹内的所有wav和pcm音频数据
  *
  * @author xutengchao
  * @literal create 2019-05-06 16:59
@@ -195,7 +195,7 @@ public class AsyncRecognizeDirectoryWithStreamAndMetaData {
         RequestMetaData requestMetaData = createRequestMeta();
 
         File dir = new File(audioFileDir);
-        File[] files = dir.listFiles(pathname -> pathname.getName().endsWith("wav"));
+        File[] files = dir.listFiles(pathname -> pathname.getName().endsWith("wav") || pathname.getName().endsWith("pcm"));
         int count = 0;
         BufferedWriter out = null;
         try {
