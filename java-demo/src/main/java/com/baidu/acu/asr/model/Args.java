@@ -4,6 +4,7 @@ import com.baidu.acu.pie.model.AsrProduct;
 import lombok.Data;
 import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
+import org.kohsuke.args4j.spi.BooleanOptionHandler;
 
 /**
  * Args
@@ -23,6 +24,8 @@ public class Args {
     private String username = "admin";
     @Option(name = "-password", usage = "password")
     private String password = "1234567809";
+    @Option(name = "-enable-flush-data", handler = BooleanOptionHandler.class, usage = "enable flush data")
+    private Boolean enableFlushData = false;
     @Option(name = "-audio-path", usage = "audio save path")
     private String audioPath = "";
 

@@ -35,6 +35,10 @@ public class AsyncRecogniseWithMicrophone {
     private static String appName = "microphone";     // 根据自己需求命名
 
     public static void main(String[] args) {
+        // 带中间结果
+        // java -jar java-demo-1.0-SNAPSHOT-jar-with-dependencies.jar -ip 127.0.0.1 -port 8051 -pid 1912 -username username -password password -enable-flush-data
+        // 不带中间结果
+        // java -jar java-demo-1.0-SNAPSHOT-jar-with-dependencies.jar -ip 127.0.0.1 -port 8051 -pid 1912 -username username -password password
         AsyncRecogniseWithMicrophone.args = Args.parse(args);
         asyncRecognitionWithMicrophone();
     }
@@ -63,7 +67,7 @@ public class AsyncRecogniseWithMicrophone {
         requestMetaData.setSendPackageRatio(1);
         requestMetaData.setSleepRatio(0);
         requestMetaData.setTimeoutMinutes(120);
-        requestMetaData.setEnableFlushData(true);
+        requestMetaData.setEnableFlushData(args.getEnableFlushData());
         // 随路信息根据需要设置
         Map<String, Object> extra_info = new HashMap<>();
         extra_info.put("demo", "java");
