@@ -9,16 +9,16 @@
 #ifndef BDTTSMacro_h
 #define BDTTSMacro_h
 
-#define BDTTSProtocol   @"http"
-#define BDTTSHost       @"14.215.177.147"
-#define BDTTSPort       @"80"
-#define BDTTSPath       @"/text2audio"
+//#define BDTTSProtocol   @"http"
+//#define BDTTSHost       @"14.215.177.147"
+//#define BDTTSPort       @"80"
+//#define BDTTSPath       @"/text2audio"
 
 // ai中台
-//#define BDTTSProtocol   @"http"
-//#define BDTTSHost       @"10.161.115.27"
-//#define BDTTSPort       @"8088"
-//#define BDTTSPath       @"/text2audio"
+#define BDTTSProtocol   @"http"
+#define BDTTSHost       @"10.161.115.27"
+#define BDTTSPort       @"8088"
+#define BDTTSPath       @"/text2audio"
 
 #define BDTTS_lan @"zh"
 #define BDTTS_pdt @"993"

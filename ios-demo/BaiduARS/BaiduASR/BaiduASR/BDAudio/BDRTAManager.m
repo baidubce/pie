@@ -31,7 +31,7 @@
 {
     self = [super init];
     if (self) {
-        [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayAndRecord withOptions:AVAudioSessionCategoryOptionDefaultToSpeaker error:nil];//PlayAndRecord
+//        [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayAndRecord withOptions:AVAudioSessionCategoryOptionDefaultToSpeaker error:nil];//PlayAndRecord
         memset(&_recordFormat, 0, sizeof(_recordFormat));
         _recordFormat.mSampleRate = kDefaultSampleRate;
         _recordFormat.mChannelsPerFrame = 1;

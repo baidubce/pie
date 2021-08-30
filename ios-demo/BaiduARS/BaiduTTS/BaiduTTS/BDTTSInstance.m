@@ -39,6 +39,10 @@ static BDTTSInstance *ttsInstance = nil;
     self.config = config;
 }
 
+- (void)setHost:(NSString *)host {
+    self.config.host = host;
+}
+
 - (void)setPer:(NSString *)per {
     self.config.per = per;
 }
@@ -68,6 +72,7 @@ static BDTTSInstance *ttsInstance = nil;
     BDTTSConfig *config = self.config;
     
     NSString *tex = text;
+    NSString *url = config.host;
     NSString *lan = config.lan;
     NSString *pdt = config.pdt;
     NSString *ctp = config.ctp;
@@ -80,7 +85,7 @@ static BDTTSInstance *ttsInstance = nil;
     
     NSDictionary *parameters = @{@"tex" : tex, @"lan" : lan, @"pdt" : pdt, @"ctp" : ctp, @"cuid" : cuid, @"spd" : spd, @"pit" : pit, @"vol" : vol, @"aue" : aue, @"per" : per};
     
-    [BDTTSRequest requestDownload:[BDTTSRequest requestURL] parameters:parameters success:^(NSURL * _Nonnull filePath) {
+    [BDTTSRequest requestDownload:url parameters:parameters success:^(NSURL * _Nonnull filePath) {
         if (isPlay) {
             if (filePath) {
                 [self playAudioWithURL:filePath];

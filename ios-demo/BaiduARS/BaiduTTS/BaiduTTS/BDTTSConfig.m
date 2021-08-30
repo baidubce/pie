@@ -16,6 +16,7 @@
 
 - (instancetype)init {
     if (self = [super init]) {
+        self.host = [self hostURL];
         self.lan = BDTTS_lan;
         self.pdt = BDTTS_pdt;
         self.ctp = BDTTS_ctp;
@@ -26,6 +27,24 @@
         self.per = BDTTS_per;
     }
     return self;
+}
+
+- (NSString *)hostURL {
+    NSMutableString *urlString = [NSMutableString stringWithString:BDTTSProtocol];
+    
+    if (BDTTSHost.length) {
+        [urlString appendFormat:@"://%@", BDTTSHost];
+    }
+    
+    if (BDTTSPort.length) {
+        [urlString appendFormat:@":%@", BDTTSPort];
+    }
+    
+    if (BDTTSPath.length) {
+        [urlString appendString:BDTTSPath];
+    }
+    
+    return urlString;
 }
 
 - (NSString *)cuid {

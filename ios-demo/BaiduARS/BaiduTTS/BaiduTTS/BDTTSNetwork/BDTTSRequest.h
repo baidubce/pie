@@ -14,7 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 //+ (instancetype)sharedInstance;
 
-+ (NSString *)requestURL;
+//+ (NSString *)requestURL;
 
 + (void)requestGet:(NSString *)urlSring
         parameters:(NSDictionary * _Nullable)parameters

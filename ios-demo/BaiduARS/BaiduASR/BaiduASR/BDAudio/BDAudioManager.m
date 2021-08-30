@@ -30,8 +30,12 @@ static BDAudioManager *_recorder = nil;
 //    if ([AVAudioSession sharedInstance].category != AVAudioSessionCategoryPlayAndRecord) {
 //        [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayAndRecord error: nil];
 //    }
-    [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayAndRecord withOptions:AVAudioSessionCategoryOptionDefaultToSpeaker error:nil];//PlayAndRecord
-    [[AVAudioSession sharedInstance] setActive:YES error:nil];
+//    AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+//    if(![audioSession.category isEqualToString:AVAudioSessionCategoryPlayAndRecord]
+//       || audioSession.categoryOptions != AVAudioSessionCategoryOptionDefaultToSpeaker){
+//        [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayAndRecord  withOptions:AVAudioSessionCategoryOptionDefaultToSpeaker error:nil];
+//        [[AVAudioSession sharedInstance] setActive:YES error:nil];
+//    }
 
     return _recorder;
 }

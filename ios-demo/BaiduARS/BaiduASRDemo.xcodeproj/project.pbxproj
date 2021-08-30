@@ -25,10 +25,10 @@
 		708D78DA231CFC8000B4EAA9 /* ModelCellModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 708D78D9231CFC8000B4EAA9 /* ModelCellModel.m */; };
 		708D78DE231CFCF300B4EAA9 /* ModelViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 708D78DC231CFCF300B4EAA9 /* ModelViewCell.m */; };
 		708D78DF231CFCF300B4EAA9 /* ModelViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 708D78DD231CFCF300B4EAA9 /* ModelViewCell.xib */; };
-		709FDB0B2473D4C400F6AB53 /* BaiduTTS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 709FDB0A2473D4C400F6AB53 /* BaiduTTS.framework */; };
-		709FDB0C2473D4C400F6AB53 /* BaiduTTS.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 709FDB0A2473D4C400F6AB53 /* BaiduTTS.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		709FDB0E2473D4CE00F6AB53 /* BaiduASR.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 70C37C072472B3C9004851AE /* BaiduASR.framework */; };
-		709FDB0F2473D4CE00F6AB53 /* BaiduASR.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 70C37C072472B3C9004851AE /* BaiduASR.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		7098EB8026DCBA04005378A2 /* BaiduASR.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 70C37C072472B3C9004851AE /* BaiduASR.framework */; };
+		7098EB8126DCBA04005378A2 /* BaiduASR.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 70C37C072472B3C9004851AE /* BaiduASR.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		7098EB8326DCBA08005378A2 /* BaiduTTS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 709FDB0A2473D4C400F6AB53 /* BaiduTTS.framework */; };
+		7098EB8426DCBA08005378A2 /* BaiduTTS.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 709FDB0A2473D4C400F6AB53 /* BaiduTTS.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		70BBBAE82446FED5000D7B52 /* TTSViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 70BBBAE72446FED5000D7B52 /* TTSViewController.m */; };
 		70BBBAEB2446FF59000D7B52 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 70BBBAEA2446FF59000D7B52 /* HomeViewController.m */; };
 		70BBBAF9244854F8000D7B52 /* TTSConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 70BBBAF8244854F8000D7B52 /* TTSConfig.m */; };
@@ -46,14 +46,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		709FDB0D2473D4C400F6AB53 /* Embed Frameworks */ = {
+		7098EB8226DCBA04005378A2 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				709FDB0C2473D4C400F6AB53 /* BaiduTTS.framework in Embed Frameworks */,
-				709FDB0F2473D4CE00F6AB53 /* BaiduASR.framework in Embed Frameworks */,
+				7098EB8426DCBA08005378A2 /* BaiduTTS.framework in Embed Frameworks */,
+				7098EB8126DCBA04005378A2 /* BaiduASR.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -112,9 +112,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				709FDB0E2473D4CE00F6AB53 /* BaiduASR.framework in Frameworks */,
+				7098EB8026DCBA04005378A2 /* BaiduASR.framework in Frameworks */,
 				708140F6253DB46B00073FFD /* libPods-BaiduASRDemo.a in Frameworks */,
-				709FDB0B2473D4C400F6AB53 /* BaiduTTS.framework in Frameworks */,
+				7098EB8326DCBA08005378A2 /* BaiduTTS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -261,7 +261,7 @@
 				708459AC2260995200B16A4C /* Sources */,
 				708459AD2260995200B16A4C /* Frameworks */,
 				708459AE2260995200B16A4C /* Resources */,
-				709FDB0D2473D4C400F6AB53 /* Embed Frameworks */,
+				7098EB8226DCBA04005378A2 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);

@@ -12,6 +12,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface BDTTSConfig : NSObject
 
+/// 服务地址
+@property (nonatomic, copy) NSString *host;
+
 /// 语言选择，填写zh
 @property (nonatomic, copy) NSString *lan;
 

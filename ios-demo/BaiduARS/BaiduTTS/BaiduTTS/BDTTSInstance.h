@@ -28,6 +28,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (instancetype)sharedInstance;
 
+/// 服务地址
+/// @param host 请填写服务地址
+- (void)setHost:(NSString *)host;
+
 /// 说话人
 /// @param per 请填写5117
 - (void)setPer:(NSString *)per;

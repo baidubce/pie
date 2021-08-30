@@ -24,8 +24,12 @@ static BDAudioPlayer *player = nil;
         player = [[BDAudioPlayer alloc] init];
     });
     
-    [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayAndRecord withOptions:AVAudioSessionCategoryOptionDefaultToSpeaker error:nil];//PlayAndRecord
-    [[AVAudioSession sharedInstance] setActive:YES error:nil];
+//    AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+//    if(![audioSession.category isEqualToString:AVAudioSessionCategoryPlayAndRecord]
+//       || audioSession.categoryOptions != AVAudioSessionCategoryOptionDefaultToSpeaker){
+//        [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayAndRecord  withOptions:AVAudioSessionCategoryOptionDefaultToSpeaker error:nil];
+//        [[AVAudioSession sharedInstance] setActive:YES error:nil];
+//    }
 
 //    if ([AVAudioSession sharedInstance].category != AVAudioSessionCategoryPlayback) {
 //        [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error: nil];
