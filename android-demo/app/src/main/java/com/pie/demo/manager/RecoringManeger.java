@@ -114,29 +114,6 @@ public class RecoringManeger {
                         audioRecord.release();
                         audioRecord = null;
                     }
-
-
-                    if (streamObserverOne != null) {
-                        streamObserverOne.getFinishLatch().await();
-                        streamObserverOne.complete();
-                    }
-                    if (streamObserverTwo != null) {
-                        streamObserverTwo.complete();
-                        streamObserverTwo.getFinishLatch().await();
-                    }
-                    if (streamObserverThree != null) {
-                        streamObserverThree.complete();
-                        streamObserverThree.getFinishLatch().await();
-                    }
-                    if (asrClientGrpcOne != null) {
-                        asrClientGrpcOne.shutdown();
-                    }
-                    if (asrClientGrpcTwo != null) {
-                        asrClientGrpcTwo.shutdown();
-                    }
-                    if (asrClientGrpcThree != null) {
-                        asrClientGrpcThree.shutdown();
-                    }
                 } catch (Throwable throwable) {
                     throwable.printStackTrace();
                 }
@@ -207,6 +184,29 @@ public class RecoringManeger {
                         streamObserverThree.send(audiodata);
                     }
                 }
+            }
+
+            // 结束
+            if (streamObserverOne != null) {
+                streamObserverOne.getFinishLatch().await();
+                streamObserverOne.complete();
+            }
+            if (streamObserverTwo != null) {
+                streamObserverTwo.complete();
+                streamObserverTwo.getFinishLatch().await();
+            }
+            if (streamObserverThree != null) {
+                streamObserverThree.complete();
+                streamObserverThree.getFinishLatch().await();
+            }
+            if (asrClientGrpcOne != null) {
+                asrClientGrpcOne.shutdown();
+            }
+            if (asrClientGrpcTwo != null) {
+                asrClientGrpcTwo.shutdown();
+            }
+            if (asrClientGrpcThree != null) {
+                asrClientGrpcThree.shutdown();
             }
         } catch (Exception e) {
             if (streamObserverOne != null) {
