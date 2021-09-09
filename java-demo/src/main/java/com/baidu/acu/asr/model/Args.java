@@ -42,12 +42,11 @@ public class Args {
     }
 
     public static AsrProduct parseProduct(String pid) {
-        // 默认采样率为16000
-        return new AsrProduct(pid, 16000);
-    }
-
-    public static AsrProduct parseProduct(String pid, int sampleRate) {
-
-        return new AsrProduct(pid, sampleRate);
+            for (AsrProduct asrProduct : AsrProduct.values()) {
+                if (asrProduct.getCode().equals(pid)) {
+                    return asrProduct;
+                }
+            }
+            return null;
     }
 }
