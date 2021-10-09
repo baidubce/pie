@@ -32,7 +32,8 @@ func init() {
 	flag.StringVar(&ProductId, "product_id", "1912", "The pid for ASR engine")
 	flag.IntVar(&SampleRate, "sample_rate", 16000, "The sample rate for ASR engine")
 	flag.StringVar(&AudioFile, "audio_file", "audio/bj8k.wav", "The audio file path")
-	flag.BoolVar(&EnableFlushData, "enable_flush_data", true, "enable flush data")
+	// 注：bool类型只能用--enable_flush_data=false来表示，不能用空格
+	flag.BoolVar(&EnableFlushData, "enable_flush_data", false, "enable flush data")
 	flag.Float64Var(&SleepRatio, "sleep_ratio", 1, "sleep ratio")
 
 	flag.StringVar(&RunType, "run_type", "file", "run type, must in [file, microphone], default file")
