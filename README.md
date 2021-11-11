@@ -17,6 +17,8 @@
 
 - [java-demo](https://github.com/baidubce/pie/tree/master/java-demo) 基于java sdk实现的不同方案的demo
 
+- [windows c++](https://github.com/baidubce/pie/tree/master/windows_cpp_demo) windows c++版本client sdk
+
 ### 功能
 本部分代码为asr streaming client端，支持的场景如下：
 
