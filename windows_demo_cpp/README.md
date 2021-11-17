@@ -10,6 +10,7 @@ http://acg-voice.su.bcebos.com/ori/asr/WD-Demo-vs2017-141xp-win32-release.zip?au
 
 ### WD-Demo-vs2019-142-x64-release
 
+http://acg-voice.su.bcebos.com/ori/asr/WD-Demo-vs2019-142-x64-release.zip?authorization=bce-auth-v1%2Fe137fbe330324a5599fa40ba2fa7192a%2F2021-11-17T07%3A19%3A44Z%2F-1%2Fhost%2Ff33f01f3d5d39f908969e0c87a098d39d779b5dbee7cd72d0a4191c9304b1593
 
 
 ## grpc编译源码下载链接
