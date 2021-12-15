@@ -1,3 +1,7 @@
+# 1.1.12
+## improvement
+- 支持可配置的pid和sampleRate
+
 # 1.1.8
 ## improvement
 - 优化了 AsrException 及其相关处理逻辑，在 AsrException 中加入 traceId 字段。
