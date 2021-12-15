@@ -31,6 +31,7 @@ repositories {
 dependencies {
     annotationProcessor("org.projectlombok:lombok:1.18.4")
     implementation("org.projectlombok:lombok:1.18.4")
+    implementation("javax.annotation:javax.annotation-api:1.3.2")
 
     compile("io.grpc:grpc-netty:$grpcVersion")
     compile("io.grpc:grpc-protobuf:$grpcVersion")

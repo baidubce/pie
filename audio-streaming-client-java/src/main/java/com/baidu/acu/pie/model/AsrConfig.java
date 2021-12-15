@@ -2,6 +2,8 @@
 
 package com.baidu.acu.pie.model;
 
+import com.baidu.acu.pie.exception.AsrClientException;
+import com.google.common.base.Strings;
 import org.joda.time.DateTime;
 
 import lombok.AllArgsConstructor;
@@ -41,6 +43,16 @@ public class AsrConfig {
      * asr识别服务的产品类型，私有化版本请咨询供应商
      */
     private AsrProduct product;
+
+    /**
+     * asr的产品id
+     */
+    private String productId;
+
+    /**
+     * asr 采样率
+     */
+    private int productSampleRate = -1;
 
     /**
      * asr客户端的名称，为便于后端查错，请设置一个易于辨识的appName
@@ -85,6 +97,30 @@ public class AsrConfig {
      */
     private String sslPath;
 
+    public String getProductId() {
+        if (!Strings.isNullOrEmpty(productId)) {
+            return productId;
+        }
+
+        if (product != null) {
+            return product.getCode();
+        }
+
+        throw new AsrClientException("Fail to fetch product id");
+    }
+
+    public int getProductSampleRate() {
+        if (productSampleRate <= 0) {
+            return productSampleRate;
+        }
+
+        if (product != null) {
+            return product.getSampleRate();
+        }
+
+        throw new AsrClientException("Fail to fetch product sample rate id");
+    }
+
     @Deprecated
     public AsrConfig serverIp(String serverIp) {
         this.serverIp = serverIp;
@@ -105,7 +141,8 @@ public class AsrConfig {
 
     @Deprecated
     public AsrConfig product(AsrProduct product) {
-        this.product = product;
+        this.productId = product.getCode();
+        this.productSampleRate = product.getSampleRate();
         return this;
     }
 

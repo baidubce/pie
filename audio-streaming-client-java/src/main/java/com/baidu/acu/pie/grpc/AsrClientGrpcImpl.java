@@ -96,7 +96,7 @@ public class AsrClientGrpcImpl implements AsrClient {
 
     @Override
     public int getFragmentSize(RequestMetaData requestMetaData) {
-        return (int) (asrConfig.getProduct().getSampleRate()
+        return (int) (asrConfig.getProductSampleRate()
                               * requestMetaData.getSendPackageRatio()
                               * requestMetaData.getSendPerSeconds()
                               * Constants.DEFAULT_BIT_DEPTH); // bit-depth
@@ -281,7 +281,7 @@ public class AsrClientGrpcImpl implements AsrClient {
                 .setEnableLongSpeech(true)
                 .setEnableChunk(true)
                 .setEnableFlushData(requestMetaData.isEnableFlushData())
-                .setProductId(asrConfig.getProduct().getCode())
+                .setProductId(asrConfig.getProductId())
                 .setSamplePointBytes(2)
                 .setSendPerSeconds(requestMetaData.getSendPerSeconds())
                 .setSleepRatio(requestMetaData.getSleepRatio())
