@@ -39,6 +39,7 @@ public class AsyncRecognizeWithStreamAndMetaData {
     private static String passWord = "1234567809";    // 密码, 请联系百度相关人员进行申请
     private static String audioPath = "16k.wav"; // 音频文件路径
     private static boolean enableFlushData = false;
+    private static Integer sleepRatio = 0;
     private static Logger logger = LoggerFactory.getLogger(AsyncRecognizeWithStream.class);
 
     public static void main(String[] args) {
@@ -59,6 +60,7 @@ public class AsyncRecognizeWithStreamAndMetaData {
         options.addOption("w", "password", true, "set password");
         options.addOption("e", "enable-flush-data", true, "set enable flush data，true or false");
         options.addOption("t", "audio-path", true, "set audio path");
+        options.addOption("r", "sleep-ratio", true, "set sleep ratio");
 
         HelpFormatter formatter = new HelpFormatter();
         CommandLineParser parser = new DefaultParser();
@@ -131,6 +133,13 @@ public class AsyncRecognizeWithStreamAndMetaData {
         if (cmd.hasOption("enable-flush-data")) {
             enableFlushData = Boolean.parseBoolean(cmd.getOptionValue("enable-flush-data"));
         }
+
+        if (cmd.hasOption('r')) {
+            sleepRatio = Integer.parseInt(cmd.getOptionValue("r"));
+        }
+        if (cmd.hasOption("sleep-ratio")) {
+            sleepRatio = Integer.parseInt(cmd.getOptionValue("sleep-ratio"));
+        }
     }
 
     private static AsrProduct getAsrProduct(String pid) {
@@ -162,7 +171,7 @@ public class AsyncRecognizeWithStreamAndMetaData {
 
         requestMetaData.setSendPerSeconds(0.02); // 指定每次发送的音频数据包大小，数值越大，识别越快，但准确率可能下降
         requestMetaData.setSendPackageRatio(1);  // 用来控制发包大小的倍率，一般不需要修改
-        requestMetaData.setSleepRatio(0);        // 指定asr服务的识别间隔，数值越小，识别越快，但准确率可能下降
+        requestMetaData.setSleepRatio(sleepRatio);        // 指定asr服务的识别间隔，数值越小，识别越快，但准确率可能下降
         requestMetaData.setTimeoutMinutes(120);  // 识别单个文件的最大等待时间，默认10分，最长不能超过120分
         requestMetaData.setEnableFlushData(enableFlushData);// 是否返回中间翻译结果
 
