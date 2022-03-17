@@ -20,8 +20,8 @@ group = "com.baidu.acu.pie"
 version = "1.1.11"
 
 tasks.withType<JavaCompile> {
-    sourceCompatibility = "1.7"
-    targetCompatibility = "1.7"
+    sourceCompatibility = "1.8"
+    targetCompatibility = "1.8"
 }
 
 repositories {
