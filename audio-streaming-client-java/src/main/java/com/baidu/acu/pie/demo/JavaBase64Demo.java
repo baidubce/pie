@@ -11,13 +11,12 @@ import com.baidu.acu.pie.model.AsrProduct;
 import com.baidu.acu.pie.model.RecognitionResult;
 import com.baidu.acu.pie.model.RequestMetaData;
 import com.baidu.acu.pie.model.StreamContext;
-import org.joda.time.DateTime;
-import sun.misc.BASE64Decoder;
-import sun.misc.BASE64Encoder;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Base64;
+import org.joda.time.DateTime;
+import sun.misc.BASE64Decoder;
 
 /**
  * JavaDemo
@@ -27,9 +26,9 @@ import java.nio.file.Paths;
 public class JavaBase64Demo {
     public static void main(String[] args) throws IOException {
         JavaBase64Demo javaDemo = new JavaBase64Demo();
-        BASE64Encoder e = new BASE64Encoder();
         byte[] bytes = Files.readAllBytes(Paths.get("testaudio/16k.wav"));
-        String encode = e.encode(bytes);
+        Base64.getEncoder().encode(bytes);
+        String encode = Base64.getEncoder().encodeToString(bytes);
         String result = javaDemo.syncRecognition(encode);
         System.out.println(result);
     }
