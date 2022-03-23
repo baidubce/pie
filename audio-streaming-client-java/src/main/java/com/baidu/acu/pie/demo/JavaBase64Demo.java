@@ -16,7 +16,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Base64;
 import org.joda.time.DateTime;
-import sun.misc.BASE64Decoder;
 
 /**
  * JavaDemo
@@ -89,8 +88,7 @@ public class JavaBase64Demo {
             }
         });
         int bufferLengthInBytes = asrClient.getFragmentSize();
-        BASE64Decoder d = new BASE64Decoder();
-        byte[] data = d.decodeBuffer(base64);
+        byte[] data = Base64.getDecoder().decode(base64);
         int remainSize = data.length;
         while (remainSize > 0 && !streamContext.getFinishLatch().finished()) {
             byte[] part = new byte[bufferLengthInBytes];
