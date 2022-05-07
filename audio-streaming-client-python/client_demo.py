@@ -22,7 +22,7 @@ def record_micro():
                        user_name=user_name,
                        password=password)
     NUM_SAMPLES = 2560  # pyaudio内置缓冲大小
-    SAMPLING_RATE = 8000  # 取样频率
+    SAMPLING_RATE = 16000  # 取样频率
     pa = PyAudio()
     stream = pa.open(format=paInt16, channels=1, rate=SAMPLING_RATE, input=True, frames_per_buffer=NUM_SAMPLES)
     # yield stream
