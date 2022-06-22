@@ -32,7 +32,7 @@ public class AsyncRecognizeWithStream {
     private static String appName = "hello";
     private static String ip = "asr.baiduai.cloud";          // asr服务的ip地址
     private static Integer port = 8051;     // asr服务的端口
-    private static AsrProduct pid = AsrProduct.CUSTOMER_SERVICE_FINANCE;     // asr模型编号(不同的模型在不同的场景下asr识别的最终结果可能会存在很大差异)
+    private static AsrProduct pid = AsrProduct.SPEECH_SERVICE;     // asr模型编号(不同的模型在不同的场景下asr识别的最终结果可能会存在很大差异)
     private static String userName = "your_username";    // 用户名, 请联系百度相关人员进行申请
     private static String passWord = "your_password";    // 密码, 请联系百度相关人员进行申请
     private static String audioPath = "/path/to/your/file/test.wav"; // 音频文件路径
