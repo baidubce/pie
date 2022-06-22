@@ -40,7 +40,7 @@ public class JavaMicrophoneDemo {
                 .serverIp("127.0.0.1")
                 .serverPort(8051)
                 .appName("simpleDemo")
-                .product(AsrProduct.FAR_FIELD)
+                .product(AsrProduct.SPEECH_SERVICE)
                 .userName("username")
                 .password("password")
 //                .sslUseFlag(true)
