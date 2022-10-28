@@ -60,6 +60,18 @@
             <artifactId>args4j</artifactId>
             <version>2.33</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.java-websocket</groupId>
+            <artifactId>Java-WebSocket</artifactId>
+            <version>1.5.3</version>
+        </dependency>
+
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>5.8.5</version>
+        </dependency>
     </dependencies>
 
 
@@ -72,7 +84,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.baidu.acu.asr.async.AsyncRecogniseWithMicrophone</mainClass>
+                            <mainClass>com.baidu.acu.asr.async.MyMicrophoneWebSocketClient</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>
