@@ -159,6 +159,8 @@ AsrStream* AsrClient::get_stream() {
     asr_stream->_stub = AsrService::NewStub(_channel);
     if (!asr_stream->_stub) {
         std::cerr << "[error] Fail to create stub in get_stream" << std::endl;
+        delete asr_stream;
+        asr_stream = NULL;
         return NULL;
     } else {
         std::cout << "[debug] Create stub success in get_stream" << std::endl;
@@ -170,6 +172,8 @@ AsrStream* AsrClient::get_stream() {
     asr_stream->_stream = asr_stream->_stub->send(&(asr_stream->_context));
     if (!asr_stream->_stream) {
         std::cerr << "[error] Fail to create stream in get_stream" << std::endl;
+        delete asr_stream;
+        asr_stream = NULL;
         return NULL;
     } else {
         std::cout << "[debug] Create stream success in get_stream" << std::endl;
