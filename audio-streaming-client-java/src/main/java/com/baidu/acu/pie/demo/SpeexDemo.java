@@ -25,8 +25,7 @@ import org.joda.time.DateTime;
 /**
  * SpeexDemo
  *
- * @author Xia Shuai(xiashuai01@baidu.com)
- * @literal create at 2022/3/17 7:31 PM
+ * @author  Xia Shuai(xiashuai01@baidu.com)
  */
 public class SpeexDemo {
     public static void main(String[] args) {
