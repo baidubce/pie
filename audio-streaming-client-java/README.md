@@ -9,29 +9,18 @@
 **使用方式**
 
 **gradle项目**
-
-添加 jcenter 到 repository 中，并添加依赖：
+添加依赖：
 
 ```
-repositories {
-    jcenter()
-}
 dependencies {
-	compile "com.baidu.acu.pie:audio-streaming-client-java:1.1.10"
+	compile "com.baidu.acu.pie:audio-streaming-client-java:1.1.12"
 }
 ```
 
 **maven项目**
-
-同样添加 jcenter 到 repository 中，并添加依赖：
+添加依赖：
 
 ```
-<repositories>
-    <repository>
-       <id>jcenter</id>
-       <url>https://jcenter.bintray.com</url>
-    </repository>
-</repositories>
 
 <dependencies>
 	<dependency>
@@ -46,21 +35,22 @@ dependencies {
 
 ## 快速开始
 ### 构建（会自动生成 grpc 代码）
-`./gradlew build`
+`mvn clean compile`
 
 ### 生成grpc代码
-`./gradlew generateProto`
 
-### 生成可直接导入的jar包
-`./gradlew clean shadowJar`
+`mvn protobuf:compile`
+
+`mvn protobuf:compile-custom`
+
 
 ## 如何贡献
 TODO
 
 ### 发布至bintray
-`./gradlew bintrayUpload -Puser=<username> -Pkey=<appkey>`
+`mvn clean deploy`
 
-请联系作者，获取 username 和 key
+请联系作者，获取发布配置
 
 ## 讨论
 TODO
