@@ -11,8 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 /**
  * JacksonUtil
  *
- * @Author Xia Shuai(xiashuai01@baidu.com)
- * @Create 2019/11/13 4:10 下午
+ * @author  Xia Shuai(xiashuai01@baidu.com)
  */
 @Slf4j
 public class JacksonUtil {

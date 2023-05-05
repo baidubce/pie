@@ -45,11 +45,11 @@ public class JavaDemo {
         // asrConfig构造后就不可修改
         // 当使用ssl client时，需要配置字段sslUseFlag以及sslPath
         return AsrConfig.builder()
-                .serverIp("127.0.0.1")
-                .serverPort(80)
+                .serverIp("172.18.53.16")
+                .serverPort(8051)
                 .appName("simpleDemo")
-                .product(AsrProduct.SPEECH_SERVICE)
-//                .product(new AsrProduct("1913", 16000))
+//                .product(AsrProduct.SPEECH_SERVICE)
+                .product(new AsrProduct("1912", 16000))
                 .userName("user")
                 .password("123")
 //                .sslUseFlag(true)

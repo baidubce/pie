@@ -29,7 +29,7 @@ public interface AsrClient {
      * 同步识别，输入一个音频文件的 inputstream，线程会进入等待，直到识别完毕，返回结果
      * 通常用于对实时性要求不高的场景，如离线语音分析
      *
-     * @param inputStream
+     * @param inputStream 输入流
      */
     List<RecognitionResult> syncRecognize(InputStream inputStream) throws AsrException;
 
@@ -38,6 +38,7 @@ public interface AsrClient {
      * 通常用于对实时性要求不高的场景，如离线语音分析
      *
      * @param file 音频文件本身
+     * @param requestMetaData 配置数据
      */
     List<RecognitionResult> syncRecognize(File file, RequestMetaData requestMetaData) throws AsrException;
 
@@ -45,7 +46,8 @@ public interface AsrClient {
      * 同步识别，输入一个音频文件的 inputstream，线程会进入等待，直到识别完毕，返回结果
      * 通常用于对实时性要求不高的场景，如离线语音分析
      *
-     * @param inputStream
+     * @param inputStream 输入流
+     * @param requestMetaData 配置数据
      */
     List<RecognitionResult> syncRecognize(InputStream inputStream, RequestMetaData requestMetaData) throws AsrException;
 
@@ -53,7 +55,8 @@ public interface AsrClient {
      * 同步识别，输入一个音频文件的 byte[]，线程会进入等待，直到识别完毕，返回结果
      * 通常用于对实时性要求不高的场景，如离线语音分析
      *
-     * @param data
+     * @param data 输入字节数据
+     * @param requestMetaData 配置数据
      */
     List<RecognitionResult> syncRecognize(byte[] data, RequestMetaData requestMetaData) throws AsrException;
 

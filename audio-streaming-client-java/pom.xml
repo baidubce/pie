@@ -2,9 +2,9 @@
 <project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>com.baidu.acu.pie</groupId>
+  <groupId>com.github.xiashuai-mr</groupId>
   <artifactId>audio-streaming-client-java</artifactId>
-  <version>1.1.12</version>
+  <version>1.1.12-SNATSHOTS</version>
 
   <name>voice-command-sdk-java</name>
   <description>audio streaming client for java 1.8</description>

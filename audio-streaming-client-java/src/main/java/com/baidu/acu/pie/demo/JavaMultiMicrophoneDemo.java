@@ -24,10 +24,9 @@ import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 
 /**
- * JavaMicrophoneDemo
+ * JavaMultiMicrophoneDemo
  *
- * @Author Xia Shuai(xiashuai01@baidu.com)
- * @Create 2021/1/18 6:48 下午
+ * @author  Xia Shuai(xiashuai01@baidu.com)
  */
 public class JavaMultiMicrophoneDemo {
     private TargetDataLine line;
@@ -160,6 +159,8 @@ public class JavaMultiMicrophoneDemo {
 
     /**
      * 识别麦克风音频流
+     *
+     * @param micInfo micinfo
      */
     public void asyncRecognitionWithMicrophone(final String micInfo) {
         AsrClient asrClient = createAsrClient();

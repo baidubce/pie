@@ -24,8 +24,7 @@ import java.util.Map;
 /**
  * JavaMicrophoneDemo
  *
- * @Author Xia Shuai(xiashuai01@baidu.com)
- * @Create 2021/1/18 6:48 下午
+ * @author  Xia Shuai(xiashuai01@baidu.com)
  */
 public class JavaMicrophoneDemo {
     public static void main(String[] args) {

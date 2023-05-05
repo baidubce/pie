@@ -13,7 +13,7 @@
 
 ```
 dependencies {
-	compile "com.baidu.acu.pie:audio-streaming-client-java:1.1.12"
+	compile "com.github.xiashuai-mr:audio-streaming-client-java:1.1.12-SNATSHOTS"
 }
 ```
 
@@ -24,9 +24,9 @@ dependencies {
 
 <dependencies>
 	<dependency>
-	  <groupId>com.baidu.acu.pie</groupId>
+	  <groupId>com.github.xiashuai-mr</groupId>
 	  <artifactId>audio-streaming-client-java</artifactId>
-	  <version>1.1.10</version>
+	 <version>1.1.12-SNATSHOTS</version>
 	</dependency>
 </dependencies>
 ```
