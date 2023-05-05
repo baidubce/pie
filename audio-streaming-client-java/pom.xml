@@ -50,7 +50,7 @@
     <okhttp.version>3.12.0</okhttp.version>
     <joda-time.version>2.10.1</joda-time.version>
     <netty.version>4.1.32.Final</netty.version>
-    <jackson.version>2.9.7</jackson.version>
+    <jackson.version>2.12.7.1</jackson.version>
     <slf4j.version>1.7.25</slf4j.version>
     <springboot.version>2.1.1.RELEASE</springboot.version>
   </properties>
