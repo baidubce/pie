@@ -25,7 +25,6 @@ import io.grpc.Context;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.Metadata;
-import io.grpc.internal.IoUtils;
 import io.grpc.netty.GrpcSslContexts;
 import io.grpc.netty.NegotiationType;
 import io.grpc.netty.NettyChannelBuilder;
@@ -33,7 +32,9 @@ import io.grpc.stub.MetadataUtils;
 import io.grpc.stub.StreamObserver;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.IOUtils;
 import org.joda.time.DateTime;
+import sun.nio.ch.IOUtil;
 
 import javax.net.ssl.SSLException;
 import java.io.File;
@@ -128,7 +129,7 @@ public class AsrClientGrpcImpl implements AsrClient {
     @Override
     public List<RecognitionResult> syncRecognize(InputStream inputStream, RequestMetaData requestMetaData) {
         try {
-            byte[] data = IoUtils.toByteArray(inputStream);
+            byte[] data = IOUtils.toByteArray(inputStream);
             return this.syncRecognize(data, requestMetaData);
         } catch (IOException e) {
             log.error("fail to read input stream", e);

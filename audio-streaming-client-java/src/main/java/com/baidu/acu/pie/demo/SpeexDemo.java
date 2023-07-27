@@ -11,8 +11,7 @@ import com.baidu.acu.pie.model.RequestMetaData;
 import com.baidu.acu.pie.model.StreamContext;
 import com.baidu.acu.pie.util.JacksonUtil;
 import com.google.common.io.ByteStreams;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
@@ -20,12 +19,15 @@ import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.joda.time.DateTime;
 
 /**
  * SpeexDemo
  *
- * @author  Xia Shuai(xiashuai01@baidu.com)
+ * @author Xia Shuai(xiashuai01@baidu.com)
  */
 public class SpeexDemo {
     public static void main(String[] args) {
