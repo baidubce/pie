@@ -88,7 +88,7 @@
         const FFT_SIZE = 2048;
 
         const INTERVAL = 20;
-        const WS_URL = 'ws://1.1.1.1:8000/api/v1/asr';
+        const WS_URL = 'ws://14.215.177.147/api/v1/asr/stream';
         const DEFAULT_PARAMS = JSON.stringify({
             "enableFlushData": true,
             "productId": "1912",
@@ -100,6 +100,7 @@
             "password": "yourPassword"
         });
 
+        let audioContent;
         let websocket;
         let output;
         let outputMessageArray = [];
@@ -176,8 +177,9 @@
         }
 
         function initAudio(stream) {
+            audioContent && audioContent.close();
             const AudioContext = (window.AudioContext || window.webkitAudioContext);
-            const audioContent = new AudioContext({
+            audioContent = new AudioContext({
                 // 由于AudioContext一旦创建采样率不能更改，在创建时设置采样率
                 sampleRate: SAMPLE_RATE
             });
