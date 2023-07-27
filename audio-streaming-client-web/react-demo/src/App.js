@@ -3,6 +3,7 @@
  * @author sunjiahao
  */
 
+import {useRef, useEffect} from 'react';
 import {encodedPcmBuffer, promiseOldBrowser} from './utils';
 
 import './App.css';
@@ -32,8 +33,14 @@ const DEFAULT_PARAMS = JSON.stringify({
 });
 
 function App() {
+    const audioContentRef = useRef(null);
     let websocket;
     const outputMessageArray = [];
+
+    // 组件卸载时（刷新/关闭浏览器）清理音频资源
+    useEffect(() => {
+        audioContentRef.current && audioContentRef.current.close();
+    }, []);
 
     if (navigator.mediaDevices === undefined) {
         navigator.mediaDevices = {};
@@ -112,11 +119,13 @@ function App() {
     }
 
     function initAudio(stream) {
+        audioContentRef.current && audioContentRef.current.close();
         const AudioContext = (window.AudioContext || window.webkitAudioContext);
         const audioContent = new AudioContext({
             // 由于AudioContext一旦创建采样率不能更改，在创建时设置采样率
             sampleRate: SAMPLE_RATE
         });
+        audioContentRef.current = audioContent;
         // 创建音频源
         const streamSource = audioContent.createMediaStreamSource(stream);
         // 创建脚本处理器，用于支持音频流采样设置及格式输出
