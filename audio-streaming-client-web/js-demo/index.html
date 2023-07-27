@@ -96,8 +96,8 @@
             "sendPerSeconds": INTERVAL / 1000,
             "sleepRatio": 0,
             "appName": "webproxy",
-            "userName": "yourUserName",
-            "password": "yourPassword"
+            "userName": "username",
+            "password": "password"
         });
 
         let audioContent;
@@ -230,6 +230,10 @@
         }
 
         window.addEventListener("load", init, false);
+        // 监听 beforeunload 事件，在刷新或关闭时关闭 AudioContext
+        window.addEventListener('beforeunload', (event) => {
+            audioContent && audioContent.close();
+        });
     </script>
 </head>
 
