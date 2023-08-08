@@ -5,7 +5,7 @@ package com.baidu.acu.pie.demo;
 import com.baidu.acu.pie.client.AsrClient;
 import com.baidu.acu.pie.client.AsrClientFactory;
 import com.baidu.acu.pie.client.Consumer;
-import com.baidu.acu.pie.exception.AsrException;
+import com.baidu.acu.pie.exception.GlobalException;
 import com.baidu.acu.pie.model.AsrConfig;
 import com.baidu.acu.pie.model.AsrProduct;
 import com.baidu.acu.pie.model.RecognitionResult;
@@ -45,13 +45,13 @@ public class JavaDemo {
         // asrConfig构造后就不可修改
         // 当使用ssl client时，需要配置字段sslUseFlag以及sslPath
         return AsrConfig.builder()
-                .serverIp("172.18.53.16")
+                .serverIp("bjyz-acu-audio-asr00.bjyz")
                 .serverPort(8051)
                 .appName("simpleDemo")
 //                .product(AsrProduct.SPEECH_SERVICE)
                 .product(new AsrProduct("1912", 16000))
-                .userName("user")
-                .password("123")
+                .userName("username")
+                .password("password")
 //                .sslUseFlag(true)
 //                .sslPath("ca.crt")
                 .build();
@@ -154,9 +154,9 @@ public class JavaDemo {
                                 " receive fragment: " + it);
             }
         }, requestMetaData);
-        streamContext.enableCallback(new Consumer<AsrException>() {
+        streamContext.enableCallback(new Consumer<GlobalException>() {
             @Override
-            public void accept(AsrException e) {
+            public void accept(GlobalException e) {
                 if (e != null) {
                     System.out.println(e);
                 }
@@ -208,9 +208,9 @@ public class JavaDemo {
             }
         }, requestMetaData);
 
-        streamContext.enableCallback(new Consumer<AsrException>() {
+        streamContext.enableCallback(new Consumer<GlobalException>() {
             @Override
-            public void accept(AsrException e) {
+            public void accept(GlobalException e) {
                 if (e != null) {
                     System.out.println(e);
                 }
