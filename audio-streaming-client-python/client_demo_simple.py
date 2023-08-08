@@ -52,7 +52,7 @@ if __name__ == '__main__':
     # product_id = "888"
     # sample_rate = 16000
     enable_flush_data = True
-    user_name = "rd"
-    password = "rd"
+    user_name = "username"
+    password = "password"
 
     run()
