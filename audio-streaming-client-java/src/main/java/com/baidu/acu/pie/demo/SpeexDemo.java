@@ -3,7 +3,7 @@ package com.baidu.acu.pie.demo;
 import com.baidu.acu.pie.client.AsrClient;
 import com.baidu.acu.pie.client.AsrClientFactory;
 import com.baidu.acu.pie.client.Consumer;
-import com.baidu.acu.pie.exception.AsrException;
+import com.baidu.acu.pie.exception.GlobalException;
 import com.baidu.acu.pie.model.AsrConfig;
 import com.baidu.acu.pie.model.AsrProduct;
 import com.baidu.acu.pie.model.RecognitionResult;
@@ -53,9 +53,9 @@ public class SpeexDemo {
             }
         }, requestMetaData);
 
-        streamContext.enableCallback(new Consumer<AsrException>() {
+        streamContext.enableCallback(new Consumer<GlobalException>() {
             @Override
-            public void accept(AsrException e) {
+            public void accept(GlobalException e) {
                 if (e != null) {
                     System.out.println(e);
                 }

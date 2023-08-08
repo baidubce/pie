@@ -117,7 +117,8 @@ public class MyMicrophoneWebSocketClient extends WebSocketClient {
     public static void main(String[] args) throws Exception {
 //        while (true){
         //号百
-        URI url1 = new URI("ws://117.83.109.234:8686/getAIService?token=IlPZngmXy8ZMUgxb8YQeIg83DroaMytfdO98Dq2UYv4OYPXm53wGQ0gtHlOPY3mY&app_id=486161c0-7e2a-4e52-92c0-735c04fb3784");
+        URI url1 = new URI("ws://117.83.109.234:8686/getAIService?token=IlPZngmXy8ZMUgxb8YQeIg83DroaMytfdO98Dq2UYv4OYPXm53wGQ0gtHlOPY3mY&app_id=486161c0-7e2a-4e52-92c0-735c04fb3784&area=01-320100");
+//        URI url1 = new URI("ws://117.83.109.234:8686/getAIService?token=IlPZngmXy8ZMUgxb8YQeIg83DroaMytfdO98Dq2UYv4OYPXm53wGQ0gtHlOPY3mY&app_id=486161c0-7e2a-4e52-92c0-735c04fb3784");
         URI url2 = new URI("ws://audio.189smarthome.com:8686/getAIService?token=IlPZngmXy8ZMUgxb8YQeIg83DroaMytfdO98Dq2UYv4OYPXm53wGQ0gtHlOPY3mY&app_id=486161c0-7e2a-4e52-92c0-735c04fb3784");
         //捷通
         URI url3 = new URI("ws://117.83.109.234:8686/getAIService?token=W3hlPUzphdnL7I1FepKDm/2dwJeG5DxWzlQ5vI5HfajHYeLeRDKwILt8nvjreles&app_id=486161c0-7e2a-4e52-92c0-735c04fb3774");
@@ -126,7 +127,7 @@ public class MyMicrophoneWebSocketClient extends WebSocketClient {
         URI url5 = new URI("ws://117.83.109.234:8686/getAIService?token=9v6WoqhU1PilLtVKujtxADjEx02i7SFGXCzQWPUlVw8Asx/Bq1PhfjRFAVf0dPEq&app_id=486161c0-7e2a-4e52-92c0-735c04fb3754");
         URI url6 = new URI("ws://audio.189smarthome.com:8686/getAIService?token=9v6WoqhU1PilLtVKujtxADjEx02i7SFGXCzQWPUlVw8Asx/Bq1PhfjRFAVf0dPEq&app_id=486161c0-7e2a-4e52-92c0-735c04fb3754");
         // 百度测试环境
-        MyMicrophoneWebSocketClient myClient = new MyMicrophoneWebSocketClient(url5);
+        MyMicrophoneWebSocketClient myClient = new MyMicrophoneWebSocketClient(url1);
         myClient.connect();
         while (!myClient.isOpen()) {
             System.out.println("还没有打开..." + myClient.getReadyState().toString());

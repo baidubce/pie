@@ -39,6 +39,7 @@ public class JacksonUtil {
      *
      * @param jsonStr   json字符串
      * @param valueType 反序列化类名称
+     * @param <T> 传入类型
      * @return 序列化结果
      * @throws IOException 序列化失败
      **/

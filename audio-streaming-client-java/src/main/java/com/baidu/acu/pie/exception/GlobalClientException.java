@@ -7,8 +7,8 @@ package com.baidu.acu.pie.exception;
  *
  * @author Cynric Shu (cynricshu@gmail.com)
  */
-public class AsrClientException extends RuntimeException {
-    public AsrClientException(String message) {
+public class GlobalClientException extends RuntimeException {
+    public GlobalClientException(String message) {
         super(message);
     }
 }

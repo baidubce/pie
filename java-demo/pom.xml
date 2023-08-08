@@ -84,7 +84,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.baidu.acu.asr.async.MyMicrophoneWebSocketClient</mainClass>
+                            <mainClass>com.baidu.acu.asr.async.AsyncRecogniseScript</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>

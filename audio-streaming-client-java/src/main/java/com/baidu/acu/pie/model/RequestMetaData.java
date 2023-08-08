@@ -1,6 +1,6 @@
 package com.baidu.acu.pie.model;
 
-import com.baidu.acu.pie.exception.AsrClientException;
+import com.baidu.acu.pie.exception.GlobalClientException;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -62,7 +62,7 @@ public class RequestMetaData {
 
     public void setTimeoutMinutes(int timeoutMinutes) {
         if (timeoutMinutes > 120) {
-            throw new AsrClientException("timeoutMinutes should not exceed 120");
+            throw new GlobalClientException("timeoutMinutes should not exceed 120");
         }
         this.timeoutMinutes = timeoutMinutes;
     }
@@ -94,7 +94,7 @@ public class RequestMetaData {
     @Deprecated
     public RequestMetaData timeoutMinutes(int timeoutMinutes) {
         if (timeoutMinutes > 120) {
-            throw new AsrClientException("timeoutMinutes should not exceed 120");
+            throw new GlobalClientException("timeoutMinutes should not exceed 120");
         }
         this.timeoutMinutes = timeoutMinutes;
         return this;

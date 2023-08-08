@@ -4,9 +4,9 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.github.xiashuai-mr</groupId>
   <artifactId>audio-streaming-client-java</artifactId>
-  <version>1.1.12-SNATSHOTS</version>
+  <version>1.2.0-SNATSHOTS</version>
 
-  <name>voice-command-sdk-java</name>
+  <name>audio-streaming-client-java</name>
   <description>audio streaming client for java 1.8</description>
   <url>https://github.com/xiashuai-mr/pie</url>
 
@@ -42,17 +42,17 @@
     <logback.version>1.2.3</logback.version>
     <junit.version>4.13.2</junit.version>
     <streaming.version>1.1.8</streaming.version>
-    <grpc.version>1.53.0</grpc.version>
+    <grpc.version>1.55.3</grpc.version>
     <httpasyncclient.version>4.1.4</httpasyncclient.version>
     <websocket.version>1.1</websocket.version>
     <tyrus.version>1.17</tyrus.version>
     <protobuf.version>3.16.3</protobuf.version>
-    <okhttp.version>3.12.0</okhttp.version>
+    <okhttp.version>4.8.1</okhttp.version>
     <joda-time.version>2.10.1</joda-time.version>
-    <netty.version>4.1.42.Final</netty.version>
+    <netty.version>4.1.92.Final</netty.version>
     <jackson.version>2.13.5</jackson.version>
     <slf4j.version>1.7.25</slf4j.version>
-    <springboot.version>2.1.1.RELEASE</springboot.version>
+    <springboot.version>2.7.10</springboot.version>
   </properties>
 
 
@@ -161,6 +161,18 @@
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
       <version>2.8.0</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.googlecode.soundlibs</groupId>
+      <artifactId>mp3spi</artifactId>
+      <version>1.9.5.4</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.jflac</groupId>
+      <artifactId>jflac-codec</artifactId>
+      <version>1.5.2</version>
     </dependency>
 
   </dependencies>

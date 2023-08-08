@@ -9,8 +9,8 @@ import com.baidu.acu.pie.AudioStreaming.AudioFragmentRequest;
 import com.baidu.acu.pie.AudioStreaming.AudioFragmentResponse;
 import com.baidu.acu.pie.client.AsrClient;
 import com.baidu.acu.pie.client.Consumer;
-import com.baidu.acu.pie.exception.AsrClientException;
-import com.baidu.acu.pie.exception.AsrException;
+import com.baidu.acu.pie.exception.GlobalClientException;
+import com.baidu.acu.pie.exception.GlobalException;
 import com.baidu.acu.pie.model.AsrConfig;
 import com.baidu.acu.pie.model.ChannelConfig;
 import com.baidu.acu.pie.model.Constants;
@@ -34,7 +34,6 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.joda.time.DateTime;
-import sun.nio.ch.IOUtil;
 
 import javax.net.ssl.SSLException;
 import java.io.File;
@@ -117,7 +116,7 @@ public class AsrClientGrpcImpl implements AsrClient {
             return this.syncRecognize(data, requestMetaData);
         } catch (IOException e) {
             log.error("fail to read file", e);
-            throw new AsrClientException("fail to read file");
+            throw new GlobalClientException("fail to read file");
         }
     }
 
@@ -133,7 +132,7 @@ public class AsrClientGrpcImpl implements AsrClient {
             return this.syncRecognize(data, requestMetaData);
         } catch (IOException e) {
             log.error("fail to read input stream", e);
-            throw new AsrClientException("fail to read input stream");
+            throw new GlobalClientException("fail to read input stream");
         }
     }
 
@@ -170,7 +169,7 @@ public class AsrClientGrpcImpl implements AsrClient {
                         } else {
                             sendFinishLatch.countDown();
                         }
-                    } catch (AsrException e) {
+                    } catch (GlobalException e) {
                         log.error("Recognition request error", e);
                         sendFinishLatch.countDown();
                     }
@@ -216,7 +215,7 @@ public class AsrClientGrpcImpl implements AsrClient {
                             resultConsumer.accept(fromAudioFragmentResponse(
                                     response.getErrorMessage(), response.getAudioFragment()));
                         } else {
-                            finishLatch.fail(new AsrException(
+                            finishLatch.fail(new GlobalException(
                                     response.getTraceId(),
                                     response.getErrorCode(),
                                     response.getErrorMessage()));
@@ -226,7 +225,7 @@ public class AsrClientGrpcImpl implements AsrClient {
                     @Override
                     public void onError(Throwable t) {
                         // TODO: 2019-04-28 错误码需要规范一下
-                        finishLatch.fail(new AsrException(-2000, "error in grpc response observer", t));
+                        finishLatch.fail(new GlobalException(-2000, "error in grpc response observer", t));
                     }
 
                     @Override
@@ -270,7 +269,7 @@ public class AsrClientGrpcImpl implements AsrClient {
                             .trustManager(new File(asrConfig.getSslPath())).build())
                     .build();
         } catch (SSLException e) {
-            throw new AsrClientException("build ssl client failed");
+            throw new GlobalClientException("build ssl client failed");
         }
     }
 
@@ -285,7 +284,7 @@ public class AsrClientGrpcImpl implements AsrClient {
         } else {
             // 如果传入了 token，必须同时传入相应的 expireDateTime
             if (asrConfig.getExpireDateTime() == null) {
-                throw new AsrClientException("Neither `token` nor `expireDateTime` should be Null");
+                throw new GlobalClientException("Neither `token` nor `expireDateTime` should be Null");
             } else {
                 expireDateTime = DateTimeParser.toUTCString(asrConfig.getExpireDateTime());
             }

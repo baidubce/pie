@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+package com.baidu.acu.pie;
+
+import "audio_streaming.proto";
+
+message TtsFragmentRequest {
+    uint32 sequence_num = 1;
+    uint64 send_timestamp = 2;
+
+    string lan = 3;
+    uint32 pdt = 4;
+    uint32 ctp = 5;
+    string cuid = 6;
+    uint32 spd = 7;
+    uint32 pit = 8;
+    uint32 vol = 9;
+    uint32 aue = 10;
+    uint32 per = 11;
+    string tex = 12;
+    uint32 xml = 13;
+    string sk = 14;
+
+    map<string, string> extra_params = 20;
+}
+
+
+message TtsFragmentResult {
+    uint32 sequence_num = 1;
+    uint64 send_timestamp = 2;
+    bytes audio_data = 3;
+    uint32 length = 4;
+    bool is_end = 5;
+    string sn = 6;
+}
+
+message TtsFragmentResponse {
+    int32 error_code = 1;
+    string error_message = 2;
+    ResponseType type = 3;
+    TtsFragmentResult audio_fragment = 4;
+    string trace_id = 5;
+}
+
+service TtsService {
+    rpc getAudio (TtsFragmentRequest) returns (stream TtsFragmentResponse);
+}

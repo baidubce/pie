@@ -7,12 +7,6 @@ import com.baidu.acu.pie.model.AsrConfig;
 import com.baidu.acu.pie.model.AsrProduct;
 import com.baidu.acu.pie.model.RequestMetaData;
 import com.baidu.acu.pie.model.StreamContext;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicReference;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
@@ -21,6 +15,13 @@ import org.apache.commons.cli.Options;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * 异步识别: 会准实时返回每个句子的结果.输入一个语音流以及自定义RequestMetaData对象,用来控制请求时候的数据发送速度等参数
@@ -38,7 +39,7 @@ public class AsyncRecognizeWithStreamAndMetaData {
     private static String userName = "admin";    // 用户名, 请联系百度相关人员进行申请
     private static String passWord = "1234567809";    // 密码, 请联系百度相关人员进行申请
     private static String audioPath = "testaudio/xeq16k.wav"; // 音频文件路径
-    private static boolean enableFlushData = false;
+    private static boolean enableFlushData = true;
     private static Integer sleepRatio = 0;
     private static Logger logger = LoggerFactory.getLogger(AsyncRecognizeWithStream.class);
 
@@ -210,7 +211,7 @@ public class AsyncRecognizeWithStreamAndMetaData {
                     // 判断音频有没有发送和处理完成
                     if (audioStream.read(data) != -1 && !streamContext.getFinishLatch().finished()) {
                         // 发送音频数据包
-                        streamContext.send(data);
+                         streamContext.send(data);
                     } else {
                         // 音频处理完成，置0标记，结束所有线程任务
                         sendFinish.countDown();

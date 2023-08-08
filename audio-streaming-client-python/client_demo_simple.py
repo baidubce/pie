@@ -19,7 +19,7 @@ def run():
                            user_name=user_name,
                            password=password)
 
-        responses = client.get_result("testaudio/xeq16k.wav")
+        responses = client.get_result("testaudio/1021368215_5070094946_455.wav")
         try:
             for response in responses:
                 if response.type == baidu_acu_asr.audio_streaming_pb2.FRAGMENT_DATA:
@@ -41,16 +41,18 @@ def run():
 
 
 if __name__ == '__main__':
+
+
     logging.basicConfig(filename="asr_result.log")
     log_level = 0
 
-    url = "127.0.0.1"
-    port = "8050"
+    url = "bjyz-acu-audio-asr00.bjyz.baidu.com"
+    port = "8051"
     product = AsrProduct.INPUT_METHOD
     # product_id = "888"
     # sample_rate = 16000
     enable_flush_data = True
-    user_name = "abc"
-    password = "123"
+    user_name = "rd"
+    password = "rd"
 
     run()
