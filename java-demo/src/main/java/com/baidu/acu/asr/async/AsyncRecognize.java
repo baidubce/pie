@@ -3,7 +3,7 @@ package com.baidu.acu.asr.async;
 import com.baidu.acu.pie.client.AsrClient;
 import com.baidu.acu.pie.client.AsrClientFactory;
 import com.baidu.acu.pie.client.Consumer;
-import com.baidu.acu.pie.exception.AsrException;
+import com.baidu.acu.pie.exception.GlobalException;
 import com.baidu.acu.pie.model.AsrConfig;
 import com.baidu.acu.pie.model.AsrProduct;
 import com.baidu.acu.pie.model.RecognitionResult;
@@ -60,8 +60,8 @@ public class AsyncRecognize {
             }
         });
         // 异常回调
-        streamContext.enableCallback(new Consumer<AsrException>() {
-            public void accept(AsrException e) {
+        streamContext.enableCallback(new Consumer<GlobalException>() {
+            public void accept(GlobalException e) {
                 if (e != null) {
                     logger.error("Exception recognition for asr ： " , e);
                 }
@@ -81,7 +81,7 @@ public class AsyncRecognize {
                     // 在对接麦克风等设备的时候，可以去掉这个 sleep
                     Thread.sleep(20);
                 }
-            } catch (AsrException e) {
+            } catch (GlobalException e) {
                 e.printStackTrace();
             }
             streamContext.complete();

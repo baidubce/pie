@@ -42,11 +42,7 @@ public class Args {
     }
 
     public static AsrProduct parseProduct(String pid) {
-            for (AsrProduct asrProduct : AsrProduct.values()) {
-                if (asrProduct.getCode().equals(pid)) {
-                    return asrProduct;
-                }
-            }
-            return null;
+
+        return new AsrProduct(pid, 16000);
     }
 }

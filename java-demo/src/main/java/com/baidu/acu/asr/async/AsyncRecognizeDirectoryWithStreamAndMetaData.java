@@ -6,6 +6,14 @@ import com.baidu.acu.pie.model.AsrConfig;
 import com.baidu.acu.pie.model.AsrProduct;
 import com.baidu.acu.pie.model.RecognitionResult;
 import com.baidu.acu.pie.model.RequestMetaData;
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.Options;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -14,13 +22,6 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.CommandLineParser;
-import org.apache.commons.cli.DefaultParser;
-import org.apache.commons.cli.HelpFormatter;
-import org.apache.commons.cli.Options;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * 识别文件夹内的所有wav和pcm音频数据
@@ -151,12 +152,8 @@ public class AsyncRecognizeDirectoryWithStreamAndMetaData {
     }
 
     private static AsrProduct getAsrProduct(String pid) {
-        for (AsrProduct asrProduct : AsrProduct.values()) {
-            if (asrProduct.getCode().equals(pid)) {
-                return asrProduct;
-            }
-        }
-        return null;
+
+        return new AsrProduct(pid, 16000);
     }
 
     private static AsrClient createAsrClient() {

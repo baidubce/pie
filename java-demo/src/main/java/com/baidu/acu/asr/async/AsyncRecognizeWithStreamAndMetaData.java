@@ -2,7 +2,7 @@ package com.baidu.acu.asr.async;
 
 import com.baidu.acu.pie.client.AsrClient;
 import com.baidu.acu.pie.client.AsrClientFactory;
-import com.baidu.acu.pie.exception.AsrException;
+import com.baidu.acu.pie.exception.GlobalException;
 import com.baidu.acu.pie.model.AsrConfig;
 import com.baidu.acu.pie.model.AsrProduct;
 import com.baidu.acu.pie.model.RequestMetaData;
@@ -144,12 +144,7 @@ public class AsyncRecognizeWithStreamAndMetaData {
     }
 
     private static AsrProduct getAsrProduct(String pid) {
-        for (AsrProduct asrProduct : AsrProduct.values()) {
-            if (asrProduct.getCode().equals(pid)) {
-                return asrProduct;
-            }
-        }
-        return null;
+        return new AsrProduct(pid, 16000);
     }
 
     private static AsrClient createAsrClient() {
@@ -216,7 +211,7 @@ public class AsyncRecognizeWithStreamAndMetaData {
                         // 音频处理完成，置0标记，结束所有线程任务
                         sendFinish.countDown();
                     }
-                } catch (AsrException | IOException e) {
+                } catch (GlobalException | IOException e) {
                     e.printStackTrace();
                     // 异常时，置0标记，结束所有线程任务
                     sendFinish.countDown();

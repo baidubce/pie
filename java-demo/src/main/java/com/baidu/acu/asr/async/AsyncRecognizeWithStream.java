@@ -1,24 +1,23 @@
 package com.baidu.acu.asr.async;
 
+import com.baidu.acu.pie.client.AsrClient;
+import com.baidu.acu.pie.client.AsrClientFactory;
+import com.baidu.acu.pie.client.Consumer;
+import com.baidu.acu.pie.exception.GlobalException;
+import com.baidu.acu.pie.model.AsrConfig;
+import com.baidu.acu.pie.model.AsrProduct;
+import com.baidu.acu.pie.model.RecognitionResult;
+import com.baidu.acu.pie.model.StreamContext;
+import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
-
-import org.joda.time.DateTime;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.baidu.acu.pie.client.AsrClient;
-import com.baidu.acu.pie.client.AsrClientFactory;
-import com.baidu.acu.pie.client.Consumer;
-import com.baidu.acu.pie.exception.AsrException;
-import com.baidu.acu.pie.model.AsrConfig;
-import com.baidu.acu.pie.model.AsrProduct;
-import com.baidu.acu.pie.model.RecognitionResult;
-import com.baidu.acu.pie.model.StreamContext;
 
 /**
  * 异步识别: 输入一个语音流,会实时返回每一句话识别的结果（等待所有音频识别完成才结束）
@@ -68,8 +67,8 @@ public class AsyncRecognizeWithStream {
             }
         });
         // 异常回调
-        streamContext.enableCallback(new Consumer<AsrException>() {
-            public void accept(AsrException e) {
+        streamContext.enableCallback(new Consumer<GlobalException>() {
+            public void accept(GlobalException e) {
                 logger.error("Exception recognition for asr ：", e);
             }
         });
@@ -100,7 +99,7 @@ public class AsyncRecognizeWithStream {
                             // 音频处理完成，置0标记，结束所有线程任务
                             sendFinish.countDown();
                         }
-                    } catch (AsrException | IOException e) {
+                    } catch (GlobalException | IOException e) {
                         e.printStackTrace();
                         // 异常时，置0标记，结束所有线程任务
                         sendFinish.countDown();

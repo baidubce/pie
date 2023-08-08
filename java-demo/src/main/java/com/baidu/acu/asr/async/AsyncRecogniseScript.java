@@ -3,13 +3,24 @@ package com.baidu.acu.asr.async;
 import com.baidu.acu.pie.client.AsrClient;
 import com.baidu.acu.pie.client.AsrClientFactory;
 import com.baidu.acu.pie.client.Consumer;
-import com.baidu.acu.pie.exception.AsrException;
+import com.baidu.acu.pie.exception.GlobalException;
 import com.baidu.acu.pie.model.AsrConfig;
 import com.baidu.acu.pie.model.AsrProduct;
 import com.baidu.acu.pie.model.RecognitionResult;
 import com.baidu.acu.pie.model.RequestMetaData;
 import com.baidu.acu.pie.model.StreamContext;
 import com.baidu.acu.pie.util.JacksonUtil;
+import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
+import org.joda.time.DateTime;
+import org.kohsuke.args4j.CmdLineParser;
+import org.kohsuke.args4j.Option;
+import org.kohsuke.args4j.spi.BooleanOptionHandler;
+
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.DataLine;
+import javax.sound.sampled.TargetDataLine;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -22,16 +33,6 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
-import javax.sound.sampled.AudioFormat;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.DataLine;
-import javax.sound.sampled.TargetDataLine;
-import lombok.Data;
-import lombok.extern.slf4j.Slf4j;
-import org.joda.time.DateTime;
-import org.kohsuke.args4j.CmdLineParser;
-import org.kohsuke.args4j.Option;
-import org.kohsuke.args4j.spi.BooleanOptionHandler;
 
 /**
  * AsyncRecogniseScript created at 2023/2/13 15:53
@@ -190,8 +191,8 @@ public class AsyncRecogniseScript {
             }
         }, createRequestMeta());
         // 异常回调
-        streamContext.enableCallback(new Consumer<AsrException>() {
-            public void accept(AsrException e) {
+        streamContext.enableCallback(new Consumer<GlobalException>() {
+            public void accept(GlobalException e) {
                 log.error("Exception recognition for asr ：", e);
             }
         });
@@ -222,7 +223,7 @@ public class AsyncRecogniseScript {
                             // 音频处理完成，置0标记，结束所有线程任务
                             sendFinish.countDown();
                         }
-                    } catch (AsrException | IOException e) {
+                    } catch (GlobalException | IOException e) {
                         e.printStackTrace();
                         // 异常时，置0标记，结束所有线程任务
                         sendFinish.countDown();
@@ -285,12 +286,7 @@ public class AsyncRecogniseScript {
         }
 
         public static AsrProduct parseProduct(String pid) {
-            for (AsrProduct asrProduct : AsrProduct.values()) {
-                if (asrProduct.getCode().equals(pid)) {
-                    return asrProduct;
-                }
-            }
-            return null;
+            return new AsrProduct(pid, 16000);
         }
     }
 }
