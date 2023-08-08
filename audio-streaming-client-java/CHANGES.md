@@ -1,3 +1,7 @@
+# 1.2.0
+## feature
+- 添加TTS流式识别SDK
+
 # 1.1.8
 ## improvement
 - 优化了 AsrException 及其相关处理逻辑，在 AsrException 中加入 traceId 字段。
