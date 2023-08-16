@@ -30,13 +30,16 @@
     
         
 #### 打包方式
-```jshelllanguage
-mvn package assembly:single 
+```shell
+# 使用shade插件，新版本使用此插件
+mvn clean package
+# 使用assembly插件
+mvn clean package assembly:single 
 ``` 
 
 #### 运行方式
 类似如下，可以通过
-```shell script
-java -jar java-demo-1.0-SNAPSHOT-jar-with-dependencies.jar --ip=127.0.0.1 --port=8050 --pid=888 --username=admin --password=admin --audio-path=16k.wav --enable-flush-data=false
+```shell
+java -jar java-demo-1.2.1-SNAPSHOT-shaded.jar --ip=127.0.0.1 --port=8050 --pid=888 --username=admin --password=admin --audio-path=16k.wav --enable-flush-data=false
 # java -jar java-demo-1.0-SNAPSHOT-jar-with-dependencies.jar -h 查看帮助
 ```
