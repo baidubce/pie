@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.github.xiashuai-mr</groupId>
   <artifactId>audio-streaming-client-java</artifactId>
-  <version>1.2.2-SNATSHOTS</version>
+  <version>1.2.2.2-SNATSHOTS</version>
 
   <name>audio-streaming-client-java</name>
   <description>audio streaming client for java 1.8</description>
@@ -37,7 +37,8 @@
   <properties>
     <maven.compiler.source>11</maven.compiler.source>
     <maven.compiler.target>11</maven.compiler.target>
-    <lombok.version>1.18.18</lombok.version>
+
+    <lombok.version>1.18.26</lombok.version>
     <retrofit.version>2.5.0</retrofit.version>
     <logback.version>1.2.3</logback.version>
     <junit.version>4.13.2</junit.version>
@@ -49,9 +50,10 @@
     <protobuf.version>3.22.5</protobuf.version>
     <okhttp.version>4.8.1</okhttp.version>
     <joda-time.version>2.10.1</joda-time.version>
-    <netty.version>4.1.92.Final</netty.version>
+    <netty.version>4.1.96.Final</netty.version>
     <jackson.version>2.13.5</jackson.version>
     <slf4j.version>1.7.25</slf4j.version>
+    <logback.version>1.4.8</logback.version>
   </properties>
 
 
@@ -127,15 +129,20 @@
       <artifactId>jackson-annotations</artifactId>
       <version>${jackson.version}</version>
     </dependency>
-    <dependency>
+    <!--<dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
       <version>${slf4j.version}</version>
+    </dependency>-->
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>${logback.version}</version>
     </dependency>
     <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-simple</artifactId>
-      <version>${slf4j.version}</version>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>${logback.version}</version>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
