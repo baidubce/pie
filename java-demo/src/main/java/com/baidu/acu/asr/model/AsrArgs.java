@@ -13,7 +13,7 @@ import org.kohsuke.args4j.spi.BooleanOptionHandler;
  * @Create 2021/3/3 2:41 下午
  */
 @Data
-public class Args {
+public class AsrArgs {
     @Option(name = "-ip", required = true, usage = "asr server ip")
     private String ip = "127.0.0.1";
     @Option(name = "-port", usage = "asr server port")
@@ -29,16 +29,16 @@ public class Args {
     @Option(name = "-audio-path", usage = "audio save path")
     private String audioPath = "";
 
-    public static Args parse(String[] args) {
-        Args iArgs = new Args();
-        CmdLineParser parser = new CmdLineParser(iArgs);
+    public static AsrArgs parse(String[] args) {
+        AsrArgs iAsrArgs = new AsrArgs();
+        CmdLineParser parser = new CmdLineParser(iAsrArgs);
         try {
             parser.parseArgument(args);
         } catch (Exception e) {
             System.err.println(e.getMessage());
             System.exit(-1);
         }
-        return iArgs;
+        return iAsrArgs;
     }
 
     public static AsrProduct parseProduct(String pid) {

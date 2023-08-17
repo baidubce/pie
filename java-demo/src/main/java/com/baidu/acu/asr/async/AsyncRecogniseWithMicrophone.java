@@ -1,6 +1,6 @@
 package com.baidu.acu.asr.async;
 
-import com.baidu.acu.asr.model.Args;
+import com.baidu.acu.asr.model.AsrArgs;
 import com.baidu.acu.pie.client.AsrClient;
 import com.baidu.acu.pie.client.AsrClientFactory;
 import com.baidu.acu.pie.model.AsrConfig;
@@ -30,7 +30,7 @@ import java.util.UUID;
  * @literal create at 2021/3/3 2:32 下午
  */
 public class AsyncRecogniseWithMicrophone {
-    private static Args args;
+    private static AsrArgs asrArgs;
 
     private static String appName = "microphone";     // 根据自己需求命名
 
@@ -39,7 +39,7 @@ public class AsyncRecogniseWithMicrophone {
         // java -jar java-demo-1.0-SNAPSHOT-jar-with-dependencies.jar -ip 127.0.0.1 -port 8051 -pid 1912 -username username -password password -enable-flush-data
         // 不带中间结果
         // java -jar java-demo-1.0-SNAPSHOT-jar-with-dependencies.jar -ip 127.0.0.1 -port 8051 -pid 1912 -username username -password password
-        AsyncRecogniseWithMicrophone.args = Args.parse(args);
+        AsyncRecogniseWithMicrophone.asrArgs = AsrArgs.parse(args);
         asyncRecognitionWithMicrophone();
     }
 
@@ -54,11 +54,11 @@ public class AsyncRecogniseWithMicrophone {
         // 当使用ssl client时，需要配置字段sslUseFlag以及sslPath
         return AsrConfig.builder()
                 .appName(appName)
-                .serverIp(args.getIp())
-                .serverPort(args.getPort())
-                .product(Args.parseProduct(args.getProductId()))
-                .userName(args.getUsername())
-                .password(args.getPassword())
+                .serverIp(asrArgs.getIp())
+                .serverPort(asrArgs.getPort())
+                .product(AsrArgs.parseProduct(asrArgs.getProductId()))
+                .userName(asrArgs.getUsername())
+                .password(asrArgs.getPassword())
                 .build();
     }
 
@@ -67,10 +67,11 @@ public class AsyncRecogniseWithMicrophone {
         requestMetaData.setSendPackageRatio(1);
         requestMetaData.setSleepRatio(0);
         requestMetaData.setTimeoutMinutes(120);
-        requestMetaData.setEnableFlushData(args.getEnableFlushData());
+        requestMetaData.setEnableFlushData(asrArgs.getEnableFlushData());
         // 随路信息根据需要设置
         Map<String, Object> extra_info = new HashMap<>();
         extra_info.put("demo", "java");
+        extra_info.put("scene", "1234");
         requestMetaData.setExtraInfo(JacksonUtil.objectToString(extra_info));
 
         return requestMetaData;
@@ -117,8 +118,8 @@ public class AsyncRecogniseWithMicrophone {
 
         FileOutputStream fop = null;
         try {
-            if (!args.getAudioPath().equals("")) {
-                File file = Paths.get(args.getAudioPath(), generateAudioName()).toFile();
+            if (!asrArgs.getAudioPath().equals("")) {
+                File file = Paths.get(asrArgs.getAudioPath(), generateAudioName()).toFile();
                 if (file.exists() || file.createNewFile()) {
                     fop = new FileOutputStream(file);
                 }

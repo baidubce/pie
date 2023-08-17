@@ -1,5 +1,6 @@
 package com.baidu.acu.asr.async;
 
+import com.baidu.acu.asr.model.AsrArgs;
 import com.baidu.acu.pie.client.AsrClient;
 import com.baidu.acu.pie.client.AsrClientFactory;
 import com.baidu.acu.pie.client.Consumer;
@@ -70,7 +71,7 @@ public class AsyncRecogniseScript {
                 .appName(args.getAppName())
                 .serverIp(args.getIp())
                 .serverPort(args.getPort())
-                .product(com.baidu.acu.asr.model.Args.parseProduct(args.getProductId()))
+                .product(AsrArgs.parseProduct(args.getProductId()))
                 .userName(args.getUsername())
                 .password(args.getPassword())
                 .build();

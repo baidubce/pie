@@ -1,6 +1,6 @@
 package com.baidu.acu.asr.async;
 
-import com.baidu.acu.asr.model.Args;
+import com.baidu.acu.asr.model.AsrArgs;
 import com.baidu.acu.pie.client.AsrClient;
 import com.baidu.acu.pie.client.AsrClientFactory;
 import com.baidu.acu.pie.model.AsrConfig;
@@ -32,12 +32,12 @@ import java.util.UUID;
  * @literal create at 2021/3/3 2:32 下午
  */
 public class AsyncRecogniseWithMultiMicrophone {
-    private static Args args;
+    private static AsrArgs asrArgs;
 
     private static String appName = "multiMicrophone";     // 根据自己需求命名
 
     public static void main(String[] args) {
-        AsyncRecogniseWithMultiMicrophone.args = Args.parse(args);
+        AsyncRecogniseWithMultiMicrophone.asrArgs = AsrArgs.parse(args);
         List<Mixer.Info> MixerInfoList = readMicrophoneDevice();
         // 默认的麦克风忽略
         boolean removeDefault = true;
@@ -63,11 +63,11 @@ public class AsyncRecogniseWithMultiMicrophone {
         // 当使用ssl client时，需要配置字段sslUseFlag以及sslPath
         return AsrConfig.builder()
                 .appName(appName)
-                .serverIp(args.getIp())
-                .serverPort(args.getPort())
-                .product(Args.parseProduct(args.getProductId()))
-                .userName(args.getUsername())
-                .password(args.getPassword())
+                .serverIp(asrArgs.getIp())
+                .serverPort(asrArgs.getPort())
+                .product(AsrArgs.parseProduct(asrArgs.getProductId()))
+                .userName(asrArgs.getUsername())
+                .password(asrArgs.getPassword())
                 .build();
     }
 
@@ -141,8 +141,8 @@ public class AsyncRecogniseWithMultiMicrophone {
 
         FileOutputStream fop = null;
         try {
-            if (!args.getAudioPath().equals("")) {
-                File file = Paths.get(args.getAudioPath(), generateAudioName(mixerInfo.getName())).toFile();
+            if (!asrArgs.getAudioPath().equals("")) {
+                File file = Paths.get(asrArgs.getAudioPath(), generateAudioName(mixerInfo.getName())).toFile();
                 if (file.exists() || file.createNewFile()) {
                     fop = new FileOutputStream(file);
                 }
