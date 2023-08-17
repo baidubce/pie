@@ -202,7 +202,7 @@
           <pluginId>grpc-java</pluginId>
           <protoSourceRoot>${project.basedir}/src/main/proto</protoSourceRoot>
           <protocArtifact>com.google.protobuf:protoc:${protobuf.version}:exe:${os.detected.classifier}</protocArtifact>
-          <pluginArtifact>io.grpc:protoc-gen-grpc-java:1.29.0:exe:${os.detected.classifier}</pluginArtifact>
+          <pluginArtifact>io.grpc:protoc-gen-grpc-java:1.56.0:exe:${os.detected.classifier}</pluginArtifact>
           <!--<pluginArtifact>io.grpc:protoc-gen-grpc-java:1.17.1:exe:osx-x84_64</pluginArtifact>-->
         </configuration>
         <executions>
