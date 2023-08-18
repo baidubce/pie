@@ -45,7 +45,7 @@ public class JavaDemo {
         // asrConfig构造后就不可修改
         // 当使用ssl client时，需要配置字段sslUseFlag以及sslPath
         return AsrConfig.builder()
-                .serverIp("bjyz-acu-audio-asr00.bjyz")
+                .serverIp("127.0.0.1")
                 .serverPort(8051)
                 .appName("simpleDemo")
 //                .product(AsrProduct.SPEECH_SERVICE)

@@ -46,7 +46,7 @@ if __name__ == '__main__':
     logging.basicConfig(filename="asr_result.log")
     log_level = 0
 
-    url = "bjyz-acu-audio-asr00.bjyz.baidu.com"
+    url = "127.0.0.1"
     port = "8051"
     product = AsrProduct.INPUT_METHOD
     # product_id = "888"
