@@ -43,7 +43,7 @@ func generateInitRequest() protogen.InitRequest {
 }
 
 func main() {
-	// go run main.go --server_addr www.example-asr.com:8051 --username username --password password --audio_file /path/of/audio.wav --ssl-path ca/server.crt
+	// go run main.go --server_addr www.example-asr.com:8051 --username username --password password --audio_file /path/of/audio.wav --ssl_path ca/server.crt
 	flag.Parse()
 	runType := strings.ToLower(flagUtil.RunType)
 
