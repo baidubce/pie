@@ -2,22 +2,57 @@ package client
 
 import (
 	"context"
+	"crypto/tls"
+	"crypto/x509"
 	b64 "encoding/base64"
+	"io"
+	"io/ioutil"
+	"log"
+	"os"
+	"strings"
+	"time"
+
 	flagUtil "github.com/baidubce/pie/audio-streaming-client-go/flag"
 	"github.com/baidubce/pie/audio-streaming-client-go/protogen"
 	"github.com/baidubce/pie/audio-streaming-client-go/util"
 	"github.com/golang/protobuf/proto"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials"
 	"google.golang.org/grpc/metadata"
-	"io"
-	"log"
-	"os"
-	"time"
 )
 
 // 处理音频文件音频流
 func ReadFile(headers protogen.InitRequest) {
-	conn, err := grpc.Dial(flagUtil.ServerAddr, grpc.WithInsecure(), grpc.WithBlock())
+	opts := []grpc.DialOption{}
+	// add https certificate
+	if len(flagUtil.SSLPath) > 0 {
+		certPool := x509.NewCertPool()
+		caCert, err := ioutil.ReadFile(flagUtil.SSLPath)
+		if err != nil {
+			log.Fatalf("无法读取 CA 证书: %s", err)
+		}
+
+		if ok := certPool.AppendCertsFromPEM(caCert); !ok {
+			log.Fatalf("添加 CA 证书到证书池失败")
+		}
+
+		// 创建 TLS 配置，使用 CA 证书，并指定期望的服务器名称（CN）
+		tlsConfig := &tls.Config{
+			RootCAs: certPool,
+			// Replace with the server's CN
+			ServerName: strings.Split(flagUtil.ServerAddr, ":")[0],
+		}
+
+		// 创建带有 TLS 配置的凭据
+		creds := credentials.NewTLS(tlsConfig)
+
+		opts = append(opts, grpc.WithTransportCredentials(creds))
+	} else {
+		opts = append(opts, grpc.WithInsecure())
+	}
+	opts = append(opts, grpc.WithBlock())
+
+	conn, err := grpc.Dial(flagUtil.ServerAddr, opts...)
 	util.ErrorCheck(err)
 	defer conn.Close()
 

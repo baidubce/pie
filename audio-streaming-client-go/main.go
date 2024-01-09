@@ -12,13 +12,14 @@ package main
 
 import (
 	"flag"
+	"strings"
+	"time"
+
 	client "github.com/baidubce/pie/audio-streaming-client-go/baiduasr"
 	"github.com/baidubce/pie/audio-streaming-client-go/constant"
 	flagUtil "github.com/baidubce/pie/audio-streaming-client-go/flag"
 	"github.com/baidubce/pie/audio-streaming-client-go/protogen"
 	"github.com/baidubce/pie/audio-streaming-client-go/util"
-	"strings"
-	"time"
 )
 
 func generateInitRequest() protogen.InitRequest {
@@ -42,7 +43,7 @@ func generateInitRequest() protogen.InitRequest {
 }
 
 func main() {
-	// go run main.go --server_addr 127.0.0.1:8051 --username username --password password --audio_file /path/of/audio.wav
+	// go run main.go --server_addr www.example-asr.com:8051 --username username --password password --audio_file /path/of/audio.wav --ssl_path ca/server.crt
 	flag.Parse()
 	runType := strings.ToLower(flagUtil.RunType)
 
