@@ -63,7 +63,7 @@ public class AsyncRecognizeWithStreamAndMetaData {
         options.addOption("e", "enable-flush-data", true, "set enable flush data，true or false");
         options.addOption("t", "audio-path", true, "set audio path");
         options.addOption("r", "sleep-ratio", true, "set sleep ratio");
-        options.addOption("s", "ssl-path", true, "set ssl path");
+        options.addOption("s", "ssl-path", true, "set ssl path, like: ca/server.crt");
 
         HelpFormatter formatter = new HelpFormatter();
         CommandLineParser parser = new DefaultParser();

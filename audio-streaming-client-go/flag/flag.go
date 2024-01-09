@@ -21,6 +21,7 @@ var (
 	SampleRate      int
 	EnableFlushData bool
 	SleepRatio      float64
+	SSLPath         string
 
 	RunType string
 )
@@ -35,6 +36,9 @@ func init() {
 	// 注：bool类型只能用--enable_flush_data=false来表示，不能用空格
 	flag.BoolVar(&EnableFlushData, "enable_flush_data", false, "enable flush data")
 	flag.Float64Var(&SleepRatio, "sleep_ratio", 1, "sleep ratio")
+
+	// 证书信息，不传递或者留空则使用http 协议，不为空使用该证书协议(https协议)
+	flag.StringVar(&SSLPath, "ssl_path", "", "set ssl path, like: ca/server.crt")
 
 	flag.StringVar(&RunType, "run_type", "file", "run type, must in [file, microphone], default file")
 }
