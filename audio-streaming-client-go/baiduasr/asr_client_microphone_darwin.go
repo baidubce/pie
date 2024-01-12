@@ -8,6 +8,7 @@ modification history
 2020/7/17, by xiashuai01@baidu.com, create
 */
 
+// +build darwin
 package client
 
 /*

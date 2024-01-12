@@ -8,40 +8,18 @@ modification history
 2020/7/17, by xiashuai01@baidu.com, create
 */
 
+// +build darwin
 package main
 
 import (
 	"flag"
 	"strings"
-	"time"
 
 	client "github.com/baidubce/pie/audio-streaming-client-go/baiduasr"
-	"github.com/baidubce/pie/audio-streaming-client-go/constant"
 	flagUtil "github.com/baidubce/pie/audio-streaming-client-go/flag"
-	"github.com/baidubce/pie/audio-streaming-client-go/protogen"
-	"github.com/baidubce/pie/audio-streaming-client-go/util"
 )
 
-func generateInitRequest() protogen.InitRequest {
-
-	content := protogen.InitRequest{
-		EnableLongSpeech: true,
-		EnableChunk:      true,
-		EnableFlushData:  flagUtil.EnableFlushData,
-		ProductId:        flagUtil.ProductId,
-		SamplePointBytes: 1,
-		SendPerSeconds:   0.02,
-		SleepRatio:       flagUtil.SleepRatio,
-		AppName:          "go",
-		LogLevel:         0,
-		UserName:         flagUtil.UserName,
-	}
-	nowTime := time.Now().Format(constant.TimeFormat)
-	content.ExpireTime = nowTime
-	content.Token = util.HashToken(flagUtil.UserName, flagUtil.Password, nowTime)
-	return content
-}
-
+// go build -o audio-streaming-client-go main_darwin.go
 func main() {
 	// go run main.go --server_addr www.example-asr.com:8051 --username username --password password --audio_file /path/of/audio.wav --ssl_path ca/server.crt
 	flag.Parse()
