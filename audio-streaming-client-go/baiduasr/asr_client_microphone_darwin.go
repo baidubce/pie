@@ -2,13 +2,15 @@
 // Use of this source code is governed by the license
 // that can be found in the LICENSE file.
 
+//go:build darwin
+// +build darwin
+
 /*
 modification history
 --------------------
 2020/7/17, by xiashuai01@baidu.com, create
 */
 
-// +build darwin
 package client
 
 /*
@@ -76,8 +78,8 @@ func ReadMicrophone(headers protogen.InitRequest) {
 			}
 			util.ErrorCheck(err)
 			if in != nil {
-				log.Printf(" | start time: %s, end time: %s, result: %s, complete: %t, sn: %s",
-					in.AudioFragment.StartTime, in.AudioFragment.EndTime, in.AudioFragment.Result, in.AudioFragment.Completed, in.AudioFragment.SerialNum)
+				log.Printf(" | start time: %s, end time: %s, result: %s, complete: %t, sn: %s, traceId: %s",
+					in.AudioFragment.StartTime, in.AudioFragment.EndTime, in.AudioFragment.Result, in.AudioFragment.Completed, in.AudioFragment.SerialNum, in.TraceId)
 				//log.Printf("asr result can get: %s", in.AudioFragment.Result)
 			} else {
 				log.Printf("asr result error")

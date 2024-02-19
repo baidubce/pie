@@ -28,6 +28,7 @@ message InitRequest {
     string expire_time = 11;
     string token = 12;
     ProtoVersion version = 13;
+    string extra_info = 14;
 }
 
 message AudioFragmentRequest {
@@ -47,6 +48,7 @@ message AudioFragmentResult {
     string result = 3;
     bool completed = 4;
     string serial_num = 5;
+    uint32 noise_level = 6;
 }
 
 message AudioFragmentResponse {
@@ -54,6 +56,7 @@ message AudioFragmentResponse {
     string error_message = 2;
     ResponseType type = 3;
     AudioFragmentResult audio_fragment = 4;
+    string trace_id = 5;
 }
 
 service AsrService {
