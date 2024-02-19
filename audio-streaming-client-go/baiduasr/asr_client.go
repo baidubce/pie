@@ -77,8 +77,8 @@ func ReadFile(headers protogen.InitRequest) {
 			}
 			util.ErrorCheck(err)
 			if in != nil {
-				log.Printf(" | start time: %s, end time: %s, result: %s, complete: %t, sn: %s",
-					in.AudioFragment.StartTime, in.AudioFragment.EndTime, in.AudioFragment.Result, in.AudioFragment.Completed, in.AudioFragment.SerialNum)
+				log.Printf(" | start time: %s, end time: %s, result: %s, complete: %t, sn: %s, traceID: %s",
+					in.AudioFragment.StartTime, in.AudioFragment.EndTime, in.AudioFragment.Result, in.AudioFragment.Completed, in.AudioFragment.SerialNum, in.TraceId)
 			} else {
 				log.Printf("asr result error")
 			}
