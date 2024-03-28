@@ -41,6 +41,7 @@ public class AsyncRecognizeWithStreamAndMetaData {
     private static String audioPath = "testaudio/xeq16k.wav"; // 音频文件路径
     private static boolean enableFlushData = true;
     private static Integer sleepRatio = 0;
+    private static String sslPath = ""; // 证书信息，不传递或者留空则使用http 协议，不为空使用该证书协议(https协议)
     private static Logger logger = LoggerFactory.getLogger(AsyncRecognizeWithStream.class);
 
     public static void main(String[] args) {
@@ -62,6 +63,7 @@ public class AsyncRecognizeWithStreamAndMetaData {
         options.addOption("e", "enable-flush-data", true, "set enable flush data，true or false");
         options.addOption("t", "audio-path", true, "set audio path");
         options.addOption("r", "sleep-ratio", true, "set sleep ratio");
+        options.addOption("s", "ssl-path", true, "set ssl path, like: ca/server.crt");
 
         HelpFormatter formatter = new HelpFormatter();
         CommandLineParser parser = new DefaultParser();
@@ -141,6 +143,12 @@ public class AsyncRecognizeWithStreamAndMetaData {
         if (cmd.hasOption("sleep-ratio")) {
             sleepRatio = Integer.parseInt(cmd.getOptionValue("sleep-ratio"));
         }
+        if (cmd.hasOption("s")) {
+            sslPath = cmd.getOptionValue("s");
+        }
+        if (cmd.hasOption("ssl-path")) {
+            sslPath = cmd.getOptionValue("ssl-path");
+        }
     }
 
     private static AsrProduct getAsrProduct(String pid) {
@@ -150,7 +158,20 @@ public class AsyncRecognizeWithStreamAndMetaData {
     private static AsrClient createAsrClient() {
         // 创建调用asr服务的客户端
         // asrConfig构造后就不可修改
-        AsrConfig asrConfig = AsrConfig.builder()
+        AsrConfig asrConfig;
+        if (sslPath.length() > 0) {
+            asrConfig = AsrConfig.builder()
+                .appName(appName)
+                .serverIp(ip)
+                .serverPort(port)
+                .product(pid)
+                .userName(userName)
+                .password(passWord)
+                .sslPath(sslPath)
+                .sslUseFlag(true)
+                .build();
+        } else {
+            asrConfig = AsrConfig.builder()
                 .appName(appName)
                 .serverIp(ip)
                 .serverPort(port)
@@ -158,6 +179,7 @@ public class AsyncRecognizeWithStreamAndMetaData {
                 .userName(userName)
                 .password(passWord)
                 .build();
+    }
         return AsrClientFactory.buildClient(asrConfig);
     }
 

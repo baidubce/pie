@@ -1,26 +1,19 @@
-// Copyright 2020 Baidu Inc. All rights reserved.
+// Copyright 2023 Baidu Inc. All rights reserved.
 // Use of this source code is governed by the license
 // that can be found in the LICENSE file.
-
-/*
-modification history
---------------------
-2020/7/17, by xiashuai01@baidu.com, create
-*/
 
 package main
 
 import (
-	"flag"
-	client "github.com/baidubce/pie/audio-streaming-client-go/baiduasr"
+	"time"
+
 	"github.com/baidubce/pie/audio-streaming-client-go/constant"
 	flagUtil "github.com/baidubce/pie/audio-streaming-client-go/flag"
 	"github.com/baidubce/pie/audio-streaming-client-go/protogen"
 	"github.com/baidubce/pie/audio-streaming-client-go/util"
-	"strings"
-	"time"
 )
 
+// generateInitRequest generateInitRequest
 func generateInitRequest() protogen.InitRequest {
 
 	content := protogen.InitRequest{
@@ -41,18 +34,3 @@ func generateInitRequest() protogen.InitRequest {
 	return content
 }
 
-func main() {
-	// go run main.go --server_addr 127.0.0.1:8051 --username username --password password --audio_file /path/of/audio.wav
-	flag.Parse()
-	runType := strings.ToLower(flagUtil.RunType)
-
-	if runType == "file" {
-		// 处理音频文件
-		client.ReadFile(generateInitRequest())
-	}
-
-	if runType == "microphone" {
-		// 处理麦克风音频流
-		client.ReadMicrophone(generateInitRequest())
-	}
-}
