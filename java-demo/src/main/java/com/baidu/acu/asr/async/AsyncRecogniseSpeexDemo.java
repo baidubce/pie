@@ -85,7 +85,7 @@ public class AsyncRecogniseSpeexDemo {
                     byte[] bytes1 = Arrays.copyOfRange(decode, index * sliceSize, (index + 1) * sliceSize);
                     streamContext.send(bytes1);
                     index++;
-                    TimeUnit.MILLISECONDS.sleep(10);
+                    TimeUnit.MILLISECONDS.sleep(asrArgs.getSleepTime());
                 }
             }
         }

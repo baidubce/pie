@@ -31,6 +31,8 @@ public class AsrArgs {
     // 这个只针对speex
     @Option(name = "-times", usage = "use times")
     private int times = 10;
+    @Option(name = "-sleep-time", usage = "sleep time, unit ms")
+    private int sleepTime = 10;
 
     public static AsrArgs parse(String[] args) {
         AsrArgs iAsrArgs = new AsrArgs();
