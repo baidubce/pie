@@ -33,6 +33,9 @@ public class AsrArgs {
     private int times = 10;
     @Option(name = "-sleep-time", usage = "sleep time, unit ms")
     private int sleepTime = 10;
+    @Option(name = "-sleep-ratio", usage = "asr sleep ratio")
+    private double sleepRatio = 0.3;
+
 
     public static AsrArgs parse(String[] args) {
         AsrArgs iAsrArgs = new AsrArgs();

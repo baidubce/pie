@@ -31,6 +31,7 @@ import java.util.concurrent.TimeUnit;
 public class AsyncRecogniseSpeexDemo {
     private static AsrArgs asrArgs;
     public static void main(String[] args) {
+        // java -jar java-demo-1.2.2-SNAPSHOT-shaded.jar -ip 127.0.0.1 -port 8051 -pid 1912 -username username -password password -enable-flush-data -audio-path speex.txt -times 1 -sleep-time=10
         AsyncRecogniseSpeexDemo speexDemo = new AsyncRecogniseSpeexDemo();
         try {
             AsyncRecogniseSpeexDemo.asrArgs = AsrArgs.parse(args);
@@ -94,6 +95,12 @@ public class AsyncRecogniseSpeexDemo {
 
         streamContext.getFinishLatch().await();
         asrClient.shutdown();
+//        byte[] content = {1, 2, 3};
+
+//        streamContext.send(content);
+//        streamContext.send(content);
+//        streamContext.send(content);
+//        streamContext.send(content);
     }
 
     private AsrConfig buildAsrConfig() {
@@ -116,7 +123,7 @@ public class AsyncRecogniseSpeexDemo {
     private RequestMetaData createRequestMeta() {
         RequestMetaData requestMetaData = new RequestMetaData();
         requestMetaData.setSendPackageRatio(1);
-        requestMetaData.setSleepRatio(0.3);
+        requestMetaData.setSleepRatio(asrArgs.getSleepRatio());
         requestMetaData.setTimeoutMinutes(120);
         requestMetaData.setEnableFlushData(true);
         // 随路信息根据需要设置
