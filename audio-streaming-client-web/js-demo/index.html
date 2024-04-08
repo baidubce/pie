@@ -100,6 +100,10 @@
             "password": "password"
         });
 
+        const FINISH_PARAMS = JSON.stringify({
+            "status": "finish"
+        });
+
         let audioContent;
         let websocket;
         let output;
@@ -109,7 +113,7 @@
             output = document.getElementById("output");
         }
 
-        function startWebSocket(way, afterOpen) {
+    function startWebSocket(way, afterOpen) {
             websocket && websocket.close();
             websocket = new WebSocket(WS_URL);
             websocket.onopen = function(evt) {
@@ -275,6 +279,7 @@
                         await sleep(INTERVAL);
                         doSend(newArray);
                     }
+                    doSend(FINISH_PARAMS);
                 };
                 startWebSocket('upload', afterOpen);
             }
