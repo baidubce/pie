@@ -45,6 +45,7 @@ public class JavaDemo {
         // asrConfig构造后就不可修改
         // 当使用ssl client时，需要配置字段sslUseFlag以及sslPath
         return AsrConfig.builder()
+                // 注，如果开启ssl，这里必须使用申请证书使用的域名
                 .serverIp("127.0.0.1")
                 .serverPort(8051)
                 .appName("simpleDemo")
@@ -53,7 +54,7 @@ public class JavaDemo {
                 .userName("username")
                 .password("password")
 //                .sslUseFlag(true)
-//                .sslPath("ca.crt")
+//                .sslPath("code.crt")
                 .build();
     }
 
