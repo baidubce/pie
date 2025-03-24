@@ -87,12 +87,14 @@ public class AsyncRecogniseWithMultiMicrophone {
 
     private static AudioFormat createAudioFormat() {
         AsrConfig asrConfig = buildAsrConfig();
+        int sampleSizeBits = 16;
+        int channels = 2;
         return new AudioFormat(
                 AudioFormat.Encoding.PCM_SIGNED,
                 asrConfig.getProduct().getSampleRate(),
-                16,
-                1,
-                2,    // (sampleSizeBits / 8) * channels
+                sampleSizeBits,
+                channels,
+                (sampleSizeBits / 8) * channels,    // (sampleSizeBits / 8) * channels
                 asrConfig.getProduct().getSampleRate(),
                 false);
     }

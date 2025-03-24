@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.github.xiashuai-mr</groupId>
   <artifactId>audio-streaming-client-java</artifactId>
-  <version>1.2.2.2-SNAPSHOTS</version>
+  <version>1.2.2.3-SNAPSHOTS</version>
 
   <name>audio-streaming-client-java</name>
   <description>audio streaming client for java 1.8</description>
