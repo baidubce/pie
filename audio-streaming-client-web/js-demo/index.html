@@ -88,18 +88,6 @@
         const FFT_SIZE = 2048;
 
         const INTERVAL = 20;
-        const WS_URL = 'ws://ai-speech.baidu.com/api/v1/asr/stream';
-        const DEFAULT_PARAMS = JSON.stringify({
-            "enableFlushData": true,
-            "productId": "1912",
-            "samplePointBytes": 1,
-            "sendPerSeconds": INTERVAL / 1000,
-            "sleepRatio": 0,
-            "appName": "webproxy",
-            "userName": "username",
-            "password": "password"
-        });
-
         const FINISH_PARAMS = JSON.stringify({
             "status": "finish"
         });
@@ -115,6 +103,9 @@
 
     function startWebSocket(way, afterOpen) {
             websocket && websocket.close();
+            // TODO 设置WS地址
+            const WS_URL = document.getElementById("address").value;
+            console.log(WS_URL)
             websocket = new WebSocket(WS_URL);
             websocket.onopen = function(evt) {
                 onOpen(evt, way, afterOpen);
@@ -132,6 +123,18 @@
 
         function onOpen(evt, way, afterOpen) {
             console.log('websocket连接成功');
+            // TODO 设置初始化参数
+            const DEFAULT_PARAMS = JSON.stringify({
+                "enableFlushData": true,
+                "productId": document.getElementById("pid").value,
+                "samplePointBytes": 1,
+                "sendPerSeconds": INTERVAL / 1000,
+                "sleepRatio": 0,
+                "appName": "webproxy",
+                "userName": document.getElementById("username").value,
+                "password": document.getElementById("password").value
+            });
+            console.log(DEFAULT_PARAMS);
             doSend(DEFAULT_PARAMS);
             way === 'upload' && afterOpen();
         }
@@ -243,6 +246,25 @@
 
 <body>
     <h1>JS Demo</h1>
+    <h3>参数配置</h3>
+    <table>
+        <tr>
+            <td>地址：</td>
+            <td style="width: 300px"><input style="width: 300px" type="text" id="address" value="ws://ai-speech.baidu.com/api/v1/asr/stream"/></td>
+        </tr>
+         <tr>
+            <td>用户名：</td>
+            <td><input style="width: 300px" type="text" id="username" value="username"/></td>
+        </tr>
+        <tr>
+            <td>密码：</td>
+            <td><input style="width: 300px" type="text" id="password" value="password"/></td>
+        </tr>
+        <tr>
+            <td>pid:</td>
+            <td><input style="width: 300px" type="text" id="pid" value="1912"/></td>
+        </tr>
+    </table>
     <h3>实时语音识别：</h3>
     <button onclick="startRecorder()">进行语音识别</button>
     <h3>上传音频文件识别：</h3>
