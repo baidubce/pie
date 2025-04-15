@@ -71,7 +71,8 @@ public class JavaDemo {
         Map<String, Object> extra_info = new HashMap<>();
         extra_info.put("demo", "java");
         requestMetaData.setExtraInfo(JacksonUtil.objectToString(extra_info));
-
+        requestMetaData.setEnableVadPause(true);
+        requestMetaData.setVadPauseFrame(70);
         return requestMetaData;
     }
 

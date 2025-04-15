@@ -25,6 +25,8 @@ public class RequestMetaData {
         requestMetaDataForShortRecognize.setSleepRatio(0);
         requestMetaDataForShortRecognize.setTimeoutMinutes(2); // 短音频不能超过60s，因此2分钟之内必然返回
         requestMetaDataForShortRecognize.setEnableFlushData(false);
+        requestMetaDataForShortRecognize.setEnableVadPause(false);
+        requestMetaDataForShortRecognize.setVadPauseFrame(70);
     }
 
     /**
@@ -59,6 +61,16 @@ public class RequestMetaData {
      * 随路信息
      **/
     private String extraInfo = "";
+
+    /**
+     * 允许vad设置
+     */
+    private boolean enableVadPause = false;
+
+    /**
+     * vad参数设置，默认70，对应的vad时间为 70 * 10 = 700ms
+     */
+    private int vadPauseFrame = 70;
 
     public void setTimeoutMinutes(int timeoutMinutes) {
         if (timeoutMinutes > 120) {
@@ -97,6 +109,21 @@ public class RequestMetaData {
             throw new GlobalClientException("timeoutMinutes should not exceed 120");
         }
         this.timeoutMinutes = timeoutMinutes;
+        return this;
+    }
+
+    @Deprecated
+    public RequestMetaData enableVadPause(boolean enableVadPause) {
+        this.enableVadPause = enableVadPause;
+        return this;
+    }
+
+    @Deprecated
+    public RequestMetaData vadPauseFrame(int vadPauseFrame) {
+        if (vadPauseFrame <= 0) {
+            vadPauseFrame = 70;
+        }
+        this.vadPauseFrame = vadPauseFrame;
         return this;
     }
 

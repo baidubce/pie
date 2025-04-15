@@ -3,7 +3,7 @@
 
 **使用要求：**
 
- - 支持 jdk1.7及以上版本
+ - 支持 jdk1.8及以上版本
  - 使用 gradle 或 maven 构建项目
 
 **使用方式**
@@ -13,7 +13,7 @@
 
 ```
 dependencies {
-	compile "com.github.xiashuai-mr:audio-streaming-client-java:1.1.12-SNATSHOTS"
+	compile "com.github.xiashuai-mr:audio-streaming-client-java:1.2.0.100-SNATSHOTS"
 }
 ```
 
@@ -26,7 +26,7 @@ dependencies {
 	<dependency>
 	  <groupId>com.github.xiashuai-mr</groupId>
 	  <artifactId>audio-streaming-client-java</artifactId>
-	 <version>1.1.12-SNATSHOTS</version>
+	 <version>1.2.0.100-SNATSHOTS</version>
 	</dependency>
 </dependencies>
 ```
