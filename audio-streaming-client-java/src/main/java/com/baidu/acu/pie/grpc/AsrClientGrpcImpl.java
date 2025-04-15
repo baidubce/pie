@@ -307,6 +307,8 @@ public class AsrClientGrpcImpl implements AsrClient {
                 .setToken(digestedToken)
                 .setVersion(AudioStreaming.ProtoVersion.VERSION_1)
                 .setExtraInfo(requestMetaData.getExtraInfo())
+                .setEnableVadPause(requestMetaData.isEnableVadPause())
+                .setVadPauseFrame(requestMetaData.getVadPauseFrame())
                 .build();
 
         Metadata headers = new Metadata();

@@ -30,6 +30,9 @@ message InitRequest {
     ProtoVersion version = 13;
 
     string extra_info = 14;
+
+    bool enable_vad_pause = 15;
+    int32 vad_pause_frame = 16;
 }
 
 message AudioFragmentRequest {
