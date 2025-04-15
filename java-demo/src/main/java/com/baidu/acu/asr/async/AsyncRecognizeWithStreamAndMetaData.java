@@ -42,6 +42,8 @@ public class AsyncRecognizeWithStreamAndMetaData {
     private static boolean enableFlushData = true;
     private static Integer sleepRatio = 0;
     private static String sslPath = ""; // 证书信息，不传递或者留空则使用http 协议，不为空使用该证书协议(https协议)
+    private static boolean enableVadPause = false;
+    private static int vadPauseFrame = 70;
     private static Logger logger = LoggerFactory.getLogger(AsyncRecognizeWithStream.class);
 
     public static void main(String[] args) {
@@ -64,6 +66,10 @@ public class AsyncRecognizeWithStreamAndMetaData {
         options.addOption("t", "audio-path", true, "set audio path");
         options.addOption("r", "sleep-ratio", true, "set sleep ratio");
         options.addOption("s", "ssl-path", true, "set ssl path, like: ca/server.crt");
+        options.addOption("v", "enable-vad-pause", true, "set enable vad pause, true or false");
+        options.addOption("f", "vad-pause-frame", true, "set vad pause frame");
+
+
 
         HelpFormatter formatter = new HelpFormatter();
         CommandLineParser parser = new DefaultParser();
@@ -149,6 +155,13 @@ public class AsyncRecognizeWithStreamAndMetaData {
         if (cmd.hasOption("ssl-path")) {
             sslPath = cmd.getOptionValue("ssl-path");
         }
+
+        if (cmd.hasOption("enable-vad-pause")) {
+            enableVadPause = Boolean.parseBoolean(cmd.getOptionValue("enable-vad-pause"));
+        }
+        if (cmd.hasOption("vad-pause-frame")) {
+            vadPauseFrame = Integer.parseInt(cmd.getOptionValue("vad-pause-frame"));
+        }
     }
 
     private static AsrProduct getAsrProduct(String pid) {
@@ -192,6 +205,8 @@ public class AsyncRecognizeWithStreamAndMetaData {
         requestMetaData.setSleepRatio(sleepRatio);        // 指定asr服务的识别间隔，数值越小，识别越快，但准确率可能下降
         requestMetaData.setTimeoutMinutes(120);  // 识别单个文件的最大等待时间，默认10分，最长不能超过120分
         requestMetaData.setEnableFlushData(enableFlushData);// 是否返回中间翻译结果
+        requestMetaData.setEnableVadPause(enableVadPause);
+        requestMetaData.setVadPauseFrame(vadPauseFrame);
 
         final AtomicReference<DateTime> beginSend = new AtomicReference<>();
         final StreamContext streamContext = asrClient.asyncRecognize(recognitionResult -> {
