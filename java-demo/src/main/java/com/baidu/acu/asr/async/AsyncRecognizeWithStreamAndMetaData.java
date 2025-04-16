@@ -170,10 +170,10 @@ public class AsyncRecognizeWithStreamAndMetaData {
             vadPauseFrame = Integer.parseInt(cmd.getOptionValue("vad-pause-frame"));
         }
         if (cmd.hasOption("l")) {
-            pureResult = Boolean.parseBoolean(cmd.getOptionValue("enable-vad-pause"));
+            pureResult = Boolean.parseBoolean(cmd.getOptionValue("l"));
         }
         if (cmd.hasOption("pure-result")) {
-            pureResult = Boolean.parseBoolean(cmd.getOptionValue("enable-vad-pause"));
+            pureResult = Boolean.parseBoolean(cmd.getOptionValue("pure-result"));
         }
     }
 
