@@ -13,7 +13,7 @@
 
 ```
 dependencies {
-	compile "com.github.xiashuai-mr:audio-streaming-client-java:1.2.0.100-SNATSHOTS"
+	compile "com.github.xiashuai-mr:audio-streaming-client-java:1.2.0.100-SNAPSHOTS"
 }
 ```
 
@@ -26,7 +26,7 @@ dependencies {
 	<dependency>
 	  <groupId>com.github.xiashuai-mr</groupId>
 	  <artifactId>audio-streaming-client-java</artifactId>
-	 <version>1.2.0.100-SNATSHOTS</version>
+	 <version>1.2.0.100-SNAPSHOTS</version>
 	</dependency>
 </dependencies>
 ```
