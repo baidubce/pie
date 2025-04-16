@@ -44,6 +44,7 @@ public class AsyncRecognizeWithStreamAndMetaData {
     private static String sslPath = ""; // 证书信息，不传递或者留空则使用http 协议，不为空使用该证书协议(https协议)
     private static boolean enableVadPause = false;
     private static int vadPauseFrame = 70;
+    private static boolean pureResult = false;
     private static Logger logger = LoggerFactory.getLogger(AsyncRecognizeWithStream.class);
 
     public static void main(String[] args) {
@@ -68,7 +69,7 @@ public class AsyncRecognizeWithStreamAndMetaData {
         options.addOption("s", "ssl-path", true, "set ssl path, like: ca/server.crt");
         options.addOption("v", "enable-vad-pause", true, "set enable vad pause, true or false");
         options.addOption("f", "vad-pause-frame", true, "set vad pause frame");
-
+        options.addOption("l", "pure-result", true, "set pure result, true or false");
 
 
         HelpFormatter formatter = new HelpFormatter();
@@ -156,11 +157,23 @@ public class AsyncRecognizeWithStreamAndMetaData {
             sslPath = cmd.getOptionValue("ssl-path");
         }
 
+        if (cmd.hasOption("v")) {
+            enableVadPause = Boolean.parseBoolean(cmd.getOptionValue("enable-vad-pause"));
+        }
         if (cmd.hasOption("enable-vad-pause")) {
             enableVadPause = Boolean.parseBoolean(cmd.getOptionValue("enable-vad-pause"));
         }
+        if (cmd.hasOption("f")) {
+            vadPauseFrame = Integer.parseInt(cmd.getOptionValue("vad-pause-frame"));
+        }
         if (cmd.hasOption("vad-pause-frame")) {
             vadPauseFrame = Integer.parseInt(cmd.getOptionValue("vad-pause-frame"));
+        }
+        if (cmd.hasOption("l")) {
+            pureResult = Boolean.parseBoolean(cmd.getOptionValue("enable-vad-pause"));
+        }
+        if (cmd.hasOption("pure-result")) {
+            pureResult = Boolean.parseBoolean(cmd.getOptionValue("enable-vad-pause"));
         }
     }
 
@@ -210,11 +223,18 @@ public class AsyncRecognizeWithStreamAndMetaData {
 
         final AtomicReference<DateTime> beginSend = new AtomicReference<>();
         final StreamContext streamContext = asrClient.asyncRecognize(recognitionResult -> {
-            DateTime now = DateTime.now();
-            System.out.println(now +
-                    "\ttime_used=" + (now.getMillis() - beginSend.get().getMillis()) + "ms" +
-                    "\tfragment=" + recognitionResult +
-                    "\tthread_id=" + Thread.currentThread().getId());
+            if (pureResult ) {
+                if (recognitionResult.isCompleted()) {
+                    // 这里仅仅展示识别结果文本，不展示额外信息
+                    System.out.println(recognitionResult.getResult());
+                }
+            } else {
+                DateTime now = DateTime.now();
+                System.out.println(now +
+                        "\ttime_used=" + (now.getMillis() - beginSend.get().getMillis()) + "ms" +
+                        "\tfragment=" + recognitionResult +
+                        "\tthread_id=" + Thread.currentThread().getId());
+            }
         }, requestMetaData);
         // 异常回调
         streamContext.enableCallback(e -> {
