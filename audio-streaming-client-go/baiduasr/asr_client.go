@@ -15,10 +15,10 @@ import (
 	flagUtil "github.com/baidubce/pie/audio-streaming-client-go/flag"
 	"github.com/baidubce/pie/audio-streaming-client-go/protogen"
 	"github.com/baidubce/pie/audio-streaming-client-go/util"
-	"github.com/golang/protobuf/proto"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 	"google.golang.org/grpc/metadata"
+	"google.golang.org/protobuf/proto"
 )
 
 // 处理音频文件音频流

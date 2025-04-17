@@ -2,13 +2,15 @@
 // Use of this source code is governed by the license
 // that can be found in the LICENSE file.
 
+//go:build linux
+// +build linux
+
 /*
 modification history
 --------------------
 2020/7/17, by xiashuai01@baidu.com, create
 */
 
-// +build linux
 package main
 
 import (
@@ -17,6 +19,7 @@ import (
 
 	client "github.com/baidubce/pie/audio-streaming-client-go/baiduasr"
 	flagUtil "github.com/baidubce/pie/audio-streaming-client-go/flag"
+	"github.com/baidubce/pie/audio-streaming-client-go/util"
 )
 
 // GOOS=linux GOARCH=arm64 go build
@@ -27,6 +30,6 @@ func main() {
 
 	if runType == "file" {
 		// 处理音频文件
-		client.ReadFile(generateInitRequest())
+		client.ReadFile(util.GenerateInitRequest())
 	}
 }

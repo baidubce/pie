@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package com.baidu.acu.pie;
 
+option go_package = './protogen';
+
 enum ProtoVersion {
     UNKNOWN_VER = 0;
     VERSION_1 = 1;
@@ -28,7 +30,11 @@ message InitRequest {
     string expire_time = 11;
     string token = 12;
     ProtoVersion version = 13;
+
     string extra_info = 14;
+
+    bool enable_vad_pause = 15;
+    int32 vad_pause_frame = 16;
 }
 
 message AudioFragmentRequest {

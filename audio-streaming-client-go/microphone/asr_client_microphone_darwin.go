@@ -11,7 +11,7 @@ modification history
 2020/7/17, by xiashuai01@baidu.com, create
 */
 
-package client
+package microphone
 
 /*
   #include <stdio.h>
@@ -40,14 +40,16 @@ import (
 	"context"
 	b64 "encoding/base64"
 	"encoding/binary"
+
 	flagutil "github.com/baidubce/pie/audio-streaming-client-go/flag"
 	"github.com/baidubce/pie/audio-streaming-client-go/protogen"
 	"github.com/baidubce/pie/audio-streaming-client-go/util"
-	"github.com/golang/protobuf/proto"
 	"github.com/gordonklaus/portaudio"
 	"github.com/zenwerk/go-wave"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/metadata"
+	"google.golang.org/protobuf/proto"
+
 	"io"
 	"log"
 )

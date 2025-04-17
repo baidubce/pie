@@ -2,7 +2,7 @@
 // Use of this source code is governed by the license
 // that can be found in the LICENSE file.
 
-package main
+package util
 
 import (
 	"time"
@@ -10,11 +10,10 @@ import (
 	"github.com/baidubce/pie/audio-streaming-client-go/constant"
 	flagUtil "github.com/baidubce/pie/audio-streaming-client-go/flag"
 	"github.com/baidubce/pie/audio-streaming-client-go/protogen"
-	"github.com/baidubce/pie/audio-streaming-client-go/util"
 )
 
 // generateInitRequest generateInitRequest
-func generateInitRequest() protogen.InitRequest {
+func GenerateInitRequest() protogen.InitRequest {
 
 	content := protogen.InitRequest{
 		EnableLongSpeech: true,
@@ -30,7 +29,6 @@ func generateInitRequest() protogen.InitRequest {
 	}
 	nowTime := time.Now().Format(constant.TimeFormat)
 	content.ExpireTime = nowTime
-	content.Token = util.HashToken(flagUtil.UserName, flagUtil.Password, nowTime)
+	content.Token = HashToken(flagUtil.UserName, flagUtil.Password, nowTime)
 	return content
 }
-

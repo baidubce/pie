@@ -1,16 +1,3 @@
-// Copyright 2020 Baidu Inc. All rights reserved.
-// Use of this source code is governed by the license
-// that can be found in the LICENSE file.
-
-//go:build darwin
-// +build darwin
-
-/*
-modification history
---------------------
-2020/7/17, by xiashuai01@baidu.com, create
-*/
-
 package main
 
 import (
@@ -28,7 +15,7 @@ func main() {
 	flag.Parse()
 	runType := strings.ToLower(flagUtil.RunType)
 
-	if runType == "file" {
+	if runType == "microphone" {
 		// 处理音频文件
 		client.ReadFile(util.GenerateInitRequest())
 	}
