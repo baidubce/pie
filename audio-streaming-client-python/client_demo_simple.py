@@ -19,7 +19,7 @@ def run():
                            user_name=user_name,
                            password=password)
 
-        responses = client.get_result("testaudio/1021368215_5070094946_455.wav")
+        responses = client.get_result(audio_file_path)
         try:
             for response in responses:
                 if response.type == baidu_acu_asr.audio_streaming_pb2.FRAGMENT_DATA:
@@ -48,11 +48,12 @@ if __name__ == '__main__':
 
     url = "127.0.0.1"
     port = "8051"
-    product = AsrProduct.INPUT_METHOD
+    product = AsrProduct.SPEECH_SERVICE
     # product_id = "888"
     # sample_rate = 16000
     enable_flush_data = True
     user_name = "username"
     password = "password"
+    audio_file_path = "testaudio/xeq16k.wav"
 
     run()
