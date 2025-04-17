@@ -1,6 +1,7 @@
 module github.com/baidubce/pie/audio-streaming-client-go
 
 go 1.23
+toolchain go1.24.1
 
 require (
 	github.com/gordonklaus/portaudio v0.0.0-20200911161147-bb74aa485641
@@ -11,8 +12,8 @@ require (
 
 require (
 	github.com/golang/protobuf v1.5.4 // indirect
-	golang.org/x/net v0.34.0 // indirect
-	golang.org/x/sys v0.29.0 // indirect
-	golang.org/x/text v0.21.0 // indirect
+	golang.org/x/net v0.38.0 // indirect
+	golang.org/x/sys v0.31.0 // indirect
+	golang.org/x/text v0.23.0 // indirect
 	google.golang.org/genproto v0.0.0-20210604141403-392c879c8b08 // indirect
 )
