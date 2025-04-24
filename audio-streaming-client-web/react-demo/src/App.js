@@ -262,7 +262,7 @@ function App() {
                 style={tdStyle}
                 type="text"
                 id="password"
-                defaultValue="password"
+                defaultValue="***"
               />
             </td>
           </tr>

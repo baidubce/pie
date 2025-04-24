@@ -23,7 +23,7 @@ public class AsrArgs {
     @Option(name = "-username", usage = "username")
     private String username = "admin";
     @Option(name = "-password", usage = "password")
-    private String password = "1234567809";
+    private String password = "***";
     @Option(name = "-enable-flush-data", handler = BooleanOptionHandler.class, usage = "enable flush data")
     private Boolean enableFlushData = false;
     @Option(name = "-audio-path", usage = "audio save path")

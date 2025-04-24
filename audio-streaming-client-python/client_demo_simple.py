@@ -53,7 +53,7 @@ if __name__ == '__main__':
     # sample_rate = 16000
     enable_flush_data = True
     user_name = "username"
-    password = "password"
+    password = "***"
     audio_file_path = "testaudio/xeq16k.wav"
 
     run()
