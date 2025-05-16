@@ -1,8 +1,43 @@
 <!DOCTYPE html>  
 <meta charset="utf-8" />  
-<title>WebProxy JS Demo</title>
 <head>
-    <script language="javascript" type="text/javascript">
+    <title>WebProxy JS Demo</title>
+</head>
+
+<body>
+    <h1>Webproxy JS Demo</h1>
+    <h3>参数配置</h3>
+    <table>
+        <tr>
+            <td>地址：</td>
+            <td style="width: 300px"><input style="width: 300px" type="text" id="address" value="ws://ai-speech.baidu.com/api/v1/asr/stream"/></td>
+        </tr>
+         <tr>
+            <td>用户名：</td>
+            <td><input style="width: 300px" type="text" id="username" value="username"/></td>
+        </tr>
+        <tr>
+            <td>密码：</td>
+            <td><input style="width: 300px" type="text" id="password" value="***"/></td>
+        </tr>
+        <tr>
+            <td>pid:</td>
+            <td><input style="width: 300px" type="text" id="pid" value="1912"/></td>
+        </tr>
+    </table>
+    <h3>实时语音识别：</h3>
+    <button id="startButton">进行语音识别</button>
+    <button id="endButton" disabled=true>结束语音识别</button>
+    <h3>上传音频文件识别：</h3>
+    <input type="file" id="file" name="upload" />
+    上传进度：
+    <progress id="progress" value="0"></progress>
+    <div id="output" style="margin-top: 40px"></div>
+
+<script language="javascript" type="text/javascript">
+        const startButton = document.getElementById('startButton');
+        const endButton = document.getElementById('endButton');
+
         function sampleData(pcmDatas, pcmSampleRate, newSampleRate, prevChunkInfo = {}) {
             try {
                 let index = prevChunkInfo ? prevChunkInfo.index : 0;
@@ -73,9 +108,7 @@
             const Samp = sampleData([float32arrayBuffer], sampleRate, 16000, null);
             return Samp.data;
         };
-    </script>
 
-    <script language="javascript"type="text/javascript">
         // 控制通道，如下分别为缓冲区大小，输入通道，输出通道
         const BUFFER_SIZE = 512;
         const INPUT_CHANNELS = 1;
@@ -140,6 +173,9 @@
         }
 
         function onClose(evt) {
+            startButton.disabled = false;
+            endButton.disabled = true;
+            audioContent && audioContent.close();
             console.log('websocket连接关闭');
         }
 
@@ -167,6 +203,9 @@
         }
 
         function onError(evt) {
+            startButton.disabled = false;
+            endButton.disabled = true;
+            audioContent && audioContent.close();
             throw new Error('websocket连接失败'+ evt.data);
         }
 
@@ -201,7 +240,9 @@
             scriptProcessor.onaudioprocess = handleAudioprocess;
         }
 
-        function startRecorder() {
+        startButton.addEventListener('click', () => {
+            startButton.disabled = true;
+            endButton.disabled = false;
             navigator.mediaDevices.getUserMedia({
                 video: false,
                 audio: {
@@ -234,46 +275,20 @@
                 }
                 throw new Error(errorMessage);
             });
-        }
+        });
 
+        endButton.addEventListener('click', () => {
+            audioContent && audioContent.close();
+            doSend(FINISH_PARAMS);
+        })
+
+        // ======= 下面处理音频文件部分 ========
         window.addEventListener("load", init, false);
         // 监听 beforeunload 事件，在刷新或关闭时关闭 AudioContext
         window.addEventListener('beforeunload', (event) => {
             audioContent && audioContent.close();
         });
-    </script>
-</head>
 
-<body>
-    <h1>Webproxy JS Demo</h1>
-    <h3>参数配置</h3>
-    <table>
-        <tr>
-            <td>地址：</td>
-            <td style="width: 300px"><input style="width: 300px" type="text" id="address" value="ws://ai-speech.baidu.com/api/v1/asr/stream"/></td>
-        </tr>
-         <tr>
-            <td>用户名：</td>
-            <td><input style="width: 300px" type="text" id="username" value="username"/></td>
-        </tr>
-        <tr>
-            <td>密码：</td>
-            <td><input style="width: 300px" type="text" id="password" value="***"/></td>
-        </tr>
-        <tr>
-            <td>pid:</td>
-            <td><input style="width: 300px" type="text" id="pid" value="1912"/></td>
-        </tr>
-    </table>
-    <h3>实时语音识别：</h3>
-    <button onclick="startRecorder()">进行语音识别</button>
-    <h3>上传音频文件识别：</h3>
-    <input type="file" id="file" name="upload" />
-    上传进度：
-    <progress id="progress" value="0"></progress>
-    <div id="output" style="margin-top: 40px"></div>
-
-    <script>
         const UNIT = 512;
         const file = document.getElementById('file');
         file.onchange = function () {
@@ -306,6 +321,8 @@
                 startWebSocket('upload', afterOpen);
             }
         }
+
+
     </script>
 </body>
 </html>
