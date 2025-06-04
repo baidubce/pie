@@ -13,6 +13,7 @@ import org.kohsuke.args4j.Option;
  **/
 @Data
 public class AgentArgs {
+
     @Option(name = "-appid", required = false, usage = "asr appid")
     private int appId = 32388532;
     @Option(name = "-app-key", required = false, usage = "asr appkey")
@@ -24,8 +25,24 @@ public class AgentArgs {
     String uri = "ws://182.61.62.45:443/realtime_asr";
     @Option(name = "-audio-path", usage = "audio save path")
     private String audioPath = "xeq16k.wav";
-
-
+    @Option(name = "-format", usage = "audio format")
+    private String format = "pcm";
+    @Option(name = "-role-num", usage = "role num")
+    private int roleNum = 1;
+    @Option(name = "-vad-type", usage = "vad type")
+    private int vadType = 1;
+    @Option(name = "-vad-mode", usage = "vad mode")
+    private int vadMode = 0;
+    @Option(name = "-channels", usage = "audio channels")
+    private int channels = 1;
+    @Option(name = "-sample-rate", usage = "audio sample rate")
+    private int sampleRate = 16000;
+    @Option(name = "-type", usage = "server type, file or microphone, default: file")
+    private String type = "file";
+    @Option(name = "-username", usage = "username")
+    private String username = "username";
+    @Option(name = "-password", usage = "password")
+    private String password = "password";
 
     public static AgentArgs parse(String[] args) {
         AgentArgs iAgentArgs = new AgentArgs();
