@@ -202,6 +202,7 @@ public class TtsClientGrpcImpl implements TtsClient {
                 .setTex(text)
                 .setVol(request.getVol())
                 .setSpd(request.getSpd())
+                .setXml(request.getXml())
                 .setSendTimestamp(request.getSendTimestamp())
                 .setSequenceNum(request.getSequenceNum())
                 .putAllExtraParams(request.getExtraParams())
