@@ -143,40 +143,10 @@ public class WsAgentClient {
          * @param webSocket WebSocket类
          * @throws JSONException Json解析异常
          */
-        /*private void sendStartFrame(WebSocket webSocket) throws JSONException {
-
-            JSONObject params = new JSONObject();
-
-            params.put("appid", Const.APPID);
-            params.put("appkey", Const.APPKEY);
-            params.put("dev_key", Const.APPKEY);
-
-            params.put("dev_pid", Const.DEV_PID);
-            params.put("pid", Const.DEV_PID);
-            params.put("cuid", "self_defined_server_id_like_mac_address");
-
-            params.put("format", "pcm");
-            params.put("sample", 16000);
-            params.put("type", 1);
-            // 发音人数量
-            params.put("role_num", 1);
-            // 是否词粒度返回
-            params.put("words_piece", true);
-            params.put("need_mid", true);
-            params.put("need_session_finish", true);
-
-            JSONObject json = new JSONObject();
-            json.put("type", "START");
-            json.put("data", params);
-            log.info("send start FRAME:" + json.toString());
-            webSocket.send(json.toString());
-        }*/
         private void sendStartFrame(WebSocket webSocket) throws JSONException {
 
             JSONObject params = new JSONObject();
 
-//            params.put("appid", Const.APPID);
-//            params.put("appkey", Const.APPKEY);
             params.put("dev_key", agentArgs.getAppKey());
 
             params.put("dev_pid", agentArgs.getDevPid());

@@ -27,7 +27,7 @@ public class AsrArgs {
     @Option(name = "-enable-flush-data", handler = BooleanOptionHandler.class, usage = "enable flush data")
     private Boolean enableFlushData = false;
     @Option(name = "-audio-path", usage = "audio save path")
-    private String audioPath = "/Users/xiashuai01/MyProject/multi/pie/java-demo/testaudio/speex.txt";
+    private String audioPath = "testaudio/xeq16k.wav";
     // 这个只针对speex
     @Option(name = "-times", usage = "use times")
     private int times = 10;
