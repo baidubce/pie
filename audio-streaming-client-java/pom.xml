@@ -48,7 +48,7 @@
         <websocket.version>1.1</websocket.version>
         <tyrus.version>1.17</tyrus.version>
         <protobuf.version>3.25.5</protobuf.version>
-        <okhttp.version>4.9.1</okhttp.version>
+        <okhttp.version>4.9.2</okhttp.version>
         <joda-time.version>2.10.1</joda-time.version>
         <netty.version>4.1.108.Final</netty.version>
         <jackson.version>2.13.5</jackson.version>
